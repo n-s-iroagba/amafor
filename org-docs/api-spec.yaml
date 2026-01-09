@@ -1,0 +1,6899 @@
+openapi: 3.0.0
+info:
+  title: Amafor Gladiators Digital Ecosystem API
+  version: 1.0.0
+  description: |
+    API for the Amafor Gladiators Digital Ecosystem including:
+    - Talent promotion and scout portal
+    - Fan engagement and content management
+    - Self-service advertising platform
+    - Donations and patronage program
+    - Administrative backoffice operations
+    
+    All APIs require authentication except public endpoints marked as such.
+    
+    **Security Compliance**: ISO 27001:2022 compliant
+    **Accessibility**: WCAG 2.1 AA compliant interfaces
+  contact:
+    name: Amafor Gladiators FC
+    email: support@amaforgladiatorsfc.com
+  license:
+    name: Proprietary
+    url: https://amaforgladiatorsfc.com/terms
+
+servers:
+  - url: https://api.amaforgladiatorsfc.com/v1
+    description: Production API
+  - url: https://staging-api.amaforgladiatorsfc.com/v1
+    description: Staging API
+  - url: http://localhost:3000/api/v1
+    description: Local development
+
+tags:
+  - name: Authentication
+    description: User authentication and session management
+  - name: Users
+    description: User management and profiles
+  - name: Players
+    description: Player profile management
+  - name: Content
+    description: Articles, news, and content management
+  - name: Matches
+    description: Fixtures, results, and match data
+  - name: Advertising
+    description: Self-service advertising platform
+  - name: Donations
+    description: Donation processing and management
+  - name: Patronage
+    description: Patronage program management
+  - name: Academy
+    description: Academy information and operations
+  - name: Analytics
+    description: View analytics and performance tracking
+  - name: System
+    description: System administration and configuration
+  - name: Audit
+
+
+paths:
+  # ==============================
+  # WEBHOOK ENDPOINTS
+  # ==============================
+  /webhooks/paystack:
+    post:
+      tags: [System]
+      summary: Paystack webhook handler
+      description: Process Paystack payment notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaystackWebhook'
+      responses:
+        '200':
+          description: Webhook processed successfully
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  /webhooks/ga4:
+    post:
+      tags: [Analytics]
+      summary: Google Analytics 4 webhook handler
+      description: Receive GA4 events for ad view tracking
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GA4Webhook'
+      responses:
+        '200':
+          description: Event processed
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  # ==============================
+  # EVENT SUBSCRIPTION ENDPOINTS
+  # ==============================
+  /events/subscribe:
+    post:
+      tags: [System]
+      summary: Subscribe to system events (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventSubscription'
+      responses:
+        '201':
+          description: Subscription created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscriptionId:
+                    type: string
+                  webhookUrl:
+                    type: string
+                    format: uri
+                  events:
+                    type: array
+                    items:
+                      type: string
+                  secret:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /events/subscriptions/{subscriptionId}:
+    delete:
+      tags: [System]
+      summary: Unsubscribe from events (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Subscription removed
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # BATCH OPERATION ENDPOINTS
+  # ==============================
+  /batch/players/update:
+    post:
+      tags: [Players]
+      summary: Batch update player profiles (data steward only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - updates
+              properties:
+                updates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BatchPlayerUpdate'
+                notifyOnCompletion:
+                  type: boolean
+                  default: false
+      responses:
+        '202':
+          description: Batch update accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  totalRecords:
+                    type: integer
+                  estimatedCompletion:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /batch/fixtures/update:
+    post:
+      tags: [Matches]
+      summary: Batch update fixtures (sports admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - updates
+              properties:
+                updates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BatchFixtureUpdate'
+      responses:
+        '202':
+          description: Batch update accepted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /batch/jobs/{jobId}:
+    get:
+      tags: [System]
+      summary: Get batch job status
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchJobStatus'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+
+  # ==============================
+  # ANALYTICS ENDPOINTS
+  # ==============================
+  /analytics/content/views:
+    get:
+      tags: [Analytics]
+      summary: Get content view analytics (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: contentId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: contentType
+          in: query
+          schema:
+            type: string
+            enum: [article, video, player]
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: granularity
+          in: query
+          schema:
+            type: string
+            enum: [daily, weekly, monthly]
+            default: daily
+      responses:
+        '200':
+          description: View analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentAnalytics'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /analytics/advertising/summary:
+    get:
+      tags: [Analytics, Advertising]
+      summary: Get advertising analytics summary (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Advertising analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertisingAnalytics'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /analytics/financial/summary:
+    get:
+      tags: [Analytics]
+      summary: Get financial analytics (finance admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [donations, advertising, patronage, all]
+            default: all
+      responses:
+        '200':
+          description: Financial analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialAnalytics'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /analytics/user/engagement:
+    get:
+      tags: [Analytics]
+      summary: Get user engagement analytics (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: userType
+          in: query
+          schema:
+            type: string
+            enum: [fan, scout, advertiser, patron, donor]
+      responses:
+        '200':
+          description: User engagement analytics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEngagementAnalytics'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AUDIT LOG ENDPOINTS
+  # ==============================
+  /audit/logs:
+    get:
+      tags: [Audit]
+      summary: Get audit logs (IT security only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: entityType
+          in: query
+          schema:
+            type: string
+            enum: [user, player, article, fixture, campaign, donation, patron]
+        - name: entityId
+          in: query
+          schema:
+            type: string
+        - name: userId
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: action
+          in: query
+          schema:
+            type: string
+            enum: [create, update, delete, login, logout, payment]
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: ipAddress
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Audit logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AuditLog'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /audit/logs/export:
+    get:
+      tags: [Audit]
+      summary: Export audit logs (IT security only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [csv, json]
+            default: csv
+        - name: dateFrom
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Audit log export
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditLog'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # SYSTEM ADMINISTRATION ENDPOINTS
+  # ==============================
+  /system/health:
+    get:
+      tags: [System]
+      summary: Get system health status (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: System health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /system/integrations:
+    get:
+      tags: [System]
+      summary: Get integration status (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Integration status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationStatus'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /system/backup:
+    post:
+      tags: [System]
+      summary: Trigger manual backup (IT security only)
+      security:
+        - bearerAuth: []
+      responses:
+        '202':
+          description: Backup initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  estimatedCompletion:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /system/config:
+    get:
+      tags: [System]
+      summary: Get system configuration (super admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: System configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    put:
+      tags: [System]
+      summary: Update system configuration (super admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Configuration updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /system/notifications:
+    get:
+      tags: [System]
+      summary: Get system notifications (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [system, user, payment, content, security]
+        - name: unreadOnly
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: System notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SystemNotification'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /system/notifications/{notificationId}/read:
+    post:
+      tags: [System]
+      summary: Mark notification as read
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Notification marked as read
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /system/notifications/read-all:
+    post:
+      tags: [System]
+      summary: Mark all notifications as read
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: All notifications marked as read
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # COOKIE CONSENT ENDPOINTS
+  # ==============================
+  /consent/cookie:
+    post:
+      tags: [System]
+      summary: Set cookie consent preference
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - preference
+              properties:
+                preference:
+                  type: string
+                  enum: [accept, reject]
+                sessionId:
+                  type: string
+      responses:
+        '200':
+          description: Consent preference saved
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  trackingEnabled:
+                    type: boolean
+                  message:
+                    type: string
+
+  /consent/cookie/preference:
+    get:
+      tags: [System]
+      summary: Get current cookie consent preference
+      parameters:
+        - name: sessionId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Consent preference
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  preference:
+                    type: string
+                  trackingEnabled:
+                    type: boolean
+                  setAt:
+                    type: string
+                    format: date-time
+
+  # ==============================
+  # DONATIONS ENDPOINTS
+  # ==============================
+  /donations:
+    post:
+      tags: [Donations]
+      summary: Process donation
+      description: Public endpoint for one-time donations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DonationCreate'
+      responses:
+        '200':
+          description: Donation initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentUrl:
+                    type: string
+                    format: uri
+                    description: Paystack payment URL
+                  reference:
+                    type: string
+                  amount:
+                    type: number
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  /donations/{donationId}:
+    get:
+      tags: [Donations]
+      summary: Get donation receipt
+      description: Retrieve donation details and receipt
+      parameters:
+        - name: donationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Donation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donation'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /donations/webhook/paystack:
+    post:
+      tags: [Donations]
+      summary: Paystack webhook handler
+      description: Receive payment notifications from Paystack
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Webhook processed
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+  # ==============================
+  # SUPPORTER WALL ENDPOINTS
+  # ==============================
+  /supporters:
+    get:
+      tags: [Donations]
+      summary: Get supporter wall
+      description: Public endpoint showing donors who opted in
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [alphabetical, recent, amount]
+            default: alphabetical
+      responses:
+        '200':
+          description: List of supporters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Supporter'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  # ==============================
+  # PATRONAGE PROGRAM ENDPOINTS
+  # ==============================
+  /patronage/tiers:
+    get:
+      tags: [Patronage]
+      summary: Get patronage tiers
+      description: Public endpoint showing available patronage levels
+      responses:
+        '200':
+          description: List of patronage tiers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PatronTier'
+                  benefits:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: string
+
+  /patronage/subscribe:
+    post:
+      tags: [Patronage]
+      summary: Subscribe to patronage program
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatronSubscriptionCreate'
+      responses:
+        '200':
+          description: Subscription initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentUrl:
+                    type: string
+                    format: uri
+                  reference:
+                    type: string
+                  amount:
+                    type: number
+                  frequency:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /patronage/subscriptions/{subscriptionId}:
+    get:
+      tags: [Patronage]
+      summary: Get subscription details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Subscription details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatronSubscription'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    put:
+      tags: [Patronage]
+      summary: Update subscription
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatronSubscriptionUpdate'
+      responses:
+        '200':
+          description: Subscription updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    delete:
+      tags: [Patronage]
+      summary: Cancel subscription
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: subscriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Subscription cancelled
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /patronage/patrons:
+    get:
+      tags: [Patronage]
+      summary: Get patron recognition list
+      description: Public endpoint showing current patrons
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: tier
+          in: query
+          schema:
+            type: string
+            enum: [sponsor_grand_patron, patron, supporter, advocate, legend]
+      responses:
+        '200':
+          description: List of patrons
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Patron'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+  /patronage/admin/patrons:
+    get:
+      tags: [Patronage]
+      summary: Get all patrons (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, cancelled, expired, payment_failed]
+      responses:
+        '200':
+          description: All patron records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdminPatronView'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    post:
+      tags: [Patronage]
+      summary: Add manual patron (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualPatronCreate'
+      responses:
+        '201':
+          description: Patron added
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /patronage/admin/patrons/{patronId}:
+    put:
+      tags: [Patronage]
+      summary: Update patron (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patronId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualPatronUpdate'
+      responses:
+        '200':
+          description: Patron updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    delete:
+      tags: [Patronage]
+      summary: Remove patron (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patronId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Patron removed
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # ACADEMY ENDPOINTS
+  # ==============================
+  /academy:
+    get:
+      tags: [Academy]
+      summary: Get academy information
+      description: Public academy hub information
+      responses:
+        '200':
+          description: Academy information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyHub'
+
+  /academy/{page}:
+    get:
+      tags: [Academy]
+      summary: Get specific academy page
+      parameters:
+        - name: page
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [philosophy, curriculum, staff, pathway]
+      responses:
+        '200':
+          description: Academy page content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcademyPage'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /academy/staff:
+    get:
+      tags: [Academy]
+      summary: Get academy staff
+      responses:
+        '200':
+          description: Academy staff list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  staff:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AcademyStaff'
+
+  /academy/contact:
+    post:
+      tags: [Academy]
+      summary: Contact academy via WhatsApp
+      description: Generate WhatsApp contact link with predefined message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                message:
+                  type: string
+                phone:
+                  type: string
+      responses:
+        '200':
+          description: WhatsApp contact link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whatsappUrl:
+                    type: string
+                    format: uri
+                  message:
+                    type: string
+
+  # ==============================
+  # ADVERTISING PLATFORM ENDPOINTS
+  # ==============================
+  /advertising/campaigns:
+    get:
+      tags: [Advertising]
+      summary: List ad campaigns (advertiser/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, pending_payment, active, paused, completed, cancelled]
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdCampaignBasic'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    post:
+      tags: [Advertising]
+      summary: Create ad campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdCampaignCreate'
+      responses:
+        '201':
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdCampaign'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}:
+    get:
+      tags: [Advertising]
+      summary: Get campaign details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdCampaign'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Advertising]
+      summary: Update campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdCampaignUpdate'
+      responses:
+        '200':
+          description: Campaign updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdCampaign'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    delete:
+      tags: [Advertising]
+      summary: Delete campaign (advertiser/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Campaign deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/pause:
+    post:
+      tags: [Advertising]
+      summary: Pause campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign paused
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/resume:
+    post:
+      tags: [Advertising]
+      summary: Resume campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign resumed
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/payment:
+    post:
+      tags: [Advertising]
+      summary: Process campaign payment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - paymentMethod
+              properties:
+                paymentMethod:
+                  type: string
+                  enum: [card, bank_transfer, mobile_money]
+                savePaymentMethod:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Payment initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentUrl:
+                    type: string
+                    format: uri
+                    description: Redirect URL for payment gateway
+                  reference:
+                    type: string
+                  amount:
+                    type: number
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/performance:
+    get:
+      tags: [Advertising, Analytics]
+      summary: Get campaign performance metrics
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: granularity
+          in: query
+          schema:
+            type: string
+            enum: [hourly, daily, weekly, monthly]
+            default: daily
+      responses:
+        '200':
+          description: Performance metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdPerformance'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/export:
+    get:
+      tags: [Advertising]
+      summary: Export campaign data to CSV
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [csv, json]
+            default: csv
+      responses:
+        '200':
+          description: Campaign data export
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AD ZONES & RATES MANAGEMENT
+  # ==============================
+  /advertising/zones:
+    get:
+      tags: [Advertising]
+      summary: Get available ad zones
+      description: Public endpoint to view advertising opportunities
+      responses:
+        '200':
+          description: List of ad zones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  zones:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdZone'
+
+  /advertising/rates:
+    get:
+      tags: [Advertising]
+      summary: Get current advertising rates
+      responses:
+        '200':
+          description: Current rates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdRate'
+                  lastUpdated:
+                    type: string
+                    format: date-time
+                  nextUpdate:
+                    type: string
+                    format: date-time
+                    description: When next rate change takes effect
+
+  /advertising/rates/admin:
+    get:
+      tags: [Advertising]
+      summary: Get all rates (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: All rates including future changes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdRate'
+                  future:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdRate'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    put:
+      tags: [Advertising]
+      summary: Update advertising rates (commercial manager only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - rates
+              properties:
+                rates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AdRateUpdate'
+                effectiveFrom:
+                  type: string
+                  format: date-time
+                  description: When new rates take effect (minimum 30 days notice)
+      responses:
+        '200':
+          description: Rates updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  notificationSent:
+                    type: boolean
+                  effectiveFrom:
+                    type: string
+                    format: date-time
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AD CREATIVE MANAGEMENT
+  # ==============================
+  /advertising/creatives/upload:
+    post:
+      tags: [Advertising]
+      summary: Upload ad creative
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - zone
+              properties:
+                file:
+                  type: string
+                  format: binary
+                zone:
+                  type: string
+                  enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+                campaignId:
+                  type: string
+                  format: uuid
+                  description: Optional, for direct campaign association
+      responses:
+        '200':
+          description: Creative uploaded and validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creativeId:
+                    type: string
+                    format: uuid
+                  url:
+                    type: string
+                    format: uri
+                  dimensions:
+                    type: object
+                    properties:
+                      width:
+                        type: integer
+                      height:
+                        type: integer
+                  fileSize:
+                    type: integer
+                    description: Size in bytes
+                  format:
+                    type: string
+                  validation:
+                    $ref: '#/components/schemas/CreativeValidation'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # DISPUTE MANAGEMENT
+  # ==============================
+  /advertising/disputes:
+    get:
+      tags: [Advertising]
+      summary: List disputes (commercial manager/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, in_progress, resolved, closed]
+        - name: advertiserId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of disputes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dispute'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    post:
+      tags: [Advertising]
+      summary: Create dispute
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeCreate'
+      responses:
+        '201':
+          description: Dispute created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  caseNumber:
+                    type: string
+                  message:
+                    type: string
+                  estimatedResponseTime:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/disputes/{disputeId}:
+    get:
+      tags: [Advertising]
+      summary: Get dispute details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Dispute details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Advertising]
+      summary: Update dispute (commercial manager only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeUpdate'
+      responses:
+        '200':
+          description: Dispute updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/disputes/{disputeId}/response:
+    post:
+      tags: [Advertising]
+      summary: Add response to dispute (commercial manager only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - response
+              properties:
+                response:
+                  type: string
+                internalNotes:
+                  type: string
+                status:
+                  type: string
+                  enum: [resolved, closed]
+      responses:
+        '200':
+          description: Response added
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AD VIEW TRACKING
+  # ==============================
+  /advertising/track/view:
+    post:
+      tags: [Advertising, Analytics]
+      summary: Track ad view (internal/GA4 integration)
+      description: Endpoint for GA4 integration to track ad views
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdViewEvent'
+      responses:
+        '200':
+          description: View tracked
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+
+  # ==============================
+  # ADVERTISING PLATFORM ENDPOINTS
+  # ==============================
+  /advertising/campaigns:
+    get:
+      tags: [Advertising]
+      summary: List ad campaigns (advertiser/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, pending_payment, active, paused, completed, cancelled]
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdCampaignBasic'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    post:
+      tags: [Advertising]
+      summary: Create ad campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdCampaignCreate'
+      responses:
+        '201':
+          description: Campaign created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdCampaign'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}:
+    get:
+      tags: [Advertising]
+      summary: Get campaign details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdCampaign'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Advertising]
+      summary: Update campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdCampaignUpdate'
+      responses:
+        '200':
+          description: Campaign updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdCampaign'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    delete:
+      tags: [Advertising]
+      summary: Delete campaign (advertiser/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Campaign deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/pause:
+    post:
+      tags: [Advertising]
+      summary: Pause campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign paused
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/resume:
+    post:
+      tags: [Advertising]
+      summary: Resume campaign (advertiser only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Campaign resumed
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/payment:
+    post:
+      tags: [Advertising]
+      summary: Process campaign payment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - paymentMethod
+              properties:
+                paymentMethod:
+                  type: string
+                  enum: [card, bank_transfer, mobile_money]
+                savePaymentMethod:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Payment initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentUrl:
+                    type: string
+                    format: uri
+                    description: Redirect URL for payment gateway
+                  reference:
+                    type: string
+                  amount:
+                    type: number
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/performance:
+    get:
+      tags: [Advertising, Analytics]
+      summary: Get campaign performance metrics
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: granularity
+          in: query
+          schema:
+            type: string
+            enum: [hourly, daily, weekly, monthly]
+            default: daily
+      responses:
+        '200':
+          description: Performance metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdPerformance'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/campaigns/{campaignId}/export:
+    get:
+      tags: [Advertising]
+      summary: Export campaign data to CSV
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [csv, json]
+            default: csv
+      responses:
+        '200':
+          description: Campaign data export
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AD ZONES & RATES MANAGEMENT
+  # ==============================
+  /advertising/zones:
+    get:
+      tags: [Advertising]
+      summary: Get available ad zones
+      description: Public endpoint to view advertising opportunities
+      responses:
+        '200':
+          description: List of ad zones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  zones:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdZone'
+
+  /advertising/rates:
+    get:
+      tags: [Advertising]
+      summary: Get current advertising rates
+      responses:
+        '200':
+          description: Current rates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdRate'
+                  lastUpdated:
+                    type: string
+                    format: date-time
+                  nextUpdate:
+                    type: string
+                    format: date-time
+                    description: When next rate change takes effect
+
+  /advertising/rates/admin:
+    get:
+      tags: [Advertising]
+      summary: Get all rates (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: All rates including future changes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdRate'
+                  future:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdRate'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    put:
+      tags: [Advertising]
+      summary: Update advertising rates (commercial manager only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - rates
+              properties:
+                rates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AdRateUpdate'
+                effectiveFrom:
+                  type: string
+                  format: date-time
+                  description: When new rates take effect (minimum 30 days notice)
+      responses:
+        '200':
+          description: Rates updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  notificationSent:
+                    type: boolean
+                  effectiveFrom:
+                    type: string
+                    format: date-time
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AD CREATIVE MANAGEMENT
+  # ==============================
+  /advertising/creatives/upload:
+    post:
+      tags: [Advertising]
+      summary: Upload ad creative
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - zone
+              properties:
+                file:
+                  type: string
+                  format: binary
+                zone:
+                  type: string
+                  enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+                campaignId:
+                  type: string
+                  format: uuid
+                  description: Optional, for direct campaign association
+      responses:
+        '200':
+          description: Creative uploaded and validated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  creativeId:
+                    type: string
+                    format: uuid
+                  url:
+                    type: string
+                    format: uri
+                  dimensions:
+                    type: object
+                    properties:
+                      width:
+                        type: integer
+                      height:
+                        type: integer
+                  fileSize:
+                    type: integer
+                    description: Size in bytes
+                  format:
+                    type: string
+                  validation:
+                    $ref: '#/components/schemas/CreativeValidation'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # DISPUTE MANAGEMENT
+  # ==============================
+  /advertising/disputes:
+    get:
+      tags: [Advertising]
+      summary: List disputes (commercial manager/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, in_progress, resolved, closed]
+        - name: advertiserId
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of disputes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Dispute'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    post:
+      tags: [Advertising]
+      summary: Create dispute
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeCreate'
+      responses:
+        '201':
+          description: Dispute created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  caseNumber:
+                    type: string
+                  message:
+                    type: string
+                  estimatedResponseTime:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/disputes/{disputeId}:
+    get:
+      tags: [Advertising]
+      summary: Get dispute details
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Dispute details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dispute'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Advertising]
+      summary: Update dispute (commercial manager only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisputeUpdate'
+      responses:
+        '200':
+          description: Dispute updated
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /advertising/disputes/{disputeId}/response:
+    post:
+      tags: [Advertising]
+      summary: Add response to dispute (commercial manager only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: disputeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - response
+              properties:
+                response:
+                  type: string
+                internalNotes:
+                  type: string
+                status:
+                  type: string
+                  enum: [resolved, closed]
+      responses:
+        '200':
+          description: Response added
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # AD VIEW TRACKING
+  # ==============================
+  /advertising/track/view:
+    post:
+      tags: [Advertising, Analytics]
+      summary: Track ad view (internal/GA4 integration)
+      description: Endpoint for GA4 integration to track ad views
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdViewEvent'
+      responses:
+        '200':
+          description: View tracked
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+
+  # ==============================
+  # CONTENT MANAGEMENT ENDPOINTS
+  # ==============================
+  /content/articles:
+    get:
+      tags: [Content]
+      summary: List articles
+      description: Public endpoint to get published articles
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: tag
+          in: query
+          schema:
+            type: string
+            enum: [football_news, match_report, academy_update, player_spotlight, club_announcement]
+        - name: author
+          in: query
+          schema:
+            type: string
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [published_at, updated_at, views]
+            default: published_at
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: List of articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ArticleBasic'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+    post:
+      tags: [Content]
+      summary: Create article (media manager/admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleCreate'
+      responses:
+        '201':
+          description: Article created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleFull'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /content/articles/drafts:
+    get:
+      tags: [Content]
+      summary: List draft articles (media manager/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+      responses:
+        '200':
+          description: List of draft articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ArticleBasic'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /content/articles/{articleId}:
+    get:
+      tags: [Content]
+      summary: Get article by ID
+      description: Public endpoint, tracks view count
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Article details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleFull'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Content]
+      summary: Update article (media manager/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleUpdate'
+      responses:
+        '200':
+          description: Article updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleFull'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    delete:
+      tags: [Content]
+      summary: Delete article (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Article deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /content/articles/{articleId}/publish:
+    post:
+      tags: [Content]
+      summary: Publish article (media manager/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                publishAt:
+                  type: string
+                  format: date-time
+                  description: Schedule for future publishing
+      responses:
+        '200':
+          description: Article published/scheduled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleFull'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /content/articles/{articleId}/unpublish:
+    post:
+      tags: [Content]
+      summary: Unpublish article (media manager/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Article unpublished
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleFull'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /content/articles/{articleId}/share:
+    post:
+      tags: [Content]
+      summary: Generate share link for article
+      description: Creates WhatsApp share link with predefined message
+      parameters:
+        - name: articleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Share information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  whatsappUrl:
+                    type: string
+                    format: uri
+                    description: Pre-filled WhatsApp share URL
+                  message:
+                    type: string
+                    description: Share message template
+                  shortUrl:
+                    type: string
+                    format: uri
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  # ==============================
+  # MATCH DATA ENDPOINTS
+  # ==============================
+  /matches/fixtures:
+    get:
+      tags: [Matches]
+      summary: Get fixtures
+      description: Public endpoint for upcoming matches
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [upcoming, past, all]
+            default: upcoming
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: competition
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of fixtures
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Fixture'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+    post:
+      tags: [Matches]
+      summary: Create fixture (sports admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixtureCreate'
+      responses:
+        '201':
+          description: Fixture created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fixture'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /matches/fixtures/{fixtureId}:
+    get:
+      tags: [Matches]
+      summary: Get fixture details
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Fixture details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixtureDetail'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Matches]
+      summary: Update fixture (sports admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixtureUpdate'
+      responses:
+        '200':
+          description: Fixture updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fixture'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /matches/fixtures/{fixtureId}/lineup:
+    get:
+      tags: [Matches]
+      summary: Get fixture lineup
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Lineup information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lineup'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Matches]
+      summary: Update fixture lineup (sports admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LineupUpdate'
+      responses:
+        '200':
+          description: Lineup updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lineup'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /matches/league-table:
+    get:
+      tags: [Matches]
+      summary: Get league table
+      description: Public endpoint with horizontal scroll support for mobile
+      parameters:
+        - name: season
+          in: query
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{4}$'
+        - name: competition
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: League table data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeagueTable'
+
+  # ==============================
+  # SEARCH ENDPOINTS
+  # ==============================
+  /search:
+    get:
+      tags: [Content, Players, Matches]
+      summary: Global search
+      description: Search across players, articles, and match reports
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: types
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum: [players, articles, matches]
+            default: [players, articles, matches]
+          style: form
+          explode: false
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  results:
+                    type: object
+                    properties:
+                      players:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PlayerBasic'
+                      articles:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ArticleBasic'
+                      matches:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Fixture'
+                  totalResults:
+                    type: integer
+                  took:
+                    type: number
+                    description: Search time in milliseconds
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+
+  /players:
+    get:
+      tags: [Players]
+      summary: List players
+      description: Get list of players with filtering (public endpoint, limited data for unauthenticated)
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: position
+          in: query
+          schema:
+            type: string
+            enum: [GK, DF, MF, FW]
+        - name: minAge
+          in: query
+          schema:
+            type: integer
+            minimum: 16
+            maximum: 40
+        - name: maxAge
+          in: query
+          schema:
+            type: integer
+            minimum: 16
+            maximum: 40
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by name
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [name, age, position]
+            default: name
+        - name: sortOrder
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+      responses:
+        '200':
+          description: List of players
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlayerBasic'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+
+    post:
+      tags: [Players]
+      summary: Create player profile (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerCreate'
+      responses:
+        '201':
+          description: Player created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerFull'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /players/{playerId}:
+    get:
+      tags: [Players]
+      summary: Get player by ID
+      description: Returns full player data for authenticated scouts/admins, basic data for public
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Player details
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/PlayerFull'
+                  - $ref: '#/components/schemas/PlayerBasic'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      tags: [Players]
+      summary: Update player profile (data steward/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerUpdate'
+      responses:
+        '200':
+          description: Player updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerFull'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+    delete:
+      tags: [Players]
+      summary: Delete player (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Player deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /players/{playerId}/audit:
+    get:
+      tags: [Players, Audit]
+      summary: Get player audit trail
+      description: Get history of changes to player profile (scout/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+      responses:
+        '200':
+          description: Audit trail
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlayerAuditEntry'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /players/{playerId}/pdf:
+    post:
+      tags: [Players]
+      summary: Generate player PDF summary (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includeContactInfo:
+                  type: boolean
+                  default: false
+                template:
+                  type: string
+                  enum: [standard, professional, scouting]
+                  default: standard
+      responses:
+        '200':
+          description: PDF generated successfully
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '202':
+          description: PDF generation in progress
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                  status:
+                    type: string
+                    enum: [processing]
+                  estimatedCompletion:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /players/export:
+    get:
+      tags: [Players]
+      summary: Export players to CSV (scout/admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: format
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [csv, json]
+            default: csv
+        - name: fields
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            default: [name, position, age, height]
+          style: form
+          explode: false
+        - name: position
+          in: query
+          schema:
+            type: string
+            enum: [GK, DF, MF, FW, all]
+            default: all
+      responses:
+        '200':
+          description: Export file
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  # ==============================
+  # MATCH ARCHIVES ENDPOINTS (Pro View)
+  # ==============================
+  /matches/archives:
+    get:
+      tags: [Matches]
+      summary: List match archives (scout only)
+      description: Access full match archives for verified scouts
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: season
+          in: query
+          schema:
+            type: string
+            pattern: '^\d{4}-\d{4}$'
+        - name: competition
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [available, processing]
+        - name: dateFrom
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: dateTo
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: List of match archives
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MatchArchive'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /matches/archives/{matchId}:
+    get:
+      tags: [Matches]
+      summary: Get match archive details (scout only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Match archive details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchArchiveDetail'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /matches/archives/{matchId}/video:
+    get:
+      tags: [Matches]
+      summary: Get match video embed information
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: quality
+          in: query
+          schema:
+            type: string
+            enum: [auto, 360p, 480p, 720p, 1080p]
+            default: auto
+      responses:
+        '200':
+          description: Video embed configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoEmbed'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+
+    description: Audit logging and compliance
+
+
+  # ==============================
+  # AUTHENTICATION ENDPOINTS
+  # ==============================
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      description: Authenticate user and create session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  example: "SecurePass123!"
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT access token
+                  refreshToken:
+                    type: string
+                    description: Refresh token for obtaining new access tokens
+                  user:
+                    $ref: '#/components/schemas/UserProfile'
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                    example: ["scout", "advertiser"]
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+
+ /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: User logout
+      description: Invalidate current session
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/refresh:
+    post:
+      tags: [Authentication]
+      summary: Refresh access token
+      description: Obtain new access token using refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  refreshToken:
+                    type: string
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /auth/password/reset:
+    post:
+      tags: [Authentication]
+      summary: Request password reset
+      description: Send password reset email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: Reset email sent
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+
+  /auth/password/reset/{token}:
+    post:
+      tags: [Authentication]
+      summary: Reset password with token
+      description: Set new password using reset token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+                - confirmPassword
+              properties:
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                confirmPassword:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Password reset successful
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '410':
+          description: Token expired
+
+  # ==============================
+  # USER MANAGEMENT ENDPOINTS
+  # ==============================
+  /users:
+    post:
+      tags: [Users]
+      summary: Register new user
+      description: Register as fan, advertiser, or scout (pending verification)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ScoutRegistration'
+                - $ref: '#/components/schemas/AdvertiserRegistration'
+                - $ref: '#/components/schemas/DonorRegistration'
+      responses:
+        '201':
+          description: User registered (pending verification)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                  status:
+                    type: string
+                    enum: [pending_verification, active]
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '409':
+          description: User already exists
+
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get current user profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    put:
+      tags: [Users]
+      summary: Update user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileUpdate'
+      responses:
+        '200':
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /users/{userId}:
+    get:
+      tags: [Users]
+      summary: Get user by ID (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserView'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    delete:
+      tags: [Users]
+      summary: Delete user (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /users/verification/pending:
+    get:
+      tags: [Users]
+      summary: Get pending verifications (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationPage'
+        - $ref: '#/components/parameters/PaginationLimit'
+        - name: userType
+          in: query
+          schema:
+            type: string
+            enum: [scout, advertiser]
+      responses:
+        '200':
+          description: List of pending verifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PendingVerification'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /users/verification/{userId}/approve:
+    post:
+      tags: [Users]
+      summary: Approve user verification (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User approved
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+  /users/verification/{userId}/reject:
+    post:
+      tags: [Users]
+      summary: Reject user verification (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+      responses:
+        '200':
+          description: User rejected
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # User Schemas
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        userType:
+          type: string
+          enum: [fan, scout, advertiser, patron, donor, media_manager, sports_admin, data_steward, commercial_manager, it_security, super_admin]
+        roles:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [active, pending_verification, suspended]
+        createdAt:
+          type: string
+          format: date-time
+        lastLogin:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        avatarUrl:
+          type: string
+          format: uri
+
+    ScoutRegistration:
+      type: object
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - organization
+        - reason
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 8
+        firstName:
+          type: string
+        lastName:
+          type: string
+        organization:
+          type: string
+        socialMediaUrl:
+          type: string
+          format: uri
+        reason:
+          type: string
+
+    AdvertiserRegistration:
+      type: object
+      required:
+        - email
+        - password
+        - businessName
+        - phone
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+          minLength: 8
+        businessName:
+          type: string
+        phone:
+          type: string
+        website:
+          type: string
+          format: uri
+
+    DonorRegistration:
+      type: object
+      required:
+        - email
+        - firstName
+        - lastName
+      properties:
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        optInSupporterWall:
+          type: boolean
+          default: false
+
+    AdminUserView:
+      allOf:
+        - $ref: '#/components/schemas/UserProfile'
+        - type: object
+          properties:
+            loginHistory:
+              type: array
+              items:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  ipAddress:
+                    type: string
+                  userAgent:
+                    type: string
+            auditTrail:
+              type: array
+              items:
+                $ref: '#/components/schemas/AuditLogEntry'
+
+    PendingVerification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        userType:
+          type: string
+        submittedAt:
+          type: string
+          format: date-time
+        applicationData:
+          type: object
+          additionalProperties: true
+
+    # Common Schemas
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+        total:
+          type: integer
+        totalPages:
+          type: integer
+
+    AuditLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        userId:
+          type: string
+        action:
+          type: string
+        entityType:
+          type: string
+        entityId:
+          type: string
+        oldValue:
+          type: object
+        newValue:
+          type: object
+        ipAddress:
+          type: string
+        userAgent:
+          type: string
+
+  parameters:
+    PaginationPage:
+      name: page
+      in: query
+      description: Page number
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    PaginationLimit:
+      name: limit
+      in: query
+      description: Items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+
+    UnauthorizedError:
+      description: Unauthorized - Invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+
+    ForbiddenError:
+      description: Forbidden - Insufficient permissions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+
+    RateLimitError:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+              retryAfter:
+                type: integer
+                description: Seconds to wait before retrying
+    # Player Schemas
+    PlayerBasic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        imageUrl:
+          type: string
+          format: uri
+        position:
+          type: string
+          enum: [GK, DF, MF, FW]
+        age:
+          type: integer
+        height:
+          type: number
+          description: Height in meters
+        squadNumber:
+          type: integer
+          minimum: 1
+          maximum: 99
+
+    PlayerFull:
+      allOf:
+        - $ref: '#/components/schemas/PlayerBasic'
+        - type: object
+          properties:
+            dateOfBirth:
+              type: string
+              format: date
+            nationality:
+              type: string
+            biography:
+              type: string
+            joinedDate:
+              type: string
+              format: date
+            previousClubs:
+              type: array
+              items:
+                type: string
+            stats:
+              $ref: '#/components/schemas/PlayerStats'
+            contactInfo:
+              $ref: '#/components/schemas/PlayerContact'
+              description: Only visible to admins
+            status:
+              type: string
+              enum: [active, injured, suspended, transferred]
+            lastUpdated:
+              type: string
+              format: date-time
+            updatedBy:
+              type: string
+              format: uuid
+
+    PlayerCreate:
+      type: object
+      required:
+        - name
+        - dateOfBirth
+        - position
+      properties:
+        name:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        position:
+          type: string
+          enum: [GK, DF, MF, FW]
+        height:
+          type: number
+        nationality:
+          type: string
+        biography:
+          type: string
+        squadNumber:
+          type: integer
+        imageUrl:
+          type: string
+          format: uri
+
+    PlayerUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        position:
+          type: string
+          enum: [GK, DF, MF, FW]
+        height:
+          type: number
+        nationality:
+          type: string
+        biography:
+          type: string
+        squadNumber:
+          type: integer
+        imageUrl:
+          type: string
+          format: uri
+        status:
+          type: string
+          enum: [active, injured, suspended, transferred]
+        contactInfo:
+          $ref: '#/components/schemas/PlayerContact'
+
+    PlayerStats:
+      type: object
+      properties:
+        appearances:
+          type: integer
+        goals:
+          type: integer
+        assists:
+          type: integer
+        cleanSheets:
+          type: integer
+        yellowCards:
+          type: integer
+        redCards:
+          type: integer
+        minutesPlayed:
+          type: integer
+
+    PlayerContact:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        agentName:
+          type: string
+        agentContact:
+          type: string
+
+    PlayerAuditEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        userId:
+          type: string
+          format: uuid
+        userName:
+          type: string
+        fieldChanged:
+          type: string
+        oldValue:
+          type: string
+        newValue:
+          type: string
+        ipAddress:
+          type: string
+
+    # Match Archive Schemas
+    MatchArchive:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        matchDate:
+          type: string
+          format: date-time
+        homeTeam:
+          type: string
+        awayTeam:
+          type: string
+        competition:
+          type: string
+        venue:
+          type: string
+        status:
+          type: string
+          enum: [scheduled, in_progress, completed, postponed, cancelled]
+        archiveStatus:
+          type: string
+          enum: [processing, available, failed]
+        availableAt:
+          type: string
+          format: date-time
+          description: When archive will be available (if processing)
+
+    MatchArchiveDetail:
+      allOf:
+        - $ref: '#/components/schemas/MatchArchive'
+        - type: object
+          properties:
+            score:
+              type: string
+              example: "2-1"
+            attendance:
+              type: integer
+            videoUrl:
+              type: string
+              format: uri
+            videoProvider:
+              type: string
+              enum: [youtube, vimeo]
+            highlightsUrl:
+              type: string
+              format: uri
+            gallery:
+              type: array
+              items:
+                type: string
+                format: uri
+            lineups:
+              $ref: '#/components/schemas/MatchLineups'
+            stats:
+              $ref: '#/components/schemas/MatchStats'
+
+    VideoEmbed:
+      type: object
+      properties:
+        provider:
+          type: string
+          enum: [youtube, vimeo]
+        videoId:
+          type: string
+        embedUrl:
+          type: string
+          format: uri
+        duration:
+          type: integer
+          description: Duration in seconds
+        qualityOptions:
+          type: array
+          items:
+            type: string
+          example: ["360p", "480p", "720p", "1080p"]
+        adaptiveStreaming:
+          type: boolean
+          default: true
+
+    MatchLineups:
+      type: object
+      properties:
+        home:
+          $ref: '#/components/schemas/Lineup'
+        away:
+          $ref: '#/components/schemas/Lineup'
+
+    Lineup:
+      type: object
+      properties:
+        formation:
+          type: string
+        startingXI:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineupPlayer'
+        substitutes:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineupPlayer'
+        coach:
+          type: string
+
+    LineupPlayer:
+      type: object
+      properties:
+        playerId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        position:
+          type: string
+        shirtNumber:
+          type: integer
+
+    MatchStats:
+      type: object
+      properties:
+        possession:
+          type: object
+          properties:
+            home:
+              type: number
+              minimum: 0
+              maximum: 100
+            away:
+              type: number
+              minimum: 0
+              maximum: 100
+        shots:
+          type: object
+          properties:
+            home:
+              type: integer
+            away:
+              type: integer
+        shotsOnTarget:
+          type: object
+          properties:
+            home:
+              type: integer
+            away:
+              type: integer
+        corners:
+          type: object
+          properties:
+            home:
+              type: integer
+            away:
+              type: integer
+        fouls:
+          type: object
+          properties:
+            home:
+              type: integer
+            away:
+              type: integer
+    # Article Schemas
+    ArticleBasic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        excerpt:
+          type: string
+        featuredImage:
+          type: string
+          format: uri
+        author:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+            enum: [football_news, match_report, academy_update, player_spotlight, club_announcement]
+        publishedAt:
+          type: string
+          format: date-time
+        readTime:
+          type: integer
+          description: Estimated read time in minutes
+        viewCount:
+          type: integer
+          description: Only visible in admin views
+
+    ArticleFull:
+      allOf:
+        - $ref: '#/components/schemas/ArticleBasic'
+        - type: object
+          properties:
+            content:
+              type: string
+              description: HTML content from WYSIWYG editor
+            videoEmbed:
+              $ref: '#/components/schemas/VideoEmbed'
+            status:
+              type: string
+              enum: [draft, scheduled, published, archived]
+            scheduledPublishAt:
+              type: string
+              format: date-time
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            relatedArticles:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArticleBasic'
+            adZones:
+              type: array
+              items:
+                $ref: '#/components/schemas/ArticleAdZone'
+
+    ArticleCreate:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+        featuredImage:
+          type: string
+          format: uri
+        tags:
+          type: array
+          items:
+            type: string
+            enum: [football_news, match_report, academy_update, player_spotlight, club_announcement]
+        videoUrl:
+          type: string
+          format: uri
+        status:
+          type: string
+          enum: [draft, published]
+          default: draft
+        scheduledPublishAt:
+          type: string
+          format: date-time
+
+    ArticleUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        excerpt:
+          type: string
+        featuredImage:
+          type: string
+          format: uri
+        tags:
+          type: array
+          items:
+            type: string
+        videoUrl:
+          type: string
+          format: uri
+        status:
+          type: string
+          enum: [draft, scheduled, published, archived]
+
+    ArticleAdZone:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [mid_article, article_footer]
+        position:
+          type: integer
+          description: Word position for mid-article ads
+        adCampaignId:
+          type: string
+          format: uuid
+
+    # Fixture Schemas
+    Fixture:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        matchDate:
+          type: string
+          format: date-time
+        homeTeam:
+          type: string
+        awayTeam:
+          type: string
+        competition:
+          type: string
+        venue:
+          type: string
+        status:
+          type: string
+          enum: [scheduled, in_progress, completed, postponed, cancelled]
+        homeScore:
+          type: integer
+        awayScore:
+          type: integer
+
+    FixtureDetail:
+      allOf:
+        - $ref: '#/components/schemas/Fixture'
+        - type: object
+          properties:
+            attendance:
+              type: integer
+            referee:
+              type: string
+            weather:
+              type: string
+            matchReport:
+              type: string
+              format: uuid
+              description: Link to article ID
+            lineups:
+              $ref: '#/components/schemas/Lineup'
+            stats:
+              $ref: '#/components/schemas/MatchStats'
+            highlightsUrl:
+              type: string
+              format: uri
+            archiveStatus:
+              type: string
+              enum: [processing, available]
+            availableAt:
+              type: string
+              format: date-time
+
+    FixtureCreate:
+      type: object
+      required:
+        - matchDate
+        - homeTeam
+        - awayTeam
+        - competition
+      properties:
+        matchDate:
+          type: string
+          format: date-time
+        homeTeam:
+          type: string
+        awayTeam:
+          type: string
+        competition:
+          type: string
+        venue:
+          type: string
+        homeScore:
+          type: integer
+        awayScore:
+          type: integer
+        status:
+          type: string
+          enum: [scheduled, in_progress, completed, postponed, cancelled]
+          default: scheduled
+
+    FixtureUpdate:
+      type: object
+      properties:
+        matchDate:
+          type: string
+          format: date-time
+        homeTeam:
+          type: string
+        awayTeam:
+          type: string
+        competition:
+          type: string
+        venue:
+          type: string
+        homeScore:
+          type: integer
+        awayScore:
+          type: integer
+        status:
+          type: string
+          enum: [scheduled, in_progress, completed, postponed, cancelled]
+        attendance:
+          type: integer
+        referee:
+          type: string
+
+    LineupUpdate:
+      type: object
+      properties:
+        home:
+          $ref: '#/components/schemas/Lineup'
+        away:
+          $ref: '#/components/schemas/Lineup'
+
+    LeagueTable:
+      type: object
+      properties:
+        season:
+          type: string
+        competition:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeagueTableTeam'
+
+    LeagueTableTeam:
+      type: object
+      properties:
+        position:
+          type: integer
+        team:
+          type: string
+        played:
+          type: integer
+        won:
+          type: integer
+        drawn:
+          type: integer
+        lost:
+          type: integer
+        goalsFor:
+          type: integer
+        goalsAgainst:
+          type: integer
+        goalDifference:
+          type: integer
+        points:
+          type: integer
+        form:
+          type: array
+          items:
+            type: string
+            enum: [W, D, L]
+          maxItems: 5
+    # Advertising Schemas
+    AdCampaignBasic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        advertiserId:
+          type: string
+          format: uuid
+        advertiserName:
+          type: string
+        zone:
+          type: string
+          enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+        status:
+          type: string
+          enum: [draft, pending_payment, active, paused, completed, cancelled]
+        budget:
+          type: number
+        spent:
+          type: number
+        viewsPurchased:
+          type: integer
+        viewsDelivered:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+
+    AdCampaign:
+      allOf:
+        - $ref: '#/components/schemas/AdCampaignBasic'
+        - type: object
+          properties:
+            creative:
+              $ref: '#/components/schemas/AdCreative'
+            targeting:
+              $ref: '#/components/schemas/AdTargeting'
+            paymentStatus:
+              type: string
+              enum: [pending, paid, refunded, failed]
+            paymentReference:
+              type: string
+            cpv:
+              type: number
+              description: Cost per view
+            performance:
+              $ref: '#/components/schemas/AdPerformance'
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+
+    AdCampaignCreate:
+      type: object
+      required:
+        - name
+        - zone
+        - creativeId
+        - targetViews
+      properties:
+        name:
+          type: string
+        zone:
+          type: string
+          enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+        creativeId:
+          type: string
+          format: uuid
+        targetViews:
+          type: integer
+          minimum: 1000
+          description: Minimum 1000 views
+        targeting:
+          $ref: '#/components/schemas/AdTargeting'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+
+    AdCampaignUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        targeting:
+          $ref: '#/components/schemas/AdTargeting'
+        status:
+          type: string
+          enum: [active, paused]
+
+    AdCreative:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+          enum: [image, video]
+        format:
+          type: string
+          enum: [jpg, png, mp4]
+        dimensions:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        fileSize:
+          type: integer
+        advertiserName:
+          type: string
+        companyName:
+          type: string
+        validated:
+          type: boolean
+        validationErrors:
+          type: array
+          items:
+            type: string
+
+    CreativeValidation:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+        warnings:
+          type: array
+          items:
+            type: string
+        dimensions:
+          type: object
+          properties:
+            actual:
+              type: object
+              properties:
+                width:
+                  type: integer
+                height:
+                  type: integer
+            expected:
+              type: object
+              properties:
+                width:
+                  type: integer
+                height:
+                  type: integer
+        fileSize:
+          type: object
+          properties:
+            actual:
+              type: integer
+            maxAllowed:
+              type: integer
+
+    AdTargeting:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [homepage, tags]
+        tags:
+          type: array
+          items:
+            type: string
+            enum: [football_news, match_report, academy_update, player_spotlight, club_announcement]
+        devices:
+          type: array
+          items:
+            type: string
+            enum: [desktop, tablet, mobile]
+
+    AdPerformance:
+      type: object
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        viewsPurchased:
+          type: integer
+        viewsDelivered:
+          type: integer
+        viewsRemaining:
+          type: integer
+        uniqueViews:
+          type: integer
+        totalImpressions:
+          type: integer
+        clickThroughRate:
+          type: number
+        cpv:
+          type: number
+        totalSpent:
+          type: number
+        remainingBudget:
+          type: number
+        deliveryRate:
+          type: number
+          description: Views delivered per day
+        estimatedCompletion:
+          type: string
+          format: date-time
+        metricsByDay:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyMetrics'
+
+    DailyMetrics:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        views:
+          type: integer
+        uniqueViews:
+          type: integer
+        clicks:
+          type: integer
+        spent:
+          type: number
+
+    AdZone:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        format:
+          type: array
+          items:
+            type: string
+          example: ["jpg", "png"]
+        maxFileSize:
+          type: integer
+          description: Maximum file size in bytes
+        supportedTypes:
+          type: array
+          items:
+            type: string
+          example: ["image", "video"]
+        currentRate:
+          type: number
+          description: Cost per view
+
+    AdRate:
+      type: object
+      properties:
+        zone:
+          type: string
+        rate:
+          type: number
+          description: Cost per unique view
+        effectiveFrom:
+          type: string
+          format: date-time
+        effectiveTo:
+          type: string
+          format: date-time
+        currency:
+          type: string
+          default: "NGN"
+
+    AdRateUpdate:
+      type: object
+      required:
+        - zone
+        - rate
+      properties:
+        zone:
+          type: string
+        rate:
+          type: number
+          minimum: 0.01
+
+    AdViewEvent:
+      type: object
+      required:
+        - campaignId
+        - userId
+        - sessionId
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          description: Anonymous user ID from cookie
+        sessionId:
+          type: string
+        viewportSize:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        visibilityPercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        duration:
+          type: number
+          description: Seconds visible
+        url:
+          type: string
+          format: uri
+        userAgent:
+          type: string
+        ipAddress:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    Dispute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        caseNumber:
+          type: string
+        advertiserId:
+          type: string
+          format: uuid
+        advertiserName:
+          type: string
+        campaignId:
+          type: string
+          format: uuid
+        campaignName:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, in_progress, resolved, closed]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        createdBy:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        slaDueDate:
+          type: string
+          format: date-time
+        responses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisputeResponse'
+
+    DisputeCreate:
+      type: object
+      required:
+        - campaignId
+        - subject
+        - description
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        subject:
+          type: string
+        description:
+          type: string
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+
+    DisputeUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [open, in_progress, resolved, closed]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        assignedTo:
+          type: string
+          format: uuid
+        internalNotes:
+          type: string
+
+    DisputeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        disputeId:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          format: uuid
+        authorType:
+          type: string
+          enum: [advertiser, commercial_manager]
+        message:
+          type: string
+        internal:
+          type: boolean
+          default: false
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+        createdAt:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    # Advertising Schemas
+    AdCampaignBasic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        advertiserId:
+          type: string
+          format: uuid
+        advertiserName:
+          type: string
+        zone:
+          type: string
+          enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+        status:
+          type: string
+          enum: [draft, pending_payment, active, paused, completed, cancelled]
+        budget:
+          type: number
+        spent:
+          type: number
+        viewsPurchased:
+          type: integer
+        viewsDelivered:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+
+    AdCampaign:
+      allOf:
+        - $ref: '#/components/schemas/AdCampaignBasic'
+        - type: object
+          properties:
+            creative:
+              $ref: '#/components/schemas/AdCreative'
+            targeting:
+              $ref: '#/components/schemas/AdTargeting'
+            paymentStatus:
+              type: string
+              enum: [pending, paid, refunded, failed]
+            paymentReference:
+              type: string
+            cpv:
+              type: number
+              description: Cost per view
+            performance:
+              $ref: '#/components/schemas/AdPerformance'
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+
+    AdCampaignCreate:
+      type: object
+      required:
+        - name
+        - zone
+        - creativeId
+        - targetViews
+      properties:
+        name:
+          type: string
+        zone:
+          type: string
+          enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+        creativeId:
+          type: string
+          format: uuid
+        targetViews:
+          type: integer
+          minimum: 1000
+          description: Minimum 1000 views
+        targeting:
+          $ref: '#/components/schemas/AdTargeting'
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+
+    AdCampaignUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        targeting:
+          $ref: '#/components/schemas/AdTargeting'
+        status:
+          type: string
+          enum: [active, paused]
+
+    AdCreative:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+          enum: [image, video]
+        format:
+          type: string
+          enum: [jpg, png, mp4]
+        dimensions:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        fileSize:
+          type: integer
+        advertiserName:
+          type: string
+        companyName:
+          type: string
+        validated:
+          type: boolean
+        validationErrors:
+          type: array
+          items:
+            type: string
+
+    CreativeValidation:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        errors:
+          type: array
+          items:
+            type: string
+        warnings:
+          type: array
+          items:
+            type: string
+        dimensions:
+          type: object
+          properties:
+            actual:
+              type: object
+              properties:
+                width:
+                  type: integer
+                height:
+                  type: integer
+            expected:
+              type: object
+              properties:
+                width:
+                  type: integer
+                height:
+                  type: integer
+        fileSize:
+          type: object
+          properties:
+            actual:
+              type: integer
+            maxAllowed:
+              type: integer
+
+    AdTargeting:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [homepage, tags]
+        tags:
+          type: array
+          items:
+            type: string
+            enum: [football_news, match_report, academy_update, player_spotlight, club_announcement]
+        devices:
+          type: array
+          items:
+            type: string
+            enum: [desktop, tablet, mobile]
+
+    AdPerformance:
+      type: object
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        viewsPurchased:
+          type: integer
+        viewsDelivered:
+          type: integer
+        viewsRemaining:
+          type: integer
+        uniqueViews:
+          type: integer
+        totalImpressions:
+          type: integer
+        clickThroughRate:
+          type: number
+        cpv:
+          type: number
+        totalSpent:
+          type: number
+        remainingBudget:
+          type: number
+        deliveryRate:
+          type: number
+          description: Views delivered per day
+        estimatedCompletion:
+          type: string
+          format: date-time
+        metricsByDay:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyMetrics'
+
+    DailyMetrics:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        views:
+          type: integer
+        uniqueViews:
+          type: integer
+        clicks:
+          type: integer
+        spent:
+          type: number
+
+    AdZone:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [homepage_banner, top_page_banner, sidebar, article_footer, mid_article]
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        format:
+          type: array
+          items:
+            type: string
+          example: ["jpg", "png"]
+        maxFileSize:
+          type: integer
+          description: Maximum file size in bytes
+        supportedTypes:
+          type: array
+          items:
+            type: string
+          example: ["image", "video"]
+        currentRate:
+          type: number
+          description: Cost per view
+
+    AdRate:
+      type: object
+      properties:
+        zone:
+          type: string
+        rate:
+          type: number
+          description: Cost per unique view
+        effectiveFrom:
+          type: string
+          format: date-time
+        effectiveTo:
+          type: string
+          format: date-time
+        currency:
+          type: string
+          default: "NGN"
+
+    AdRateUpdate:
+      type: object
+      required:
+        - zone
+        - rate
+      properties:
+        zone:
+          type: string
+        rate:
+          type: number
+          minimum: 0.01
+
+    AdViewEvent:
+      type: object
+      required:
+        - campaignId
+        - userId
+        - sessionId
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          description: Anonymous user ID from cookie
+        sessionId:
+          type: string
+        viewportSize:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+        visibilityPercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        duration:
+          type: number
+          description: Seconds visible
+        url:
+          type: string
+          format: uri
+        userAgent:
+          type: string
+        ipAddress:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    Dispute:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        caseNumber:
+          type: string
+        advertiserId:
+          type: string
+          format: uuid
+        advertiserName:
+          type: string
+        campaignId:
+          type: string
+          format: uuid
+        campaignName:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, in_progress, resolved, closed]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        createdBy:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        slaDueDate:
+          type: string
+          format: date-time
+        responses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisputeResponse'
+
+    DisputeCreate:
+      type: object
+      required:
+        - campaignId
+        - subject
+        - description
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        subject:
+          type: string
+        description:
+          type: string
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+
+    DisputeUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [open, in_progress, resolved, closed]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        assignedTo:
+          type: string
+          format: uuid
+        internalNotes:
+          type: string
+
+    DisputeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        disputeId:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          format: uuid
+        authorType:
+          type: string
+          enum: [advertiser, commercial_manager]
+        message:
+          type: string
+        internal:
+          type: boolean
+          default: false
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+        createdAt:
+          type: string
+          format: date-time
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    # Donation Schemas
+    DonationCreate:
+      type: object
+      required:
+        - amount
+        - email
+        - firstName
+        - lastName
+      properties:
+        amount:
+          type: number
+          minimum: 100
+          description: Minimum donation amount in Naira
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        message:
+          type: string
+        optInSupporterWall:
+          type: boolean
+          default: false
+        anonymous:
+          type: boolean
+          default: false
+
+    Donation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount:
+          type: number
+        currency:
+          type: string
+          default: "NGN"
+        donorName:
+          type: string
+        donorEmail:
+          type: string
+          format: email
+        status:
+          type: string
+          enum: [pending, completed, failed, refunded]
+        paymentReference:
+          type: string
+        paystackReference:
+          type: string
+        optInSupporterWall:
+          type: boolean
+        anonymous:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+
+    Supporter:
+      type: object
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
+        amount:
+          type: number
+        donatedAt:
+          type: string
+          format: date-time
+        message:
+          type: string
+
+    # Patronage Schemas
+    PatronTier:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [sponsor_grand_patron, patron, supporter, advocate, legend]
+        name:
+          type: string
+        description:
+          type: string
+        monthlyAmount:
+          type: number
+        yearlyAmount:
+          type: number
+        lifetimeAmount:
+          type: number
+        benefits:
+          type: array
+          items:
+            type: string
+        maxPatrons:
+          type: integer
+          description: Maximum number of patrons in this tier (null for unlimited)
+        currentPatrons:
+          type: integer
+
+    PatronSubscriptionCreate:
+      type: object
+      required:
+        - tier
+        - frequency
+      properties:
+        tier:
+          type: string
+          enum: [sponsor_grand_patron, patron, supporter, advocate, legend]
+        frequency:
+          type: string
+          enum: [monthly, yearly, lifetime]
+        portraitUrl:
+          type: string
+          format: uri
+          description: For individual patrons
+        logoUrl:
+          type: string
+          format: uri
+          description: For corporate patrons
+        displayName:
+          type: string
+        message:
+          type: string
+
+    PatronSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        tier:
+          type: string
+        frequency:
+          type: string
+        amount:
+          type: number
+        status:
+          type: string
+          enum: [active, cancelled, expired, payment_failed]
+        portraitUrl:
+          type: string
+          format: uri
+        logoUrl:
+          type: string
+          format: uri
+        displayName:
+          type: string
+        message:
+          type: string
+        startedAt:
+          type: string
+          format: date-time
+        nextBillingDate:
+          type: string
+          format: date-time
+        cancelledAt:
+          type: string
+          format: date-time
+        paymentMethod:
+          type: string
+        paymentReference:
+          type: string
+
+    PatronSubscriptionUpdate:
+      type: object
+      properties:
+        portraitUrl:
+          type: string
+          format: uri
+        logoUrl:
+          type: string
+          format: uri
+        displayName:
+          type: string
+        message:
+          type: string
+
+    Patron:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        displayName:
+          type: string
+        tier:
+          type: string
+        portraitUrl:
+          type: string
+          format: uri
+        logoUrl:
+          type: string
+          format: uri
+        message:
+          type: string
+        joinedAt:
+          type: string
+          format: date-time
+        isCorporate:
+          type: boolean
+
+    AdminPatronView:
+      allOf:
+        - $ref: '#/components/schemas/Patron'
+        - type: object
+          properties:
+            userId:
+              type: string
+              format: uuid
+            email:
+              type: string
+              format: email
+            frequency:
+              type: string
+            amount:
+              type: number
+            status:
+              type: string
+            paymentMethod:
+              type: string
+            lastPaymentDate:
+              type: string
+              format: date-time
+            nextBillingDate:
+              type: string
+              format: date-time
+            totalPaid:
+              type: number
+
+    ManualPatronCreate:
+      type: object
+      required:
+        - name
+        - tier
+      properties:
+        name:
+          type: string
+        tier:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        portraitUrl:
+          type: string
+          format: uri
+        logoUrl:
+          type: string
+          format: uri
+        displayName:
+          type: string
+        message:
+          type: string
+        commitmentAmount:
+          type: number
+        commitmentFrequency:
+          type: string
+          enum: [monthly, yearly, lifetime, one_time]
+        isCorporate:
+          type: boolean
+          default: false
+
+    ManualPatronUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        tier:
+          type: string
+        portraitUrl:
+          type: string
+          format: uri
+        logoUrl:
+          type: string
+          format: uri
+        displayName:
+          type: string
+        message:
+          type: string
+        commitmentAmount:
+          type: number
+        commitmentFrequency:
+          type: string
+        status:
+          type: string
+          enum: [active, inactive, honoured]
+
+    # Academy Schemas
+    AcademyHub:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcademyPageLink'
+        featuredImage:
+          type: string
+          format: uri
+        contactPhone:
+          type: string
+        whatsappUrl:
+          type: string
+          format: uri
+
+    AcademyPageLink:
+      type: object
+      properties:
+        id:
+          type: string
+          enum: [philosophy, curriculum, staff, pathway]
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+
+    AcademyPage:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+          description: HTML content
+        images:
+          type: array
+          items:
+            type: string
+            format: uri
+        lastUpdated:
+          type: string
+          format: date-time
+
+    AcademyStaff:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        role:
+          type: string
+        bio:
+          type: string
+        imageUrl:
+          type: string
+          format: uri
+        qualifications:
+          type: array
+          items:
+            type: string
+        yearsExperience:
+          type: integer
+    # Analytics Schemas
+    ContentAnalytics:
+      type: object
+      properties:
+        period:
+          type: object
+          properties:
+            from:
+              type: string
+              format: date
+            to:
+              type: string
+              format: date
+        totalViews:
+          type: integer
+        uniqueVisitors:
+          type: integer
+        averageTimeOnPage:
+          type: number
+        bounceRate:
+          type: number
+        topContent:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopContentItem'
+        viewsByDay:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyViewCount'
+
+    TopContentItem:
+      type: object
+      properties:
+        contentId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        type:
+          type: string
+        views:
+          type: integer
+        uniqueVisitors:
+          type: integer
+
+    DailyViewCount:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        views:
+          type: integer
+        uniqueVisitors:
+          type: integer
+
+    AdvertisingAnalytics:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/DateRange'
+        totalRevenue:
+          type: number
+        activeCampaigns:
+          type: integer
+        completedCampaigns:
+          type: integer
+        totalViewsDelivered:
+          type: integer
+        totalUniqueViews:
+          type: integer
+        averageCPV:
+          type: number
+        topPerformingZones:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZonePerformance'
+        revenueByDay:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyRevenue'
+
+    ZonePerformance:
+      type: object
+      properties:
+        zone:
+          type: string
+        revenue:
+          type: number
+        viewsDelivered:
+          type: integer
+        averageCPV:
+          type: number
+        fillRate:
+          type: number
+
+    DailyRevenue:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        revenue:
+          type: number
+        views:
+          type: integer
+        campaigns:
+          type: integer
+
+    FinancialAnalytics:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/DateRange'
+        totalRevenue:
+          type: number
+        bySource:
+          type: object
+          properties:
+            advertising:
+              type: number
+            donations:
+              type: number
+            patronage:
+              type: number
+        transactionCount:
+          type: integer
+        averageTransactionValue:
+          type: number
+        topDonors:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopDonor'
+        revenueTrend:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenueTrendItem'
+
+    TopDonor:
+      type: object
+      properties:
+        donorId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        totalDonated:
+          type: number
+        donationCount:
+          type: integer
+        lastDonation:
+          type: string
+          format: date-time
+
+    RevenueTrendItem:
+      type: object
+      properties:
+        period:
+          type: string
+        revenue:
+          type: number
+        growth:
+          type: number
+
+    UserEngagementAnalytics:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/DateRange'
+        totalUsers:
+          type: integer
+        newUsers:
+          type: integer
+        activeUsers:
+          type: integer
+        returningUsers:
+          type: integer
+        averageSessionDuration:
+          type: number
+        pagesPerSession:
+          type: number
+        userRetention:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetentionData'
+        topUserActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAction'
+
+    RetentionData:
+      type: object
+      properties:
+        cohort:
+          type: string
+          format: date
+        day1:
+          type: number
+        day7:
+          type: number
+        day30:
+          type: number
+
+    UserAction:
+      type: object
+      properties:
+        action:
+          type: string
+        count:
+          type: integer
+        uniqueUsers:
+          type: integer
+
+    # Audit Schemas
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        userId:
+          type: string
+          format: uuid
+        userEmail:
+          type: string
+        userType:
+          type: string
+        action:
+          type: string
+        entityType:
+          type: string
+        entityId:
+          type: string
+        entityName:
+          type: string
+        oldValue:
+          type: object
+        newValue:
+          type: object
+        ipAddress:
+          type: string
+        userAgent:
+          type: string
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditChange'
+
+    AuditChange:
+      type: object
+      properties:
+        field:
+          type: string
+        oldValue:
+          type: string
+        newValue:
+          type: string
+
+    # System Schemas
+    SystemHealth:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        timestamp:
+          type: string
+          format: date-time
+        uptime:
+          type: number
+          description: Uptime percentage
+        responseTime:
+          type: number
+          description: Average response time in ms
+        components:
+          type: array
+          items:
+            $ref: '#/components/schemas/HealthComponent'
+        metrics:
+          $ref: '#/components/schemas/SystemMetrics'
+
+    HealthComponent:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [up, down, degraded]
+        responseTime:
+          type: number
+        lastChecked:
+          type: string
+          format: date-time
+        details:
+          type: object
+
+    SystemMetrics:
+      type: object
+      properties:
+        cpuUsage:
+          type: number
+        memoryUsage:
+          type: number
+        diskUsage:
+          type: number
+        activeConnections:
+          type: integer
+        requestRate:
+          type: number
+        errorRate:
+          type: number
+
+    IntegrationStatus:
+      type: object
+      properties:
+        paystack:
+          $ref: '#/components/schemas/IntegrationStatusItem'
+        googleAnalytics:
+          $ref: '#/components/schemas/IntegrationStatusItem'
+        emailService:
+          $ref: '#/components/schemas/IntegrationStatusItem'
+        videoHosting:
+          $ref: '#/components/schemas/IntegrationStatusItem'
+        lastChecked:
+          type: string
+          format: date-time
+
+    IntegrationStatusItem:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [connected, disconnected, degraded]
+        lastSuccessfulSync:
+          type: string
+          format: date-time
+        errorCount:
+          type: integer
+        latency:
+          type: number
+
+    SystemNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [system, user, payment, content, security]
+        severity:
+          type: string
+          enum: [info, warning, error, critical]
+        title:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        read:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        actionUrl:
+          type: string
+          format: uri
+
+    # Common Schemas
+    DateRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+
+
+    # Webhook Schemas
+    PaystackWebhook:
+      type: object
+      properties:
+        event:
+          type: string
+          enum: [charge.success, charge.failure, transfer.success, transfer.failed]
+        data:
+          type: object
+          properties:
+            id:
+              type: integer
+            reference:
+              type: string
+            amount:
+              type: integer
+            currency:
+              type: string
+            channel:
+              type: string
+            status:
+              type: string
+            customer:
+              type: object
+              properties:
+                email:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                phone:
+                  type: string
+            metadata:
+              type: object
+              additionalProperties: true
+
+    GA4Webhook:
+      type: object
+      properties:
+        client_id:
+          type: string
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              params:
+                type: object
+                additionalProperties: true
+        user_properties:
+          type: object
+          additionalProperties: true
+
+    # Event Subscription Schemas
+    EventSubscription:
+      type: object
+      required:
+        - webhookUrl
+        - events
+      properties:
+        webhookUrl:
+          type: string
+          format: uri
+        events:
+          type: array
+          items:
+            type: string
+            enum: [user.registered, user.verified, payment.completed, payment.failed, campaign.created, campaign.completed, content.published, donation.received, patron.subscribed, system.alert]
+        secret:
+          type: string
+          description: Optional secret for webhook verification
+        active:
+          type: boolean
+          default: true
+
+    # Batch Operation Schemas
+    BatchPlayerUpdate:
+      type: object
+      required:
+        - playerId
+      properties:
+        playerId:
+          type: string
+          format: uuid
+        updates:
+          $ref: '#/components/schemas/PlayerUpdate'
+
+    BatchFixtureUpdate:
+      type: object
+      required:
+        - fixtureId
+      properties:
+        fixtureId:
+          type: string
+          format: uuid
+        updates:
+          $ref: '#/components/schemas/FixtureUpdate'
+
+    BatchJobStatus:
+      type: object
+      properties:
+        jobId:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+          enum: [pending, processing, completed, failed]
+        progress:
+          type: object
+          properties:
+            total:
+              type: integer
+            processed:
+              type: integer
+            successful:
+              type: integer
+            failed:
+              type: integer
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              recordId:
+                type: string
+              error:
+                type: string
+        resultUrl:
+          type: string
+          format: uri
+          description: URL to download results (if available)
+
+  responses:
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                default: "Validation Error"
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    message:
+                      type: string
+                    code:
+                      type: string
+
+    ConflictError:
+      description: Resource conflict
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                default: "Conflict"
+              message:
+                type: string
+              resourceId:
+                type: string
+              existingResource:
+                type: object
+
+    ServiceUnavailableError:
+      description: Service temporarily unavailable
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                default: "Service Unavailable"
+              message:
+                type: string
+              estimatedRecovery:
+                type: string
+                format: date-time
+
+    TooManyRequestsError:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: Request limit per time window
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: Remaining requests in current window
+        X-RateLimit-Reset:
+          schema:
+            type: integer
+          description: Unix timestamp when limit resets
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                default: "Too Many Requests"
+              message:
+                type: string
+              retryAfter:
+                type: integer
+
+  headers:
+    X-Request-ID:
+      description: Unique request identifier for tracing
+      schema:
+        type: string
+        format: uuid
+      required: false
+
+    X-Content-Type-Options:
+      description: Prevents MIME type sniffing
+      schema:
+        type: string
+        default: "nosniff"
+      required: false
+
+    X-Frame-Options:
+      description: Clickjacking protection
+      schema:
+        type: string
+        enum: [DENY, SAMEORIGIN]
+        default: "DENY"
+      required: false
+
+    X-XSS-Protection:
+      description: Cross-site scripting protection
+      schema:
+        type: string
+        default: "1; mode=block"
+      required: false
+
+    Strict-Transport-Security:
+      description: HSTS header
+      schema:
+        type: string
+        default: "max-age=31536000; includeSubDomains"
+      required: false
+
+    Content-Security-Policy:
+      description: Content Security Policy header
+      schema:
+        type: string
+        default: "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://api.paystack.co https://www.google-analytics.com; frame-src https://www.youtube.com https://player.vimeo.com;"
+      required: false
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT token obtained from /auth/login endpoint.
+        Include in Authorization header as: "Bearer {token}"
+        
+        Token expiration: 30 minutes for admin users
+        Auto-refresh: Use refresh token via /auth/refresh
+        
+        Required for all endpoints except public ones.
+
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API key for service-to-service communication.
+        Used for GA4 webhooks and internal integrations.
+        
+        Keys are managed via admin interface and rotated quarterly.
+
+  parameters:
+    RequestIdHeader:
+      name: X-Request-ID
+      in: header
+      required: false
+      schema:
+        type: string
+        format: uuid
+      description: Optional request ID for tracing
+
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      schema:
+        type: string
+        default: "en"
+      description: Language preference (currently only English supported)
+
+    UserAgent:
+      name: User-Agent
+      in: header
+      required: false
+      schema:
+        type: string
+      description: Client user agent for analytics
+
+  examples:
+    PlayerBasicExample:
+      summary: Example player basic response
+      value:
+        id: "550e8400-e29b-41d4-a716-446655440000"
+        name: "John Doe"
+        imageUrl: "https://cdn.amaforgladiatorsfc.com/players/john-doe.jpg"
+        position: "FW"
+        age: 23
+        height: 1.85
+        squadNumber: 9
+
+    ArticleFullExample:
+      summary: Example article response
+      value:
+        id: "660e8400-e29b-41d4-a716-446655440001"
+        title: "Gladiators Secure Important Win"
+        excerpt: "The team secured a crucial 2-1 victory in today's match..."
+        featuredImage: "https://cdn.amaforgladiatorsfc.com/articles/match-win.jpg"
+        author: "Sports Desk"
+        tags: ["match_report", "football_news"]
+        publishedAt: "2024-04-11T15:30:00Z"
+        readTime: 5
+        content: "<p>The Amafor Gladiators secured an important victory...</p>"
+        status: "published"
+        createdAt: "2024-04-11T14:00:00Z"
+        updatedAt: "2024-04-11T14:30:00Z"
+
+    AdCampaignExample:
+      summary: Example ad campaign response
+      value:
+        id: "770e8400-e29b-41d4-a716-446655440002"
+        name: "Spring Sale Campaign"
+        advertiserId: "880e8400-e29b-41d4-a716-446655440003"
+        advertiserName: "Sports Gear Co."
+        zone: "homepage_banner"
+        status: "active"
+        budget: 500000
+        spent: 125000
+        viewsPurchased: 100000
+        viewsDelivered: 25000
+        startDate: "2024-04-01T00:00:00Z"
+        endDate: "2024-04-30T23:59:59Z"
+        cpv: 5.0
+        paymentStatus: "paid"
+
+    DonationExample:
+      summary: Example donation receipt
+      value:
+        id: "990e8400-e29b-41d4-a716-446655440004"
+        amount: 5000
+        currency: "NGN"
+        donorName: "Jane Smith"
+        donorEmail: "jane@example.com"
+        status: "completed"
+        paymentReference: "DON_20240411_001"
+        paystackReference: "PSK_REF_001"
+        optInSupporterWall: true
+        anonymous: false
+        createdAt: "2024-04-11T10:15:30Z"
+        completedAt: "2024-04-11T10:16:00Z"
+
+    ErrorExample:
+      summary: Example error response
+      value:
+        error: "Validation Error"
+        message: "The request contains invalid data"
+        details:
+          - field: "email"
+            message: "Invalid email format"
+            code: "INVALID_EMAIL"
+          - field: "password"
+            message: "Password must be at least 8 characters"
+            code: "PASSWORD_TOO_SHORT"
+
+# Security requirements applied globally
+security:
+  - bearerAuth: []  # Default security for authenticated endpoints
+
+# Public endpoints that don't require authentication
+# These should be explicitly marked with "security: []" in their path definitions

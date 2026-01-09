@@ -1,0 +1,1330 @@
+# POST /players
+# Create a new player profile - SRS: F-001, A.8.1.2, A.8.1.3
+summary: Create Player Profile
+description: |
+  Create a new player profile with master database entry and version-controlled attributes.
+  ISO Controls: A.8.1.2 (Information classification), A.8.1.3 (Access control), A.12.4.1 (Event logging)
+  
+  Security Requirements:
+  - Only Data Steward and Super Admin roles can create players
+  - Dual-approval workflow for sensitive fields (age, contact info)
+  - Immutable audit trail for all profile edits
+security:
+  - bearerAuth: []
+  - roles: [data_steward, super_admin]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required: [full_name, date_of_birth, position, height_cm]
+        properties:
+          # Basic player info - SRS: F-001
+          full_name:
+            type: string
+            maxLength: 100
+            description: Player's legal full name
+          date_of_birth:
+            type: string
+            format: date
+            description: Must be 13-40 years old (SRS: F-001 validation)
+          position:
+            type: string
+            enum: [goalkeeper, defender, midfielder, forward]
+            description: Primary playing position
+          height_cm:
+            type: integer
+            minimum: 140
+            maximum: 220
+            description: Height in centimeters (SRS: F-001 validation)
+          weight_kg:
+            type: integer
+            minimum: 40
+            maximum: 120
+          nationality:
+            type: string
+            pattern: '^[A-Z]{3}$'
+            description: ISO 3166-1 alpha-3 country code
+          dominant_foot:
+            type: string
+            enum: [left, right, both]
+          # Contact information (restricted) - SRS: F-001
+          contact_email:
+            type: string
+            format: email
+            description: Private contact email (Pro View only)
+          contact_phone:
+            type: string
+            pattern: '^\+[1-9]\d{1,14}$'
+            description: Private contact phone (Pro View only)
+          # Professional information
+          jersey_number:
+            type: integer
+            minimum: 1
+            maximum: 99
+          squad_status:
+            type: string
+            enum: [active, injured, suspended, academy, trialist]
+          contract_start_date:
+            type: string
+            format: date
+          contract_end_date:
+            type: string
+            format: date
+          # Biographical information
+          biography:
+            type: string
+            maxLength: 5000
+            description: Player background and achievements
+          # Verification documents - SRS: F-001
+          verification_documents:
+            type: array
+            items:
+              type: object
+              properties:
+                document_type:
+                  type: string
+                  enum: [birth_certificate, passport, id_card, medical_certificate]
+                document_url:
+                  type: string
+                  format: uri
+                verified_by:
+                  type: string
+                  format: uuid
+                verified_at:
+                  type: string
+                  format: date-time
+          # Metadata
+          tags:
+            type: array
+            items:
+              type: string
+            description: Searchable tags (e.g., ["u17", "top_scorer", "national_team"])
+          public_display:
+            type: boolean
+            default: true
+            description: Whether profile is visible on public site
+responses:
+  201:
+    description: Player profile created successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            player_id:
+              type: string
+              format: uuid
+              description: Globally unique identifier (SRS: F-001)
+            profile_version:
+              type: integer
+              default: 1
+              description: Version-controlled attribute tracking
+            created_by:
+              type: string
+              format: uuid
+            created_at:
+              type: string
+              format: date-time
+            audit_log_id:
+              type: string
+              format: uuid
+            requires_dual_approval:
+              type: boolean
+              description: True if sensitive fields require second approval
+            data_integrity_hash:
+              type: string
+              description: SHA-256 hash of profile data for integrity verification
+  400:
+    $ref: '#/components/responses/InvalidInput'
+  403:
+    $ref: '#/components/responses/Forbidden'
+
+# GET /players
+# List players with filtering - SRS: F-001, F-002, NF-005
+summary: List Players
+description: |
+  Get paginated list of players with role-based access control.
+  ISO Controls: A.9.4.1 (Information access restriction), A.8.1.2 (Information classification)
+  
+  Access Rules:
+  - Public: Basic info only (name, position, age)
+  - Scouts (Verified): Additional stats and limited contact
+  - Scouts (Professional): Full access including contact info and match archive
+  - Data Stewards/Super Admin: Full administrative access
+security:
+  - bearerAuth: []
+  - roles: [public, fan, scout, advertiser, media_manager, data_steward, super_admin]
+parameters:
+  - name: position
+    in: query
+    schema:
+      type: string
+      enum: [goalkeeper, defender, midfielder, forward]
+  - name: age_min
+    in: query
+    schema:
+      type: integer
+      minimum: 13
+      maximum: 40
+  - name: age_max
+    in: query
+    schema:
+      type: integer
+      minimum: 13
+      maximum: 40
+  - name: squad_status
+    in: query
+    schema:
+      type: string
+      enum: [active, injured, suspended, academy, trialist]
+  - name: tags
+    in: query
+    schema:
+      type: array
+      items:
+        type: string
+    style: form
+    explode: false
+  - name: public_only
+    in: query
+    schema:
+      type: boolean
+      default: true
+      description: Only return publicly visible profiles
+  - name: sort_by
+    in: query
+    schema:
+      type: string
+      enum: [name, age, height, created_at, last_updated]
+      default: name
+  - name: sort_order
+    in: query
+    schema:
+      type: string
+      enum: [asc, desc]
+      default: asc
+  - name: page
+    in: query
+    schema:
+      type: integer
+      minimum: 1
+      default: 1
+  - name: limit
+    in: query
+    schema:
+      type: integer
+      minimum: 1
+      maximum: 100
+      default: 20
+  - name: fields
+    in: query
+    schema:
+      type: array
+      items:
+        type: string
+        enum: [basic, stats, contact, documents, verification]
+    style: form
+    explode: false
+    description: Request specific fields (respects role-based access)
+responses:
+  200:
+    description: Players list retrieved with role-based data segregation
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            players:
+              type: array
+              items:
+                $ref: '#/components/schemas/PlayerProfile'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+            data_access_level:
+              type: string
+              enum: [public, verified, professional, admin]
+              description: Current user's access level for returned data
+            filtered_count:
+              type: integer
+            total_count:
+              type: integer
+  403:
+    $ref: '#/components/responses/Forbidden'
+
+# GET /players/{player_id}
+# Get player profile details - SRS: F-001, F-002, NF-005
+summary: Get Player Profile
+description: |
+  Retrieve detailed player profile with role-based data access.
+  ISO Controls: A.9.4.1 (Information access restriction), A.8.2.2 (Data classification)
+  
+  Data Access Matrix:
+  - Public: Name, position, age, height, nationality, basic stats
+  - Verified Scout: + Biography, advanced stats, limited video access
+  - Professional Scout: + Contact info, full match archive, verification documents
+  - Admin: All data including audit trail
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+    description: Player UUIDv4 (SRS: F-001)
+  - name: include_audit
+    in: query
+    schema:
+      type: boolean
+      default: false
+      description: Include audit trail (Admin only)
+  - name: include_documents
+    in: query
+    schema:
+      type: boolean
+      default: false
+      description: Include verification documents (Professional/Admin only)
+security:
+  - bearerAuth: []
+  - roles: [public, fan, scout, media_manager, data_steward, super_admin]
+responses:
+  200:
+    description: Player profile retrieved
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/PlayerProfile'
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+# PUT /players/{player_id}
+# Update player profile - SRS: F-001, A.8.1.3, A.12.4.1
+summary: Update Player Profile
+description: |
+  Update player profile with version control and audit trail.
+  ISO Controls: A.8.1.3 (Access control), A.12.4.1 (Event logging)
+  
+  Security Requirements:
+  - Only Data Steward and Super Admin can update profiles
+  - Sensitive fields (age, contact) require dual-approval workflow
+  - All changes create immutable audit entries
+  - Previous versions retained for rollback capability
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+security:
+  - bearerAuth: []
+  - roles: [data_steward, super_admin]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          # Basic info updates
+          full_name:
+            type: string
+            maxLength: 100
+          position:
+            type: string
+            enum: [goalkeeper, defender, midfielder, forward]
+          height_cm:
+            type: integer
+            minimum: 140
+            maximum: 220
+          weight_kg:
+            type: integer
+            minimum: 40
+            maximum: 120
+          # Sensitive fields requiring dual-approval
+          date_of_birth:
+            type: string
+            format: date
+            description: Triggers dual-approval workflow
+          contact_email:
+            type: string
+            format: email
+            description: Triggers dual-approval workflow
+          contact_phone:
+            type: string
+            pattern: '^\+[1-9]\d{1,14}$'
+            description: Triggers dual-approval workflow
+          # Professional updates
+          jersey_number:
+            type: integer
+            minimum: 1
+            maximum: 99
+          squad_status:
+            type: string
+            enum: [active, injured, suspended, academy, trialist]
+          contract_end_date:
+            type: string
+            format: date
+          # Biographical updates
+          biography:
+            type: string
+            maxLength: 5000
+          # Verification updates
+          verification_documents:
+            type: array
+            items:
+              type: object
+              properties:
+                document_type:
+                  type: string
+                  enum: [birth_certificate, passport, id_card, medical_certificate]
+                document_url:
+                  type: string
+                  format: uri
+                action:
+                  type: string
+                  enum: [add, remove]
+          # Metadata updates
+          tags:
+            type: array
+            items:
+              type: string
+          public_display:
+            type: boolean
+          # Audit information
+          change_reason:
+            type: string
+            maxLength: 500
+            required: true
+            description: Mandatory reason for change (audit compliance)
+responses:
+  200:
+    description: Player profile updated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            player_id:
+              type: string
+            previous_version:
+              type: integer
+            new_version:
+              type: integer
+            updated_fields:
+              type: array
+              items:
+                type: string
+            audit_log_id:
+              type: string
+              format: uuid
+            requires_dual_approval:
+              type: boolean
+            dual_approval_request_id:
+              type: string
+              format: uuid
+              description: Present if dual approval required
+            data_integrity_hash:
+              type: string
+  400:
+    $ref: '#/components/responses/InvalidInput'
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+# POST /players/{player_id}/stats
+# Add/update player statistics - SRS: F-001, A.12.4.1
+summary: Update Player Statistics
+description: |
+  Add or update player performance statistics with audit trail.
+  ISO Controls: A.12.4.1 (Event logging), A.8.1.1 (Information security policy)
+  
+  Statistics are version-controlled and include data staleness indicators.
+  Data Steward role required for updates.
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+security:
+  - bearerAuth: []
+  - roles: [data_steward, super_admin]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required: [season, competition]
+        properties:
+          season:
+            type: string
+            pattern: '^\d{4}-\d{4}$'
+            example: "2025-2026"
+            description: Season identifier
+          competition:
+            type: string
+            enum: [league, cup, friendly, international, academy]
+            description: Competition type
+          matches_played:
+            type: integer
+            minimum: 0
+          minutes_played:
+            type: integer
+            minimum: 0
+          goals:
+            type: integer
+            minimum: 0
+          assists:
+            type: integer
+            minimum: 0
+          yellow_cards:
+            type: integer
+            minimum: 0
+          red_cards:
+            type: integer
+            minimum: 0
+          clean_sheets:
+            type: integer
+            minimum: 0
+            description: For goalkeepers/defenders
+          saves:
+            type: integer
+            minimum: 0
+            description: For goalkeepers
+          pass_completion_rate:
+            type: number
+            minimum: 0
+            maximum: 100
+            description: Percentage
+          # Advanced metrics
+          expected_goals:
+            type: number
+            minimum: 0
+          expected_assists:
+            type: number
+            minimum: 0
+          tackles_success_rate:
+            type: number
+            minimum: 0
+            maximum: 100
+          duels_won_percentage:
+            type: number
+            minimum: 0
+            maximum: 100
+          # Data source information
+          source:
+            type: string
+            enum: [manual_entry, league_api, csv_import, third_party]
+          source_updated_at:
+            type: string
+            format: date-time
+            description: When source data was last updated
+          notes:
+            type: string
+            maxLength: 1000
+responses:
+  200:
+    description: Statistics updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            player_id:
+              type: string
+            stat_id:
+              type: string
+              format: uuid
+            season:
+              type: string
+            competition:
+              type: string
+            updated_at:
+              type: string
+              format: date-time
+            data_staleness:
+              type: string
+              enum: [fresh, stale, very_stale]
+              description: SRS: F-005 - Data staleness indicator (>24h = stale)
+            audit_log_id:
+              type: string
+              format: uuid
+  400:
+    $ref: '#/components/responses/InvalidInput'
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+# GET /players/{player_id}/stats
+# Get player statistics - SRS: F-001, F-002
+summary: Get Player Statistics
+description: |
+  Retrieve player statistics with role-based access control.
+  
+  Access Rules:
+  - Public: Basic stats only (goals, assists, appearances)
+  - Verified/Professional Scouts: All statistics including advanced metrics
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+  - name: season
+    in: query
+    schema:
+      type: string
+      pattern: '^\d{4}-\d{4}$'
+  - name: competition
+    in: query
+    schema:
+      type: string
+      enum: [league, cup, friendly, international, academy]
+  - name: include_advanced
+    in: query
+    schema:
+      type: boolean
+      default: false
+      description: Include advanced metrics (scouts only)
+security:
+  - bearerAuth: []
+  - roles: [public, fan, scout, media_manager, data_steward, super_admin]
+responses:
+  200:
+    description: Player statistics retrieved
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            player_id:
+              type: string
+            player_name:
+              type: string
+            statistics:
+              type: array
+              items:
+                $ref: '#/components/schemas/PlayerStatistics'
+            totals:
+              type: object
+              description: Career totals across all seasons
+            averages:
+              type: object
+              description: Career averages per match
+            last_updated:
+              type: string
+              format: date-time
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+# POST /players/{player_id}/export/pdf
+# Generate PDF player dossier - SRS: F-003, A.8.2.3, A.12.4.3
+summary: Generate Player PDF Dossier
+description: |
+  Generate standardized talent dossier in PDF format with configurable content.
+  ISO Controls: A.8.2.3 (Handling of assets), A.12.4.3 (Administrator/operator logs)
+  
+  Security Requirements:
+  - Server-side PDF generation (no client-side data exposure)
+  - Watermarked documents with unique document IDs
+  - Document access logging per GDPR Article 30
+  - Batch export capability (<50 profiles)
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+security:
+  - bearerAuth: []
+  - roles: [scout, media_manager, data_steward, super_admin]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          # Content configuration
+          include_contact_info:
+            type: boolean
+            default: false
+            description: Include player contact information (Professional scouts only)
+          include_verification_documents:
+            type: boolean
+            default: false
+            description: Include verification document summaries
+          include_full_stats:
+            type: boolean
+            default: true
+          include_match_history:
+            type: boolean
+            default: true
+          include_video_links:
+            type: boolean
+            default: true
+            description: Embed QR codes to video highlights
+          # Branding options
+          branding_template:
+            type: string
+            enum: [club_standard, professional_scout, partner_presentation]
+            default: club_standard
+          language:
+            type: string
+            pattern: '^[a-z]{2}(-[A-Z]{2})?$'
+            default: en-US
+          # Output options
+          password_protect:
+            type: boolean
+            default: false
+          watermark:
+            type: string
+            enum: [confidential, draft, final, partner]
+          recipient_email:
+            type: string
+            format: email
+            description: Email to send PDF to (also triggers access logging)
+responses:
+  200:
+    description: PDF generated successfully
+    content:
+      application/pdf:
+        schema:
+          type: string
+          format: binary
+    headers:
+      X-Document-ID:
+        schema:
+          type: string
+          format: uuid
+        description: Unique document identifier for tracking
+      X-Generated-At:
+        schema:
+          type: string
+          format: date-time
+        description: Timestamp of generation
+      X-Watermark:
+        schema:
+          type: string
+        description: Document watermark type
+  202:
+    description: PDF generation in progress (for batch exports)
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            job_id:
+              type: string
+              format: uuid
+            status:
+              type: string
+              enum: [processing, queued]
+            estimated_completion:
+              type: string
+              format: date-time
+  400:
+    $ref: '#/components/responses/InvalidInput'
+  403:
+    $ref: '#/components/responses/Forbidden'
+
+# POST /players/batch-export
+# Batch export player profiles - SRS: F-003, A.8.2.3
+summary: Batch Export Player Profiles
+description: |
+  Generate PDF dossiers for multiple players (max 50 per batch).
+  ISO Controls: A.8.2.3 (Handling of assets), A.12.4.3 (Administrator logs)
+  
+  Security Requirements:
+  - Maximum 50 profiles per batch export
+  - Professional scout role or higher required
+  - Async processing with job tracking
+security:
+  - bearerAuth: []
+  - roles: [scout_professional, data_steward, super_admin]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required: [player_ids]
+        properties:
+          player_ids:
+            type: array
+            items:
+              type: string
+              format: uuid
+            maxItems: 50
+            description: Maximum 50 players per batch (SRS: F-003)
+          export_format:
+            type: string
+            enum: [pdf_zip, csv, json]
+            default: pdf_zip
+          include_options:
+            $ref: '#/components/schemas/ExportOptions'
+          compression:
+            type: boolean
+            default: true
+          notify_on_completion:
+            type: boolean
+            default: true
+          notification_email:
+            type: string
+            format: email
+responses:
+  202:
+    description: Batch export job created
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            job_id:
+              type: string
+              format: uuid
+            status:
+              type: string
+              enum: [queued]
+            total_players:
+              type: integer
+            estimated_file_size_mb:
+              type: number
+            estimated_completion:
+              type: string
+              format: date-time
+            download_url_expiry_hours:
+              type: integer
+              default: 24
+  400:
+    $ref: '#/components/responses/InvalidInput'
+  403:
+    $ref: '#/components/responses/Forbidden'
+
+# GET /export/jobs/{job_id}
+# Get batch export job status - SRS: F-003
+summary: Get Export Job Status
+description: |
+  Check status of batch export job and download completed exports.
+parameters:
+  - name: job_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+security:
+  - bearerAuth: []
+  - roles: [scout_professional, data_steward, super_admin]
+responses:
+  200:
+    description: Export job status
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            job_id:
+              type: string
+            status:
+              type: string
+              enum: [queued, processing, completed, failed, expired]
+            progress:
+              type: integer
+              minimum: 0
+              maximum: 100
+            players_processed:
+              type: integer
+            total_players:
+              type: integer
+            start_time:
+              type: string
+              format: date-time
+            completion_time:
+              type: string
+              format: date-time
+            download_url:
+              type: string
+              format: uri
+              description: Present when status is 'completed'
+            download_url_expires:
+              type: string
+              format: date-time
+            error_message:
+              type: string
+              description: Present when status is 'failed'
+            audit_log_id:
+              type: string
+              format: uuid
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+# GET /players/{player_id}/audit
+# Get player audit trail - SRS: F-001, A.12.4.1, A.12.4.3
+summary: Get Player Audit Trail
+description: |
+  Retrieve immutable audit trail for player profile changes.
+  ISO Controls: A.12.4.1 (Event logging), A.12.4.3 (Administrator/operator logs)
+  
+  Access restricted to Data Steward and Super Admin roles only.
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+  - name: action_type
+    in: query
+    schema:
+      type: string
+      enum: [create, update, delete, verification, document_upload]
+  - name: date_from
+    in: query
+    schema:
+      type: string
+      format: date
+  - name: date_to
+    in: query
+    schema:
+      type: string
+      format: date
+  - name: user_id
+    in: query
+    schema:
+      type: string
+      format: uuid
+      description: Filter by user who made changes
+  - name: page
+    in: query
+    schema:
+      type: integer
+      minimum: 1
+      default: 1
+  - name: limit
+    in: query
+    schema:
+      type: integer
+      minimum: 1
+      maximum: 100
+      default: 50
+security:
+  - bearerAuth: []
+  - roles: [data_steward, super_admin]
+responses:
+  200:
+    description: Audit trail retrieved
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            player_id:
+              type: string
+            player_name:
+              type: string
+            audit_entries:
+              type: array
+              items:
+                $ref: '#/components/schemas/AuditEntry'
+            pagination:
+              $ref: '#/components/schemas/Pagination'
+            total_changes:
+              type: integer
+            first_change:
+              type: string
+              format: date-time
+            last_change:
+              type: string
+              format: date-time
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+# POST /players/{player_id}/verify
+# Verify player data - SRS: F-001, A.8.1.2
+summary: Verify Player Data
+description: |
+  Mark player data as verified by Data Steward.
+  ISO Controls: A.8.1.2 (Information classification), A.8.1.3 (Access control)
+  
+  Updates "Last Verified" date for specified data points.
+  Requires Data Steward or Super Admin role.
+parameters:
+  - name: player_id
+    in: path
+    required: true
+    schema:
+      type: string
+      format: uuid
+security:
+  - bearerAuth: []
+  - roles: [data_steward, super_admin]
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required: [fields_to_verify]
+        properties:
+          fields_to_verify:
+            type: array
+            items:
+              type: string
+              enum: [date_of_birth, height_cm, weight_kg, nationality, contact_email, contact_phone]
+          verification_method:
+            type: string
+            enum: [document_check, manual_measurement, official_record, third_party_verification]
+          verification_notes:
+            type: string
+            maxLength: 1000
+          document_references:
+            type: array
+            items:
+              type: object
+              properties:
+                document_type:
+                  type: string
+                document_url:
+                  type: string
+                  format: uri
+responses:
+  200:
+    description: Player data verified
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            player_id:
+              type: string
+            verified_fields:
+              type: array
+              items:
+                type: string
+            verified_by:
+              type: string
+              format: uuid
+            verified_at:
+              type: string
+              format: date-time
+            verification_id:
+              type: string
+              format: uuid
+            next_review_date:
+              type: string
+              format: date
+              description: Recommended next verification date
+  403:
+    $ref: '#/components/responses/Forbidden'
+  404:
+    $ref: '#/components/responses/NotFound'
+
+components:
+  schemas:
+    PlayerProfile:
+      type: object
+      description: Complete player profile with role-based data segregation
+      properties:
+        player_id:
+          type: string
+          format: uuid
+          description: Globally unique identifier (SRS: F-001)
+        profile_version:
+          type: integer
+          description: Version-controlled attribute tracking
+        # Basic Information (Public)
+        full_name:
+          type: string
+        age:
+          type: integer
+          readOnly: true
+          description: Calculated from date_of_birth
+        date_of_birth:
+          type: string
+          format: date
+        date_of_birth_verified:
+          type: boolean
+        last_verified_date:
+          type: string
+          format: date
+          description: SRS: F-001 - Last verified date display
+        position:
+          type: string
+          enum: [goalkeeper, defender, midfielder, forward]
+        height_cm:
+          type: integer
+        height_verified:
+          type: boolean
+        weight_kg:
+          type: integer
+        nationality:
+          type: string
+        dominant_foot:
+          type: string
+          enum: [left, right, both]
+        # Professional Information (Verified+)
+        jersey_number:
+          type: integer
+        squad_status:
+          type: string
+          enum: [active, injured, suspended, academy, trialist]
+        contract_start_date:
+          type: string
+          format: date
+        contract_end_date:
+          type: string
+          format: date
+        # Contact Information (Professional/Admin only)
+        contact_email:
+          type: string
+          format: email
+        contact_phone:
+          type: string
+        # Biographical Information (Verified+)
+        biography:
+          type: string
+        # Statistics Summary (Public basic, Verified+ detailed)
+        career_stats_summary:
+          $ref: '#/components/schemas/CareerStatsSummary'
+        current_season_stats:
+          $ref: '#/components/schemas/SeasonStats'
+        # Verification Information (Professional/Admin only)
+        verification_documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerificationDocument'
+        verification_status:
+          type: string
+          enum: [unverified, partially_verified, fully_verified]
+        # Metadata
+        tags:
+          type: array
+          items:
+            type: string
+        public_display:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type: string
+          format: uuid
+        # Audit Trail Summary (Admin only)
+        total_revisions:
+          type: integer
+        last_audit_entry:
+          type: string
+          format: date-time
+    
+    PlayerStatistics:
+      type: object
+      properties:
+        stat_id:
+          type: string
+          format: uuid
+        season:
+          type: string
+          pattern: '^\d{4}-\d{4}$'
+        competition:
+          type: string
+          enum: [league, cup, friendly, international, academy]
+        matches_played:
+          type: integer
+        minutes_played:
+          type: integer
+        goals:
+          type: integer
+        assists:
+          type: integer
+        yellow_cards:
+          type: integer
+        red_cards:
+          type: integer
+        clean_sheets:
+          type: integer
+        saves:
+          type: integer
+        pass_completion_rate:
+          type: number
+        # Advanced metrics (Scouts only)
+        expected_goals:
+          type: number
+        expected_assists:
+          type: number
+        tackles_success_rate:
+          type: number
+        duels_won_percentage:
+          type: number
+        # Metadata
+        source:
+          type: string
+          enum: [manual_entry, league_api, csv_import, third_party]
+        source_updated_at:
+          type: string
+          format: date-time
+        data_staleness:
+          type: string
+          enum: [fresh, stale, very_stale]
+          description: >24h = stale (SRS: F-005)
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    CareerStatsSummary:
+      type: object
+      properties:
+        total_matches:
+          type: integer
+        total_goals:
+          type: integer
+        total_assists:
+          type: integer
+        goals_per_match:
+          type: number
+        assists_per_match:
+          type: number
+        yellow_cards:
+          type: integer
+        red_cards:
+          type: integer
+        clean_sheets:
+          type: integer
+        pass_completion_rate:
+          type: number
+    
+    SeasonStats:
+      type: object
+      properties:
+        season:
+          type: string
+        matches_played:
+          type: integer
+        goals:
+          type: integer
+        assists:
+          type: integer
+        goals_per_match:
+          type: number
+        assists_per_match:
+          type: number
+    
+    VerificationDocument:
+      type: object
+      properties:
+        document_id:
+          type: string
+          format: uuid
+        document_type:
+          type: string
+          enum: [birth_certificate, passport, id_card, medical_certificate]
+        document_url:
+          type: string
+          format: uri
+        verified_by:
+          type: string
+          format: uuid
+        verified_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [pending, verified, expired, rejected]
+    
+    AuditEntry:
+      type: object
+      description: Immutable audit trail entry (SRS: A.12.4.1)
+      properties:
+        audit_id:
+          type: string
+          format: uuid
+        entity_type:
+          type: string
+          example: "player"
+        entity_id:
+          type: string
+          format: uuid
+        action:
+          type: string
+          enum: [create, update, delete, verify, export]
+        user_id:
+          type: string
+          format: uuid
+        user_role:
+          type: string
+        user_ip:
+          type: string
+          format: ipv4
+        user_agent:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        changes:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              old_value:
+                type: string
+              new_value:
+                type: string
+        change_reason:
+          type: string
+        request_id:
+          type: string
+          description: Correlation ID for the request
+    
+    ExportOptions:
+      type: object
+      properties:
+        include_contact_info:
+          type: boolean
+          default: false
+        include_verification_documents:
+          type: boolean
+          default: false
+        include_full_stats:
+          type: boolean
+          default: true
+        include_match_history:
+          type: boolean
+          default: true
+        include_video_links:
+          type: boolean
+          default: true
+        branding_template:
+          type: string
+          enum: [club_standard, professional_scout, partner_presentation]
+          default: club_standard
+        language:
+          type: string
+          pattern: '^[a-z]{2}(-[A-Z]{2})?$'
+          default: en-US

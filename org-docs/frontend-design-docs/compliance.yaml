@@ -1,0 +1,620 @@
+# COMPLIANCE & DATA PROTECTION SPECIFICATION
+# Amafor Gladiators Digital Ecosystem
+# Version: 1.0
+# Date: 2026-01-04
+# Status: Approved for Implementation
+
+compliance_specification:
+
+  # ====================
+  # 1. SECURITY FRAMEWORK OVERVIEW
+  # ====================
+
+  security_framework:
+    primary_standard: "ISO 27001:2022 Annex A Controls"
+    supporting_regulations:
+      - "GDPR (General Data Protection Regulation)"
+      - "NDPR (Nigeria Data Protection Regulation)"
+      - "CCPA (California Consumer Privacy Act)"
+      - "PCI DSS (Payment Card Industry Data Security Standard)"
+    
+    compliance_objectives:
+      - "Achieve ISO 27001 certification within 12 months"
+      - "Maintain zero data breach incidents"
+      - "Automated compliance evidence collection"
+      - "Privacy by design in all features"
+
+  # ====================
+  # 2. AUTHENTICATION & TOKEN MANAGEMENT (2.1)
+  # ====================
+
+  token_management:
+    
+    token_storage_compliance:
+      
+      regulatory_requirements:
+        iso_27001_mapping:
+          - "A.9.2.1 - User registration and de-registration"
+          - "A.9.2.3 - Management of secret authentication information"
+          - "A.9.4.2 - Secure log-on procedures"
+          - "A.9.4.3 - Password management system"
+        
+        gdpr_requirements:
+          - "Article 32 - Security of processing"
+          - "Article 5(1)(f) - Integrity and confidentiality"
+          - "Article 25 - Data protection by design and by default"
+        
+        pci_dss_requirements:
+          - "Requirement 3 - Protect stored cardholder data"
+          - "Requirement 4 - Encrypt transmission of cardholder data"
+          - "Requirement 8 - Identify and authenticate access"
+      
+      token_architecture:
+        token_type: "JWT (JSON Web Token) with httpOnly cookies"
+        
+        storage_mechanism:
+          access_token: "httpOnly cookie with Secure, SameSite=Strict flags"
+          refresh_token: "httpOnly cookie with additional encryption layer"
+          session_data: "Server-side session store (Redis) with TTL"
+        
+        justification:
+          security_benefits:
+            - "httpOnly prevents XSS token theft"
+            - "SameSite=Strict prevents CSRF attacks"
+            - "No token exposure in client-side JavaScript"
+            - "Automatic cookie handling by browser"
+          
+          compliance_alignment:
+            - "ISO 27001 A.9.2.3 - Secret authentication info management"
+            - "GDPR Article 32 - Appropriate security measures"
+            - "OWASP ASVS V3 - Session management requirements"
+      
+      token_lifecycle:
+        
+        issuance:
+          triggers: ["Successful login", "Token refresh", "Session renewal"]
+          validation: "Multi-factor where required (admin, data stewards)"
+          logging: "Full audit trail including IP, user agent, timestamp"
+        
+        validation:
+          checks: ["Signature verification", "Expiry check", "Issuer validation", "Audience check"]
+          frequency: "Every authenticated request"
+          performance: "<5ms validation time target"
+        
+        refresh_strategy:
+          mechanism: "Rotating refresh tokens"
+          interval: "15 minutes for access token, 7 days for refresh token"
+          revocation: "On password change, suspicious activity, user request"
+        
+        expiration:
+          access_token: "15 minutes (aligned with session timeout requirements)"
+          refresh_token: "7 days with sliding window"
+          session_timeout: "30 minutes inactivity (SRS F-002 AC3)"
+      
+      secure_implementation:
+        
+        cookie_configuration:
+          http_only: "true (prevents JavaScript access)"
+          secure: "true (HTTPS only)"
+          same_site: "Strict (prevents CSRF)"
+          domain: "Restricted to application domain"
+          path: "/ (application-wide)"
+          max_age: "15 minutes (access), 7 days (refresh)"
+        
+        encryption_layers:
+          transport: "TLS 1.3 only"
+          storage: "AES-256-GCM for sensitive session data"
+          key_management: "HSM-backed, automatic 90-day rotation"
+        
+        protection_mechanisms:
+          csrf_protection: "Double-submit cookie pattern"
+          xss_mitigation: "Content Security Policy, input sanitization"
+          brute_force: "Rate limiting, account lockout after 5 attempts"
+          session_fixation: "Regenerate session on privilege escalation"
+      
+      compliance_evidence:
+        
+        automated_checks:
+          - "Daily token configuration validation"
+          - "Weekly security header scans"
+          - "Monthly penetration testing"
+          - "Quarterly token management audit"
+        
+        logging_requirements:
+          - "All token issuance events with metadata"
+          - "Failed authentication attempts with reason"
+          - "Token revocation events with admin justification"
+          - "Session timeout events"
+        
+        audit_trail:
+          retention: "2 years minimum (SRS 6.2)"
+          format: "Structured JSON logs with standardized schema"
+          access: "Restricted to security team, immutable storage"
+      
+      hook_integration:
+        
+        auth_hook_pattern:
+          hook_name: "useAuth()"
+          responsibilities:
+            - "Token validation and refresh coordination"
+            - "Session state management"
+            - "Authentication error handling"
+            - "User permission resolution"
+          
+          compliance_features:
+            - "Automatic token refresh before expiry"
+            - "Graceful degradation on token validation failure"
+            - "Secure logout with token invalidation"
+            - "Session timeout warnings"
+        
+        api_client_hook:
+          hook_name: "useApi()"
+          responsibilities:
+            - "Automatic token injection in requests"
+            - "Token refresh on 401 responses"
+            - "Request retry with exponential backoff"
+            - "Error boundary integration"
+          
+          security_features:
+            - "No token exposure in hook return values"
+            - "Secure request header management"
+            - "Cross-origin request protection"
+            - "Request signature validation"
+
+  # ====================
+  # 9. INTERNATIONALIZATION DATA HANDLING (9.1)
+  # ====================
+
+  internationalization_data_handling:
+    
+    regulatory_framework:
+      
+      global_requirements:
+        gdpr: "Chapter 3 - Rights of the data subject"
+        ccpa: "Section 1798.100 - Right to know and access"
+        ndpr: "Section 2.6 - Rights of data subjects"
+        lgpd: "Chapter III - Rights of the data subject"
+      
+      specific_requirements:
+        data_portability:
+          - "Right to receive personal data in structured format"
+          - "Right to transmit data between controllers"
+          - "Format requirements: machine-readable, commonly used"
+        
+        data_subject_access:
+          - "Right to access personal data held"
+          - "Right to know processing purposes"
+          - "45-day response time maximum"
+        
+        privacy_notices:
+          - "Clear, transparent, and easily accessible"
+          - "Available in all supported languages"
+          - "Just-in-time contextual notices"
+    
+    i18n_implementation:
+      
+      data_architecture:
+        locale_data_segregation:
+          user_preferences: "Stored in user profile with consent flags"
+          system_locale: "Browser detection with user override capability"
+          content_localization: "Separate translation tables with versioning"
+        
+        personal_data_handling:
+          localized_pii: "Name variations, address formats, honorifics"
+          consent_records: "Locale-specific consent text with version tracking"
+          privacy_preferences: "Locale-aware privacy settings"
+      
+      translation_management:
+        
+        text_categorization:
+          static_content: "UI labels, navigation, system messages"
+          dynamic_content: "Articles, player profiles, campaign descriptions"
+          legal_content: "Terms of service, privacy policies, consent forms"
+        
+        translation_process:
+          extraction: "Automated string extraction from codebase"
+          translation: "Professional translation services for accuracy"
+          review: "Native speaker review for cultural appropriateness"
+          deployment: "Version-controlled translation files"
+        
+        quality_assurance:
+          consistency: "Translation memory for term consistency"
+          completeness: "100% coverage verification"
+          context: "In-context review tools for translators"
+      
+      user_data_handling:
+        
+        locale_preferences:
+          storage: "User profile with fallback chain: user → browser → system → default"
+          consent: "Explicit consent for locale preference storage"
+          synchronization: "Across devices via authenticated session"
+        
+        data_collection_localization:
+          forms: "Locale-appropriate field labels and validation messages"
+          dates_numbers: "Locale-aware formatting (date, time, currency, numbers)"
+          address_fields: "Country-specific address formats and validation"
+        
+        privacy_localization:
+          consent_text: "Translated and legally reviewed for each locale"
+          privacy_policy: "Locale-specific versions with regional requirements"
+          data_subject_requests: "Locale-appropriate response templates"
+      
+      compliance_controls:
+        
+        data_sovereignty:
+          regional_data_storage:
+            eu_gdpr: "Data stored in EU or adequacy decision countries"
+            nigeria_ndpr: "Primary copy in Nigeria, backups as permitted"
+            global: "Data transfer mechanisms (SCCs, BCRs) where required"
+          
+          processing_restrictions:
+            automated_decision_making: "Transparency and human review rights"
+            profiling: "Opt-out mechanisms with locale-aware explanations"
+            third_country_transfers: "Adequacy decisions or appropriate safeguards"
+        
+        user_rights_implementation:
+          access_portal: "Multi-language self-service portal"
+          request_processing: "Automated workflow with SLA tracking"
+          verification: "Identity verification proportionate to request risk"
+          communication: "Locale-appropriate response templates and timelines"
+        
+        audit_trail:
+          localization_changes: "Track translation updates and approvals"
+          consent_updates: "Record locale-specific consent changes"
+          data_subject_requests: "Full audit of request handling"
+      
+      technical_implementation:
+        
+        hook_architecture:
+          locale_hook:
+            name: "useLocale()"
+            responsibilities:
+              - "Current locale detection and management"
+              - "Locale switching with preference persistence"
+              - "Direction (LTR/RTL) management"
+              - "Locale-aware formatting utilities"
+            
+            compliance_features:
+              - "Respects user privacy preferences"
+              - "Stores locale with user consent"
+              - "Handles regional data formatting rules"
+              - "Supports data subject access for locale data"
+          
+          translation_hook:
+            name: "useTranslations()"
+            responsibilities:
+              - "String translation with namespace support"
+              - "Pluralization and gender agreement"
+              - "Rich text translation with HTML safety"
+              - "Translation loading state management"
+            
+            compliance_features:
+              - "No personal data in translation strings"
+              - "Secure string interpolation"
+              - "Accessibility-compliant translations"
+              - "Performance-optimized translation loading"
+        
+        data_flow_controls:
+          client_side_storage:
+            localized_data: "Only non-sensitive translation strings"
+            user_preferences: "Encrypted storage for sensitive preferences"
+            consent_records: "Server-side storage with client-side references"
+          
+          api_integration:
+            locale_headers: "Accept-Language header with quality values"
+            response_localization: "Server-side content negotiation"
+            error_messages: "Localized error responses based on user locale"
+
+  # ====================
+  # 12. DATA RETENTION IMPACT ON HOOKS (12.1)
+  # ====================
+
+  data_retention_hook_impact:
+    
+    retention_policies:
+      
+      policy_framework:
+        regulatory_basis:
+          - "SRS 6.2 - Retention Periods"
+          - "GDPR Article 5(1)(e) - Storage limitation"
+          - "ISO 27001 A.8.2.2 - Information classification"
+          - "NDPR Section 2.5 - Data minimization"
+        
+        retention_schedule:
+          player_data: "7 years after last activity"
+          financial_records: "10 years"
+          audit_logs: "2 years minimum"
+          marketing_data: "3 years with consent"
+          user_sessions: "90 days"
+          backup_data: "1 year with quarterly rotation"
+      
+      automated_enforcement:
+        mechanisms:
+          ttl_based_expiration: "Database-level time-to-live settings"
+          scheduled_cleanup: "Daily batch jobs for data expiration"
+          event_driven_deletion: "Trigger-based cleanup on specific events"
+          legal_hold_suspension: "Ability to suspend deletion for legal holds"
+        
+        verification:
+          compliance_reports: "Monthly retention policy compliance reports"
+          audit_trails: "Comprehensive logging of all data deletion events"
+          exception_handling: "Process for handling deletion failures"
+    
+    hook_architecture_impact:
+      
+      data_fetching_hooks:
+        
+        retention_aware_fetching:
+          pattern: "Time-bounded queries with retention limits"
+          implementation:
+            - "Query filters based on retention policy dates"
+            - "Pagination with retention window consideration"
+            - "Cache invalidation aligned with data lifespan"
+            - "Graceful handling of expired data references"
+          
+          hook_examples:
+            - "usePlayers() - Filter out players past retention period"
+            - "useAnalytics() - Respect analytics data retention windows"
+            - "useContent() - Handle archived content appropriately"
+        
+        stale_data_handling:
+          patterns:
+            - "Soft deletion with retention period flags"
+            - "Data archival hooks for moving to cold storage"
+            - "Expired data notification hooks for user alerts"
+            - "Data export hooks for pre-deletion backups"
+          
+          user_experience:
+            - "Progressive disclosure of data expiration warnings"
+            - "Options to extend retention where permitted"
+            - "Export functionality before automatic deletion"
+            - "Clear communication of retention policies"
+      
+      state_management_hooks:
+        
+        local_storage_hooks:
+          retention_impact:
+            - "Automatic cleanup of expired local data"
+            - "Synchronization with server-side retention policies"
+            - "User notification of data expiration"
+          
+          implementation_patterns:
+            - "useLocalStorageWithExpiry() - TTL-based storage"
+            - "useRetentionAwareCache() - Cache aligned with retention"
+            - "useDataCleanup() - Scheduled cleanup triggers"
+        
+        session_management_hooks:
+          retention_requirements:
+            - "Session data expiration aligned with policy"
+            - "Automatic session cleanup on expiry"
+            - "Secure deletion of session artifacts"
+          
+          hook_patterns:
+            - "useSessionWithRetention() - Retention-aware sessions"
+            - "useTokenCleanup() - Automatic token invalidation"
+            - "useUserActivityTracker() - Inactivity-based expiry"
+      
+      real_time_hooks:
+        
+        subscription_hooks:
+          retention_considerations:
+            - "Message queue cleanup based on retention"
+            - "Subscription termination on data expiry"
+            - "Real-time notifications of retention events"
+          
+          implementation:
+            - "useRetentionAwareSubscription() - Auto-unsubscribe on expiry"
+            - "useMessageCleanup() - Message TTL management"
+            - "useDataExpiryNotifier() - Expiry event notifications"
+        
+        cache_invalidation_hooks:
+          retention_alignment:
+            - "Cache invalidation triggers based on retention"
+            - "Cache cleanup synchronized with data deletion"
+            - "Cache warming with retention-aware data"
+          
+          hook_patterns:
+            - "useRetentionCache() - Retention-aware caching"
+            - "useCacheCleanup() - Scheduled cache expiration"
+            - "useDataFreshness() - Retention-based freshness checks"
+    
+    compliance_integration:
+      
+      audit_trail_hooks:
+        
+        data_lifecycle_tracking:
+          hook_pattern: "useDataLifecycle()"
+          responsibilities:
+            - "Track data creation, modification, and deletion"
+            - "Generate audit trails for compliance reporting"
+            - "Monitor retention policy adherence"
+            - "Alert on retention policy violations"
+          
+          compliance_features:
+            - "ISO 27001 A.12.4.1 - Event logging"
+            - "GDPR Article 30 - Records of processing activities"
+            - "SRS F-001 AC2 - Immutable audit entries"
+        
+        retention_reporting:
+          hook_pattern: "useRetentionReporting()"
+          responsibilities:
+            - "Generate retention compliance reports"
+            - "Identify data approaching retention limits"
+            - "Monitor deletion job success rates"
+            - "Provide compliance dashboard data"
+      
+      privacy_hooks:
+        
+        data_subject_request_hooks:
+          hook_pattern: "useDataSubjectRequest()"
+          responsibilities:
+            - "Handle data access, correction, and deletion requests"
+            - "Coordinate data retrieval across retention periods"
+            - "Generate data export packages"
+            - "Track request SLA compliance"
+          
+          retention_considerations:
+            - "Access to data within retention periods"
+            - "Handling requests for expired data"
+            - "Verification of complete data deletion"
+        
+        consent_management_hooks:
+          hook_pattern: "useConsentManagement()"
+          responsibilities:
+            - "Manage user consent preferences"
+            - "Track consent versions and updates"
+            - "Handle consent withdrawal"
+            - "Coordinate data deletion on consent withdrawal"
+          
+          retention_alignment:
+            - "Consent records retention (5 years)"
+            - "Data processing suspension on consent withdrawal"
+            - "Consent-based data retention variations"
+    
+    performance_optimization:
+      
+      retention-aware_optimizations:
+        
+        query_optimization:
+          strategies:
+            - "Partitioned queries by retention periods"
+            - "Index optimization for retention-based filtering"
+            - "Materialized views for frequently accessed current data"
+            - "Archived data separation for query performance"
+          
+          hook_integration:
+            - "useOptimizedQueries() - Retention-aware query building"
+            - "useDataPartition() - Smart data partitioning"
+            - "useArchiveAccess() - Efficient archived data access"
+        
+        cache_strategies:
+          approaches:
+            - "Tiered caching with retention awareness"
+            - "Cache warming focused on non-expiring data"
+            - "Cache invalidation aligned with retention events"
+            - "Memory optimization through retention-based eviction"
+          
+          hook_patterns:
+            - "useRetentionCache() - Smart caching with expiry"
+            - "useCacheWarming() - Retention-aware warmup"
+            - "useMemoryOptimization() - Retention-based cleanup"
+    
+    error_handling_patterns:
+      
+      retention_related_errors:
+        
+        data_expiry_errors:
+          scenarios:
+            - "Access attempt to expired data"
+            - "Reference to deleted records"
+            - "Operation on data past retention"
+          
+          hook_handling:
+            - "Graceful degradation to empty/default states"
+            - "User-friendly expiration notifications"
+            - "Automatic reference cleanup"
+            - "Error logging for compliance monitoring"
+        
+        deletion_failures:
+          scenarios:
+            - "Failed data deletion jobs"
+            - "Partial deletion scenarios"
+            - "Legal hold conflicts"
+          
+          hook_handling:
+            - "Retry mechanisms with exponential backoff"
+            - "Alerting for manual intervention"
+            - "Compensation actions for partial failures"
+            - "Audit trail of deletion attempts"
+
+# ====================
+# COMPLIANCE VERIFICATION FRAMEWORK
+# ====================
+
+compliance_verification:
+  
+  automated_testing:
+    token_security_tests:
+      - "httpOnly cookie validation"
+      - "CSRF protection verification"
+      - "Token expiration testing"
+      - "Session fixation prevention"
+    
+    i18n_compliance_tests:
+      - "Locale data segregation verification"
+      - "Consent text translation completeness"
+      - "Data subject request handling in all locales"
+      - "Privacy policy version tracking"
+    
+    retention_policy_tests:
+      - "Automatic data deletion verification"
+      - "Retention period adherence checks"
+      - "Legal hold functionality testing"
+      - "Data export before deletion validation"
+  
+  manual_verification:
+    quarterly_reviews:
+      - "Token storage security audit"
+      - "Internationalization compliance assessment"
+      - "Retention policy effectiveness review"
+      - "Hook compliance with regulatory requirements"
+    
+    annual_assessments:
+      - "ISO 27001 control effectiveness"
+      - "GDPR compliance certification"
+      - "Third-party compliance verification"
+      - "Privacy impact assessments"
+
+# ====================
+# IMPLEMENTATION ROADMAP
+# ====================
+
+implementation_roadmap:
+  phase_1_foundation:
+    - "Implement secure token storage architecture"
+    - "Establish basic i18n framework with compliance controls"
+    - "Define core retention policies and enforcement mechanisms"
+    
+  phase_2_integration:
+    - "Integrate compliance controls into existing hooks"
+    - "Implement automated retention enforcement"
+    - "Develop compliance verification test suite"
+    
+  phase_3_optimization:
+    - "Optimize hook performance with retention awareness"
+    - "Implement advanced compliance monitoring"
+    - "Develop self-service compliance reporting"
+    
+  phase_4_maintenance:
+    - "Continuous compliance monitoring and improvement"
+    - "Regular regulatory updates and adaptations"
+    - "Compliance training and documentation updates"
+
+# ====================
+# OWNERSHIP & ACCOUNTABILITY
+# ====================
+
+ownership:
+  token_security: "Security Engineering Team"
+  internationalization: "Frontend Engineering with Legal review"
+  data_retention: "Data Engineering with Compliance oversight"
+  hook_implementation: "Feature teams with Architecture guidance"
+  compliance_verification: "Quality Assurance with Security partnership"
+
+accountability:
+  compliance_breaches: "Security Incident Response Team"
+  regulatory_updates: "Legal & Compliance Department"
+  technical_implementation: "Engineering Leadership"
+  audit_preparation: "Compliance & Security Teams"
+
+# ====================
+# DOCUMENT CONTROL
+# ====================
+
+document_control:
+  version: "1.0"
+  effective_date: "2026-01-04"
+  review_cycle: "Quarterly or when regulations change"
+  change_authority: "Compliance & Security Review Board"
+  distribution: "Engineering, Security, Legal, Compliance teams"
+  retention: "Permanent (system lifecycle + 7 years)"
