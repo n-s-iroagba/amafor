@@ -22,7 +22,8 @@
     "test:coverage": "jest --coverage",
     "test:observability": "jest src/hooks/useObservability.test.ts",
     "test:user-actions": "jest src/hooks/useUserActions.test.ts",
-    "test:user-action-tracker": "jest src/lib/user-action-tracker.test.ts"
+    "test:user-action-tracker": "jest src/lib/user-action-tracker.test.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.16",
@@ -30,6 +31,7 @@
     "@testing-library/react": "^16.3.1",
     "axios": "^1.13.2",
     "framer-motion": "^12.25.0",
+    "husky": "^9.1.7",
     "jest": "^30.2.0",
     "lucide-react": "latest",
     "next": "16.1.1",
@@ -37,7 +39,18 @@
     "react-dom": "19.2.3",
     "web-vitals": "^5.1.0"
   },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,scss}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -47,6 +60,7 @@
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.1",
     "eslint-plugin-tsdoc": "^0.5.0",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5.9.3"

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Using commitlint
+npx --no -- commitlint --edit "$1"
+
+# Simple regex pattern (alternative)
+if ! grep -qE "^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .{1,50}" "$1"; then
+  echo "Error: Commit message must follow conventional commits format!"
+  echo "Example: feat(scope): description"
+  exit 1
+fi
