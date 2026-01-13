@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import api from '@/lib/axiosClient';
-import { handleError } from '@/utils';
+
 import {
   useMutation,
   useQuery,
@@ -11,6 +10,8 @@ import {
   UseMutationOptions,
 } from '@tanstack/react-query';
 import { useCallback, useMemo, useState } from 'react';
+import api from '../lib/axios';
+import { handleError } from '../utils';
 
 // Type for API response
 export interface ApiResponse<T = any> {

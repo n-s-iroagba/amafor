@@ -4,7 +4,7 @@
       "./node_modules/@types",
       "./src/types"
     ],
-    "types": ["node", "web-vitals"],
+    "types": ["node", "web-vitals","jest"],
     "target": "ES2017",
     "lib": [
       "dom",

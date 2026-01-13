@@ -1,14 +1,15 @@
 'use client'
 
-import { Header } from '@/components/Header'
-import { Footer } from '@/components/Footer'
-import { CookieConsent } from '@/components/CookieConsent'
-import { WhatsAppWidget } from '@/components/WhatsAppWidget'
+
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { newsArticles, players, fixtures } from '@/data/mockData'
+
+
 import { Search, User, FileText, Trophy } from 'lucide-react'
 import { useState } from 'react'
+import { Header } from '@/shared/components/Header'
+import { Footer } from '@/shared/components/Footer'
+import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget'
 
 export default function SearchResults() {
   const searchParams = useSearchParams()
@@ -234,7 +235,7 @@ export default function SearchResults() {
       </main>
 
       <Footer />
-      <CookieConsent />
+
       <WhatsAppWidget />
     </>
   )

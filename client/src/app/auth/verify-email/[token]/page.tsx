@@ -1,34 +1,80 @@
 'use client';
-
 import type React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
-import ErrorAlert from '@/components/ErrorAlert';
-import api, { setAccessToken } from '@/lib/axiosClient';
+import { 
+  Mail, 
+  CheckCircle, 
+  RefreshCw, 
+  Lock, 
+  AlertCircle,
+  Loader2,
+  ArrowRight,
+  Shield,
+  UserCheck
+} from 'lucide-react';
+import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import { AuthUser } from '@/types/auth.types';
-import { useAuthContext } from '@/context/AuthContext';
+import { AuthUser } from '@/shared/types';
+import { useAuthContext } from '@/shared/hooks/useAuthContext';
+
 
 const VerifyEmail = () => {
   const params = useParams();
   const urlToken = params.token;
-  const {setUser} = useAuthContext()
+  const { setUser } = useAuthContext();
 
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const inputRefs = useRef<HTMLInputElement[]>([]);
   const [timeLeft, setTimeLeft] = useState(300); // 5-minute countdown
   const [canResend, setCanResend] = useState(false);
   const [token, setToken] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const [resendLoading, setResendLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [verifySuccess, setVerifySuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  
   const router = useRouter();
+
+  // Use the usePost hook for verify email
+  const { 
+    post: verifyEmailPost, 
+    isPending: verifying, 
+    error: verifyError, 
+    reset: resetVerifyState 
+  } = usePost<any, any>(API_ROUTES.AUTH.VERIFY_EMAIL, {
+    onSuccess: (data) => {
+      if (data && 'user' in data && 'accessToken' in data) {
+        const user: AuthUser = data.user;
+        const accessToken = data.accessToken;
+
+        setUser(user);
+        localStorage.setItem('accessToken', accessToken);
+        setVerifySuccess(true);
+
+        // Auto-redirect based on role
+        setTimeout(() => {
+         router.push('/dashboard')
+        }, 3000);
+      }
+    },
+    onError: (error) => {
+      // Clear the code on error
+      setCode(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
+    }
+  });
+
+  // Use the usePost hook for resend code
+  const { 
+    post: resendCodePost, 
+    isPending: resending, 
+    error: resendError, 
+    reset: resetResendState 
+  } = usePost<any, any>(API_ROUTES.AUTH.RESEND_VERIFICATION_CODE);
 
   useEffect(() => {
     if (!urlToken) {
-      alert('You are not authorised to view this page');
-      router.push('/');
+      setErrorMessage('You are not authorized to view this page');
+      setTimeout(() => router.push('/'), 2000);
     } else {
       setToken(Array.isArray(urlToken) ? urlToken[0] : urlToken);
     }
@@ -47,6 +93,20 @@ const VerifyEmail = () => {
     return () => clearInterval(timer);
   }, [router, urlToken]);
 
+  // Update error message when verifyError changes
+  useEffect(() => {
+    if (verifyError) {
+      setErrorMessage(verifyError);
+    }
+  }, [verifyError]);
+
+  // Update error message when resendError changes
+  useEffect(() => {
+    if (resendError) {
+      setErrorMessage(resendError);
+    }
+  }, [resendError]);
+
   const handleChange = (index: number, value: string) => {
     if (!/^\d?$/.test(value)) return;
 
@@ -60,10 +120,16 @@ const VerifyEmail = () => {
 
     // Auto-submit when all fields are filled
     if (value && index === 5) {
-      const fullCode = [...newCode].join('');
+      const fullCode = newCode.join('');
       if (fullCode.length === 6) {
         handleVerifyAuto(fullCode);
       }
+    }
+
+    // Clear errors when typing
+    if (errorMessage) {
+      setErrorMessage('');
+      resetVerifyState();
     }
   };
 
@@ -102,57 +168,53 @@ const VerifyEmail = () => {
     e.preventDefault();
     const verificationCode = code.join('');
     if (verificationCode.length !== 6) {
-      setError('Please enter a complete 6-digit code');
+      setErrorMessage('Please enter a complete 6-digit code');
       return;
     }
     await handleVerifySubmission(verificationCode);
   };
 
   const handleVerifySubmission = async (verificationCode: string) => {
-    setLoading(true);
-    setError(null);
-
     try {
-      const response = await api.post<any,{data:{accessToken:string,user:AuthUser}}>(API_ROUTES.AUTH.VERIFY_EMAIL, {
+      await verifyEmailPost({
         verificationCode,
         verificationToken: token,
       });
-      console.log('response is',response)
-      setUser(response.data.user)
-      setAccessToken(response.data.accessToken)
-       router.push(`/${response.data.user.role}/dashboard`)
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          'An error occurred during verification. Please try again.'
-      );
-      // Clear the code on error
-      setCode(['', '', '', '', '', '']);
-     
-      inputRefs.current[0]?.focus();
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.error('Verification error:', err);
     }
   };
 
   const handleResendCode = async () => {
-    setResendLoading(true);
-    setError(null);
-
     try {
-      const response =await api.post(API_ROUTES.AUTH.RESEND_VERIFICATION_CODE, {
+      const response = await resendCodePost({
         verificationToken: token,
-        
       });
-      console.log(response)
-      router.push(`/auth/verify-email/${response.data.verificationToken}`)
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          'An error occurred while resending the code.'
-      );
-    } finally {
-      setResendLoading(false);
+
+      if (response && 'verificationToken' in response) {
+        // Update the token and refresh the page
+        setToken(response.verificationToken);
+        router.push(`/auth/verify-email/${response.verificationToken}`);
+        
+        // Reset countdown
+        setTimeLeft(300);
+        setCanResend(false);
+        setErrorMessage('');
+        
+        // Restart the timer
+        const timer = setInterval(() => {
+          setTimeLeft((prev) => {
+            if (prev <= 1) {
+              clearInterval(timer);
+              setCanResend(true);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+    } catch (err) {
+      console.error('Resend error:', err);
     }
   };
 
@@ -162,69 +224,86 @@ const VerifyEmail = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (success) {
+  if (!token) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 flex items-center justify-center py-8 px-4">
-        <div className="bg-white rounded-2xl shadow-xl border border-sky-100 p-8 w-full max-w-md text-center">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-10 h-10 text-green-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-slate-400 animate-spin mx-auto mb-4" />
+          <p className="text-slate-600">Loading verification...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (verifySuccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+          {/* Success Icon */}
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-12 h-12 text-green-500" />
+            </div>
           </div>
-          <h2 className="text-2xl font-bold text-sky-800 mb-4">
+
+          <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
             Email Verified Successfully!
-          </h2>
-          <p className="text-sky-600 mb-6">
-            Your email has been verified. Redirecting to login...
+          </h1>
+          <p className="text-slate-600 text-center mb-8">
+            Your email has been verified. Redirecting to your dashboard...
           </p>
-          <div className="w-8 h-8 border-t-2 border-b-2 border-sky-500 rounded-full animate-spin mx-auto"></div>
+
+          <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600 mb-6">
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>Your account is now fully activated</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <span>You are now logged in automatically</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Loader2 className="w-4 h-4 text-blue-500 mt-0.5 animate-spin flex-shrink-0" />
+                <span>Redirecting in a moment...</span>
+              </li>
+            </ul>
+          </div>
+
+          <button
+            onClick={() => router.push('/')}
+            className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium"
+          >
+            <ArrowRight className="w-5 h-5 rotate-180" />
+            Go to Home
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 flex items-center justify-center py-8 px-4">
-      <div className="bg-white rounded-2xl shadow-xl border border-sky-100 p-8 w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg
-              className="w-8 h-8 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+        {/* Logo/Icon Header */}
+        <div className="flex justify-center mb-6">
+          <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center">
+            <Mail className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-sky-800 mb-2">
-            Verify Your Email
-          </h2>
-          <p className="text-sky-600">
-            Enter the 6-digit code sent to your email
-          </p>
         </div>
 
+        <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+          Verify Your Email
+        </h1>
+        <p className="text-slate-600 text-center mb-8">
+          Enter the 6-digit code sent to your email
+        </p>
+
         {/* Error Alert */}
-        {error && (
-          <div className="mb-6">
-            <ErrorAlert message={error} />
+        {errorMessage && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-700">{errorMessage}</div>
           </div>
         )}
 
@@ -246,38 +325,30 @@ const VerifyEmail = () => {
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onFocus={(e) => e.target.select()}
-                className="w-12 h-12 text-center text-lg font-semibold text-sky-800 border-2 border-sky-200 rounded-xl focus:border-sky-500 focus:ring-2 focus:ring-sky-200 transition-all duration-200 bg-sky-50 shadow-sm hover:border-sky-300"
-                disabled={loading}
+                className={`w-12 h-12 text-center text-lg font-semibold text-slate-800 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all ${
+                  digit 
+                    ? 'border-slate-300 bg-white' 
+                    : 'border-slate-200 bg-slate-50'
+                } ${verifying ? 'opacity-50' : ''}`}
+                disabled={verifying}
               />
             ))}
           </div>
 
-          {/* Verify Button */}
+          {/* Submit Button */}
           <button
             type="submit"
-            disabled={loading || code.join('').length !== 6}
-            className="w-full bg-gradient-to-r from-sky-500 to-blue-500 text-white py-3 px-4 rounded-xl font-semibold hover:from-sky-600 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            disabled={verifying || code.join('').length !== 6}
+            className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
           >
-            {loading ? (
+            {verifying ? (
               <>
-                <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
+                <Loader2 className="w-5 h-5 animate-spin" />
                 Verifying...
               </>
             ) : (
               <>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                <CheckCircle className="w-5 h-5" />
                 Verify Email
               </>
             )}
@@ -285,15 +356,15 @@ const VerifyEmail = () => {
         </form>
 
         {/* Resend Section */}
-        <div className="mt-6 pt-6 border-t border-sky-200">
+        <div className="mt-8 pt-6 border-t border-slate-200">
           <div className="text-center">
-            <p className="text-sky-700 mb-3">
+            <p className="text-slate-600 mb-3">
               {canResend ? (
                 "Didn't receive a code?"
               ) : (
                 <>
                   Resend code in{' '}
-                  <span className="font-semibold text-sky-800">
+                  <span className="font-semibold text-slate-800">
                     {formatTime(timeLeft)}
                   </span>
                 </>
@@ -302,33 +373,21 @@ const VerifyEmail = () => {
 
             <button
               onClick={handleResendCode}
-              disabled={!canResend || resendLoading}
-              className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
-                canResend && !resendLoading
-                  ? 'bg-sky-100 text-sky-700 hover:bg-sky-200 hover:text-sky-800 shadow-md hover:shadow-lg'
+              disabled={!canResend || resending}
+              className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
+                canResend && !resending
+                  ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-800 shadow-sm hover:shadow'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
               }`}
             >
-              {resendLoading ? (
+              {resending ? (
                 <>
-                  <div className="w-4 h-4 border-t-2 border-b-2 border-sky-500 rounded-full animate-spin"></div>
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Resending...
                 </>
               ) : (
                 <>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                    />
-                  </svg>
+                  <RefreshCw className="w-5 h-5" />
                   Resend Code
                 </>
               )}
@@ -337,23 +396,22 @@ const VerifyEmail = () => {
         </div>
 
         {/* Security Note */}
-        <div className="mt-6 pt-4 border-t border-sky-200">
-          <div className="flex items-center justify-center gap-2 text-sm text-sky-600">
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-              />
-            </svg>
+        <div className="mt-8 pt-6 border-t border-slate-200">
+          <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
+            <Shield className="w-4 h-4" />
             <span>Your information is secure and encrypted</span>
           </div>
+        </div>
+
+        {/* Back to Login */}
+        <div className="mt-6">
+          <button
+            onClick={() => router.push('/login')}
+            className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+          >
+            <ArrowRight className="w-5 h-5 rotate-180" />
+            Back to Login
+          </button>
         </div>
       </div>
     </div>

@@ -8,15 +8,18 @@ import {
   AlertCircle,
   Loader2,
   LogIn,
+  Shield,
+  CheckCircle,
+  ArrowRight,
+  UserCircle,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
-import api, { setAccessToken } from '@/lib/axiosClient';
-import { handleError } from '@/utils/handleError';
-import { useAuthContext } from '@/context/AuthContext';
-import { AuthUser, Role } from '@/types/auth.types';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { AuthUser} from '@/shared/types';
+import { useAuthContext } from '@/shared/hooks/useAuthContext';
 
-// TypeScript interfaces
+
 interface LoginRequestDto {
   email: string;
   password: string;
@@ -32,34 +35,54 @@ const LOGIN_FORM_DEFAULT_DATA: LoginRequestDto = {
   password: '',
 };
 
-export default function LoginForm() {
+export default function LoginPage() {
   const [loginRequest, setLoginRequest] = useState<LoginRequestDto>(
     LOGIN_FORM_DEFAULT_DATA
   );
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
-
+  const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+  const [successUser, setSuccessUser] = useState<AuthUser | null>(null);
+  
   const router = useRouter();
   const { setUser } = useAuthContext();
 
-  const handleChange =
-    (field: keyof LoginRequestDto) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setLoginRequest((prev) => ({ ...prev, [field]: value }));
+  // Use the usePost hook for login
+  const { 
+    post: loginPost, 
+    isPending: loginLoading, 
+    error: loginError, 
+    reset: resetLoginState,
+    data: loginData 
+  } = usePost<LoginRequestDto, any>(API_ROUTES.AUTH.LOGIN, {
+    onSuccess: (data) => {
+      if (data && 'user' in data) {
+        const user: AuthUser = data.user;
+        const accessToken = data.accessToken;
 
-      // Clear field-specific errors
-      if (validationErrors[field]) {
-        setValidationErrors((prev) => ({ ...prev, [field]: undefined }));
+        setUser(user);
+        localStorage.setItem('accessToken', accessToken);
+        setSuccessUser(user);
+        setLoginSuccess(true);
+
+      } else if (data && 'verificationToken' in data) {
+        router.push(`/auth/verify-email/${data.verificationToken}`);
       }
+    },
+  });
 
-      // Clear general error
-      if (error) setError('');
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginRequest((prev) => ({ ...prev, [name]: value }));
+    
+    if (validationErrors[name as keyof ValidationErrors]) {
+      setValidationErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+    
+    if (loginError) {
+      resetLoginState();
+    }
+  };
 
   const validateForm = (): boolean => {
     const errors: ValidationErrors = {};
@@ -72,226 +95,213 @@ export default function LoginForm() {
 
     if (!loginRequest.password) {
       errors.password = 'Password is required';
-    } else if (loginRequest.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
     }
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-
-  if (!validateForm()) {
-    return;
-  }
-
-  setLoading(true);
-  setError('');
-
-  try {
-    const response = await api.post(API_ROUTES.AUTH.LOGIN, loginRequest);
-
-    if ('user' in response.data) {
-      const user: AuthUser = response.data.user;
-      const accessToken = response.data.accessToken;
-
-      setUser(user);
-      setAccessToken(accessToken);
-
-      // ✅ Navigate to dashboard based on role
-      switch (user.role) {
-        case Role.ADVERTISER:
-          router.push('/advertiser/dashboard');
-          break;
-        case Role.ADMIN:
-          router.push('/admin/dashboard');
-          break;
-        case Role.SPORTS_ADMIN:
-          router.push('/sports-admin/dashboard');
-          break;
-        default:
-          router.push('/');
-          break;
-      }
-    } else {
-      router.push(`/auth/verify-email/${response.data.verificationToken}`);
-      alert('Kindly verify your account');
+    if (!validateForm()) {
+      return;
     }
-  } catch (err) {
-    handleError(err, setError);
-  } finally {
-    setLoading(false);
-  }
-};
 
-  const inputClasses = (hasError: boolean): string => `
-    w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all duration-200 
-    bg-white/70 backdrop-blur-sm text-gray-800 placeholder-gray-500
-    focus:outline-none focus:ring-2 focus:ring-sky-400/50 focus:border-sky-400
-    ${
-      hasError
-        ? 'border-red-300 focus:border-red-400 focus:ring-red-400/50'
-        : 'border-sky-200 hover:border-sky-300'
+    try {
+      await loginPost(loginRequest);
+    } catch (err) {
+      console.error('Login error:', err);
     }
-  `;
+  };
+
+  const handleForgotPassword = () => {
+    router.push('/auth/forgot-password');
+  };
+
+  const handleSignUp = () => {
+    router.push('/auth/signup');
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-sky-400 to-blue-500 rounded-2xl mb-4 shadow-lg">
-            <LogIn className="w-8 h-8 text-white" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+        {/* Logo/Icon Header */}
+        <div className="flex justify-center mb-6">
+          <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center">
+            <UserCircle className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Welcome Back
-          </h1>
-          <p className="text-gray-600">Sign in to your account</p>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-8">
-          {/* Error Alert */}
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
-              <span className="text-red-700 text-sm">{error}</span>
-            </div>
-          )}
+        <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+          {loginSuccess ? 'Welcome Back!' : 'Sign In'}
+        </h1>
+        <p className="text-slate-600 text-center mb-8">
+          {loginSuccess 
+            ? `Welcome, ${successUser?.firstName || 'User'}!` 
+            : 'Enter your credentials to continue'}
+        </p>
 
+        {/* Error Alert */}
+        {loginError && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+            <div className="text-sm text-red-700">
+              {loginError.includes('401') || loginError.includes('invalid')
+                ? 'Invalid email or password'
+                : loginError}
+            </div>
+          </div>
+        )}
+
+        {/* Success State */}
+        {loginSuccess ? (
           <div className="space-y-6">
-            {/* Email Field */}
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 ml-1"
-              >
-                Email Address
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  type="email"
-                  value={loginRequest.email}
-                  onChange={handleChange('email')}
-                  className={inputClasses(!!validationErrors.email)}
-                  placeholder="Enter your email"
-                  required
-                />
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-10 h-10 text-green-500" />
               </div>
-              {validationErrors.email && (
-                <p className="text-red-500 text-xs mt-1 ml-1 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {validationErrors.email}
-                </p>
-              )}
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                Login Successful!
+              </h3>
+              <p className="text-slate-600">
+                Redirecting you to your dashboard...
+              </p>
             </div>
-
-            {/* Password Field */}
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 ml-1"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={loginRequest.password}
-                  onChange={handleChange('password')}
-                  className={inputClasses(!!validationErrors.password)}
-                  placeholder="Enter your password"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-xl transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                  )}
-                </button>
-              </div>
-              {validationErrors.password && (
-                <p className="text-red-500 text-xs mt-1 ml-1 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {validationErrors.password}
-                </p>
-              )}
+            
+            <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600">
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>You're now signed in as {successUser?.firstName}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>Role: {successUser?.role}</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Loader2 className="w-4 h-4 text-blue-500 mt-0.5 animate-spin flex-shrink-0" />
+                  <span>Redirecting in a moment...</span>
+                </li>
+              </ul>
             </div>
-
-            {/* Forgot Password Link */}
-            <div className="flex items-center justify-between">
-           
-              <div className="text-sm">
-                <a
-                  href="/auth/forgot-password"
-                  className="font-medium text-sky-600 hover:text-sky-500 transition-colors"
-                >
-                  Forgot your password?
-                </a>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className={`w-full py-3 px-6 rounded-xl font-semibold transition-all duration-200 
-                         shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-sky-400/50 
-                         transform hover:scale-[1.02] flex items-center justify-center gap-2
-                         ${
-                           loading
-                             ? 'bg-gray-400 cursor-not-allowed'
-                             : 'bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white cursor-pointer'
-                         }`}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Signing In...
-                </>
-              ) : (
-                <>
-                  <LogIn className="w-5 h-5" />
-           
-                  Sign In
-               
-                </>
-              )}
-            </button>
           </div>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Email Field */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                    <Mail className="w-5 h-5 text-slate-400" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={loginRequest.email}
+                    onChange={handleChange}
+                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${
+                      validationErrors.email ? 'border-red-300' : 'border-slate-200'
+                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    placeholder="you@example.com"
+                    disabled={loginLoading}
+                  />
+                </div>
+                {validationErrors.email && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors.email}
+                  </p>
+                )}
+              </div>
 
-          {/* Sign Up Link */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <a
-                href="/auth/signup"
-                className="font-medium text-sky-600 hover:text-sky-500 transition-colors"
+              {/* Password Field */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-slate-700">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                    <Lock className="w-5 h-5 text-slate-400" />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    value={loginRequest.password}
+                    onChange={handleChange}
+                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${
+                      validationErrors.password ? 'border-red-300' : 'border-slate-200'
+                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    placeholder="Enter your password"
+                    disabled={loginLoading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+                {validationErrors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors.password}
+                  </p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loginLoading || !loginRequest.email || !loginRequest.password}
+                className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
               >
-                Sign up
-              </a>
-            </p>
-          </div>
+                {loginLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Signing In...
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="w-5 h-5" />
+                    Sign In
+                  </>
+                )}
+              </button>
+            </form>
 
-         
-        
-        </div>
+            <div className="mt-8 pt-6 border-t border-slate-200 space-y-4">
+              <button
+                onClick={handleForgotPassword}
+                className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+              >
+                <Lock className="w-5 h-5" />
+                Forgot Password?
+              </button>
+              
+              <button
+                onClick={handleSignUp}
+                className="w-full py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-xl hover:from-sky-700 hover:to-blue-700 transition-all flex items-center justify-center gap-2 font-medium text-sm shadow-sm hover:shadow"
+              >
+                <UserCircle className="w-5 h-5" />
+                Create New Account
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Footer note */}
+        {!loginSuccess && (
+          <div className="mt-8 text-center text-sm text-slate-500">
+            Need help? <a href="/contact" className="text-slate-700 hover:text-slate-900 font-medium">Contact Support</a>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,114 +1,371 @@
 'use client';
-import React, { useState } from 'react';
-// Added PlusCircle to the lucide-react import list
-import { Save, Eye, Send, ArrowLeft, Image as ImageIcon, Type, Link as LinkIcon, Hash, Globe, ShieldCheck, PlusCircle } from 'lucide-react';
-import Link from 'next/link';
+
+import dynamic from 'next/dynamic';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import {
+  Save,
+  Eye,
+  Edit,
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  ChevronDown,
+} from 'lucide-react';
+import api from '@/lib/apiUtils';
+import { ArticleStatus } from '@/types/article.types';
+
+const CustomEditor = dynamic(() => import('@/components/Editor'), {
+  ssr: false,
+});
+
+interface ValidationErrors {
+  title?: string;
+  content?: string;
+  general?: string;
+}
 
 export default function NewArticlePage() {
-  const [status, setStatus] = useState('Draft');
+  const router = useRouter();
+  const [title, setTitle] = useState('');
+  const [editorContent, setEditorContent] = useState('');
+  const [status, setStatus] = useState<ArticleStatus>(ArticleStatus.Draft);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<ValidationErrors>({});
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
+  // Validation function
+  const validateForm = (): ValidationErrors => {
+    const newErrors: ValidationErrors = {};
+
+    if (!title.trim()) {
+      newErrors.title = 'Title is required';
+    } else if (title.trim().length < 5) {
+      newErrors.title = 'Title must be at least 5 characters long';
+    } else if (title.trim().length > 200) {
+      newErrors.title = 'Title must be less than 200 characters';
+    }
+
+    if (!editorContent.trim()) {
+      newErrors.content = 'Content is required';
+    } else if (editorContent.trim().length < 50) {
+      newErrors.content = 'Content must be at least 50 characters long';
+    }
+
+    return newErrors;
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    // Clear previous errors
+    setErrors({});
+
+    // Validate form
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await api.post(
+        '/articles/amafor',
+        {
+          title: title.trim(),
+          content: editorContent.trim(),
+          status,
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      // Show success message based on status
+      const successMessage =
+        status === ArticleStatus.Published
+          ? 'Article published successfully!'
+          : 'Article saved as draft!';
+
+      // You can replace this with a proper toast notification
+      alert(successMessage);
+
+      router.push(`/sports-admin/sport-articles/${res.data.id}`);
+    } catch (err: any) {
+      console.error(err);
+      const errorMessage =
+        err.response?.data?.message ||
+        'Error creating article. Please try again.';
+      setErrors({ general: errorMessage });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Status dropdown options
+  const statusOptions = [
+    {
+      value: ArticleStatus.Draft,
+      label: 'Save as Draft',
+      description: 'Save for later editing',
+      icon: Edit,
+      color: 'text-amber-600',
+    },
+    {
+      value: ArticleStatus.Published,
+      label: 'Publish Article',
+      description: 'Make article public',
+      icon: Eye,
+      color: 'text-green-600',
+    },
+  ];
+
+  const selectedOption = statusOptions.find(
+    (option) => option.value === status
+  );
+  const SelectedIcon = selectedOption?.icon || Edit;
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="bg-[#2F4F4F] text-white py-6 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <Link href="/dashboard/cms" className="p-2 hover:bg-white/10 rounded-full transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h1 className="text-xl font-black uppercase tracking-tight">Create New Article (CMS-02)</h1>
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-amber-500 rounded-full" />
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{status} Mode</span>
-              </div>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-sky-500 to-sky-600 px-6 py-8 text-white">
+            <div className="flex items-center gap-3 mb-2">
+              <FileText className="w-8 h-8" />
+              <h1 className="text-2xl sm:text-3xl font-bold">
+                Create New Article
+              </h1>
             </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button className="px-6 py-2.5 rounded-xl border border-white/20 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center">
-              <Eye className="w-4 h-4 mr-2" /> Preview
-            </button>
-            <button className="sky-button flex items-center space-x-2 py-2.5">
-              <Send className="w-4 h-4" />
-              <span>PUBLISH ARTICLE</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
-          {/* Main Editor */}
-          <div className="lg:col-span-3 space-y-8">
-            <input 
-              type="text" 
-              placeholder="Enter Article Title..." 
-              className="w-full text-5xl font-black text-[#2F4F4F] placeholder:text-gray-100 outline-none border-b border-transparent focus:border-gray-100 pb-4 transition-all"
-            />
-            
-            {/* Toolbar Simulation */}
-            <div className="flex items-center space-x-1 p-2 bg-gray-50 rounded-2xl border border-gray-100">
-              {[Type, ImageIcon, LinkIcon, Hash].map((Icon, i) => (
-                <button key={i} className="p-3 hover:bg-[#87CEEB] hover:text-[#2F4F4F] rounded-xl text-gray-400 transition-all">
-                  <Icon className="w-4 h-4" />
-                </button>
-              ))}
-              <div className="h-6 w-px bg-gray-200 mx-2" />
-              <button className="px-4 py-2 text-[10px] font-black text-gray-400 hover:text-[#2F4F4F]">BOLD</button>
-              <button className="px-4 py-2 text-[10px] font-black text-gray-400 hover:text-[#2F4F4F]">ITALIC</button>
-            </div>
-
-            <textarea 
-              placeholder="Start writing the story of the Gladiators..."
-              className="w-full h-[600px] text-lg text-gray-600 leading-relaxed outline-none border-none bg-white resize-none"
-            />
+            <p className="text-sky-100 text-sm sm:text-base">
+              Write and publish your sports article
+            </p>
           </div>
 
-          {/* Sidebar Config */}
-          <aside className="space-y-8">
-            <section className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
-              <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center">
-                <Globe className="w-4 h-4 mr-2" /> Distribution & SEO
-              </h3>
-              <div className="space-y-6">
+          <div className="p-6 space-y-6">
+            {/* General Error Message */}
+            {errors.general && (
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3"
+              >
+                <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <label className="block text-[9px] font-black text-[#2F4F4F] uppercase tracking-widest mb-2">Category</label>
-                  <select className="w-full px-4 py-3 bg-white border border-gray-100 rounded-xl text-xs font-bold outline-none focus:border-[#87CEEB]">
-                    <option>Match Report</option>
-                    <option>Academy Update</option>
-                    <option>Player Spotlight</option>
-                  </select>
+                  <h4 className="text-red-800 font-medium">Error</h4>
+                  <p className="text-red-700 text-sm mt-1">{errors.general}</p>
                 </div>
-                <div>
-                  <label className="block text-[9px] font-black text-[#2F4F4F] uppercase tracking-widest mb-2">Featured Image</label>
-                  <div className="aspect-video bg-white border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center flex-col group cursor-pointer hover:border-[#87CEEB] transition-all">
-                    <PlusCircle className="w-6 h-6 text-gray-300 group-hover:text-[#87CEEB] mb-2" />
-                    <span className="text-[9px] font-black text-gray-400 uppercase">Upload Media</span>
+              </motion.div>
+            )}
+
+            {/* Title Input */}
+            <div className="space-y-2">
+              <label
+                htmlFor="title"
+                className="block text-sm font-semibold text-gray-700"
+              >
+                Article Title <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  id="title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    if (errors.title) {
+                      setErrors((prev) => ({ ...prev, title: undefined }));
+                    }
+                  }}
+                  placeholder="Enter a compelling article title..."
+                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
+                    errors.title
+                      ? 'border-red-300 bg-red-50'
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  maxLength={200}
+                />
+                <div className="absolute right-3 top-3 text-xs text-gray-400">
+                  {title.length}/200
+                </div>
+              </div>
+              {errors.title && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-600 text-sm flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {errors.title}
+                </motion.p>
+              )}
+            </div>
+
+            {/* Status Dropdown */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">
+                Publication Status <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                  className="w-full sm:w-auto min-w-[200px] px-4 py-3 border border-gray-300 rounded-xl bg-white text-left hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 flex items-center justify-between gap-3"
+                >
+                  <div className="flex items-center gap-2">
+                    <SelectedIcon
+                      className={`w-4 h-4 ${selectedOption?.color}`}
+                    />
+                    <span className="text-gray-900 font-medium">
+                      {selectedOption?.label}
+                    </span>
                   </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="bg-[#2F4F4F] text-white p-8 rounded-[2rem]">
-               <h3 className="text-[10px] font-black text-[#87CEEB] uppercase tracking-widest mb-6 flex items-center">
-                <ShieldCheck className="w-4 h-4 mr-2" /> Version Control
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-[10px]">
-                  <span className="text-gray-400 font-bold uppercase">Last Saved</span>
-                  <span className="font-mono">12:42:01</span>
-                </div>
-                <div className="flex items-center justify-between text-[10px]">
-                  <span className="text-gray-400 font-bold uppercase">Editor</span>
-                  <span className="font-mono">M-MANAGER-01</span>
-                </div>
-                <button className="w-full mt-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all">
-                  VIEW HISTORY (3)
+                  <ChevronDown
+                    className={`w-4 h-4 text-gray-400 transform transition-transform duration-200 ${
+                      showStatusDropdown ? 'rotate-180' : ''
+                    }`}
+                  />
                 </button>
+
+                {/* Dropdown Menu */}
+                {showStatusDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden"
+                  >
+                    {statusOptions.map((option) => {
+                      const IconComponent = option.icon;
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            setStatus(option.value);
+                            setShowStatusDropdown(false);
+                          }}
+                          className={`w-full px-4 py-3 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors duration-150 flex items-start gap-3 ${
+                            status === option.value
+                              ? 'bg-sky-50 border-r-2 border-sky-500'
+                              : ''
+                          }`}
+                        >
+                          <IconComponent
+                            className={`w-5 h-5 ${option.color} flex-shrink-0 mt-0.5`}
+                          />
+                          <div>
+                            <div className="font-medium text-gray-900">
+                              {option.label}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              {option.description}
+                            </div>
+                          </div>
+                          {status === option.value && (
+                            <CheckCircle2 className="w-4 h-4 text-sky-500 ml-auto flex-shrink-0 mt-1" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                )}
               </div>
-            </section>
-          </aside>
-        </div>
-      </main>
+            </div>
+
+            {/* Content Editor */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">
+                Article Content <span className="text-red-500">*</span>
+              </label>
+              <div
+                className={`border rounded-xl overflow-hidden transition-all duration-200 ${
+                  errors.content
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 hover:border-gray-400 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500'
+                }`}
+              >
+                <CustomEditor
+                  value={editorContent}
+                  onChange={(content) => {
+                    setEditorContent(content);
+                    if (errors.content) {
+                      setErrors((prev) => ({ ...prev, content: undefined }));
+                    }
+                  }}
+                  placeholder="Start writing your article content here..."
+                  readOnly={false}
+                />
+              </div>
+              {errors.content && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-600 text-sm flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {errors.content}
+                </motion.p>
+              )}
+              <div className="text-right text-xs text-gray-400">
+                {editorContent.replace(/<[^>]*>/g, '').length} characters
+              </div>
+            </div>
+            
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
+              <motion.button
+                type="button"
+                disabled={loading}
+                onClick={handleSubmit}
+                className={`flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 ${
+                  status === ArticleStatus.Published
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:ring-green-500'
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:ring-amber-500'
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                whileHover={{ scale: loading ? 1 : 1.02 }}
+                whileTap={{ scale: loading ? 1 : 0.98 }}
+              >
+                {loading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <>
+                    <SelectedIcon className="w-4 h-4" />
+                    <span>{selectedOption?.label}</span>
+                  </>
+                )}
+              </motion.button>
+
+              <button
+                type="button"
+                onClick={() => router.back()}
+                disabled={loading}
+                className="px-6 py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Click outside to close dropdown */}
+      {showStatusDropdown && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setShowStatusDropdown(false)}
+        />
+      )}
     </div>
   );
 }

@@ -1,15 +1,20 @@
 'use client'
 
-import { Header } from '@/features/home/components/Header'
-import { Footer } from '@/features/home/components/Footer'
+
+
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, CreditCard, Check } from 'lucide-react'
 import { useState } from 'react'
-import { patronTiers } from '@/data/mockData'
+import { Header } from '@/shared/components/Header'
+import { Footer } from '@/shared/components/Footer'
+import { useGet } from '@/shared/hooks/useApiQuery'
+import { SupporterTier } from '@/features/supporter/types'
+
 
 export default function PatronCheckout() {
   const searchParams = useSearchParams()
+  const {data:patronTiers} = useGet<SupporterTier[]>('')
   const preselectedTier = searchParams.get('tier') || 'Advocate'
   
   const [selectedTier, setSelectedTier] = useState(preselectedTier)
@@ -18,7 +23,7 @@ export default function PatronCheckout() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
 
-  const tierData = patronTiers.find(t => t.name === selectedTier)
+  const tierData = patronTiers&& patronTiers.find(t => t.name === selectedTier) 
 
   const calculateAmount = () => {
     if (!tierData) return 0
@@ -59,7 +64,7 @@ export default function PatronCheckout() {
                   <div className="mb-6">
                     <label className="block text-sm font-semibold mb-3">Select Patron Tier</label>
                     <div className="space-y-2">
-                      {patronTiers.map((tier) => (
+                      {patronTiers && patronTiers.map((tier) => (
                         <button
                           key={tier.name}
                           type="button"

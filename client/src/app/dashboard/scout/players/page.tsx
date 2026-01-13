@@ -15,7 +15,7 @@ export default function ScoutPlayerDirectory() {
   const handleExport = () => {
     // PV-C02 State logic: Simulate CSV Export
     const headers = 'Name,Position,Age,Height,SquadNumber\n';
-    const csv = MOCK_PLAYERS.map(p => `${p.name},${p.position},${p.age},${p.height},${p.squadNumber}`).join('\n');
+    const csv = MOCK_PLAYERS.map(p => `${p.name},${p.position},${p.age},${p.height},${p.jerseyNumber}`).join('\n');
     const blob = new Blob([headers + csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -94,7 +94,7 @@ export default function ScoutPlayerDirectory() {
               <div className="p-8">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-[10px] font-black text-[#87CEEB] uppercase tracking-widest">{player.position}</span>
-                  <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">#{player.squadNumber}</span>
+                  <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">#{player.jerseyNumber}</span>
                 </div>
                 <h3 className="text-xl text-[#2F4F4F] mb-4 group-hover:text-[#87CEEB] transition-colors">{player.name}</h3>
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">

@@ -69,7 +69,6 @@ export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes>
   public availableAt?: Date;
   public videoUrl?: string;
   public videoProvider?: string;
-  public gallery!: string[];
   public metadata!: Record<string, any>;
   public createdById!: string;
   public updatedById!: string;
@@ -186,11 +185,7 @@ export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes>
             isIn: [['youtube', 'vimeo']]
           }
         },
-        gallery: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: []
-        },
+ 
         metadata: {
           type: DataTypes.JSON,
           allowNull: false,

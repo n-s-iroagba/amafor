@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AcademyService } from '../services';
-import { structuredLogger } from '../utils';
+
 
 export class AcademyController {
   private academyService: AcademyService;

@@ -1,20 +1,21 @@
 // app/coaches/[id]/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useGet } from '@/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import ErrorAlert from '@/components/ErrorAlert';
-import { Coach } from '@/types';
+import { Coach } from '@/features/coach/types';
+import { ErrorAlert } from '@/shared/components/Alerts';
+import { useGet } from '@/shared/hooks/useApiQuery';
+
 
 export default function CoachDetail() {
   const params = useParams();
   const router = useRouter();
   const id = params.id;
   const {
-    resourceData: coach,
+    data: coach,
     loading,
     error,
   } = useGet<Coach>(API_ROUTES.COACHES.MUTATE(id as string));

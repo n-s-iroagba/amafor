@@ -1,26 +1,29 @@
 'use client';
 
 import Link from 'next/link'
-import { Calendar, ArrowRight } from 'lucide-react'
-import { useGet } from "@/hooks/useApiQuery"
+import { ArrowRight, Clock } from 'lucide-react'
+import { Article } from '@/features/articles/types';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
-interface NewsArticle {
-  id: string;
-  title: string;
-  snippet: string;
-  image: string;
-  category: string;
-  date: string;
-}
+import { AnimatePresence, motion } from 'framer-motion';
+import { cleanText} from '@/features/articles/utils';
+import { useRouter } from 'next/navigation';
+import { API_ROUTES } from '@/config/routes';
+import { formatDate } from '@/shared/utils';
+
+
 
 export default function LatestNewsSection() {
-  const { data: latestNews, loading } = useGet<NewsArticle[]>(
-    '/api/news',
-    { 
+  const router = useRouter()
+  const { data: articles, loading } = useGet<Article[]>(API_ROUTES.ARTICLES.PUBLISHED,{
       params: { limit: 3 },
       enabled: true 
     }
   )
+
+    const handleArticleClick = (id: number | string) => {
+    router.push(`/sport-articles/${id}`);
+  };
 
   // Don't render if loading or no news
   if (loading) return (
@@ -46,7 +49,7 @@ export default function LatestNewsSection() {
     </section>
   )
 
-  if (!latestNews || latestNews.length === 0) return null
+  if (!articles || articles.length === 0) return null
 
   return (
     <section className="py-24 bg-white">
@@ -62,38 +65,86 @@ export default function LatestNewsSection() {
           </Link>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8">
-          {latestNews.map((article) => (
-            <Link
+      <AnimatePresence mode="wait">
+        <motion.div
+     
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
+        >
+          {articles?.map((article, index) => (
+            <motion.article
               key={article.id}
-              href={`/news/${article.id}`}
-              className="group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              whileHover={{ y: -5 }}
+              className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 flex flex-col h-full hover:shadow-lg transition-all duration-300 border border-gray-100 relative overflow-hidden group w-full cursor-pointer"
+              onClick={() => handleArticleClick(article.id)}
             >
-              <div className="relative overflow-hidden mb-5">
+        <div className="relative overflow-hidden mb-5">
                 <div
                   className="h-64 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${article.image})` }}
+                  style={{ backgroundImage: `url(${article.featuredImage})` }}
                 />
-                <div className="absolute top-4 left-4 bg-sky-500 text-white text-xs font-bold px-4 py-2 uppercase tracking-wider">
-                  {article.category}
-                </div>
+             
               </div>
-              
-              <div className="flex items-center gap-2 mb-3 text-xs text-gray-500 font-semibold uppercase tracking-wider">
-                <Calendar className="w-4 h-4" />
-                {new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-              </div>
-              
-              <h3 className="text-2xl font-black text-gray-900 mb-3 group-hover:text-sky-500 transition-colors line-clamp-2">
-                {article.title}
+
+              <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 text-gray-900 hover:text-sky-600 transition-colors duration-300 pr-16 sm:pr-20">
+                <span className="hover:underline underline-offset-4 decoration-sky-500 line-clamp-2 block">
+                  {article.title}
+                </span>
               </h3>
-              
-              <p className="text-gray-600 line-clamp-2 leading-relaxed">
-                {article.snippet}
-              </p>
-            </Link>
+
+              {article.content?.includes('<img') && (
+                <motion.div
+                  className="mb-3 sm:mb-4 rounded-lg overflow-hidden shadow-inner relative h-32 sm:h-40 md:h-48 w-full"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div
+                    className="w-full h-full bg-cover bg-center rounded-lg transition-transform duration-500 group-hover:scale-105"
+                    style={{
+                      backgroundImage: `url(${article.content.match(/<img.*?src=["'](.*?)["']/)?.[1]})`,
+                    }}
+                    aria-hidden="true"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </motion.div>
+              )}
+
+              <p className="text-gray-700 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-3 flex-grow leading-relaxed">
+                   {cleanText(article.content, true)}
+                   </p>
+
+              <div className="pt-3 sm:pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2 mt-auto">
+                <div className="flex items-center gap-2 text-xs text-gray-500 order-2 sm:order-1">
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-sky-500 flex-shrink-0" />
+                  <span className="truncate">
+                    {formatDate(new Date(article.createdAt).toDateString())}
+                  </span>
+                </div>
+
+                <motion.button
+                  className="inline-flex items-center justify-center gap-1 bg-gradient-to-r from-sky-500 to-sky-600 text-white px-3 sm:px-4 py-2 rounded-lg font-medium shadow-sm hover:shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50 group/button text-xs sm:text-sm w-full sm:w-auto order-1 sm:order-2"
+                  aria-label={`View article: ${article.title}`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleArticleClick(article.id);
+                  }}
+                >
+                  <span className="whitespace-nowrap">View Article</span>
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/button:translate-x-1 flex-shrink-0" />
+                </motion.button>
+              </div>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
+      </AnimatePresence>
       </div>
     </section>
   )

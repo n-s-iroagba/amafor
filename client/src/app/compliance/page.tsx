@@ -1,4 +1,3 @@
-import React from 'react';
 import { Shield, Lock, FileCheck, ShieldAlert, CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 

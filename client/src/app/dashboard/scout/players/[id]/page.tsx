@@ -28,7 +28,7 @@ export default function ScoutPlayerDetail() {
           </Link>
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
             <div className="flex items-center space-x-8">
-              <div className="text-8xl font-black text-[#87CEEB] opacity-50 select-none">#{player.squadNumber}</div>
+              <div className="text-8xl font-black text-[#87CEEB] opacity-50 select-none">#{player.jerseyNumber}</div>
               <div>
                 <h1 className="text-5xl md:text-7xl mb-2 tracking-tighter">{player.name}</h1>
                 <div className="flex items-center space-x-4">
@@ -127,7 +127,7 @@ export default function ScoutPlayerDetail() {
               <img src={player.imageUrl} className="w-full h-full object-cover" alt={player.name} />
               <div className="absolute inset-x-0 bottom-0 p-10 bg-gradient-to-t from-black via-black/40 to-transparent">
                  <h3 className="text-2xl text-white font-black mb-2 uppercase tracking-tight">{player.name}</h3>
-                 <p className="text-[#87CEEB] text-xs font-black uppercase tracking-widest">{player.position} | #{player.squadNumber}</p>
+                 <p className="text-[#87CEEB] text-xs font-black uppercase tracking-widest">{player.position} | #{player.jerseyNumber}</p>
               </div>
             </div>
           </aside>

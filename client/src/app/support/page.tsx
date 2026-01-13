@@ -1,12 +1,15 @@
 'use client'
 
-import { Header } from '@/features/home/components/Header'
-import { Footer } from '@/features/home/components/Footer'
+import { Header } from '@/shared/components/Header'
+import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
-import { patronTiers } from '@/data/mockData'
+
 import { Heart, Check } from 'lucide-react'
+import { SupporterTier } from '@/features/supporter/types'
+import { useGet } from '@/shared/hooks/useApiQuery'
 
 export default function SupportDonate() {
+  const {data:patronTiers} = useGet<SupporterTier[]>('')
   return (
     <>
       <Header />
@@ -50,7 +53,7 @@ export default function SupportDonate() {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {patronTiers.map((tier, index) => (
+              {patronTiers?.length && patronTiers.map((tier, index) => (
                 <div 
                   key={index}
                   className={`bg-white rounded-lg shadow-card p-8 ${

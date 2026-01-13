@@ -82,7 +82,7 @@ export const playerSchemas = {
     height: Joi.number().positive().max(3),
     nationality: Joi.string().max(100),
     biography: Joi.string().max(5000),
-    squadNumber: Joi.number().integer().min(1).max(99),
+    jerseyNumber: Joi.number().integer().min(1).max(99),
     imageUrl: commonSchemas.url,
   }),
 
@@ -93,7 +93,7 @@ export const playerSchemas = {
     height: Joi.number().positive().max(3),
     nationality: Joi.string().max(100),
     biography: Joi.string().max(5000),
-    squadNumber: Joi.number().integer().min(1).max(99),
+    jerseyNumber: Joi.number().integer().min(1).max(99),
     imageUrl: commonSchemas.url,
     status: Joi.string().valid('active', 'injured', 'suspended', 'transferred'),
     contactInfo: Joi.object({

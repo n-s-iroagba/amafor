@@ -1,9 +1,9 @@
 'use client'
 
-import { Header } from '@/features/home/components/Header'
-import { Footer } from '@/features/home/components/Footer'
+import { Header } from '@/shared/components/Header'
+import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
-import { ArrowLeft, CheckCircle } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 
 export default function AdvertiserRegistration() {

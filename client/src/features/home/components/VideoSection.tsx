@@ -19,10 +19,10 @@ export interface Video {
 
 const VideoSection = () => {
   // Mock data for demo
-  const { data:resourceData } = useGet<{data:Video[]}>(
+  const { data:data } = useGet<{data:Video[]}>(
     `${API_ROUTES.VIDEOS.LIST}?page=1?limit=5`
   );
-  const videos = resourceData?.data
+  const videos = data?.data
 
   // Fallback thumbnail or placeholder
   const getThumbnailUrl = (video: Video) => {

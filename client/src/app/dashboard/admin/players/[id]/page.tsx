@@ -1,139 +1,291 @@
+// app/sports-admin/players/[id]/page.tsx
 'use client';
-import React, { useState } from 'react';
-import { MOCK_PLAYERS } from '../../../../constants';
-// Added ShieldCheck to the lucide-react import list to resolve the "Cannot find name 'ShieldCheck'" error
-import { Shield, ArrowLeft, Save, UserCheck, Activity, Award, Calendar, Database, AlertCircle, Loader2, CheckCircle, ShieldCheck } from 'lucide-react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
 
-export default function AdminPlayerEditPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const player = MOCK_PLAYERS.find(p => p.id === id) || MOCK_PLAYERS[0];
-  const [isSaving, setIsSaving] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+import { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useDelete } from '@/hooks/useApiQuery';
+import api from '@/lib/apiUtils';
+import Image from 'next/image';
 
-  const handleCommit = () => {
-    setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-        navigate('/dashboard/admin/players');
-      }, 2000);
-    }, 2000);
+
+interface Player {
+  id: number;
+  name: string;
+  position: string;
+  jerseyNumber: number;
+  imageUrl?: string;
+  bio?: string;
+  dateOfBirth?: string;
+  nationality?: string;
+  createdAt: string;
+}
+
+const PlayerDetailsPage = () => {
+  const params = useParams();
+  const router = useRouter();
+  const playerId = params.id as string;
+  
+  const [player, setPlayer] = useState<Player | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const {
+    deleting,
+    apiError: deleteError,
+    handleDelete,
+  } = useDelete<{ message: string }>(`/players/${playerId}`);
+
+  useEffect(() => {
+    const fetchPlayer = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get(`/players/${playerId}`);
+        setPlayer(response.data);
+      } catch (err) {
+        setError('Failed to load player details');
+        console.error('Error fetching player:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (playerId) {
+      fetchPlayer();
+    }
+  }, [playerId]);
+
+  const handleDeleteClick = async () => {
+    if (window.confirm('Are you sure you want to delete this player? This action cannot be undone.')) {
+      try {
+        await handleDelete();
+        // Redirect to players list after successful deletion
+        router.push('/sports-admin/players');
+      } catch (error) {
+        // Error is handled by the hook
+        console.error('Delete failed:', error);
+      }
+    }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      {showToast && (
-        <div className="fixed top-24 right-8 bg-[#2F4F4F] text-white px-8 py-4 rounded-2xl shadow-2xl z-[100] flex items-center space-x-3 border-l-4 border-[#87CEEB] animate-in slide-in-from-right-10 duration-500">
-          <CheckCircle className="w-5 h-5 text-[#87CEEB]" />
-          <span className="text-xs font-black uppercase tracking-widest">Roster Record Authenticated</span>
-        </div>
-      )}
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
-      <div className="max-w-5xl mx-auto">
-        <Link to="/dashboard/admin/players" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
-          <ArrowLeft className="w-3 h-3 mr-2" /> Back to Roster
-        </Link>
+  const calculateAge = (dateOfBirth: string) => {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  };
 
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-          <div className="flex items-center space-x-6">
-            <div className="w-24 h-24 rounded-[2.5rem] overflow-hidden border-4 border-white shadow-xl bg-gray-200">
-              <img src={player.imageUrl} className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <h1 className="text-4xl text-[#2F4F4F] font-black uppercase tracking-tight">{player.name}</h1>
-              <div className="flex items-center space-x-3 mt-1">
-                <span className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.2em]">Profile ID: {player.id}</span>
-                <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                <span className="text-[10px] font-black text-green-500 uppercase tracking-widest flex items-center">
-                  <UserCheck className="w-3.5 h-3.5 mr-1" /> VERIFIED STATUS
-                </span>
-              </div>
-            </div>
-          </div>
-          <button 
-            onClick={handleCommit}
-            disabled={isSaving}
-            className="sky-button flex items-center space-x-3 py-5 px-10 disabled:opacity-50 shadow-xl"
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error || !player) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Player Not Found</h1>
+          <p className="text-gray-600 mb-4">{error || 'The requested player could not be found.'}</p>
+          <Link
+            href="/sports-admin/players"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
           >
-            {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-            <span>{isSaving ? 'COMMITTING DATA...' : 'COMMIT UPDATES'}</span>
-          </button>
-        </header>
+            Back to Players
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-8">
-            <section className="bg-white rounded-[3rem] p-10 shadow-sm border border-gray-100">
-              <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-10 flex items-center">
-                <Database className="w-4 h-4 mr-2 text-[#87CEEB]" /> Bio-Data Verification
-              </h2>
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="text-[9px] font-black text-[#2F4F4F] uppercase tracking-widest">Squad Number</label>
-                  <input type="number" defaultValue={player.squadNumber} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border outline-none font-bold focus:border-[#87CEEB]" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[9px] font-black text-[#2F4F4F] uppercase tracking-widest">Primary Position</label>
-                  <select defaultValue={player.position} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border outline-none font-bold focus:border-[#87CEEB] appearance-none">
-                    <option value="GK">Goalkeeper (GK)</option>
-                    <option value="DF">Defender (DF)</option>
-                    <option value="MF">Midfielder (MF)</option>
-                    <option value="FW">Forward (FW)</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[9px] font-black text-[#2F4F4F] uppercase tracking-widest">Verified Age (Medical)</label>
-                  <input type="number" defaultValue={player.age} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border outline-none font-bold focus:border-[#87CEEB]" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[9px] font-black text-[#2F4F4F] uppercase tracking-widest">Height (Metric)</label>
-                  <input type="number" step="0.01" defaultValue={player.height} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border outline-none font-bold focus:border-[#87CEEB]" />
-                </div>
-              </form>
-            </section>
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header with actions */}
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <Link
+              href="/sports-admin/players"
+              className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 mb-2"
+            >
+              ← Back to Players
+            </Link>
+            <h1 className="text-3xl font-bold text-gray-900">Player Details</h1>
+          </div>
+          <div className="flex space-x-3">
+            <Link
+              href={`/sports-admin/players/${playerId}/edit`}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Edit Player
+            </Link>
+            <button
+              onClick={handleDeleteClick}
+              disabled={deleting}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {deleting ? 'Deleting...' : 'Delete Player'}
+            </button>
+          </div>
+        </div>
 
-            <section className="bg-white rounded-[3rem] p-10 shadow-sm border border-gray-100">
-              <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-10 flex items-center">
-                <Award className="w-4 h-4 mr-2 text-amber-500" /> Contractual Eligibility
-              </h2>
-              <div className="space-y-6">
-                <div className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl border border-transparent hover:border-[#87CEEB]/20 transition-all cursor-pointer">
-                  <div>
-                    <div className="text-xs font-bold text-[#2F4F4F]">Academy Scholarship Holder</div>
-                    <div className="text-[9px] text-gray-400 uppercase font-black tracking-widest">Valid through July 2026</div>
-                  </div>
-                  <div className="w-12 h-6 bg-green-500 rounded-full p-1 relative">
-                    <div className="w-4 h-4 bg-white rounded-full absolute right-1" />
-                  </div>
+        {/* Error message */}
+        {deleteError && (
+          <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Error deleting player</h3>
+                <div className="mt-1 text-sm text-red-700">
+                  <p>{deleteError}</p>
                 </div>
               </div>
-            </section>
-          </div>
-
-          <aside className="space-y-8">
-            <div className="bg-[#2F4F4F] text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-               <Shield className="absolute -right-8 -bottom-8 w-40 h-40 text-white/5" />
-               <h3 className="text-lg font-black mb-6 uppercase tracking-tight text-[#87CEEB]">ISO Data Integrity</h3>
-               <p className="text-xs text-gray-400 leading-relaxed mb-10 font-bold uppercase tracking-tight">
-                 Modification of restricted player metrics triggers an audit trail entry (ADM-LOG-04). Ensure physical medical clearance is on file for height/age reconciliation.
-               </p>
-               <div className="flex items-center space-x-3 text-[10px] font-black text-[#87CEEB] uppercase tracking-widest bg-white/5 p-4 rounded-xl border border-white/5">
-                 <ShieldCheck className="w-4 h-4 text-green-500" /> <span>ISO 27001 AUDIT ACTIVE</span>
-               </div>
             </div>
+          </div>
+        )}
 
-            <div className="bg-amber-50 p-8 rounded-[2rem] border border-amber-100 flex items-start space-x-4">
-              <AlertCircle className="w-6 h-6 text-amber-600 flex-none" />
-              <p className="text-[10px] text-amber-800 font-bold uppercase leading-relaxed">
-                Bio-data updates will force a background reconciliation for all active professional scout dossiers.
+        {/* Player details card */}
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="px-4 py-5 sm:px-6 flex justify-between items-start">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">{player.name}</h2>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                Player information and details
               </p>
             </div>
-          </aside>
+            <div className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+              ID: {player.id}
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-200">
+            <dl>
+              {/* Profile section with image */}
+              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Profile</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <div className="flex items-center space-x-4">
+                    {player.imageUrl ? (
+                      <Image
+                       height={50}
+                       width={50}
+                       unoptimized
+                        className="h-24 w-24 rounded-full object-cover"
+                        src={player.imageUrl}
+                        alt={player.name}
+                      />
+                    ) : (
+                      <div className="h-24 w-24 rounded-full bg-gray-300 flex items-center justify-center">
+                        <span className="text-gray-500 text-lg font-medium">
+                          {player.name.split(' ').map(n => n[0]).join('')}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <h3 className="text-lg font-semibold">{player.name}</h3>
+                      <p className="text-gray-600">{player.position}</p>
+                    </div>
+                  </div>
+                </dd>
+              </div>
+
+              {/* Basic information */}
+              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Jersey Number</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-800 rounded-full font-semibold">
+                    {player.jerseyNumber}
+                  </span>
+                </dd>
+              </div>
+
+              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Position</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {player.position}
+                </dd>
+              </div>
+
+              {/* Personal information */}
+              {player.dateOfBirth && (
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Date of Birth</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {formatDate(player.dateOfBirth)} 
+                    {player.dateOfBirth && ` (${calculateAge(player.dateOfBirth)} years old)`}
+                  </dd>
+                </div>
+              )}
+
+              {player.nationality && (
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Nationality</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {player.nationality}
+                  </dd>
+                </div>
+              )}
+
+              {/* Bio */}
+              {player.bio && (
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Bio</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 whitespace-pre-wrap">
+                    {player.bio}
+                  </dd>
+                </div>
+              )}
+
+              {/* System information */}
+              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Created</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {formatDate(player.createdAt)}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        {/* Quick actions footer */}
+        <div className="mt-6 flex justify-end space-x-3">
+          <Link
+            href={`/sports-admin/players/${playerId}/edit`}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Edit Player
+          </Link>
+          <button
+            onClick={handleDeleteClick}
+            disabled={deleting}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {deleting ? 'Deleting...' : 'Delete Player'}
+          </button>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default PlayerDetailsPage;

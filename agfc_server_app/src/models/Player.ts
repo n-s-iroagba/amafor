@@ -22,7 +22,7 @@ export interface PlayerAttributes {
   height?: number;
   nationality?: string;
   biography?: string;
-  squadNumber?: number;
+  jerseyNumber?: number;
   imageUrl?: string;
   status: PlayerStatus;
   joinedDate?: Date;
@@ -56,7 +56,7 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
   public height?: number;
   public nationality?: string;
   public biography?: string;
-  public squadNumber?: number;
+  public jerseyNumber?: number;
   public imageUrl?: string;
   public status!: PlayerStatus;
   public joinedDate?: Date;
@@ -118,7 +118,7 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
           type: DataTypes.TEXT,
           allowNull: true
         },
-        squadNumber: {
+        jerseyNumber: {
           type: DataTypes.INTEGER,
           allowNull: true,
           validate: {

@@ -1,31 +1,14 @@
 'use client';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/hooks/useApiQuery';
+
 import { useState } from 'react';
 import Image from 'next/image';
+import { Coach } from '@/features/coach/types';
+import { Player } from '@/features/player/types';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
-interface Player {
-  id: number;
-  name: string;
-  position: string;
-  jerseyNumber: number;
-  imageUrl?: string;
-  bio?: string;
-  dateOfBirth?: Date;
-  nationality?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
 
-interface Coach {
-  id: number;
-  name: string;
-  role: string;
-  imageUrl?: string;
-  bio?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+
 
 export default function TeamSquad() {
   const [selectedTab, setSelectedTab] = useState<'coaches' | 'players'>(
@@ -37,13 +20,13 @@ export default function TeamSquad() {
 
   // Destructure loading and error states from the hook
   const {
-    resourceData: coaches,
+    data: coaches,
     loading: coachesLoading,
     error: coachesError,
   } = useGet<Coach[]>(API_ROUTES.COACHES.LIST);
 
   const {
-    resourceData: players,
+    data: players,
     loading: playersLoading,
     error: playersError,
   } = useGet<Player[]>(API_ROUTES.PLAYERS.LIST);

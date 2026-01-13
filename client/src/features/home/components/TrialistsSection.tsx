@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { Users, ArrowRight } from 'lucide-react'
-import { useGet } from "@/hooks/useApiQuery"
+import { useGet } from '@/shared/hooks/useApiQuery';
+
 
 interface Trialist {
   id: string;

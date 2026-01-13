@@ -1,5 +1,7 @@
-import { Dialect } from 'sequelize';
+import { Dialect, Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
+dotenv.config();
 export interface DatabaseConfig {
   username: string;
   password: string;
@@ -32,4 +34,6 @@ const config: DatabaseConfig = {
   }
 };
 
-export default config;
+const sequelize = new Sequelize(config);
+
+export default sequelize;

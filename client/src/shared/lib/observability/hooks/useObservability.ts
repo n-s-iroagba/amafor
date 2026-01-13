@@ -1,6 +1,11 @@
 import { useCallback, useRef } from 'react';
-import { observability, logger, metrics, tracer } from '@/lib/observability';
-import type { LogLevel, BusinessMetric } from '@/lib/observability/types';
+
+import { LogLevel, BusinessMetric } from '../types';
+import { logger } from '../logger';
+import { metrics } from '../metrics';
+import { tracer } from '../tracer';
+import { observability } from '../_mocks_/observability';
+
 
 /**
  * Simplified React hook for comprehensive observability features

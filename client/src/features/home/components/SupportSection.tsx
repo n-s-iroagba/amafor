@@ -1,17 +1,14 @@
 'use client';
 
 import Link from 'next/link'
-import { useGet } from "@/hooks/useApiQuery"
 
-interface Supporter {
-  id: string;
-  name: string;
-  tier: string;
-  avatar?: string;
-}
+import {  SupporterWithTier } from '@/features/supporter/types';
+import { useGet } from '@/shared/hooks/useApiQuery';
+
+
 
 export default function SupportSection() {
-  const { data: topPatrons, loading } = useGet<Supporter[]>(
+  const { data: topPatrons, loading } = useGet<SupporterWithTier[]>(
     '/api/supporters/top',
     { 
       params: { limit: 4 },
@@ -76,7 +73,7 @@ export default function SupportSection() {
                     <div className="flex items-center justify-center gap-2">
                       <div className="h-px w-4 bg-sky-500"></div>
                       <p className="text-xs text-sky-600 font-bold uppercase tracking-wider">
-                        {patron.tier}
+                        {patron.tier.name}
                       </p>
                       <div className="h-px w-4 bg-sky-500"></div>
                     </div>

@@ -1,10 +1,11 @@
 'use client'
 
-import { Header } from '@/features/home/components/Header'
-import { Footer } from '@/features/home/components/Footer'
+import { Header } from '@/shared/components/Header'
+import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
-import { adZones } from '@/data/mockData'
+
 import { Eye, TrendingUp, Target, ArrowRight, ChevronRight } from 'lucide-react'
+import { adZones } from '@/features/advertisement/data'
 
 export default function AdvertiseInfo() {
   return (
@@ -74,18 +75,12 @@ export default function AdvertiseInfo() {
                       <span className="text-slate-600">Dimensions:</span>
                       <span className="font-semibold text-sky-500">{zone.dimensions}px</span>
                     </div>
-                    <div className="flex justify-between py-2 border-b border-slate-200">
-                      <span className="text-slate-600">Format:</span>
-                      <span className="font-semibold text-sky-500">{zone.format}</span>
-                    </div>
+                 
                     <div className="flex justify-between py-2 border-b border-slate-200">
                       <span className="text-slate-600">Max Size:</span>
                       <span className="font-semibold text-sky-500">{zone.maxSize}</span>
                     </div>
-                    <div className="flex justify-between py-2">
-                      <span className="text-slate-600">Rate per Unique View:</span>
-                      <span className="text-2xl font-heading text-sky-700">{zone.rate}</span>
-                    </div>
+                 
                   </div>
 
                   <div className="bg-slate-100 h-32 flex items-center justify-center text-slate-500 border border-slate-200 rounded-lg">

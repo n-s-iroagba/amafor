@@ -96,7 +96,7 @@ export class Logger {
     }
   }
   
-// Updated logger method
+
 private sendToExternalService(entry: LogEntry): void {
   // Option 1: Check with proper type guard
   if (typeof window !== 'undefined' && 'gtag' in window && typeof window.gtag === 'function') {
@@ -116,7 +116,7 @@ private sendToExternalService(entry: LogEntry): void {
   }
 }
   private logToConsole(entry: LogEntry): void {
-    const styles = {
+    const styles:Record<LogLevel,string> = {
       error: 'color: #ef4444; font-weight: bold;',
       warn: 'color: #f59e0b; font-weight: bold;',
       info: 'color: #3b82f6;',

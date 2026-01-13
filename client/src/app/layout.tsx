@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import {Providers} from '@/context/providers'
+import { Providers } from '@/shared/lib/context/providers'
+
 
 export const metadata: Metadata = {
   title: 'Amafor Gladiators FC - Nigerian Football Club',
