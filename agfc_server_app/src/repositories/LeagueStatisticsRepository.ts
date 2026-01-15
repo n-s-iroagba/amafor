@@ -3,44 +3,15 @@ import {
   LeagueStatisticsAttributes, 
   LeagueStatisticsCreationAttributes 
 } from '../models/LeagueStatistics';
-import { League } from '../models/League';
-import { BaseRepository } from './base.repository';
-import { Op, QueryTypes, Sequelize } from 'sequelize';
-import sequelize from '../config/database';
 
-export interface ILeagueStatisticsRepository {
-  create(data: LeagueStatisticsCreationAttributes): Promise<LeagueStatistics>;
-  createBulk(data: LeagueStatisticsCreationAttributes[]): Promise<LeagueStatistics[]>;
-  findAll(leagueId: string, options?: any): Promise<{ rows: LeagueStatistics[]; count: number }>;
-  findById(id: string): Promise<LeagueStatistics | null>;
-  findByTeam(leagueId: string, team: string): Promise<LeagueStatistics | null>;
-  update(id: string, data: Partial<LeagueStatisticsAttributes>): Promise<[number, LeagueStatistics[]]>;
-  delete(id: string): Promise<number>;
-  deleteByLeague(leagueId: string): Promise<number>;
-  getLeagueStandings(leagueId: string): Promise<LeagueStatistics[]>;
-  getTeamStatistics(leagueId: string, team: string): Promise<LeagueStatistics | null>;
-  updateTeamStats(
-    leagueId: string, 
-    team: string, 
-    data: Partial<LeagueStatisticsAttributes>
-  ): Promise<[number, LeagueStatistics[]]>;
-  recalculateStandings(leagueId: string): Promise<void>;
-  getTopScorers(leagueId: string, limit?: number): Promise<LeagueStatistics[]>;
-  getTopDefenses(leagueId: string, limit?: number): Promise<LeagueStatistics[]>;
-  getFormTable(leagueId: string): Promise<LeagueStatistics[]>;
-  getHomeAwayStats(leagueId: string): Promise<any>;
-  getLeagueSummary(leagueId: string): Promise<{
-    totalGoals: number;
-    averageGoalsPerMatch: number;
-    totalMatches: number;
-    totalTeams: number;
-    highestScoringTeam: string;
-    bestDefenseTeam: string;
-    mostCleanSheets: string;
-  }>;
-}
+import { Op,  Sequelize } from 'sequelize';
+import { BaseRepository } from './BaseRepository';
+import League from '@models/League';
+import tracer from '@utils/tracer';
+import logger from '@utils/logger';
 
-export class LeagueStatisticsRepository extends BaseRepository<LeagueStatistics> implements ILeagueStatisticsRepository {
+
+export class LeagueStatisticsRepository extends BaseRepository<LeagueStatistics> {
   
   constructor() {
     super(LeagueStatistics);
@@ -50,45 +21,61 @@ export class LeagueStatisticsRepository extends BaseRepository<LeagueStatistics>
     return await this.model.bulkCreate(data, { returning: true });
   }
 
-  async findAll(
-    leagueId: string,
-    options: {
-      page?: number;
-      limit?: number;
-      sortBy?: string;
-      sortOrder?: 'ASC' | 'DESC';
-      includeLeague?: boolean;
-    } = {}
-  ): Promise<{ rows: LeagueStatistics[]; count: number }> {
-    const {
-      page = 1,
-      limit = 20,
-      sortBy = 'points',
-      sortOrder = 'DESC',
-      includeLeague = false,
-    } = options;
+async findAllByLeague(
+  leagueId: string,
+  options: {
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: 'ASC' | 'DESC';
+    includeLeague?: boolean;
+  } = {}
+): Promise<{ rows: LeagueStatistics[]; count: number }> {
+  return tracer.startActiveSpan(`repository.${this.model.name}.findAllByLeague`, async (span) => {
+    try {
+      span.setAttribute('leagueId', leagueId);
+      
+      const {
+        page = 1,
+        limit = 20,
+        sortBy = 'points',
+        sortOrder = 'DESC',
+        includeLeague = false,
+      } = options;
 
-    const offset = (page - 1) * limit;
+      const offset = (page - 1) * limit;
 
-    const include = includeLeague ? [{
-      model: League,
-      as: 'league',
-      attributes: ['id', 'name', 'season'],
-    }] : [];
+      const include = includeLeague ? [{
+        model: League,
+        as: 'league',
+        attributes: ['id', 'name', 'season'],
+      }] : [];
 
-    return await this.model.findAndCountAll({
-      where: { leagueId },
-      include,
-      limit,
-      offset,
-      order: [
-        [sortBy, sortOrder],
-        ['goalDifference', 'DESC'],
-        ['goalsFor', 'DESC'],
-        ['team', 'ASC'],
-      ],
-    });
-  }
+      const result = await this.model.findAndCountAll({
+        where: { leagueId },
+        include,
+        limit,
+        offset,
+        order: [
+          [sortBy, sortOrder],
+          ['goalDifference', 'DESC'],
+          ['goalsFor', 'DESC'],
+          ['team', 'ASC'],
+        ],
+      });
+
+      span.setAttribute('count', result.count);
+      span.setAttribute('rows', result.rows.length);
+      return result;
+    } catch (error: any) {
+      span.setStatus({ code: 2, message: error.message });
+      logger.error(`Error finding ${this.model.name} by league: ${leagueId}`, { error });
+      throw error;
+    } finally {
+      span.end();
+    }
+  });
+}
 
   async findByTeam(leagueId: string, team: string): Promise<LeagueStatistics | null> {
     return await this.model.findOne({
@@ -177,7 +164,7 @@ export class LeagueStatisticsRepository extends BaseRepository<LeagueStatistics>
       where: { 
         leagueId,
         form: {
-          [Op.not]: null,
+          [Op.not]: '',
           [Op.ne]: '',
         },
       },
@@ -204,52 +191,88 @@ export class LeagueStatisticsRepository extends BaseRepository<LeagueStatistics>
     });
   }
 
-  async getLeagueSummary(leagueId: string): Promise<{
-    totalGoals: number;
-    averageGoalsPerMatch: number;
-    totalMatches: number;
-    totalTeams: number;
-    highestScoringTeam: string;
-    bestDefenseTeam: string;
-    mostCleanSheets: string;
-  }> {
-    const result = await this.model.findOne({
-      where: { leagueId },
-      attributes: [
-        [Sequelize.fn('SUM', Sequelize.col('goalsFor')), 'totalGoals'],
-        [Sequelize.fn('AVG', Sequelize.col('goalsFor')), 'avgGoals'],
-        [Sequelize.fn('COUNT', Sequelize.col('id')), 'totalTeams'],
-        [Sequelize.fn('SUM', Sequelize.col('matchesPlayed')), 'totalMatches'],
-      ],
-      raw: true,
-    });
+async getLeagueSummary(leagueId: string): Promise<{
+  totalGoals: number;
+  averageGoalsPerMatch: number;
+  totalMatches: number;
+  totalTeams: number;
+  highestScoringTeam: string;
+  bestDefenseTeam: string;
+  mostCleanSheets: string;
+}> {
+  return tracer.startActiveSpan(`repository.${this.model.name}.getLeagueSummary`, async (span) => {
+    try {
+      span.setAttribute('leagueId', leagueId);
+    interface AggregateResult {
+        totalGoals: number;
+        avgGoals: number;
+        totalTeams: number;
+        totalMatches: number;
+      }
+      // Run the aggregate query and the three findOne queries in parallel
+       const aggregateResult = await this.model.findOne({
+        where: { leagueId },
+        attributes: [
+          [Sequelize.fn('SUM', Sequelize.col('goalsFor')), 'totalGoals'],
+          [Sequelize.fn('AVG', Sequelize.col('goalsFor')), 'avgGoals'],
+          [Sequelize.fn('COUNT', Sequelize.col('id')), 'totalTeams'],
+          [Sequelize.fn('SUM', Sequelize.col('matchesPlayed')), 'totalMatches'],
+        ],
+        raw: true,
+      }) as unknown as AggregateResult | null;
 
-    const highestScoring = await this.model.findOne({
-      where: { leagueId },
-      order: [['goalsFor', 'DESC']],
-      attributes: ['team', 'goalsFor'],
-    });
+      // Get individual records in parallel for better performance
+      const [highestScoring, bestDefense, mostCleanSheets] = await Promise.all([
+        this.model.findOne({
+          where: { leagueId },
+          order: [['goalsFor', 'DESC']],
+          attributes: ['team', 'goalsFor'],
+        }),
+        this.model.findOne({
+          where: { leagueId },
+          order: [['goalsAgainst', 'ASC']],
+          attributes: ['team', 'goalsAgainst'],
+        }),
+        this.model.findOne({
+          where: { leagueId },
+          order: [['cleanSheets', 'DESC']],
+          attributes: ['team', 'cleanSheets'],
+        }),
+      ]);
 
-    const bestDefense = await this.model.findOne({
-      where: { leagueId },
-      order: [['goalsAgainst', 'ASC']],
-      attributes: ['team', 'goalsAgainst'],
-    });
+      // Extract values from the aggregate result with proper default values
+      const totalGoals = aggregateResult?.totalGoals || 0;
+      const avgGoals = aggregateResult?.avgGoals || 0;
+      const totalMatches = aggregateResult?.totalMatches || 0;
+      const totalTeams = aggregateResult?.totalTeams || 0;
 
-    const mostCleanSheets = await this.model.findOne({
-      where: { leagueId },
-      order: [['cleanSheets', 'DESC']],
-      attributes: ['team', 'cleanSheets'],
-    });
+      // Since each match appears twice in statistics (once for each team), divide by 2 to get actual match count
+      const actualMatches = Math.floor(totalMatches / 2);
 
-    return {
-      totalGoals: Number(result?.totalGoals) || 0,
-      averageGoalsPerMatch: parseFloat((Number(result?.avgGoals) || 0).toFixed(2)),
-      totalMatches: Number(result?.totalMatches) || 0,
-      totalTeams: Number(result?.totalTeams) || 0,
-      highestScoringTeam: highestScoring?.team || 'N/A',
-      bestDefenseTeam: bestDefense?.team || 'N/A',
-      mostCleanSheets: mostCleanSheets?.team || 'N/A',
-    };
-  }
-}
+      const summary = {
+        totalGoals,
+        averageGoalsPerMatch: parseFloat(avgGoals.toFixed(2)),
+        totalMatches: actualMatches,
+        totalTeams,
+        highestScoringTeam: highestScoring?.get('team') as string || 'N/A',
+        bestDefenseTeam: bestDefense?.get('team') as string || 'N/A',
+        mostCleanSheets: mostCleanSheets?.get('team') as string || 'N/A',
+      };
+
+      span.setAttributes({
+        totalGoals: summary.totalGoals,
+        averageGoalsPerMatch: summary.averageGoalsPerMatch,
+        totalMatches: summary.totalMatches,
+        totalTeams: summary.totalTeams,
+      });
+
+      return summary;
+    } catch (error: any) {
+      span.setStatus({ code: 2, message: error.message });
+      logger.error(`Error getting league summary for league: ${leagueId}`, { error });
+      throw error;
+    } finally {
+      span.end();
+     }
+  });
+}}

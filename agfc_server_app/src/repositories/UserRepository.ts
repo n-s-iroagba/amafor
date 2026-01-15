@@ -1,9 +1,10 @@
-import { FindOptions, Op, Transaction } from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { User, UserAttributes, UserCreationAttributes, UserType, UserStatus } from '@models/User';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
-import { tracer } from '@utils/tracer';
+import tracer from '@utils/tracer';
+import { Span } from '@opentelemetry/api';
+import logger from '@utils/logger';
 
 export class UserRepository extends BaseRepository<User> {
   private auditLogRepository: AuditLogRepository;
@@ -12,18 +13,20 @@ export class UserRepository extends BaseRepository<User> {
     super(User);
     this.auditLogRepository = new AuditLogRepository();
   }
-public async countNewToday(): Promise<number> {
-  const startOfDay = new Date();
-  startOfDay.setHours(0,0,0,0);
-  
-  return this.model.count({
-    where: {
-      createdAt: { [Op.gte]: startOfDay }
-    }
-  });
-}
+
+  public async countNewToday(): Promise<number> {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    
+    return this.model.count({
+      where: {
+        createdAt: { [Op.gte]: startOfDay }
+      }
+    });
+  }
+
   async findByEmail(email: string, includePassword: boolean = false): Promise<User | null> {
-    return tracer.startActiveSpan('repository.User.findByEmail', async (span) => {
+    return tracer.startActiveSpan('repository.User.findByEmail', async (span: Span) => {
       try {
         span.setAttribute('email', email);
         const attributes: any = includePassword ? undefined : { exclude: ['passwordHash'] };
@@ -32,11 +35,11 @@ public async countNewToday(): Promise<number> {
           where: { email },
           attributes
         });
-
         span.setAttribute('found', !!user);
         return user;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error finding user by email: ${email}`, { error });
         throw error;
       } finally {
@@ -46,7 +49,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async createWithAudit(data: UserCreationAttributes, auditData: any): Promise<User> {
-    return tracer.startActiveSpan('repository.User.createWithAudit', async (span) => {
+    return tracer.startActiveSpan('repository.User.createWithAudit', async (span: Span) => {
       const transaction = await User.sequelize!.transaction();
       
       try {
@@ -66,7 +69,7 @@ public async countNewToday(): Promise<number> {
           newValue: user.toJSON(),
           changes: Object.keys(data).map(key => ({
             field: key,
-            newValue: data[key as keyof UserCreationAttributes]
+            newValue: (data as any)[key]
           })),
           ipAddress: auditData.ipAddress,
           userAgent: auditData.userAgent
@@ -77,7 +80,8 @@ public async countNewToday(): Promise<number> {
         return user;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating user with audit', { error, data });
         throw error;
       } finally {
@@ -87,7 +91,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async updateWithAudit(id: string, data: Partial<UserAttributes>, auditData: any): Promise<User | null> {
-    return tracer.startActiveSpan('repository.User.updateWithAudit', async (span) => {
+    return tracer.startActiveSpan('repository.User.updateWithAudit', async (span: Span) => {
       const transaction = await User.sequelize!.transaction();
       
       try {
@@ -97,19 +101,18 @@ public async countNewToday(): Promise<number> {
         if (!user) {
           throw new Error('User not found');
         }
-
-        const oldValue = user.toJSON();
+        const oldValue = user.toJSON() as UserAttributes;
         
         // Update user
         await user.update(data, { transaction });
         
         // Get changes
         const changes = Object.keys(data)
-          .filter(key => user.get(key) !== oldValue[key])
+          .filter(key => user.get(key as keyof UserAttributes) !== oldValue[key as keyof UserAttributes])
           .map(key => ({
             field: key,
-            oldValue: oldValue[key],
-            newValue: data[key as keyof UserAttributes]
+            oldValue: oldValue[key as keyof UserAttributes],
+            newValue: (data as any)[key]
           }));
 
         // Create audit log
@@ -133,7 +136,8 @@ public async countNewToday(): Promise<number> {
         return user;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating user with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -143,7 +147,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async updateLoginInfo(id: string, ipAddress?: string): Promise<void> {
-    return tracer.startActiveSpan('repository.User.updateLoginInfo', async (span) => {
+    return tracer.startActiveSpan('repository.User.updateLoginInfo', async (span: Span) => {
       try {
         span.setAttribute('id', id);
         await this.model.update(
@@ -156,7 +160,8 @@ public async countNewToday(): Promise<number> {
         );
         logger.info(`User login info updated: ${id}`);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating user login info: ${id}`, { error });
         throw error;
       } finally {
@@ -166,7 +171,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async incrementLoginAttempts(id: string): Promise<void> {
-    return tracer.startActiveSpan('repository.User.incrementLoginAttempts', async (span) => {
+    return tracer.startActiveSpan('repository.User.incrementLoginAttempts', async (span: Span) => {
       try {
         span.setAttribute('id', id);
         await this.model.update(
@@ -178,7 +183,8 @@ public async countNewToday(): Promise<number> {
         );
         logger.warn(`User login attempts incremented: ${id}`);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error incrementing user login attempts: ${id}`, { error });
         throw error;
       } finally {
@@ -188,7 +194,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async findByType(userType: UserType, options?: FindOptions): Promise<User[]> {
-    return tracer.startActiveSpan('repository.User.findByType', async (span) => {
+    return tracer.startActiveSpan('repository.User.findByType', async (span: Span) => {
       try {
         span.setAttribute('userType', userType);
         const users = await this.findAll({
@@ -198,7 +204,8 @@ public async countNewToday(): Promise<number> {
         span.setAttribute('count', users.length);
         return users;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error finding users by type: ${userType}`, { error });
         throw error;
       } finally {
@@ -208,7 +215,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async findPendingVerifications(): Promise<User[]> {
-    return tracer.startActiveSpan('repository.User.findPendingVerifications', async (span) => {
+    return tracer.startActiveSpan('repository.User.findPendingVerifications', async (span: Span) => {
       try {
         const users = await this.findAll({
           where: {
@@ -222,7 +229,8 @@ public async countNewToday(): Promise<number> {
         span.setAttribute('count', users.length);
         return users;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding pending verifications', { error });
         throw error;
       } finally {
@@ -232,7 +240,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async verifyUser(id: string, verificationData: any): Promise<void> {
-    return tracer.startActiveSpan('repository.User.verifyUser', async (span) => {
+    return tracer.startActiveSpan('repository.User.verifyUser', async (span: Span) => {
       const transaction = await User.sequelize!.transaction();
       
       try {
@@ -242,8 +250,7 @@ public async countNewToday(): Promise<number> {
         if (!user) {
           throw new Error('User not found');
         }
-
-        const oldValue = user.toJSON();
+        const oldValue = user.toJSON() as UserAttributes;
         
         await user.update(
           {
@@ -279,7 +286,8 @@ public async countNewToday(): Promise<number> {
         logger.info(`User verified: ${id}`);
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error verifying user: ${id}`, { error });
         throw error;
       } finally {
@@ -289,7 +297,7 @@ public async countNewToday(): Promise<number> {
   }
 
   async searchUsers(query: string, options?: FindOptions): Promise<User[]> {
-    return tracer.startActiveSpan('repository.User.searchUsers', async (span) => {
+    return tracer.startActiveSpan('repository.User.searchUsers', async (span: Span) => {
       try {
         span.setAttribute('query', query);
         
@@ -303,11 +311,11 @@ public async countNewToday(): Promise<number> {
           },
           ...options
         });
-
         span.setAttribute('count', users.length);
         return users;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error searching users: ${query}`, { error });
         throw error;
       } finally {
@@ -322,7 +330,7 @@ public async countNewToday(): Promise<number> {
     pending: number;
     byType: Record<string, number>;
   }> {
-    return tracer.startActiveSpan('repository.User.getDashboardStats', async (span) => {
+    return tracer.startActiveSpan('repository.User.getDashboardStats', async (span: Span) => {
       try {
         const [total, active, pending, byType] = await Promise.all([
           this.count(),
@@ -337,7 +345,7 @@ public async countNewToday(): Promise<number> {
         const byTypeMap = (byType as any[]).reduce((acc, item) => {
           acc[item.userType] = parseInt(item.get('count'));
           return acc;
-        }, {});
+        }, {} as Record<string, number>);
 
         span.setAttributes({
           total,
@@ -353,7 +361,8 @@ public async countNewToday(): Promise<number> {
           byType: byTypeMap
         };
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting user dashboard stats', { error });
         throw error;
       } finally {

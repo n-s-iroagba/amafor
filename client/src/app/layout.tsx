@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { Providers } from '@/shared/lib/context/providers'
+import { AppProviders } from '@/providers'
 
 
 export const metadata: Metadata = {
@@ -17,9 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
     
-        <Providers>
+        <AppProviders>
         {children}
-        </Providers>
+        </AppProviders>
       </body>
       
     </html>

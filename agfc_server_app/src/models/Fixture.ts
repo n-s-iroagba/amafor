@@ -36,7 +36,7 @@ export interface FixtureAttributes {
   availableAt?: Date;
   videoUrl?: string;
   videoProvider?: string;
-  gallery: string[];
+ 
   metadata: Record<string, any>;
   createdById: string;
   updatedById: string;
@@ -45,7 +45,7 @@ export interface FixtureAttributes {
   deletedAt?: Date;
 }
 
-export interface FixtureCreationAttributes extends Optional<FixtureAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'lineupHome' | 'lineupAway' | 'stats' | 'archiveStatus' | 'gallery' | 'metadata'> {}
+export interface FixtureCreationAttributes extends Optional<FixtureAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'lineupHome' | 'lineupAway' | 'stats' | 'archiveStatus'  | 'metadata'> {}
 
 export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes> implements FixtureAttributes {
   public id!: string;

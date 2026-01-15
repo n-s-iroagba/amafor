@@ -1,3 +1,5 @@
+import { League } from "@/features/league/types"
+
 export interface LeagueStatistics {
    id:string
    leagueId:string
@@ -5,6 +7,10 @@ export interface LeagueStatistics {
    goalsFor:number
    goalsAgainst:number
    fixtureId:number
+}
+
+export interface LeagueStatisticsWithLeague{
+   league:League
 }
 
 export interface LeagueTableProps{

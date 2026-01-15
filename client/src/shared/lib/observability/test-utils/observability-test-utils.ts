@@ -1,57 +1,89 @@
-import { renderHook, RenderHookResult, act, waitFor } from '@testing-library/react';
-import { ReactNode } from 'react';
+// src/shared/lib/observability/test-utils/observability-test-utils.ts
 
 /**
  * Test utilities for observability hooks
  */
 
+// Create a mock function factory that works in both browser and Node.js
+const createMockFunction = (implementation?: (...args: any[]) => any) => {
+  // In test environment, use jest.fn if available
+  if (typeof jest !== 'undefined' && jest.fn) {
+    return implementation ? jest.fn(implementation) : jest.fn();
+  }
+  
+  // In browser, create a simple mock function
+  const mockFn = implementation ? (...args: any[]) => implementation(...args) : () => {};
+  
+  // Add mock function properties
+  mockFn.mockReturnValue = (value: any) => {
+    const fn = () => value;
+    Object.assign(fn, mockFn);
+    return fn;
+  };
+  
+  mockFn.mockResolvedValue = (value: any) => {
+    const fn = async () => value;
+    Object.assign(fn, mockFn);
+    return fn;
+  };
+  
+  mockFn.mockClear = () => {};
+  mockFn.mockImplementation = (impl: any) => impl;
+  
+  return mockFn;
+};
+
+const createMockFn = createMockFunction;
+
 /**
  * Mock implementation of observability modules for testing
  */
 export const mockObservability = {
-  initialize: jest.fn().mockResolvedValue(undefined),
-  trackPageView: jest.fn(),
+  initialize: createMockFn().mockResolvedValue(undefined),
+  trackPageView: createMockFn(),
 };
 
 export const mockLogger = {
-  error: jest.fn(),
-  warn: jest.fn(),
-  info: jest.fn(),
-  debug: jest.fn(),
-  getLogs: jest.fn().mockReturnValue([]),
+  error: createMockFn(),
+  warn: createMockFn(),
+  info: createMockFn(),
+  debug: createMockFn(),
+  getLogs: createMockFn().mockReturnValue([]),
 };
 
 export const mockMetrics = {
-  recordAdView: jest.fn(),
-  recordDonation: jest.fn(),
-  recordRegistration: jest.fn(),
-  recordError: jest.fn(),
-  recordPerformanceMetric: jest.fn(),
-  getBusinessMetrics: jest.fn().mockReturnValue({}),
-  getPerformanceSummary: jest.fn().mockReturnValue({}),
-  getCountryStats: jest.fn().mockReturnValue({}),
+  recordAdView: createMockFn(),
+  recordDonation: createMockFn(),
+  recordRegistration: createMockFn(),
+  recordError: createMockFn(),
+  recordPerformanceMetric: createMockFn(),
+  getBusinessMetrics: createMockFn().mockReturnValue({}),
+  getPerformanceSummary: createMockFn().mockReturnValue({}),
+  getCountryStats: createMockFn().mockReturnValue({}),
 };
 
 export const mockTracer = {
-  startSpan: jest.fn().mockReturnValue('span_123'),
-  endSpan: jest.fn(),
+  startSpan: createMockFn().mockReturnValue('span_123'),
+  endSpan: createMockFn(),
 };
 
 /**
  * Reset all observability mocks before each test
  */
 export function resetObservabilityMocks() {
-  Object.values(mockObservability).forEach(mock => mock.mockClear());
-  Object.values(mockLogger).forEach(mock => mock.mockClear());
-  Object.values(mockMetrics).forEach(mock => mock.mockClear());
-  Object.values(mockTracer).forEach(mock => mock.mockClear());
+  if (typeof jest !== 'undefined') {
+    Object.values(mockObservability).forEach((mock: any) => mock.mockClear?.());
+    Object.values(mockLogger).forEach((mock: any) => mock.mockClear?.());
+    Object.values(mockMetrics).forEach((mock: any) => mock.mockClear?.());
+    Object.values(mockTracer).forEach((mock: any) => mock.mockClear?.());
+  }
 }
 
 /**
  * Create a test wrapper that provides mock observability
  */
 export function createTestWrapper() {
-  return function TestWrapper({ children }: { children: ReactNode }) {
+  return function TestWrapper({ children }: { children: React.ReactNode }) {
     return children;
   };
 }
@@ -60,19 +92,21 @@ export function createTestWrapper() {
  * Setup localStorage and sessionStorage mocks
  */
 export function setupStorageMocks() {
+  if (typeof window === 'undefined') return { store: {}, sessionStore: {} };
+  
   let store: Record<string, string> = {};
   let sessionStore: Record<string, string> = {};
 
   Object.defineProperty(window, 'localStorage', {
     value: {
-      getItem: jest.fn((key: string) => store[key] || null),
-      setItem: jest.fn((key: string, value: string) => {
+      getItem: createMockFn((key: string) => store[key] || null),
+      setItem: createMockFn((key: string, value: string) => {
         store[key] = value.toString();
       }),
-      clear: jest.fn(() => {
+      clear: createMockFn(() => {
         store = {};
       }),
-      removeItem: jest.fn((key: string) => {
+      removeItem: createMockFn((key: string) => {
         delete store[key];
       }),
     },
@@ -81,11 +115,11 @@ export function setupStorageMocks() {
 
   Object.defineProperty(window, 'sessionStorage', {
     value: {
-      getItem: jest.fn((key: string) => sessionStore[key] || null),
-      setItem: jest.fn((key: string, value: string) => {
+      getItem: createMockFn((key: string) => sessionStore[key] || null),
+      setItem: createMockFn((key: string, value: string) => {
         sessionStore[key] = value.toString();
       }),
-      clear: jest.fn(() => {
+      clear: createMockFn(() => {
         sessionStore = {};
       }),
     },

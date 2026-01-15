@@ -1,8 +1,9 @@
 import { FindOptions, Op } from 'sequelize';
 import { AuditLog, AuditLogAttributes, AuditLogCreationAttributes, AuditAction, EntityType } from '@models/AuditLog';
 import { BaseRepository } from './BaseRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
+import { AuditLogWithUser } from '../types/auditLog';
 
 export interface AuditLogFilterOptions {
   entityType?: EntityType;
@@ -46,7 +47,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding audit logs by entity', { error, entityType, entityId });
         throw error;
       } finally {
@@ -107,7 +109,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding audit logs by user', { error, userId, filters });
         throw error;
       } finally {
@@ -173,7 +176,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding audit logs by filters', { error, filters });
         throw error;
       } finally {
@@ -199,7 +203,7 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
           include: ['user'],
           raw: true,
           nest: true
-        });
+        }) as AuditLogWithUser[] ;
 
         span.setAttribute('count', logs.length);
         
@@ -216,7 +220,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
           changes: JSON.stringify(log.changes)
         }));
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error exporting audit logs', { error, dateFrom, dateTo, format });
         throw error;
       } finally {
@@ -244,7 +249,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
         
         return log;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating audit log', { error, data });
         throw error;
       } finally {
@@ -347,7 +353,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
 
         return stats;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting system activity stats', { error, period });
         throw error;
       } finally {
@@ -375,7 +382,8 @@ export class AuditLogRepository extends BaseRepository<AuditLog> {
         
         return deletedCount;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+                const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error cleaning up old audit logs', { error, retentionDays });
         throw error;
       } finally {

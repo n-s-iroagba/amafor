@@ -7,7 +7,8 @@ import {
   CreateOptions, 
   UpdateOptions, 
   DestroyOptions,
-  WhereOptions 
+  WhereOptions, 
+  Attributes
 } from 'sequelize';
 
 
@@ -211,7 +212,7 @@ export abstract class BaseRepository<T extends Model> {
     return tracer.startActiveSpan(`repository.${this.model.name}.exists`, async (span) => {
       try {
         span.setAttribute('id', id);
-        const count = await this.model.count({ where: { id } });
+        const count = await this.model.count({   where: { id: id as any } as WhereOptions<Attributes<T>>});
         span.setAttribute('exists', count > 0);
         return count > 0;
       } catch (error: any) {

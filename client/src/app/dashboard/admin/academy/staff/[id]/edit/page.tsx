@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { X, Upload, ImageIcon, Award, Briefcase } from 'lucide-react';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import api from '@/lib/apiUtils';
 import { uploadFile } from '@/utils/utils';

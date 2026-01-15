@@ -15,7 +15,7 @@ import {
   XCircle,
   BarChart3,
 } from 'lucide-react';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 interface AdPlan {

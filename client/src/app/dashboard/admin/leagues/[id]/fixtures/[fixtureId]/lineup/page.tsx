@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import LineupList from '@/components/LineupList';
 import LineupForm from '@/components/LineupForm';
 import { Lineup, Fixture } from '@/types';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
 import { useParams } from 'next/navigation';
 import { Spinner } from '@/components/Spinner';

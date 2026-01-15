@@ -1,8 +1,9 @@
 import { FindOptions, Op } from 'sequelize';
-import { SystemNotification, SystemNotificationAttributes, SystemNotificationCreationAttributes, NotificationType, NotificationSeverity } from '@models/SystemNotification';
+import { SystemNotification, SystemNotificationCreationAttributes, NotificationType, NotificationSeverity } from '@models/SystemNotification';
 import { BaseRepository } from './BaseRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
+import { NotificationWithUser } from '../types/notification';
 
 export interface NotificationFilterOptions {
   type?: NotificationType;
@@ -36,7 +37,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         
         return notification;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating system notification', { error, data });
         throw error;
       } finally {
@@ -57,7 +59,9 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         logger.info(`Created ${createdNotifications.length} bulk notifications`);
         return createdNotifications;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating bulk notifications', { error, count: notifications.length });
         throw error;
       } finally {
@@ -130,7 +134,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding notifications with filters', { error, filters });
         throw error;
       } finally {
@@ -156,7 +161,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
 
         return null;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error marking notification as read: ${id}`, { error });
         throw error;
       } finally {
@@ -187,7 +193,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         
         return affectedCount;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error marking all notifications as read', { error, userId });
         throw error;
       } finally {
@@ -222,7 +229,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         span.setAttribute('count', count);
         return count;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting unread notification count', { error, userId });
         throw error;
       } finally {
@@ -303,7 +311,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
 
         return stats;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting notification stats', { error, period });
         throw error;
       } finally {
@@ -327,7 +336,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         
         return deletedCount;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error cleaning up expired notifications', { error });
         throw error;
       } finally {
@@ -356,7 +366,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         logger.warn(`System alert created: ${notification.id}`, { title, severity });
         return notification;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating system alert', { error, title, severity });
         throw error;
       } finally {
@@ -387,7 +398,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         logger.info(`User notification created: ${notification.id}`, { userId, title, type });
         return notification;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating user notification', { error, userId, title, type });
         throw error;
       } finally {
@@ -417,7 +429,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         logger.info(`Payment notification created: ${notification.id}`, { userId, title });
         return notification;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating payment notification', { error, userId, title });
         throw error;
       } finally {
@@ -460,7 +473,8 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
         span.setAttribute('count', notifications.length);
         return notifications;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting recent notifications', { error, userId, limit });
         throw error;
       } finally {
@@ -478,7 +492,7 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
           include: ['user'],
           raw: true,
           nest: true
-        });
+        })as NotificationWithUser[];
 
         // Transform for export
         const exportData = notifications.map(notification => ({
@@ -491,12 +505,13 @@ export class SystemNotificationRepository extends BaseRepository<SystemNotificat
           read: notification.read,
           createdAt: notification.createdAt,
           expiresAt: notification.expiresAt
-        }));
+        })) ;
 
         span.setAttribute('count', exportData.length);
         return exportData;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error exporting notifications', { error, format });
         throw error;
       } finally {

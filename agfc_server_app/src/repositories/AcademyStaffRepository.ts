@@ -1,4 +1,4 @@
-import { FindOptions } from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { BaseRepository } from './BaseRepository';
 import AcademyStaff from '@models/AcademyStaff';
 
@@ -22,10 +22,10 @@ export class AcademyStaffRepository extends BaseRepository<AcademyStaff> {
 
   async searchStaff(searchTerm: string, options?: FindOptions): Promise<AcademyStaff[]> {
     const where = {
-      [this.model.sequelize!.Op.or]: [
-        { name: { [this.model.sequelize!.Op.like]: `%${searchTerm}%` } },
-        { role: { [this.model.sequelize!.Op.like]: `%${searchTerm}%` } },
-        { bio: { [this.model.sequelize!.Op.like]: `%${searchTerm}%` } }
+      [Op.or]: [
+        { name: { [Op.like]: `%${searchTerm}%` } },
+        { role: { [Op.like]: `%${searchTerm}%` } },
+        { bio: { [Op.like]: `%${searchTerm}%` } }
       ]
     };
     
@@ -35,7 +35,7 @@ export class AcademyStaffRepository extends BaseRepository<AcademyStaff> {
   async findByExperienceRange(min: number, max: number, options?: FindOptions): Promise<AcademyStaff[]> {
     const where = {
       yearsOfExperience: {
-        [this.model.sequelize!.Op.between]: [min, max]
+        [Op.between]: [min, max]
       }
     };
     
@@ -94,9 +94,9 @@ export class AcademyStaffRepository extends BaseRepository<AcademyStaff> {
     const where: any = {};
     
     if (options.searchTerm) {
-      where[this.model.sequelize!.Op.or] = [
-        { name: { [this.model.sequelize!.Op.like]: `%${options.searchTerm}%` } },
-        { role: { [this.model.sequelize!.Op.like]: `%${options.searchTerm}%` } }
+      where[Op.or] = [
+        { name: { [Op.like]: `%${options.searchTerm}%` } },
+        { role: { [Op.like]: `%${options.searchTerm}%` } }
       ];
     }
     
@@ -107,14 +107,14 @@ export class AcademyStaffRepository extends BaseRepository<AcademyStaff> {
     if (options.minExperience !== undefined) {
       where.yearsOfExperience = {
         ...where.yearsOfExperience,
-        [this.model.sequelize!.Op.gte]: options.minExperience
+        [Op.gte]: options.minExperience
       };
     }
     
     if (options.maxExperience !== undefined) {
       where.yearsOfExperience = {
         ...where.yearsOfExperience,
-        [this.model.sequelize!.Op.lte]: options.maxExperience
+        [Op.lte]: options.maxExperience
       };
     }
     

@@ -1,3 +1,4 @@
+'use client'
 import { API_ROUTES } from "@/config/routes";
 import { useGet } from "@/shared/hooks/useApiQuery";
 import { AuthContext } from "@/shared/lib/context/AuthContext";

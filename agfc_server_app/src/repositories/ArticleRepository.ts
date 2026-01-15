@@ -2,7 +2,7 @@ import { FindOptions, Op, Transaction } from 'sequelize';
 import { Article, ArticleAttributes, ArticleCreationAttributes, ArticleStatus, ArticleTag } from '@models/Article';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
 
 export interface ArticleFilterOptions {
@@ -67,7 +67,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         return article;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating article with audit', { error, data });
         throw error;
       } finally {
@@ -99,7 +100,7 @@ export class ArticleRepository extends BaseRepository<Article> {
         await article.update(data, { transaction });
         
         // Get changes
-        const changes = Object.keys(data)
+        const changes = (Object.keys(data)as Array<keyof ArticleAttributes>)
           .filter(key => article.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -128,7 +129,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         return article;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating article with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -137,13 +139,13 @@ export class ArticleRepository extends BaseRepository<Article> {
     });
   }
 
-  async publish(id: string, publishAt?: Date, auditData: any): Promise<Article | null> {
+  async publish(id: string,auditData: any, publishAt?: Date): Promise<Article | null> {
     return tracer.startActiveSpan('repository.Article.publish', async (span) => {
       const transaction = await Article.sequelize!.transaction();
       
       try {
         span.setAttribute('id', id);
-        span.setAttribute('publishAt', publishAt?.toISOString());
+        publishAt&&span.setAttribute('publishAt', publishAt?.toISOString());
         
         const article = await this.findById(id, { transaction });
         if (!article) {
@@ -196,7 +198,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         return article;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error publishing article: ${id}`, { error, publishAt });
         throw error;
       } finally {
@@ -214,7 +217,7 @@ export class ArticleRepository extends BaseRepository<Article> {
           id,
           {
             status: ArticleStatus.DRAFT,
-            publishedAt: null
+            publishedAt: undefined
           },
           auditData
         );
@@ -222,7 +225,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         logger.info(`Article unpublished: ${id}`);
         return article;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error unpublishing article: ${id}`, { error });
         throw error;
       } finally {
@@ -243,7 +247,8 @@ export class ArticleRepository extends BaseRepository<Article> {
 
         logger.debug(`Article view count incremented: ${id}`);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error incrementing article view count: ${id}`, { error });
         throw error;
       } finally {
@@ -318,7 +323,8 @@ export class ArticleRepository extends BaseRepository<Article> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding published articles', { error, filters, sort });
         throw error;
       } finally {
@@ -340,7 +346,8 @@ export class ArticleRepository extends BaseRepository<Article> {
           }
         );
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding draft articles', { error, pagination });
         throw error;
       } finally {
@@ -362,7 +369,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         span.setAttribute('count', articles.length);
         return articles;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding scheduled articles', { error });
         throw error;
       } finally {
@@ -383,7 +391,7 @@ export class ArticleRepository extends BaseRepository<Article> {
             {
               status: ArticleStatus.PUBLISHED,
               publishedAt: new Date(),
-              scheduledPublishAt: null
+              scheduledPublishAt: undefined
             },
             { transaction }
           );
@@ -396,7 +404,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         logger.info(`Processed ${articles.length} scheduled articles`);
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error processing scheduled articles', { error });
         throw error;
       } finally {
@@ -441,7 +450,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         span.setAttribute('count', articles.length);
         return articles;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting top articles', { error, limit, period });
         throw error;
       } finally {
@@ -494,7 +504,7 @@ export class ArticleRepository extends BaseRepository<Article> {
             id: article.id,
             title: article.title,
             views: article.viewCount,
-            author: article.author?.firstName + ' ' + article.author?.lastName
+          
           })),
           viewsByDay: this.generateViewsByDay(dateFrom, dateTo, totalViews || 0)
         };
@@ -502,7 +512,8 @@ export class ArticleRepository extends BaseRepository<Article> {
         span.setAttribute('totalViews', analytics.totalViews);
         return analytics;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting article analytics', { error, dateFrom, dateTo });
         throw error;
       } finally {

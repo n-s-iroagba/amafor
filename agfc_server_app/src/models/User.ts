@@ -39,7 +39,7 @@ export interface UserAttributes {
   metadata: Record<string, any>;
   lastLogin?: Date;
   loginAttempts: number;
-  lockUntil?: Date;
+  lockUntil?: Date|null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
@@ -66,7 +66,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public metadata!: Record<string, any>;
   public lastLogin?: Date;
   public loginAttempts!: number;
-  public lockUntil?: Date;
+  public lockUntil?: Date|null;
   public createdAt!: Date;
   public updatedAt!: Date;
   public deletedAt?: Date;

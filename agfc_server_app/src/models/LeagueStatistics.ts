@@ -1,7 +1,8 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import { League } from './League';
+
 import { Fixture } from './Fixture';
+import League from './League';
 
 // Define attributes
 export interface LeagueStatisticsAttributes {
@@ -70,9 +71,7 @@ export class LeagueStatistics extends Model<
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  // Associations
-  public readonly league?: League;
-  public readonly fixture?: Fixture;
+
 }
 
 LeagueStatistics.init(

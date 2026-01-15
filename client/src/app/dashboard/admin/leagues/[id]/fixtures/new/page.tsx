@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import api from '@/lib/apiUtils';
 import { uploadFile } from '@/utils/utils';

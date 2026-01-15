@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import { cleanText } from '@/utils/utils';
 
  interface Article {

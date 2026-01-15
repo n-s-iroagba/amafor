@@ -1,11 +1,10 @@
 import { Trialist, TrialistAttributes, TrialistCreationAttributes } from '../models/Trialist';
-
-import { Op } from 'sequelize';
+import { Op, FindOptions } from 'sequelize';
 import { BaseRepository } from './BaseRepository';
 
 export interface ITrialistRepository {
   create(data: TrialistCreationAttributes): Promise<Trialist>;
-  findAll(filter?: any, options?: any): Promise<{ rows: Trialist[]; count: number }>;
+  findAllFiltered(filter?: any, options?: any): Promise<{ rows: Trialist[]; count: number }>;
   findById(id: string): Promise<Trialist | null>;
   findByEmail(email: string): Promise<Trialist | null>;
   update(id: string, data: Partial<TrialistAttributes>): Promise<[number, Trialist[]]>;
@@ -78,7 +77,8 @@ export class TrialistRepository extends BaseRepository<Trialist> implements ITri
     };
   }
 
-  async findAll(
+  // Renamed from findAll to findAllFiltered to avoid conflict with base class
+  async findAllFiltered(
     filter: {
       status?: string;
       position?: string;

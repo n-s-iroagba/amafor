@@ -2,7 +2,7 @@ import { FindOptions, Op, Transaction } from 'sequelize';
 import { Donation, DonationAttributes, DonationCreationAttributes, DonationStatus } from '@models/Donation';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
 
 export interface DonationFilterOptions {
@@ -61,7 +61,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
         return donation;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating donation with audit', { error, data });
         throw error;
       } finally {
@@ -88,7 +89,7 @@ public async findByReference(reference: string): Promise<Donation | null> {
         await donation.update(data, { transaction });
         
         // Get changes
-        const changes = Object.keys(data)
+        const changes = (Object.keys(data) as Array<keyof  DonationAttributes>)
           .filter(key => donation.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -117,7 +118,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
         return donation;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating donation with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -176,7 +178,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
         return donation;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating donation payment status: ${reference}`, { error, status });
         throw error;
       } finally {
@@ -251,7 +254,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding donations with filters', { error, filters, sort });
         throw error;
       } finally {
@@ -307,7 +311,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
           totalPages
         };
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding supporters', { error });
         throw error;
       } finally {
@@ -389,7 +394,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
 
         return stats;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting donation stats', { error });
         throw error;
       } finally {
@@ -481,7 +487,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
         span.setAttribute('totalRevenue', analytics.totalRevenue);
         return analytics;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting financial analytics', { error, dateFrom, dateTo, type });
         throw error;
       } finally {
@@ -573,7 +580,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
         span.setAttribute('count', exportData.length);
         return exportData;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error exporting donations', { error, format });
         throw error;
       } finally {
@@ -627,7 +635,8 @@ public async findByReference(reference: string): Promise<Donation | null> {
 
         return receiptData;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error getting donation receipt data: ${id}`, { error, email });
         throw error;
       } finally {

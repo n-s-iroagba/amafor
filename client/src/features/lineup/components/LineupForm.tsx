@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Minus, Users, Edit, Save } from 'lucide-react';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import api from '@/lib/apiUtils';
 import { Fixture } from '@/types';

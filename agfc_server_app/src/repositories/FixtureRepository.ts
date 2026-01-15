@@ -1,8 +1,8 @@
-import { FindOptions, Op, Transaction } from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { Fixture, FixtureAttributes, FixtureCreationAttributes, FixtureStatus, ArchiveStatus } from '@models/Fixture';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
 
 export interface FixtureFilterOptions {
@@ -54,7 +54,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         return fixture;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating fixture with audit', { error, data });
         throw error;
       } finally {
@@ -87,7 +88,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         );
         
         // Get changes
-        const changes = Object.keys(data)
+        const changes = (Object.keys(data)as Array<keyof FixtureAttributes>)
           .filter(key => fixture.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -116,7 +117,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         return fixture;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -178,7 +180,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding fixtures with filters', { error, filters });
         throw error;
       } finally {
@@ -204,7 +207,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('count', fixtures.length);
         return fixtures;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding upcoming fixtures', { error, limit });
         throw error;
       } finally {
@@ -229,7 +233,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('count', fixtures.length);
         return fixtures;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding recent results', { error, limit });
         throw error;
       } finally {
@@ -258,7 +263,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture lineup: ${id}`, { error, lineupData, isHome });
         throw error;
       } finally {
@@ -282,7 +288,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture score: ${id}`, { error, homeScore, awayScore });
         throw error;
       } finally {
@@ -291,7 +298,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
     });
   }
 
-  async updateArchiveStatus(id: string, archiveStatus: ArchiveStatus, availableAt?: Date, auditData: any): Promise<Fixture | null> {
+  async updateArchiveStatus(id: string, archiveStatus: ArchiveStatus, auditData: any,availableAt?: Date): Promise<Fixture | null> {
     return tracer.startActiveSpan('repository.Fixture.updateArchiveStatus', async (span) => {
       try {
         span.setAttribute('id', id);
@@ -305,7 +312,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture archive status: ${id}`, { error, archiveStatus, availableAt });
         throw error;
       } finally {
@@ -357,7 +365,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding match archives', { error, filters });
         throw error;
       } finally {
@@ -407,7 +416,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('teams', leagueTable.teams?.length || 0);
         return leagueTable;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting league table', { error, season, competition });
         throw error;
       } finally {
@@ -568,7 +578,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           byCompetition: byCompetitionMap
         };
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting fixture dashboard stats', { error });
         throw error;
       } finally {
@@ -598,7 +609,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('processed', fixtures.length);
         logger.info(`Processed ${fixtures.length} fixture archives`);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error processing fixture archives', { error });
         throw error;
       } finally {

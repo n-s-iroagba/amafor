@@ -3,8 +3,9 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Clock, Users, Play } from 'lucide-react';
-import { useGet } from '@/hooks/useApiQuery';
+
 import { API_ROUTES } from '@/config/routes';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
 export interface Video {
   id: number;

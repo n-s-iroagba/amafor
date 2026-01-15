@@ -2,8 +2,9 @@ import { FindOptions, Op, Transaction } from 'sequelize';
 import { Player, PlayerAttributes, PlayerCreationAttributes, PlayerPosition, PlayerStatus } from '@models/Player';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
+import { EntityType } from '@models/AuditLog';
 
 export interface PlayerFilterOptions {
   position?: PlayerPosition;
@@ -56,9 +57,10 @@ export class PlayerRepository extends BaseRepository<Player> {
         await transaction.commit();
         logger.info(`Player created with audit: ${player.id}`);
         return player;
-      } catch (error) {
+      }  catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating player with audit', { error, data });
         throw error;
       } finally {
@@ -91,13 +93,17 @@ export class PlayerRepository extends BaseRepository<Player> {
         );
         
         // Get changes
-        const changes = Object.keys(data)
-          .filter(key => player.get(key) !== oldValue[key])
-          .map(key => ({
-            field: key,
-            oldValue: oldValue[key],
-            newValue: data[key as keyof PlayerAttributes]
-          }));
+     const changes = (Object.keys(data) as Array<keyof PlayerAttributes>)
+  .filter(key => {
+    const oldVal = oldValue[key];
+    const newVal = player.get(key);
+    return newVal !== oldVal;
+  })
+  .map(key => ({
+    field: key,
+    oldValue: oldValue[key],
+    newValue: data[key]
+  }));
 
         // Create audit log
         await this.auditLogRepository.create({
@@ -118,9 +124,10 @@ export class PlayerRepository extends BaseRepository<Player> {
         await transaction.commit();
         logger.info(`Player updated with audit: ${id}`);
         return player;
-      } catch (error) {
+      }  catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating player with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -197,8 +204,10 @@ export class PlayerRepository extends BaseRepository<Player> {
             totalPages: 1
           };
         }
-      } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+      }  catch (error) {
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding players with filters', { error, filters, sort });
         throw error;
       } finally {
@@ -253,7 +262,9 @@ export class PlayerRepository extends BaseRepository<Player> {
         span.setAttributes(stats);
         return stats;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error getting player stats: ${id}`, { error });
         throw error;
       } finally {
@@ -280,7 +291,9 @@ export class PlayerRepository extends BaseRepository<Player> {
 
         logger.info(`Player stats updated: ${id}`);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating player stats: ${id}`, { error, stats });
         throw error;
       } finally {
@@ -294,9 +307,11 @@ export class PlayerRepository extends BaseRepository<Player> {
       try {
         span.setAttribute('id', id);
         
-        return await this.auditLogRepository.findByEntity('player', id, pagination);
+        return await this.auditLogRepository.findByEntity(  EntityType.PLAYER, id, pagination);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error getting player audit trail: ${id}`, { error });
         throw error;
       } finally {
@@ -334,7 +349,9 @@ export class PlayerRepository extends BaseRepository<Player> {
         span.setAttribute('count', similarPlayers.length);
         return similarPlayers;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error finding similar players: ${playerId}`, { error });
         throw error;
       } finally {
@@ -384,7 +401,9 @@ export class PlayerRepository extends BaseRepository<Player> {
           averageAge
         };
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting player dashboard stats', { error });
         throw error;
       } finally {
@@ -408,7 +427,9 @@ export class PlayerRepository extends BaseRepository<Player> {
         span.setAttribute('count', players.length);
         return players;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error exporting players to CSV', { error, fields });
         throw error;
       } finally {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import api from '@/lib/apiUtils';
 import { Calendar, MapPin, Users, Upload, X, Loader2, ArrowLeft, Image as ImageIcon, Trophy, Clock, Ban, Play, Calendar as CalendarIcon } from 'lucide-react';
 import Image from 'next/image';

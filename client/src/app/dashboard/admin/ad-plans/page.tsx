@@ -16,7 +16,7 @@ import {
   Zap,
   MapPin,
 } from 'lucide-react';
-import { useGet } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import api from '@/lib/apiUtils';
 
