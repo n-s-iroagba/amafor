@@ -29,7 +29,7 @@ MatchImage.init(
       primaryKey: true,
     },
     fixtureId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'fixtures',

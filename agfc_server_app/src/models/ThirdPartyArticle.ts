@@ -51,7 +51,7 @@ ThirdPartyArticle.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'rss_feed_source',
+        model: 'rss_feed_sources',
         key: 'id',
       },
     },
