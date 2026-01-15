@@ -1,8 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
-import { Fixture } from './Fixture';
-import League from './League';
+
 
 // Define attributes
 export interface LeagueStatisticsAttributes {
@@ -112,7 +111,7 @@ LeagueStatistics.init(
       },
     },
     fixtureId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: true,
       references: {
         model: 'fixtures',
@@ -299,26 +298,5 @@ LeagueStatistics.init(
     },
   }
 );
-
-// Associations (to be set up in the database configuration file)
-export const setupLeagueStatisticsAssociations = () => {
-  LeagueStatistics.belongsTo(League, {
-    foreignKey: 'leagueId',
-    as: 'league',
-    onDelete: 'CASCADE',
-  });
-  
-  LeagueStatistics.belongsTo(Fixture, {
-    foreignKey: 'fixtureId',
-    as: 'fixture',
-    constraints: false,
-  });
-  
-  League.hasMany(LeagueStatistics, {
-    foreignKey: 'leagueId',
-    as: 'statistics',
-    onDelete: 'CASCADE',
-  });
-};
 
 export default LeagueStatistics;

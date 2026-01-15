@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import { RssFeedSource } from './RssFeedSource';
+
 
 // 1️⃣ Define all attributes that exist in the DB
 export interface ThirdPartyArticleAttributes {
@@ -51,7 +51,7 @@ ThirdPartyArticle.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: RssFeedSource,
+        model: 'rss_feed_source',
         key: 'id',
       },
     },
@@ -106,8 +106,4 @@ ThirdPartyArticle.init(
   }
 );
 
-// 5️⃣ Define associations
-ThirdPartyArticle.belongsTo(RssFeedSource, {
-  foreignKey: 'rss_feed_source_id',
-  as: 'feed_source',
-});
+export default ThirdPartyArticle

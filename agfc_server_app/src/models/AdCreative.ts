@@ -1,9 +1,7 @@
-// models/AdCreative.ts (Simplified)
+// models/AdCreative.ts (Corrected)
 import { Model, DataTypes, CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
 import sequelize from '../config/database';
-import AdCampaign from './AdCampaign';
 
-// Simple model without complex interfaces
 export class AdCreative extends Model<
   InferAttributes<AdCreative>,
   InferCreationAttributes<AdCreative>
@@ -13,86 +11,78 @@ export class AdCreative extends Model<
   declare numberOfViews: number;
   declare name: string;
   declare url: string;
-  declare views:number
+  declare views: number;
   declare destinationUrl: string;
-  declare zoneId:string
-    declare type:string
-  declare dimensions: string;
-  declare format:string
+  declare zoneId: string;
+  declare type: string;
+  declare dimensions: Record<string, any>; // Changed to proper type
+  declare format: string;
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
 }
-
-// Export types for use in repositories/seeders
-export type AdCreativeAttributes = InferAttributes<AdCreative>;
-export type AdCreativeCreationAttributes = InferCreationAttributes<AdCreative>;
 
 AdCreative.init(
   {
     id: {
       type: DataTypes.UUID,
-      autoIncrement: true,
+      defaultValue: DataTypes.UUIDV4, // Use UUIDV4 for UUID generation
       primaryKey: true,
     },
     views: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+      defaultValue: 0, // Remove autoIncrement here
     },
     campaignId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: AdCampaign,
-        key: 'id',
-      },
     },
-       zoneId: {
+    zoneId: {
       type: DataTypes.UUID,
       allowNull: false,
-      references: {
-        model: AdCampaign,
-        key: 'id',
-      },
     },
     numberOfViews: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       defaultValue: 0,
     },
-          type: {
-              type: DataTypes.STRING(50),
-              allowNull: false,
-              validate: {
-                isIn: [['image', 'video']]
-              }
-            },
-            format: {
-              type: DataTypes.STRING(10),
-              allowNull: false,
-              validate: {
-                isIn: [['jpg', 'png', 'mp4']]
-              }
-            },
-            dimensions: {
-              type: DataTypes.JSON,
-              allowNull: false,
-              defaultValue: {}
-            },
+    type: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      validate: {
+        isIn: [['image', 'video']]
+      }
+    },
+    format: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      validate: {
+        isIn: [['jpg', 'png', 'mp4', 'gif']]
+      }
+    },
+    dimensions: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
     name: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
     url: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT, // Use TEXT for URLs which can be long
       allowNull: false,
     },
     destinationUrl: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.TEXT,
       allowNull: false,
     },
-    created_at: '',
-    updated_at: ''
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    }
   },
   {
     tableName: 'ad_creatives',
@@ -100,6 +90,18 @@ AdCreative.init(
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
+    // Add indexes for better performance
+    indexes: [
+      {
+        fields: ['campaignId']
+      },
+      {
+        fields: ['zoneId']
+      },
+      {
+        fields: ['type']
+      }
+    ]
   }
 );
 

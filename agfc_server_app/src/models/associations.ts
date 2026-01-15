@@ -1,21 +1,22 @@
 // models/associations.ts
-import { Fixture } from './Fixture';
-import { Goal } from './Goal';
-import { PatronSubscription } from './PatronSubscription';
-import { Payment } from './Payment';
-import { Player } from './Player';
-import { User } from './User';
-import { AdCampaign } from './AdCampaign';
-import { AdCreative } from './AdCreative';
-import { Advertiser } from './Advertiser';
 
-import { Article } from './Article';
-import { AuditLog } from './AuditLog';
+import sequelize from '@config/database';
+import { Model } from 'sequelize';
 
-import { RssFeedSource } from './RssFeedSource';
-import { SystemNotification } from './SystemNotification';
+import Fixture from './Fixture';
+import Goal from './Goal';
+import PatronSubscription from './PatronSubscription';
+import Payment from './Payment';
+import Player from './Player';
+import User from './User';
+import AdCampaign from './AdCampaign';
+import AdCreative from './AdCreative';
 
-import { ThirdPartyArticle } from './ThirdPartyArticle';
+import Article from './Article';
+import AuditLog from './AuditLog';
+import RssFeedSource from './RssFeedSource';
+import SystemNotification from './SystemNotification';
+
 import AcademyStaff from './AcademyStaff';
 import AdZones from './AdZones';
 import Coach from './Coach';
@@ -25,22 +26,47 @@ import Lineup from './Lineup';
 import MatchImage from './MatchImage';
 import MatchSummary from './MatchSummary';
 import Patron from './Patron';
+import ThirdPartyArticle from './ThirdPartyArticle';
+import Advertiser from './Advertiser';
 
-export function setupAssociations(): void {
+
+export async function setupAssociations(): Promise<void> {
+  console.log('=== MODEL IMPORTS DEBUG ===');
+  console.log('Fixture:', Fixture);
+  console.log('Goal:', Goal);
+  console.log('PatronSubscription:', PatronSubscription);
+  console.log('Payment:', Payment);
+  console.log('Player:', Player);
+  console.log('User:', User);
+  console.log('AdCampaign:', AdCampaign);
+  console.log('AdCreative:', AdCreative);
+  console.log('Article:', Article);
+  console.log('AuditLog:', AuditLog);
+  console.log('RssFeedSource:', RssFeedSource);
+  console.log('SystemNotification:', SystemNotification);
+  console.log('AcademyStaff:', AcademyStaff);
+  console.log('AdZones:', AdZones);
+  console.log('Coach:', Coach);
+  console.log('League:', League);
+  console.log('LeagueStatistics:', LeagueStatistics);
+  console.log('Lineup:', Lineup);
+  console.log('MatchImage:', MatchImage);
+  console.log('MatchSummary:', MatchSummary);
+  console.log('Patron:', Patron);
+  console.log('ThirdPartyArticle:', ThirdPartyArticle);
+  console.log('Advertiser:', Advertiser);
+  console.log('=== END DEBUG ===\n');
+  console.log('=== SEQUELIZE INSTANCE DEBUG ===');
+  console.log('Fixture.sequelize:', Fixture.sequelize);
+  console.log('Goal.sequelize:', Goal.sequelize);
+  console.log('Fixture.sequelize?.Sequelize:', Fixture.sequelize?.Sequelize);
+  console.log('Goal.sequelize?.Sequelize:', Goal.sequelize?.Sequelize);
+  console.log('typeof Fixture.sequelize:', typeof Fixture.sequelize);
+  console.log('typeof Goal.sequelize:', typeof Goal.sequelize);
+  console.log('=== END SEQUELIZE DEBUG ===\n');
+
   // ==================== FIXTURE ASSOCIATIONS ====================
-  Fixture.hasMany(Lineup, {
-    foreignKey: 'fixtureId',
-    as: 'lineups',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  });
-  
-  Lineup.belongsTo(Fixture, {
-    foreignKey: 'fixtureId',
-    as: 'fixture',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-  });
+
 
   Fixture.hasMany(Goal, {
     foreignKey: 'fixtureId',
@@ -50,6 +76,19 @@ export function setupAssociations(): void {
   });
   
   Goal.belongsTo(Fixture, {
+    foreignKey: 'fixtureId',
+    as: 'goalFixture',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  });
+    Fixture.hasMany(Lineup, {
+    foreignKey: 'fixtureId',
+    as: 'lineups',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  });
+  
+  Lineup.belongsTo(Fixture, {
     foreignKey: 'fixtureId',
     as: 'fixture',
     onDelete: 'CASCADE',
@@ -65,7 +104,7 @@ export function setupAssociations(): void {
   
   MatchImage.belongsTo(Fixture, {
     foreignKey: 'fixtureId',
-    as: 'fixture',
+    as: 'imageFixture',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
@@ -79,7 +118,7 @@ export function setupAssociations(): void {
   
   MatchSummary.belongsTo(Fixture, {
     foreignKey: 'fixtureId',
-    as: 'fixture',
+    as: 'summaryFixture',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
@@ -108,7 +147,7 @@ export function setupAssociations(): void {
   
   LeagueStatistics.belongsTo(League, {
     foreignKey: 'leagueId',
-    as: 'league',
+    as: 'statisticsLeague',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
@@ -116,7 +155,7 @@ export function setupAssociations(): void {
   // ==================== PLAYER ASSOCIATIONS ====================
   Player.hasMany(Lineup, {
     foreignKey: 'playerId',
-    as: 'appearances',
+    as: 'lineups',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
@@ -137,14 +176,12 @@ export function setupAssociations(): void {
 
   Goal.belongsTo(Player, {
     foreignKey: 'playerId',
-    as: 'scorer',
+    as: 'goalScorer',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
 
   // ==================== PATRON ASSOCIATIONS ====================
-
-
   Patron.hasOne(PatronSubscription, {
     foreignKey: 'patronId',
     as: 'subscription',
@@ -317,47 +354,56 @@ export function setupAssociations(): void {
     onUpdate: 'CASCADE'
   });
 
-
+  console.log('✅ All associations configured');
 }
-
 
 // Association interfaces for type safety
 export interface FixtureAssociations {
-  lineups: () => Promise<Lineup[]>;
-  goals: () => Promise<Goal[]>;
-  images: () => Promise<MatchImage[]>;
-  summary: () => Promise<MatchSummary | null>;
-  league: () => Promise<League | null>;
-
+  lineups: () => Promise<any[]>;
+  goals: () => Promise<any[]>;
+  images: () => Promise<any[]>;
+  summary: () => Promise<any | null>;
+  league: () => Promise<any | null>;
 }
 
 export interface LineupAssociations {
-  fixture: () => Promise<Fixture>;
-  player: () => Promise<Player>;
+  fixture: () => Promise<any>;
+  player: () => Promise<any>;
 }
 
 export interface PlayerAssociations {
-  appearances: () => Promise<Lineup[]>;
-
+  lineups: () => Promise<any[]>;
 }
 
 export interface LeagueAssociations {
-  fixtures: () => Promise<Fixture[]>;
-  statistics: () => Promise<LeagueStatistics | null>;
+  fixtures: () => Promise<any[]>;
+  statistics: () => Promise<any | null>;
 }
 
 export interface PatronAssociations {
-
-  subscription: () => Promise<PatronSubscription | null>;
+  subscription: () => Promise<any | null>;
 }
 
 export interface UserAssociations {
- 
-  coachProfile: () => Promise<Coach | null>;
-  academyStaffProfile: () => Promise<AcademyStaff | null>;
-
-  articles: () => Promise<Article[]>;
-  auditLogs: () => Promise<AuditLog[]>;
-  notifications: () => Promise<SystemNotification[]>;
-  payments: () => Promise<Payment[]>;
+  coachProfile: () => Promise<any | null>;
+  academyStaffProfile: () => Promise<any | null>;
+  articles: () => Promise<any[]>;
+  auditLogs: () => Promise<any[]>;
+  notifications: () => Promise<any[]>;
+  payments: () => Promise<any[]>;
 }
+
+export const syncDatabase = async (force: boolean = false) => {
+  try {
+    await setupAssociations()
+    await sequelize.sync({ force });
+     
+    console.log('✅ Database synchronized successfully');
+  } catch (error) {
+     console.log('Fixture:', Fixture);
+  console.log('Goal:', Goal);
+  console.log('Is Fixture a Model?', Fixture?.prototype instanceof Model);
+    console.error('❌ Database synchronization failed:', error);
+    throw error;
+  }
+};

@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum NotificationType {
@@ -51,11 +52,9 @@ export class SystemNotification extends Model<SystemNotificationAttributes, Syst
   public deletedAt?: Date;
 
   // Associations
-  static associate(models: any) {
-    SystemNotification.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
   }
 
-  static initModel(sequelize: Sequelize): typeof SystemNotification {
+
     SystemNotification.init(
       {
         id: {
@@ -133,8 +132,6 @@ export class SystemNotification extends Model<SystemNotificationAttributes, Syst
       }
     );
 
-    return SystemNotification;
-  }
-}
+
 
 export default SystemNotification;

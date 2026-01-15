@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum PatronTier {
@@ -68,11 +69,9 @@ export class PatronSubscription extends Model<PatronSubscriptionAttributes, Patr
   public deletedAt?: Date;
 
   // Associations
-  static associate(models: any) {
-    PatronSubscription.belongsTo(models.User, { foreignKey: 'patronId', as: 'user' });
   }
 
-  static initModel(sequelize: Sequelize): typeof PatronSubscription {
+
     PatronSubscription.init(
       {
         id: {
@@ -174,8 +173,6 @@ export class PatronSubscription extends Model<PatronSubscriptionAttributes, Patr
       }
     );
 
-    return PatronSubscription;
-  }
-}
+
 
 export default PatronSubscription;

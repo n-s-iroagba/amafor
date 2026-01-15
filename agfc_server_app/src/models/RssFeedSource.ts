@@ -55,8 +55,12 @@ RssFeedSource.init(
       type: DataTypes.ENUM(...Object.values(RssFeedSourceCategory)),
       allowNull: false
     },
-    createdAt: '',
-    updatedAt: ''
+    createdAt: {
+      type:DataTypes.DATE
+    },
+    updatedAt:  {
+      type:DataTypes.DATE
+    }
   },
   {
     tableName: 'rss_feed_sources',

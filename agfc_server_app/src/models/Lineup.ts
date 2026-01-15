@@ -5,12 +5,10 @@ import {
   CreationOptional,
   InferAttributes,
   InferCreationAttributes,
-  ForeignKey,
-  NonAttribute
+
 } from 'sequelize';
 import sequelize from '../config/database';
-import { Fixture } from './Fixture';
-import { Player } from './Player';
+
 
 // Interface for attributes
 export interface LineupAttributes {
@@ -41,8 +39,8 @@ export class Lineup extends Model<
   InferCreationAttributes<Lineup>
 > {
   declare id: CreationOptional<string>;
-  declare fixtureId: ForeignKey<Fixture['id']>;
-  declare playerId: ForeignKey<Player['id']>;
+  declare fixtureId: string;
+  declare playerId: string;
   declare position: string;
   declare isStarter: boolean;
   declare jerseyNumber: CreationOptional<number | null>;
@@ -50,9 +48,7 @@ export class Lineup extends Model<
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  // Associations
-  declare fixture?: NonAttribute<Fixture>;
-  declare player?: NonAttribute<Player>;
+
 
   // Instance methods
   isCaptain(): boolean {
@@ -223,31 +219,5 @@ Lineup.init(
   }
 );
 
-// Setup associations
-export function setupLineupAssociations(): void {
-  Lineup.belongsTo(Fixture, {
-    foreignKey: 'fixtureId',
-    as: 'fixture',
-    onDelete: 'CASCADE'
-  });
-
-  Lineup.belongsTo(Player, {
-    foreignKey: 'playerId',
-    as: 'player',
-    onDelete: 'CASCADE'
-  });
-
-  Fixture.hasMany(Lineup, {
-    foreignKey: 'fixtureId',
-    as: 'lineups',
-    onDelete: 'CASCADE'
-  });
-
-  Player.hasMany(Lineup, {
-    foreignKey: 'playerId',
-    as: 'appearances',
-    onDelete: 'CASCADE'
-  });
-}
 
 export default Lineup;

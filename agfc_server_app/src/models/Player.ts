@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum PlayerPosition {
@@ -79,13 +80,8 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
   public updatedAt!: Date;
   public deletedAt?: Date;
 
-  // Associations
-  static associate(models: any) {
-    Player.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy' });
-    Player.belongsTo(models.User, { foreignKey: 'updatedById', as: 'updatedBy' });
-  }
 
-  static initModel(sequelize: Sequelize): typeof Player {
+}
     Player.init(
       {
         id: {
@@ -232,8 +228,6 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
       }
     );
 
-    return Player;
-  }
-}
+
 
 export default Player;

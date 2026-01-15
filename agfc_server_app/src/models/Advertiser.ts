@@ -1,7 +1,7 @@
 // models/Advertiser.ts
 import { Model, DataTypes } from 'sequelize';
 import  sequelize  from '../config/database';
-import  User  from './User';
+
 
 export class Advertiser extends Model {
   public id!: number;
@@ -15,11 +15,11 @@ export class Advertiser extends Model {
 }
 
 Advertiser.init({
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4, // Use UUIDV4 for UUID generation
+      primaryKey: true,
+    },
   companyName: {
     type: DataTypes.STRING(255),
     allowNull: false
@@ -40,10 +40,10 @@ Advertiser.init({
     allowNull: false
   },
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     allowNull: true,
     references: {
-      model: User,
+      model: 'users',
       key: 'id'
     }
   }
@@ -54,6 +54,4 @@ Advertiser.init({
   createdAt: 'created_at',
   updatedAt: 'updated_at'
 });
-
-// Define associations
-Advertiser.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+export default Advertiser

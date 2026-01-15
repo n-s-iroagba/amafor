@@ -3,7 +3,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
 export interface PatronAttributes {
-  id: number;
+  id: string;
   name: string;
 email: string;
 phoneNumber:string
@@ -16,7 +16,7 @@ phoneNumber:string
 export interface PatronCreationAttributes extends Optional<PatronAttributes, 'id'> {}
 
 class Patron extends Model<PatronAttributes, PatronCreationAttributes> implements PatronAttributes {
-  public id!: number;
+  public id!: string;
   public name!: string;
     public email!: string;
        public phoneNumber!: string;
@@ -29,11 +29,11 @@ class Patron extends Model<PatronAttributes, PatronCreationAttributes> implement
 
 Patron.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
+     id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          primaryKey: true
+        },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

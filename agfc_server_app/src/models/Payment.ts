@@ -191,7 +191,7 @@ Payment.init(
       defaultValue: PaymentProvider.PAYSTACK,
     },
     metadata: {
-      type: DataTypes.JSONB,
+      type: DataTypes.JSON,
       allowNull: true,
       defaultValue: null,
     },
@@ -208,7 +208,7 @@ Payment.init(
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: 'patronage_subscriptions',
+        model: 'patron_subscriptions',
         key: 'id',
       },
     
@@ -273,11 +273,9 @@ Payment.init(
     indexes: [
       { fields: ['reference'], unique: true },
       { fields: ['provider_reference'], unique: true },
-      { fields: ['user_id'] },
       { fields: ['status'] },
       { fields: ['type'] },
-      { fields: ['ad_campaign_id'] },
-      { fields: ['donation_id'] },
+
       { fields: ['created_at'] },
     ],
     validate: {

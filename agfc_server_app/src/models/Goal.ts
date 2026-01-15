@@ -9,7 +9,7 @@ import {
   NonAttribute
 } from 'sequelize';
 import sequelize from '../config/database';
-import { Fixture } from './Fixture';
+
 
 // Interface for attributes
 export interface GoalAttributes {
@@ -35,15 +35,14 @@ export class Goal extends Model<
   InferCreationAttributes<Goal>
 > {
   declare id: CreationOptional<number>;
-  declare fixtureId: ForeignKey<Fixture['id']>;
+  declare fixtureId: string;
   declare scorer: string;
   declare minute: number;
   declare isPenalty: boolean;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  // Associations
-  declare fixture?: NonAttribute<Fixture>;
+
 
   // Instance methods
   isEarlyGoal(): boolean {
@@ -88,13 +87,13 @@ Goal.init(
       primaryKey: true,
     },
     fixtureId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'fixtures',
         key: 'id',
       },
-      field: 'fixture_id',
+    
       onDelete: 'CASCADE'
     },
     scorer: {
@@ -138,7 +137,7 @@ Goal.init(
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     indexes: [
-      { fields: ['fixture_id'] },
+      { fields: ['fixtureId'] },
       { fields: ['scorer'] },
       { fields: ['minute'] },
       { fields: ['is_penalty'] },
@@ -159,19 +158,6 @@ Goal.init(
   }
 );
 
-// Setup associations
-export function setupGoalAssociations(): void {
-  Goal.belongsTo(Fixture, {
-    foreignKey: 'fixtureId',
-    as: 'fixture',
-    onDelete: 'CASCADE'
-  });
 
-  Fixture.hasMany(Goal, {
-    foreignKey: 'fixtureId',
-    as: 'goals',
-    onDelete: 'CASCADE'
-  });
-}
 
 export default Goal;

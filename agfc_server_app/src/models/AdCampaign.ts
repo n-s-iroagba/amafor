@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum AdZone {
@@ -71,12 +72,10 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
   public updatedAt!: Date;
   public deletedAt?: Date;
 
-  // Associations
-  static associate(models: any) {
-    AdCampaign.belongsTo(models.User, { foreignKey: 'advertiserId', as: 'advertiser' });
+
   }
 
-  static initModel(sequelize: Sequelize): typeof AdCampaign {
+
     AdCampaign.init(
       {
         id: {
@@ -166,15 +165,12 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
         indexes: [
           { fields: ['advertiserId'] },
           { fields: ['status'] },
-          { fields: ['zone'] },
+      
           { fields: ['paymentStatus'] },
           { fields: ['createdAt'] }
         ]
       }
     );
 
-    return AdCampaign;
-  }
-}
 
 export default AdCampaign;

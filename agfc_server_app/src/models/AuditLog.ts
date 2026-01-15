@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum AuditAction {
@@ -64,11 +65,10 @@ export class AuditLog extends Model<AuditLogAttributes, AuditLogCreationAttribut
   public updatedAt!: Date;
 
   // Associations
-  static associate(models: any) {
-    AuditLog.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+
   }
 
-  static initModel(sequelize: Sequelize): typeof AuditLog {
+
     AuditLog.init(
       {
         id: {
@@ -159,8 +159,6 @@ export class AuditLog extends Model<AuditLogAttributes, AuditLogCreationAttribut
       }
     );
 
-    return AuditLog;
-  }
-}
+
 
 export default AuditLog;

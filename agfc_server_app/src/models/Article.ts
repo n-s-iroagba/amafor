@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum ArticleTag {
@@ -61,11 +62,9 @@ export class Article extends Model<ArticleAttributes, ArticleCreationAttributes>
   public deletedAt?: Date;
 
   // Associations
-  static associate(models: any) {
-    Article.belongsTo(models.User, { foreignKey: 'authorId', as: 'author' });
   }
 
-  static initModel(sequelize: Sequelize): typeof Article {
+
     Article.init(
       {
         id: {
@@ -170,8 +169,5 @@ export class Article extends Model<ArticleAttributes, ArticleCreationAttributes>
       }
     );
 
-    return Article;
-  }
-}
 
 export default Article;

@@ -2,6 +2,8 @@
 import sequelize from '@config/database';
 import app from './app';
 import dotenv from 'dotenv';
+import { syncDatabase } from '@models/associations';
+
 
 // Load environment variables
 dotenv.config();
@@ -39,12 +41,8 @@ const gracefulShutdown = async (signal: string) => {
 // Initialize database and start server
 const startServer = async () => {
   try {
-    // Test database connection
-    await sequelize.authenticate();
-    console.log('Database connection established successfully');
-    
-    // Sync database (be careful with this in production!)
-    await sequelize.sync();
+  
+    await syncDatabase(true)
     console.log('Database synchronized');
     
     // Start server

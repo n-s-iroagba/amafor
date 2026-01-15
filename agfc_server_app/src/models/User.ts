@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum UserType {
@@ -73,16 +74,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
 
 
 
-  // Associations
-  static associate(models: any) {
-    User.hasMany(models.AuditLog, { foreignKey: 'userId', as: 'auditLogs' });
-    User.hasMany(models.Article, { foreignKey: 'authorId', as: 'articles' });
-    User.hasMany(models.AdCampaign, { foreignKey: 'advertiserId', as: 'adCampaigns' });
-    User.hasMany(models.Donation, { foreignKey: 'donorId', as: 'donations' });
-    User.hasMany(models.PatronSubscription, { foreignKey: 'userId', as: 'patronSubscriptions' });
+
   }
 
-  static initModel(sequelize: Sequelize): typeof User {
+
     User.init(
       {
         id: {
@@ -196,8 +191,5 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
       }
     );
 
-    return User;
-  }
-}
 
 export default User;

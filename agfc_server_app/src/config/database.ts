@@ -2,6 +2,7 @@ import { Dialect, Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
 export interface DatabaseConfig {
   username: string;
   password: string;
@@ -25,7 +26,7 @@ const config: DatabaseConfig = {
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '3306'),
   dialect: 'mysql',
-  logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  logging: process.env.NODE_ENV !== 'production' ? console.log : false,
   pool: {
     max: 5,
     min: 0,
@@ -34,6 +35,18 @@ const config: DatabaseConfig = {
   }
 };
 
-const sequelize = new Sequelize(config);
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    port: config.port,
+    dialect: config.dialect,
+    logging: config.logging,
+    pool: config.pool
+  }
+);
 
 export default sequelize;
+export { Sequelize }; // Also export the Sequelize class

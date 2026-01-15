@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import  sequelize  from '../config/database';
 
 export interface LeagueAttributes {
-  id: number;
+  id: string;
   name: string;
   season: string;
   isFriendly: boolean;
@@ -13,7 +13,7 @@ export interface LeagueAttributes {
 export interface LeagueCreationAttributes extends Optional<LeagueAttributes, 'id'> {}
 
 class League extends Model<LeagueAttributes, LeagueCreationAttributes> implements LeagueAttributes {
-  public id!: number;
+  public id!: string;
   public name!: string;
   public season!: string;
   public isFriendly!: boolean;
@@ -23,10 +23,10 @@ class League extends Model<LeagueAttributes, LeagueCreationAttributes> implement
 
 League.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
+     id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING,

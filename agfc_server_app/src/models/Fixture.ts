@@ -1,3 +1,4 @@
+import sequelize from '@config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum FixtureStatus {
@@ -75,150 +76,139 @@ export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes>
   public createdAt!: Date;
   public updatedAt!: Date;
   public deletedAt?: Date;
-
-  // Associations
-  static associate(models: any) {
-    Fixture.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy' });
-    Fixture.belongsTo(models.User, { foreignKey: 'updatedById', as: 'updatedBy' });
-    Fixture.belongsTo(models.Article, { foreignKey: 'matchReportArticleId', as: 'matchReport' });
-  }
-
-  static initModel(sequelize: Sequelize): typeof Fixture {
-    Fixture.init(
-      {
-        id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
-          primaryKey: true
-        },
-        matchDate: {
-          type: DataTypes.DATE,
-          allowNull: false
-        },
-        homeTeam: {
-          type: DataTypes.STRING(200),
-          allowNull: false
-        },
-        awayTeam: {
-          type: DataTypes.STRING(200),
-          allowNull: false
-        },
-        competition: {
-          type: DataTypes.STRING(200),
-          allowNull: false
-        },
-        venue: {
-          type: DataTypes.STRING(200),
-          allowNull: true
-        },
-        status: {
-          type: DataTypes.ENUM(...Object.values(FixtureStatus)),
-          allowNull: false,
-          defaultValue: FixtureStatus.SCHEDULED
-        },
-        homeScore: {
-          type: DataTypes.INTEGER,
-          allowNull: true
-        },
-        awayScore: {
-          type: DataTypes.INTEGER,
-          allowNull: true
-        },
-        attendance: {
-          type: DataTypes.INTEGER,
-          allowNull: true
-        },
-        referee: {
-          type: DataTypes.STRING(200),
-          allowNull: true
-        },
-        weather: {
-          type: DataTypes.STRING(100),
-          allowNull: true
-        },
-        matchReportArticleId: {
-          type: DataTypes.UUID,
-          allowNull: true
-        },
-        lineupHome: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        },
-        lineupAway: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        },
-        stats: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        },
-        highlightsUrl: {
-          type: DataTypes.STRING(500),
-          allowNull: true,
-          validate: {
-            isUrl: true
-          }
-        },
-        archiveStatus: {
-          type: DataTypes.ENUM(...Object.values(ArchiveStatus)),
-          allowNull: false,
-          defaultValue: ArchiveStatus.PROCESSING
-        },
-        availableAt: {
-          type: DataTypes.DATE,
-          allowNull: true
-        },
-        videoUrl: {
-          type: DataTypes.STRING(500),
-          allowNull: true,
-          validate: {
-            isUrl: true
-          }
-        },
-        videoProvider: {
-          type: DataTypes.STRING(50),
-          allowNull: true,
-          validate: {
-            isIn: [['youtube', 'vimeo']]
-          }
-        },
- 
-        metadata: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        }, createdAt: {
-          type: DataTypes.DATE
-        },
-        updatedAt: {
-          type: DataTypes.DATE
-        },
-        createdById: {
-          type:DataTypes.UUID
-        },
-        updatedById: {
-          type:DataTypes.UUID
-        }
-      },
-      {
-        sequelize,
-        tableName: 'fixtures',
-        timestamps: true,
-        paranoid: true,
-        indexes: [
-          { fields: ['matchDate'] },
-          { fields: ['status'] },
-          { fields: ['competition'] },
-          { fields: ['createdAt'] }
-        ]
-      }
-    );
-
-    return Fixture;
-  }
 }
 
+
+Fixture.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    matchDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    homeTeam: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    awayTeam: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    competition: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    venue: {
+      type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    status: {
+      type: DataTypes.ENUM(...Object.values(FixtureStatus)),
+      allowNull: false,
+      defaultValue: FixtureStatus.SCHEDULED
+    },
+    homeScore: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    awayScore: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    attendance: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    referee: {
+      type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    weather: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    matchReportArticleId: {
+      type: DataTypes.UUID,
+      allowNull: true
+    },
+    lineupHome: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
+    lineupAway: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
+    stats: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
+    highlightsUrl: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      validate: {
+        isUrl: true
+      }
+    },
+    archiveStatus: {
+      type: DataTypes.ENUM(...Object.values(ArchiveStatus)),
+      allowNull: false,
+      defaultValue: ArchiveStatus.PROCESSING
+    },
+    availableAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    videoUrl: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      validate: {
+        isUrl: true
+      }
+    },
+    videoProvider: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      validate: {
+        isIn: [['youtube', 'vimeo']]
+      }
+    },
+    metadata: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    },
+    createdById: {
+      type: DataTypes.UUID
+    },
+    updatedById: {
+      type: DataTypes.UUID
+    }
+  },
+  {
+    sequelize,  // This comes from the import at the top
+    tableName: 'fixtures',
+    timestamps: true,
+    paranoid: true,
+    indexes: [
+      { fields: ['matchDate'] },
+      { fields: ['status'] },
+      { fields: ['competition'] },
+      { fields: ['createdAt'] }
+    ]
+  }
+);
 export default Fixture;
