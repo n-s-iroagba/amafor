@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
-interface MatchSummaryAttributes {
+export interface MatchSummaryAttributes {
   id: number;
   fixtureId: number;
   summary: string;
@@ -9,7 +9,7 @@ interface MatchSummaryAttributes {
   updatedAt?: Date;
 }
 
-interface MatchSummaryCreationAttributes extends Optional<MatchSummaryAttributes, 'id'> {}
+export interface MatchSummaryCreationAttributes extends Optional<MatchSummaryAttributes, 'id'> {}
 
 class MatchSummary extends Model<MatchSummaryAttributes, MatchSummaryCreationAttributes> implements MatchSummaryAttributes {
   public id!: number;

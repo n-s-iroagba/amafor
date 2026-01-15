@@ -109,7 +109,7 @@ export default function AcademyScoutingSection() {
     >
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-8">
-          {/* Academy Card */}
+{/* Academy Card */}
           <FeatureCard
             title="ACADEMY"
             description="Join our world-class youth development program. We nurture talent from grassroots to professional level with expert coaching and modern facilities."
@@ -120,8 +120,8 @@ export default function AcademyScoutingSection() {
             ]}
             href="/academy"
             ctaLabel="LEARN MORE"
-            gradientFrom="from-sky-500"
-            gradientTo="to-sky-700"
+            gradientFrom="from-sky-600"
+            gradientTo="to-blue-800"
             icon={<GraduationCap className="w-8 h-8 text-white" />}
             iconBgColor="bg-white/20"
             bulletColor="bg-white"
@@ -140,10 +140,10 @@ export default function AcademyScoutingSection() {
             ]}
             href="/pro-view"
             ctaLabel="APPLY FOR ACCESS"
-            gradientFrom="from-gray-800"
-            gradientTo="to-gray-900"
+            gradientFrom="from-slate-700"
+            gradientTo="to-slate-900"
             icon={<Eye className="w-8 h-8 text-sky-400" />}
-            iconBgColor="bg-sky-500/20"
+            iconBgColor="bg-sky-500/30"
             bulletColor="bg-sky-400"
             testId={ACADEMY_SCOUTING_TEST_IDS.SCOUTING_SECTION}
             linkTestId={ACADEMY_SCOUTING_TEST_IDS.SCOUTING_LINK}

@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
-interface MatchImageAttributes {
+export interface MatchImageAttributes {
   id: number;
   fixtureId: number;
   imageUrl: string;

@@ -2,7 +2,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
-interface VideoAttributes {
+export interface VideoAttributes {
   id: number;
   title: string;
   excerpt: string;
@@ -13,7 +13,7 @@ interface VideoAttributes {
   updatedAt?: Date;
 }
 
-interface VideoCreationAttributes extends Optional<VideoAttributes, 'id'> {}
+export interface VideoCreationAttributes extends Optional<VideoAttributes, 'id'> {}
 
 class Video extends Model<VideoAttributes, VideoCreationAttributes> implements VideoAttributes {
   public id!: number;

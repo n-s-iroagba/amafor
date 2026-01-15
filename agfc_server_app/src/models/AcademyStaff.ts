@@ -3,7 +3,7 @@ import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
 // Interface for AcademyStaff attributes
-interface AcademyStaffAttributes {
+export interface AcademyStaffAttributes {
   id: string;
   name: string;
   role: string;
@@ -18,7 +18,7 @@ interface AcademyStaffAttributes {
 }
 
 // Interface for creation attributes (optional fields for creation)
-interface AcademyStaffCreationAttributes extends Optional<AcademyStaffAttributes, 'id' | 'initials' | 'imageUrl' | 'category' | 'qualifications' | 'yearsOfExperience'> {}
+export interface AcademyStaffCreationAttributes extends Optional<AcademyStaffAttributes, 'id' | 'initials' | 'imageUrl' | 'category' | 'qualifications' | 'yearsOfExperience'> {}
 
 class AcademyStaff extends Model<AcademyStaffAttributes, AcademyStaffCreationAttributes> implements AcademyStaffAttributes {
   public id!: string;

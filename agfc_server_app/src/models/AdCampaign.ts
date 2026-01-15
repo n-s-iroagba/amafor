@@ -28,19 +28,14 @@ export interface AdCampaignAttributes {
   id: string;
   name: string;
   advertiserId: string;
-  zone: AdZone;
+  
   status: CampaignStatus;
   budget: number;
   spent: number;
-  viewsPurchased: number;
+  targeting:string[]
   viewsDelivered: number;
   uniqueViews: number;
-  creativeId: string;
-  creativeUrl: string;
-  creativeType: string;
-  creativeFormat: string;
-  creativeDimensions: any;
-  targeting: any;
+
   paymentStatus: PaymentStatus;
   paymentReference?: string;
   cpv: number;
@@ -58,19 +53,14 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
   public id!: string;
   public name!: string;
   public advertiserId!: string;
-  public zone!: AdZone;
+
   public status!: CampaignStatus;
   public budget!: number;
   public spent!: number;
-  public viewsPurchased!: number;
+
   public viewsDelivered!: number;
   public uniqueViews!: number;
-  public creativeId!: string;
-  public creativeUrl!: string;
-  public creativeType!: string;
-  public creativeFormat!: string;
-  public creativeDimensions!: any;
-  public targeting!: any;
+  public targeting!:string[]
   public paymentStatus!: PaymentStatus;
   public paymentReference?: string;
   public cpv!: number;
@@ -102,10 +92,7 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
           type: DataTypes.UUID,
           allowNull: false
         },
-        zone: {
-          type: DataTypes.ENUM(...Object.values(AdZone)),
-          allowNull: false
-        },
+     
         status: {
           type: DataTypes.ENUM(...Object.values(CampaignStatus)),
           allowNull: false,
@@ -121,12 +108,7 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
           allowNull: false,
           defaultValue: 0
         },
-        viewsPurchased: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        viewsDelivered: {
+       viewsDelivered: {
           type: DataTypes.INTEGER,
           allowNull: false,
           defaultValue: 0
@@ -136,36 +118,8 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
           allowNull: false,
           defaultValue: 0
         },
-        creativeId: {
-          type: DataTypes.STRING(100),
-          allowNull: false
-        },
-        creativeUrl: {
-          type: DataTypes.STRING(500),
-          allowNull: false,
-          validate: {
-            isUrl: true
-          }
-        },
-        creativeType: {
-          type: DataTypes.STRING(50),
-          allowNull: false,
-          validate: {
-            isIn: [['image', 'video']]
-          }
-        },
-        creativeFormat: {
-          type: DataTypes.STRING(10),
-          allowNull: false,
-          validate: {
-            isIn: [['jpg', 'png', 'mp4']]
-          }
-        },
-        creativeDimensions: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        },
+     
+  
         targeting: {
           type: DataTypes.JSON,
           allowNull: false,

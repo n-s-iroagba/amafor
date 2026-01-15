@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
-interface GoalAttributes {
+export interface GoalAttributes {
   id: number;
   fixtureId: number;
   scorer: string;
@@ -11,7 +11,7 @@ interface GoalAttributes {
   updatedAt?: Date;
 }
 
-interface GoalCreationAttributes extends Optional<GoalAttributes, 'id'> {}
+export interface GoalCreationAttributes extends Optional<GoalAttributes, 'id'> {}
 
 class Goal extends Model<GoalAttributes, GoalCreationAttributes> implements GoalAttributes {
   public id!: number;

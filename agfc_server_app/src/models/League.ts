@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import  sequelize  from '../config/database';
 
-interface LeagueAttributes {
+export interface LeagueAttributes {
   id: number;
   name: string;
   season: string;
@@ -10,7 +10,7 @@ interface LeagueAttributes {
   updatedAt?: Date;
 }
 
-interface LeagueCreationAttributes extends Optional<LeagueAttributes, 'id'> {}
+export interface LeagueCreationAttributes extends Optional<LeagueAttributes, 'id'> {}
 
 class League extends Model<LeagueAttributes, LeagueCreationAttributes> implements LeagueAttributes {
   public id!: number;

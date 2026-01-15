@@ -23,7 +23,7 @@ export enum SubscriptionStatus {
 
 export interface PatronSubscriptionAttributes {
   id: string;
-  userId: string;
+  patronId: string;
   tier: PatronTier;
   frequency: SubscriptionFrequency;
   amount: number;
@@ -39,15 +39,16 @@ export interface PatronSubscriptionAttributes {
   paymentReference: string;
   metadata: Record<string, any>;
   createdAt: Date;
+  endDate?:Date,
   updatedAt: Date;
   deletedAt?: Date;
 }
 
-export interface PatronSubscriptionCreationAttributes extends Optional<PatronSubscriptionAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'metadata'> {}
+export interface PatronSubscriptionCreationAttributes extends Optional<PatronSubscriptionAttributes, 'id' | 'createdAt' |'endDate' | 'updatedAt' | 'status' | 'metadata'> {}
 
 export class PatronSubscription extends Model<PatronSubscriptionAttributes, PatronSubscriptionCreationAttributes> implements PatronSubscriptionAttributes {
   public id!: string;
-  public userId!: string;
+  public patronId!: string;
   public tier!: PatronTier;
   public frequency!: SubscriptionFrequency;
   public amount!: number;
@@ -68,7 +69,7 @@ export class PatronSubscription extends Model<PatronSubscriptionAttributes, Patr
 
   // Associations
   static associate(models: any) {
-    PatronSubscription.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+    PatronSubscription.belongsTo(models.User, { foreignKey: 'patronId', as: 'user' });
   }
 
   static initModel(sequelize: Sequelize): typeof PatronSubscription {
@@ -79,7 +80,7 @@ export class PatronSubscription extends Model<PatronSubscriptionAttributes, Patr
           defaultValue: DataTypes.UUIDV4,
           primaryKey: true
         },
-        userId: {
+        patronId: {
           type: DataTypes.UUID,
           allowNull: false
         },
@@ -164,7 +165,7 @@ export class PatronSubscription extends Model<PatronSubscriptionAttributes, Patr
         timestamps: true,
         paranoid: true,
         indexes: [
-          { fields: ['userId'] },
+          { fields: ['patronId'] },
           { fields: ['tier'] },
           { fields: ['status'] },
           { fields: ['frequency'] },

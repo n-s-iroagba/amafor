@@ -1,9 +1,11 @@
-import { FindOptions, Op, Transaction } from 'sequelize';
+import { FindOptions, Op} from 'sequelize';
 import { PatronSubscription, PatronSubscriptionAttributes, PatronSubscriptionCreationAttributes, PatronTier, SubscriptionFrequency, SubscriptionStatus } from '@models/PatronSubscription';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
+import { underscoredIf } from 'sequelize/types/utils';
+import { PatronSubscriptionWithPatron } from 'src/types/patronSubscription';
 
 export interface PatronFilterOptions {
   tier?: PatronTier;
@@ -19,20 +21,20 @@ export class PatronSubscriptionRepository extends BaseRepository<PatronSubscript
     super(PatronSubscription);
     this.auditLogRepository = new AuditLogRepository();
   }
-public async deactivateCurrent(userId: string): Promise<void> {
+public async deactivateCurrent(patronId: string): Promise<void> {
     await this.model.update(
-      { status: 'CANCELLED', endDate: new Date() },
-      { where: { userId, status: 'ACTIVE' } }
+      { status: SubscriptionStatus.CANCELLED,endDate: new Date() },
+      { where: { patronId, status: 'ACTIVE' } }
     );
   }
 
-  public async findActiveByUserId(userId: string): Promise<PatronSubscription | null> {
+  public async findActiveByPatrongId(patronId: string): Promise<PatronSubscription | null> {
     return this.model.findOne({
       where: { 
-        userId, 
+        patronId, 
         status: 'ACTIVE',
-        endDate: { [Op.or]: [null, { [Op.gt]: new Date() }] }
-      }
+   
+      }  
     });
   }
   async createWithAudit(data: PatronSubscriptionCreationAttributes, auditData: any): Promise<PatronSubscription> {
@@ -40,7 +42,7 @@ public async deactivateCurrent(userId: string): Promise<void> {
       const transaction = await PatronSubscription.sequelize!.transaction();
       
       try {
-        span.setAttribute('userId', data.userId);
+        span.setAttribute('patronId', data.patronId);
         span.setAttribute('tier', data.tier);
         
         // Calculate next billing date
@@ -55,7 +57,7 @@ public async deactivateCurrent(userId: string): Promise<void> {
         
         // Create audit log
         await this.auditLogRepository.create({
-          userId: auditData.userId,
+          patronId: auditData.patronId,
           userEmail: auditData.userEmail,
           userType: auditData.userType,
           action: 'create',
@@ -76,7 +78,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
         return subscription;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating patron subscription with audit', { error, data });
         throw error;
       } finally {
@@ -103,7 +106,7 @@ public async deactivateCurrent(userId: string): Promise<void> {
         await subscription.update(data, { transaction });
         
         // Get changes
-        const changes = Object.keys(data)
+        const changes = (Object.keys(data)as Array<keyof PatronSubscriptionAttributes>)
           .filter(key => subscription.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -113,7 +116,7 @@ public async deactivateCurrent(userId: string): Promise<void> {
 
         // Create audit log
         await this.auditLogRepository.create({
-          userId: auditData.userId,
+          patronId: auditData.patronId,
           userEmail: auditData.userEmail,
           userType: auditData.userType,
           action: 'update',
@@ -132,7 +135,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
         return subscription;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating patron subscription with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -151,12 +155,13 @@ public async deactivateCurrent(userId: string): Promise<void> {
           {
             status: SubscriptionStatus.CANCELLED,
             cancelledAt: new Date(),
-            nextBillingDate: null
+            nextBillingDate: undefined
           },
           auditData
         );
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error cancelling patron subscription: ${id}`, { error });
         throw error;
       } finally {
@@ -165,7 +170,7 @@ public async deactivateCurrent(userId: string): Promise<void> {
     });
   }
 
-  async updatePaymentStatus(id: string, status: SubscriptionStatus, paymentReference: string, nextBillingDate?: Date): Promise<PatronSubscription | null> {
+  async updatePaymentStatus(id: string, status: SubscriptionStatus, paymentReference: string, nextBillingDate?: Date): Promise<[number, PatronSubscription[]] | null> {
     return tracer.startActiveSpan('repository.PatronSubscription.updatePaymentStatus', async (span) => {
       try {
         span.setAttribute('id', id);
@@ -190,7 +195,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
 
         return await this.update(id, updateData);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating patron subscription payment status: ${id}`, { error, status, paymentReference });
         throw error;
       } finally {
@@ -199,13 +205,13 @@ public async deactivateCurrent(userId: string): Promise<void> {
     });
   }
 
-  async findByUser(userId: string, filters: PatronFilterOptions = {}): Promise<PatronSubscription[]> {
+  async findByPatron(patronId: string, filters: PatronFilterOptions = {}): Promise<PatronSubscription[]> {
     return tracer.startActiveSpan('repository.PatronSubscription.findByUser', async (span) => {
       try {
-        span.setAttribute('userId', userId);
+        span.setAttribute('patronId', patronId);
         span.setAttribute('filters', JSON.stringify(filters));
 
-        const where: any = { userId };
+        const where: any = { patronId };
         
         // Apply filters
         if (filters.tier) {
@@ -228,8 +234,9 @@ public async deactivateCurrent(userId: string): Promise<void> {
         span.setAttribute('count', subscriptions.length);
         return subscriptions;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
-        logger.error('Error finding patron subscriptions by user', { error, userId, filters });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
+        logger.error('Error finding patron subscriptions by user', { error, patronId, filters });
         throw error;
       } finally {
         span.end();
@@ -282,7 +289,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding active patrons', { error, filters });
         throw error;
       } finally {
@@ -338,7 +346,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
           totalPages
         };
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting public patron list', { error });
         throw error;
       } finally {
@@ -437,7 +446,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
         span.setAttribute('tierCount', tiers.length);
         return { tiers, benefits };
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting patron tier stats', { error });
         throw error;
       } finally {
@@ -504,7 +514,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
         return { renewed, failed };
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error processing subscription renewals', { error });
         throw error;
       } finally {
@@ -513,7 +524,7 @@ public async deactivateCurrent(userId: string): Promise<void> {
     });
   }
 
-  private calculateNextBillingDate(frequency: SubscriptionFrequency, fromDate?: Date): Date | null {
+  private calculateNextBillingDate(frequency: SubscriptionFrequency, fromDate?: Date): Date | undefined {
     const baseDate = fromDate || new Date();
     const nextDate = new Date(baseDate);
 
@@ -525,9 +536,9 @@ public async deactivateCurrent(userId: string): Promise<void> {
         nextDate.setFullYear(nextDate.getFullYear() + 1);
         return nextDate;
       case SubscriptionFrequency.LIFETIME:
-        return null; // No renewals for lifetime
+        return undefined; // No renewals for lifetime
       default:
-        return null;
+        return undefined;
     }
   }
 
@@ -632,7 +643,8 @@ public async deactivateCurrent(userId: string): Promise<void> {
 
         return analytics;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting patron analytics', { error, dateFrom, dateTo });
         throw error;
       } finally {
@@ -646,32 +658,33 @@ public async deactivateCurrent(userId: string): Promise<void> {
       try {
         span.setAttribute('format', format);
         
-        const patrons = await this.findAll({
-          include: ['user'],
+        const subscriptions = await this.findAll({
+          include: ['patron'],
           raw: true,
           nest: true
-        });
+        })as PatronSubscriptionWithPatron[];
 
         // Transform for export
-        const exportData = patrons.map(patron => ({
-          id: patron.id,
-          name: patron.displayName,
-          email: patron.user?.email,
-          tier: patron.tier,
-          frequency: patron.frequency,
-          amount: patron.amount,
-          status: patron.status,
-          startedAt: patron.startedAt,
-          nextBillingDate: patron.nextBillingDate,
-          cancelledAt: patron.cancelledAt,
-          paymentMethod: patron.paymentMethod,
-          totalPaid: patron.amount * this.calculateMonthsActive(patron.startedAt, patron.frequency)
+        const exportData = subscriptions.map(subscription => ({
+          id: subscription.id,
+          name: subscription.displayName,
+          email: subscription.patron.email,
+          tier: subscription.tier,
+          frequency: subscription.frequency,
+          amount: subscription.amount,
+          status: subscription.status,
+          startedAt: subscription.startedAt,
+          nextBillingDate: subscription.nextBillingDate,
+          cancelledAt: subscription.cancelledAt,
+          paymentMethod: subscription.paymentMethod,
+          totalPaid: subscription.amount * this.calculateMonthsActive(subscription.startedAt, subscription.frequency)
         }));
 
         span.setAttribute('count', exportData.length);
         return exportData;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error exporting patron data', { error, format });
         throw error;
       } finally {

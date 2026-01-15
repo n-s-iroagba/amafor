@@ -2,7 +2,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
-interface CoachAttributes {
+export interface CoachAttributes {
   id: number;
   name: string;
   role: string;
@@ -12,7 +12,7 @@ interface CoachAttributes {
   updatedAt?: Date;
 }
 
-interface CoachCreationAttributes extends Optional<CoachAttributes, 'id'> {}
+export interface CoachCreationAttributes extends Optional<CoachAttributes, 'id'> {}
 
 class Coach extends Model<CoachAttributes, CoachCreationAttributes> implements CoachAttributes {
   public id!: number;

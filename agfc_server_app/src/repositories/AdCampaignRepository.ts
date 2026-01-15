@@ -1,9 +1,11 @@
-import { FindOptions, Op, Transaction } from 'sequelize';
+import { FindOptions, Op} from 'sequelize';
 import { AdCampaign, AdCampaignAttributes, AdCampaignCreationAttributes, CampaignStatus, AdZone, PaymentStatus } from '@models/AdCampaign';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import { logger } from '@utils/logger';
+import  logger  from '@utils/logger';
 import { tracer } from '@utils/tracer';
+import sequelize from 'sequelize/types/sequelize';
+import { AdCampaignWithAdvertiser } from 'src/types/adCampaign';
 
 export interface AdCampaignFilterOptions {
   status?: CampaignStatus;
@@ -21,13 +23,10 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
     super(AdCampaign);
     this.auditLogRepository = new AuditLogRepository();
   }
-  public async findActiveForZone(zone: string): Promise<AdCampaign[]> {
+  public async findActive(zone: string): Promise<AdCampaign[]> {
     return this.model.findAll({
       where: {
         status: 'ACTIVE',
-        zone: zone,
-        // Ensure campaign hasn't exceeded its impression limit
-        currentImpressions: { [Op.lt]: sequelize.col('maxImpressions') },
         startDate: { [Op.lte]: new Date() },
         endDate: { [Op.gte]: new Date() }
       }
@@ -35,11 +34,11 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
   }
 
   public async incrementImpressions(id: string): Promise<void> {
-    await this.model.increment('currentImpressions', { where: { id } });
+    await this.model.increment('viewsDelivered', { where: { id } });
   }
 
   public async incrementClicks(id: string): Promise<void> {
-    await this.model.increment('currentClicks', { where: { id } });
+    await this.model.increment('cpv', { where: { id } });
   }
 
   public async sumActiveBudgets(): Promise<number> {
@@ -79,7 +78,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         return campaign;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating ad campaign with audit', { error, data });
         throw error;
       } finally {
@@ -106,7 +106,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         await campaign.update(data, { transaction });
         
         // Get changes
-        const changes = Object.keys(data)
+        const changes = (Object.keys(data) as Array<keyof AdCampaignAttributes>)
           .filter(key => campaign.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -135,7 +135,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         return campaign;
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating ad campaign with audit: ${id}`, { error, data });
         throw error;
       } finally {
@@ -197,7 +198,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding ad campaigns by advertiser', { error, advertiserId, filters });
         throw error;
       } finally {
@@ -230,7 +232,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           };
         }
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding ad campaigns by status', { error, status });
         throw error;
       } finally {
@@ -254,7 +257,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating ad campaign payment status: ${id}`, { error, paymentStatus, paymentReference });
         throw error;
       } finally {
@@ -274,7 +278,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           auditData
         );
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error pausing ad campaign: ${id}`, { error });
         throw error;
       } finally {
@@ -294,7 +299,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           auditData
         );
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error resuming ad campaign: ${id}`, { error });
         throw error;
       } finally {
@@ -326,7 +332,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         }
 
         // Check if campaign has reached its target
-        if (campaign.viewsDelivered + 1 >= campaign.viewsPurchased) {
+        if (campaign.spent ===campaign.budget) {
           updates.status = CampaignStatus.COMPLETED;
         }
 
@@ -336,7 +342,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         logger.debug(`Ad campaign views incremented: ${id}`);
       } catch (error) {
         await transaction.rollback();
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error incrementing ad campaign views: ${id}`, { error });
         throw error;
       } finally {
@@ -347,9 +354,9 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
 
   async getPerformanceMetrics(id: string, startDate?: Date, endDate?: Date): Promise<{
     campaignId: string;
-    viewsPurchased: number;
+
     viewsDelivered: number;
-    viewsRemaining: number;
+
     uniqueViews: number;
     totalImpressions: number;
     clickThroughRate: number;
@@ -370,23 +377,17 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           throw new Error('Campaign not found');
         }
 
-        // Calculate metrics
-        const viewsRemaining = Math.max(0, campaign.viewsPurchased - campaign.viewsDelivered);
+    
         const remainingBudget = campaign.budget - campaign.spent;
         const deliveryRate = campaign.viewsDelivered / Math.max(1, this.daysBetween(campaign.startDate || campaign.createdAt, new Date()));
-        
-        let estimatedCompletion;
-        if (campaign.status === CampaignStatus.ACTIVE && deliveryRate > 0) {
-          const daysRemaining = viewsRemaining / deliveryRate;
-          estimatedCompletion = new Date();
-          estimatedCompletion.setDate(estimatedCompletion.getDate() + Math.ceil(daysRemaining));
-        }
+       
+     
 
         const metrics = {
           campaignId: campaign.id,
-          viewsPurchased: campaign.viewsPurchased,
+         
           viewsDelivered: campaign.viewsDelivered,
-          viewsRemaining,
+    
           uniqueViews: campaign.uniqueViews,
           totalImpressions: campaign.viewsDelivered * 1.5, // Estimated impressions (1.5x views)
           clickThroughRate: campaign.uniqueViews > 0 ? (campaign.uniqueViews / campaign.viewsDelivered) * 100 : 0,
@@ -394,7 +395,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           totalSpent: campaign.spent,
           remainingBudget,
           deliveryRate,
-          estimatedCompletion
+         
         };
 
         span.setAttributes({
@@ -405,7 +406,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
 
         return metrics;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error getting ad campaign performance metrics: ${id}`, { error, startDate, endDate });
         throw error;
       } finally {
@@ -421,39 +423,48 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         if (tags) span.setAttribute('tags', JSON.stringify(tags));
         
         const now = new Date();
-        
-        const campaigns = await this.findAll({
-          where: {
-            zone,
-            status: CampaignStatus.ACTIVE,
-            paymentStatus: PaymentStatus.PAID,
-            [Op.or]: [
-              { startDate: { [Op.lte]: now } },
-              { startDate: null }
-            ],
-            [Op.or]: [
-              { endDate: { [Op.gte]: now } },
-              { endDate: null }
-            ]
-          },
-          order: [
-            // Prioritize campaigns with matching tags
-            [this.model.sequelize!.literal(`CASE WHEN targeting->'$.tags' IS NOT NULL THEN 1 ELSE 2 END`), 'ASC'],
-            ['createdAt', 'DESC']
-          ]
-        });
+     const whereConditions: any = {
+  zone,
+  status: CampaignStatus.ACTIVE,
+  paymentStatus: PaymentStatus.PAID,
+  [Op.and]: []
+};
+
+// Add start date conditions
+whereConditions[Op.and].push({
+  [Op.or]: [
+    { startDate: { [Op.lte]: now } },
+    { startDate: null }
+  ]
+});
+
+// Add end date conditions
+whereConditions[Op.and].push({
+  [Op.or]: [
+    { endDate: { [Op.gte]: now } },
+    { endDate: null }
+  ]
+});
+
+const campaigns = await this.findAll({
+  where: whereConditions,
+  order: [
+    [this.model.sequelize!.literal(`CASE WHEN targeting->'$.tags' IS NOT NULL THEN 1 ELSE 2 END`), 'ASC'],
+    ['createdAt', 'DESC']
+  ]
+});
 
         // Filter by tags if provided
         const filteredCampaigns = tags ? 
           campaigns.filter(campaign => {
-            const campaignTags = campaign.targeting?.tags || [];
+            const campaignTags = campaign.targeting || [];
             return campaignTags.length === 0 || campaignTags.some((tag: string) => tags.includes(tag));
           }) :
           campaigns;
 
         // Filter out campaigns that have reached their view limit
         const availableCampaigns = filteredCampaigns.filter(campaign => 
-          campaign.viewsDelivered < campaign.viewsPurchased
+          campaign.spent < campaign.budget
         );
 
         span.setAttribute('total', campaigns.length);
@@ -462,7 +473,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         
         return availableCampaigns;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting campaigns for ad placement', { error, zone, tags });
         throw error;
       } finally {
@@ -491,7 +503,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         span.setAttribute('paused', completedCampaigns.length);
         return completedCampaigns.length;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error checking and pausing completed campaigns', { error });
         throw error;
       } finally {
@@ -578,7 +591,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         
         return analytics;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting advertising analytics', { error, dateFrom, dateTo });
         throw error;
       } finally {
@@ -637,7 +651,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           include: ['advertiser'],
           raw: true,
           nest: true
-        });
+        }) as AdCampaignWithAdvertiser;
 
         if (!campaign) {
           throw new Error('Campaign not found');
@@ -647,12 +661,12 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         const exportData = {
           id: campaign.id,
           name: campaign.name,
-          advertiser: campaign.advertiser?.email,
-          zone: campaign.zone,
+          advertiser: campaign.advertiser?.contactEmail,
+    
           status: campaign.status,
           budget: campaign.budget,
           spent: campaign.spent,
-          viewsPurchased: campaign.viewsPurchased,
+   
           viewsDelivered: campaign.viewsDelivered,
           uniqueViews: campaign.uniqueViews,
           cpv: campaign.cpv,
@@ -665,7 +679,8 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
 
         return exportData;
       } catch (error) {
-        span.setStatus({ code: 2, message: error.message });
+             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error exporting campaign data: ${id}`, { error, format });
         throw error;
       } finally {

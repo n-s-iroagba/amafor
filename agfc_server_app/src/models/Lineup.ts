@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize  from '../config/database';
 
-interface LineupAttributes {
+export interface LineupAttributes {
   id: number;
   fixtureId: number;
   playerId: number;
@@ -11,7 +11,7 @@ interface LineupAttributes {
   updatedAt?: Date;
 }
 
-interface LineupCreationAttributes extends Optional<LineupAttributes, 'id'> {}
+export interface LineupCreationAttributes extends Optional<LineupAttributes, 'id'> {}
 
 class Lineup extends Model<LineupAttributes, LineupCreationAttributes> implements LineupAttributes {
   public id!: number;

@@ -1,11 +1,10 @@
-// services/AdCreativeService.ts
-import { AdCreativeRepository } from '../repositories/AdCreativeRepository';
-import { AdCreative } from '../models/AdCreative';
-import { SubscriptionService } from './SubscriptionService';
+import AdCreative from "@models/AdCreative";
+import { AdCreativeRepository } from "@repositories/AdCreativeRepository";
+
 
 export class AdCreativeService {
   private adCreativeRepository: AdCreativeRepository;
-  private subscriptionService: SubscriptionService;
+  private subscriptionService: AdCampaignService;
 
   constructor() {
     this.adCreativeRepository = new AdCreativeRepository();
