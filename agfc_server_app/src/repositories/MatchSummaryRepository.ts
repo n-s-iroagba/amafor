@@ -7,8 +7,8 @@ export class MatchSummaryRepository extends BaseRepository<MatchSummary> {
     super(MatchSummary);
   }
 
-  async findByFixture(fixtureId: number): Promise<MatchSummary | null> {
-    return this.findOne({ fixtureId },{include:[
+  async findByFixture(fixtureId: string): Promise<MatchSummary | null> {
+    return this.findOne({where:{ fixtureId },include:[
       {
         model:Fixture,
         as:'fixture'

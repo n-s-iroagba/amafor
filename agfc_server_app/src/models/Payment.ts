@@ -5,13 +5,9 @@ import {
   CreationOptional,
   InferAttributes,
   InferCreationAttributes,
-  ForeignKey,
-  NonAttribute
 } from 'sequelize';
 import sequelize from '../config/database';
-import { User } from './User';
-import { AdCampaign } from './AdCampaign';
-import { Donation } from './Donation';
+
 
 export enum PaymentStatus {
   PENDING = 'pending',
@@ -54,7 +50,7 @@ export interface PaymentAttributes {
   provider: PaymentProvider;
   metadata: Record<string, any> | null;
   adCampaignId: string | null;
-  donationId: string | null;
+  subscriptionId: string | null;
   customerEmail: string;
   customerName: string | null;
   customerPhone: string | null;
@@ -82,7 +78,7 @@ export class Payment extends Model<
   InferCreationAttributes<Payment>
 > {
   declare id: CreationOptional<string>;
-  declare userId: ForeignKey<User['id']>;
+ 
   declare reference: string;
   declare providerReference: CreationOptional<string | null>;
   declare amount: number;
@@ -91,8 +87,8 @@ export class Payment extends Model<
   declare type: PaymentType;
   declare provider: PaymentProvider;
   declare metadata: CreationOptional<Record<string, any> | null>;
-  declare adCampaignId: ForeignKey<AdCampaign['id']> | null;
-  declare donationId: ForeignKey<Donation['id']> | null;
+  declare adCampaignId: string;
+  declare subscriptionId: string;
   declare customerEmail: string;
   declare customerName: CreationOptional<string | null>;
   declare customerPhone: CreationOptional<string | null>;
@@ -103,10 +99,7 @@ export class Payment extends Model<
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  // Associations
-  declare user?: NonAttribute<User>;
-  declare adCampaign?: NonAttribute<AdCampaign>;
-  declare donation?: NonAttribute<Donation>;
+
 
   // Static methods
   static async findByReference(reference: string): Promise<Payment | null> {
@@ -159,15 +152,7 @@ Payment.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    userId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      field: 'user_id',
-    },
+
     reference: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -217,16 +202,16 @@ Payment.init(
         model: 'ad_campaigns',
         key: 'id',
       },
-      field: 'ad_campaign_id',
+   
     },
-    donationId: {
+  subscriptionId: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: 'donations',
+        model: 'patronage_subscriptions',
         key: 'id',
       },
-      field: 'donation_id',
+    
     },
     customerEmail: {
       type: DataTypes.STRING(255),

@@ -13,6 +13,6 @@ export class MatchImageRepository extends BaseRepository<MatchImage> {
         model:Fixture,
         as:'fixture'
       }
-    ] })).data;
+    ] }));
   }
 }
