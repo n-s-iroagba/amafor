@@ -1,5 +1,5 @@
 import Payment, { PaymentAttributes } from "@models/Payment";
-import logger from "@utils/logger";
+import logger from "../../utils/logger";
 
 import { BaseSeeder } from "./base-seeder";
 import { developmentPayments } from "../data/development/payment";

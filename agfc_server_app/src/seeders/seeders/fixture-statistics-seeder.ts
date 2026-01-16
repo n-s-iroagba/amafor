@@ -1,5 +1,5 @@
 // seeders/FixtureStatisticsSeeder.ts
-import FixtureStatistics, { FixtureStatisticsAttributes } from "../../models/FixtureStatistics";
+import FixtureStatistics, { FixtureStatisticsAttributes } from "@models/FixtureStatistics";
 import logger from "../../utils/logger";
 import { developmentFixtureStatistics } from "../data/development/fixtureStatistics";
 import { BaseSeeder } from "./base-seeder";

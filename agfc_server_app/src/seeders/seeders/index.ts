@@ -23,13 +23,12 @@ import { ThirdPartyArticleSeeder } from "./third-party-article-seeder"; // Depen
 import { SystemNotificationSeeder } from "./systemnotification-seeder"; // Depends on User
 import { AuditLogSeeder } from "./auditlog-seeder"; // Depends on User
 import { ArticleSeeder } from "./article-seeder"; // Depends on User
-import { DonationSeeder } from "./donation-seeder"; // Generally depends on User or standalone
+
 
 // 3. Second-Level Dependencies (Depend on Level 1 or 2)
 import { GoalSeeder } from "./goal-seeder"; // Depends on Fixture
 import { LineupSeeder } from "./lineup-seeder"; // Depends on Fixture & Player
 import { MatchImageSeeder } from "./matchimage-seeder"; // Depends on Fixture
-import { MatchSummarySeeder } from "./matchsummary-seeder"; // Depends on Fixture
 import { FixtureStatisticsSeeder } from "./fixture-statistics-seeder"; // Depends on Fixture
 import { AdCreativeSeeder } from "./adcreative-seeder"; // Depends on AdCampaign & AdZone
 import { PaymentSeeder } from "./payment-seeder"; // Depends on User, AdCampaign, PatronSubscription
@@ -75,7 +74,7 @@ export const initializeSeeders = (): SeedRunner => {
   // System logs and notifications require Users
   runner.register('systemNotifications', new SystemNotificationSeeder(), ['users']);
   runner.register('auditLogs', new AuditLogSeeder(), ['users']);
-  runner.register('donations', new DonationSeeder(), ['users']); // Assuming link to user/donor
+
 
   // ==================== LEVEL 3: DEEP DEPENDENCIES ====================
   // These depend on Level 2 entities (and sometimes Level 1)
@@ -84,7 +83,7 @@ export const initializeSeeders = (): SeedRunner => {
   runner.register('goals', new GoalSeeder(), ['fixtures']);
   runner.register('lineups', new LineupSeeder(), ['fixtures', 'players']);
   runner.register('matchImages', new MatchImageSeeder(), ['fixtures']);
-  runner.register('matchSummaries', new MatchSummarySeeder(), ['fixtures']);
+
   runner.register('fixtureStatistics', new FixtureStatisticsSeeder(), ['fixtures']);
   
   // Ad Creatives depend on Campaigns and Zones

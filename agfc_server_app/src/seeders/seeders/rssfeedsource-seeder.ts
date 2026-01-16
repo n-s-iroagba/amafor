@@ -1,7 +1,7 @@
 
 import { RssFeedSource } from '@models/RssFeedSource';
 import { RssFeedSourceAttributes } from '@models/RssFeedSource';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentRssFeedSources } from '../data/development/rssfeedsources';
 import { productionRssFeedSources } from '../data/production/rssfeedsources';
 import { testRssFeedSources } from '../data/testing/rssfeedsources';

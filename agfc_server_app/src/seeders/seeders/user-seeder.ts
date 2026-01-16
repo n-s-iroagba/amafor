@@ -1,7 +1,7 @@
 
 import { User } from '@models/User';
 import { UserAttributes } from '@models/User';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentUsers } from '../data/development/users';
 import { productionUsers } from '../data/production/users';
 import { testUsers } from '../data/testing/users';

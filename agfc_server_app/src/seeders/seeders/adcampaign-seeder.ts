@@ -1,7 +1,7 @@
 
 import { AdCampaign } from '@models/AdCampaign';
 import { AdCampaignAttributes } from '@models/AdCampaign';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentAdCampaigns } from '../data/development/adcampaigns';
 import { productionAdCampaigns } from '../data/production/adcampaigns';
 import { testAdCampaigns } from '../data/testing/adcampaigns';

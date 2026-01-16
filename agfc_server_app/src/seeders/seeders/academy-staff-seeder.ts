@@ -1,6 +1,6 @@
 import AcademyStaff, { AcademyStaffAttributes } from "@models/AcademyStaff";
 import logger from "@utils/logger";
-import { developmentAcademyStaffs } from "../data/development/academystaffs";
+import { developmentAcademyStaff } from "../data/development/academystaffs";
 import { productionAcademyStaffs } from "../data/production/academystaffs";
 import { testAcademyStaffs } from "../data/testing/academystaffs";
 import { BaseSeeder } from "./base-seeder";
@@ -45,7 +45,7 @@ export class AcademyStaffSeeder extends BaseSeeder<AcademyStaff> {
 
   private getDevelopmentData(): AcademyStaffAttributes[] {
     try {
-      return developmentAcademyStaffs || [];
+      return developmentAcademyStaff || [];
     } catch (error) {
       logger.warn(`No development data found for ${this.name}, returning empty array`);
       return [];

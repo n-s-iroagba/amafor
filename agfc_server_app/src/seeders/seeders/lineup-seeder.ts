@@ -1,6 +1,6 @@
 
-import logger from '@utils/logger';
-import { developmentLineups } from '../data/development/lineups';
+import logger from '../../utils/logger';
+import { developmentLineups } from '../data/development/lineup';
 import { productionLineups } from '../data/production/lineups';
 import { testLineups } from '../data/testing/lineups';
 import Lineup, { LineupAttributes } from '@models/Lineup';

@@ -1,7 +1,7 @@
 
 import { Trialist } from '@models/Trialist';
 import { TrialistAttributes } from '@models/Trialist';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentTrialists } from '../data/development/trialists';
 import { productionTrialists } from '../data/production/trialists';
 import { testTrialists } from '../data/testing/trialists';

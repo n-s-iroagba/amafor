@@ -1,5 +1,5 @@
 
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentGoals } from '../data/development/goals';
 import { productionGoals } from '../data/production/goals';
 import { testGoals } from '../data/testing/goals';

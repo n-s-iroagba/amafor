@@ -403,6 +403,7 @@ export interface LeagueAssociations {
 export const syncDatabase = async (force: boolean = false) => {
   try {
     await setupAssociations()
+    
     await sequelize.sync({ force });
      
     console.log('✅ Database synchronized successfully');

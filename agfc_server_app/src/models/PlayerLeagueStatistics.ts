@@ -109,15 +109,9 @@ export class PlayerLeagueStatistics extends Model<PlayerLeagueStatisticsAttribut
       },
       {
         sequelize,
-        tableName: 'players',
+        tableName: 'player_league_statistics',
         timestamps: true,
-        paranoid: true,
-        indexes: [
-          { fields: ['name'] },
-          { fields: ['position'] },
-          { fields: ['status'] },
-          { fields: ['createdAt'] }
-        ]
+    
       }
     );
 

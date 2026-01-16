@@ -1,7 +1,7 @@
 
 import { AuditLog } from '@models/AuditLog';
 import { AuditLogAttributes } from '@models/AuditLog';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentAuditLogs } from '../data/development/auditlogs';
 import { productionAuditLogs } from '../data/production/auditlogs';
 import { testAuditLogs } from '../data/testing/auditlogs';

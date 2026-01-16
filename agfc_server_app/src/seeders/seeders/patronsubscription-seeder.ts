@@ -1,6 +1,6 @@
 
-import { PatronSubscription } from '../../models/PatronSubscription';
-import { PatronSubscriptionAttributes } from '../../models/PatronSubscription';
+import { PatronSubscription } from '@models/PatronSubscription';
+import { PatronSubscriptionAttributes } from '@models/PatronSubscription';
 import logger from "../../utils/logger";
 import { developmentPatronSubscriptions } from '../data/development/patronsubscriptions';
 import { productionPatronSubscriptions } from '../data/production/patronsubscriptions';

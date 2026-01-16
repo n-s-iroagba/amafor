@@ -1,5 +1,5 @@
 ;
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentMatchImages } from '../data/development/matchimages';
 import { productionMatchImages } from '../data/production/matchimages';
 import { testMatchImages } from '../data/testing/matchimages';

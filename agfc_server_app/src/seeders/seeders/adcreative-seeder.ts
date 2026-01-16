@@ -1,5 +1,5 @@
 
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentAdCreatives } from '../data/development/adcreatives';
 import { productionAdCreatives } from '../data/production/adcreatives';
 import { testAdCreatives } from '../data/testing/adcreatives';

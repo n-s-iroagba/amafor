@@ -1,5 +1,5 @@
 // seeders/PlayerLeagueStatisticsSeeder.ts
-import PlayerLeagueStatistics, { PlayerLeagueStatisticsAttributes } from "../../models/PlayerLeagueStatistics";
+import PlayerLeagueStatistics, { PlayerLeagueStatisticsAttributes } from "@models/PlayerLeagueStatistics";
 import logger from "../../utils/logger";
 import { developmentPlayerLeagueStatistics } from "../data/development/playerLeagueStatistics";
 import { BaseSeeder } from "./base-seeder";

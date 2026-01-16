@@ -1,8 +1,8 @@
 
 import { Player } from '@models/Player';
 import { PlayerAttributes } from '@models/Player';
-import logger from '@utils/logger';
-import { developmentPlayers } from '../data/development/players';
+import logger from '../../utils/logger';
+import { developmentPlayers } from '../data/development/player';
 import { productionPlayers } from '../data/production/players';
 import { testPlayers } from '../data/testing/players';
 import { BaseSeeder } from './base-seeder';

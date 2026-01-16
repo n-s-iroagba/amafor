@@ -1,7 +1,7 @@
 
 import { SystemNotification } from '@models/SystemNotification';
 import { SystemNotificationAttributes } from '@models/SystemNotification';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentSystemNotifications } from '../data/development/systemnotifications';
 import { productionSystemNotifications } from '../data/production/systemnotifications';
 import { testSystemNotifications } from '../data/testing/systemnotifications';

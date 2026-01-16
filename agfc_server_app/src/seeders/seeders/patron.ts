@@ -1,4 +1,4 @@
-import Patron, { PatronAttributes } from "../../models/Patron";
+import Patron, { PatronAttributes } from "@models/Patron";
 import logger from "../../utils/logger";
 import { developmentPatrons } from "../data/development/patron";
 import { productionPatrons } from "../data/production/patron";

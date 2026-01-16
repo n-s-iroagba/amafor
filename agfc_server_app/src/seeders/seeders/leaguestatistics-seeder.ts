@@ -1,8 +1,8 @@
 
 import { LeagueStatistics } from '@models/LeagueStatistics';
 import { LeagueStatisticsAttributes } from '@models/LeagueStatistics';
-import logger from '@utils/logger';
-import { developmentLeagueStatisticss } from '../data/development/leaguestatisticss';
+import logger from '../../utils/logger';
+import { developmentLeagueStatistics } from '../data/development/leaguestatistics';
 import { productionLeagueStatisticss } from '../data/production/leaguestatisticss';
 import { testLeagueStatisticss } from '../data/testing/leaguestatisticss';
 import { BaseSeeder } from './base-seeder';
@@ -46,7 +46,7 @@ export class LeagueStatisticsSeeder extends BaseSeeder<LeagueStatistics> {
 
   private getDevelopmentData(): LeagueStatisticsAttributes[] {
     try {
-      return developmentLeagueStatisticss || [];
+      return developmentLeagueStatistics || [];
     } catch (error) {
       logger.warn(`No development data found for ${this.name}, returning empty array`);
       return [];

@@ -2,6 +2,7 @@
 import sequelize from '@config/database';
 import app from './app';
 import dotenv from 'dotenv';
+import { syncDatabase } from './models';
 
 
 
@@ -42,7 +43,7 @@ const gracefulShutdown = async (signal: string) => {
 const startServer = async () => {
   try {
   
-    // await syncDatabase()
+    await syncDatabase(true)
     console.log('Database synchronized');
     
     // Start server

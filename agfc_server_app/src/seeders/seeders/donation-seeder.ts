@@ -1,7 +1,7 @@
 
 import { Donation } from '@models/Donation';
 import { DonationAttributes } from '@models/Donation';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentDonations } from '../data/development/donations';
 import { productionDonations } from '../data/production/donations';
 import { testDonations } from '../data/testing/donations';

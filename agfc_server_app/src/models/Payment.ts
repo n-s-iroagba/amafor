@@ -8,7 +8,6 @@ import {
 } from 'sequelize';
 import sequelize from '../config/database';
 
-
 export enum PaymentStatus {
   PENDING = 'pending',
   SUCCESSFUL = 'successful',
@@ -78,7 +77,7 @@ export class Payment extends Model<
   InferCreationAttributes<Payment>
 > {
   declare id: CreationOptional<string>;
- 
+  declare userId: string; // Ensure this is present
   declare reference: string;
   declare providerReference: CreationOptional<string | null>;
   declare amount: number;
@@ -87,8 +86,11 @@ export class Payment extends Model<
   declare type: PaymentType;
   declare provider: PaymentProvider;
   declare metadata: CreationOptional<Record<string, any> | null>;
-  declare adCampaignId: string;
-  declare subscriptionId: string;
+  
+  // FIX: Explicitly allow null for these optional foreign keys
+  declare adCampaignId: string | null;
+  declare subscriptionId: string | null;
+  
   declare customerEmail: string;
   declare customerName: CreationOptional<string | null>;
   declare customerPhone: CreationOptional<string | null>;
@@ -98,8 +100,6 @@ export class Payment extends Model<
   declare refundedAt: CreationOptional<Date | null>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
-
-
 
   // Static methods
   static async findByReference(reference: string): Promise<Payment | null> {
@@ -140,7 +140,7 @@ export class Payment extends Model<
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
       currency: this.currency,
-    }).format(this.amount / 100); // Convert from kobo/cent to main unit
+    }).format(this.amount / 100);
   }
 }
 
@@ -152,7 +152,10 @@ Payment.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
     reference: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -165,10 +168,10 @@ Payment.init(
       field: 'provider_reference',
     },
     amount: {
-      type: DataTypes.INTEGER, // Store in smallest unit (kobo/cent)
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        min: 1, // Minimum 1 kobo/cent
+        min: 1,
       },
     },
     currency: {
@@ -202,16 +205,14 @@ Payment.init(
         model: 'ad_campaigns',
         key: 'id',
       },
-   
     },
-  subscriptionId: {
+    subscriptionId: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
         model: 'patron_subscriptions',
         key: 'id',
       },
-    
     },
     customerEmail: {
       type: DataTypes.STRING(255),
@@ -232,7 +233,7 @@ Payment.init(
       field: 'customer_phone',
     },
     ipAddress: {
-      type: DataTypes.STRING(45), // IPv6 compatible
+      type: DataTypes.STRING(45),
       allowNull: true,
       field: 'ip_address',
     },
@@ -275,7 +276,6 @@ Payment.init(
       { fields: ['provider_reference'], unique: true },
       { fields: ['status'] },
       { fields: ['type'] },
-
       { fields: ['created_at'] },
     ],
     validate: {
@@ -283,8 +283,8 @@ Payment.init(
         if (this.type === PaymentType.ADVERTISEMENT && !this.adCampaignId) {
           throw new Error('Ad campaign ID is required for advertisement payments');
         }
-        if (this.type === PaymentType.DONATION && !this.donationId) {
-          throw new Error('Donation ID is required for donation payments');
+        if (this.type === PaymentType.SUBSCRIPTION && !this.subscriptionId) {
+          throw new Error('Subscription ID is required for subscription payments');
         }
       },
     },

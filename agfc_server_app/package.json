@@ -7,7 +7,7 @@
  "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
     "lint": "eslint . --ext .ts",
     "migrate": "npx sequelize-cli db:migrate",
-    "seed": "npx ts-node src/scripts/seed.ts"
+    "seed": "npx ts-node -r tsconfig-paths/register src/scripts/seed.ts"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.0",

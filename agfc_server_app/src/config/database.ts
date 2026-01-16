@@ -22,7 +22,7 @@ export interface DatabaseConfig {
 const config: DatabaseConfig = {
   username: process.env.DB_USERNAME || 'root',
   password: process.env.DB_PASSWORD || '97chocho',
-  database: process.env.DB_NAME || 'amafor',
+  database: process.env.DB_NAME || 'agfc',
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '3306'),
   dialect: 'mysql',
@@ -49,4 +49,4 @@ const sequelize = new Sequelize(
 );
 
 export default sequelize;
-export { Sequelize }; // Also export the Sequelize class
+export { Sequelize };

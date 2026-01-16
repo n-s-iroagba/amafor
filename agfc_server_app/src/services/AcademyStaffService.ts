@@ -1,8 +1,9 @@
-import { AcademyStaffRepository } from '@/repositories/AcademyStaffRepository';
-import { AuditService } from './AuditService';
-import AcademyStaff, { AcademyStaffCreationAttributes, AcademyStaffAttributes } from '@/models/AcademyStaff';
-import { logger } from '@/utils/logger';
-import { tracer } from '@/utils/tracer';
+import AcademyStaff from "@models/AcademyStaff";
+import { AcademyStaffRepository } from "@repositories/AcademyStaffRepository";
+import logger from "@utils/logger";
+import tracer from "@utils/tracer";
+import { AuditService } from "./AuditService";
+
 
 export interface CreateStaffDTO {
   name: string;

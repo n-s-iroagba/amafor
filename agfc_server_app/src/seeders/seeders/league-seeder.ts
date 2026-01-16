@@ -1,5 +1,5 @@
 
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentLeagues } from '../data/development/leagues';
 import { productionLeagues } from '../data/production/leagues';
 import { testLeagues } from '../data/testing/leagues';

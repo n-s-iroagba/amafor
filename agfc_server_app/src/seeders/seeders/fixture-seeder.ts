@@ -1,7 +1,7 @@
 
 import { Fixture } from '@models/Fixture';
 import { FixtureAttributes } from '@models/Fixture';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentFixtures } from '../data/development/fixtures';
 import { productionFixtures } from '../data/production/fixtures';
 import { testFixtures } from '../data/testing/fixtures';

@@ -1,5 +1,6 @@
-import sequelize from '@config/database';
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+// models/Player.ts
+import sequelize from '../config/database';
+import { DataTypes, Model, Optional } from 'sequelize';
 
 export enum PlayerPosition {
   GK = 'GK',
@@ -32,7 +33,6 @@ export interface PlayerAttributes {
   contactPhone?: string;
   agentName?: string;
   agentEmail?: string;
-
   metadata: Record<string, any>;
   createdById: string;
   updatedById: string;
@@ -66,120 +66,118 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
   public createdAt!: Date;
   public updatedAt!: Date;
   public deletedAt?: Date;
-
-
 }
-    Player.init(
-      {
-        id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
-          primaryKey: true
-        },
-        name: {
-          type: DataTypes.STRING(200),
-          allowNull: false
-        },
-        dateOfBirth: {
-          type: DataTypes.DATEONLY,
-          allowNull: false
-        },
-        position: {
-          type: DataTypes.ENUM(...Object.values(PlayerPosition)),
-          allowNull: false
-        },
-        height: {
-          type: DataTypes.DECIMAL(3, 2),
-          allowNull: true,
-          comment: 'Height in meters'
-        },
-        nationality: {
-          type: DataTypes.STRING(100),
-          allowNull: true
-        },
-        biography: {
-          type: DataTypes.TEXT,
-          allowNull: true
-        },
-        jerseyNumber: {
-          type: DataTypes.INTEGER,
-          allowNull: true,
-          validate: {
-            min: 1,
-            max: 99
-          }
-        },
-        imageUrl: {
-          type: DataTypes.STRING(500),
-          allowNull: true,
-          validate: {
-            isUrl: true
-          }
-        },
-        status: {
-          type: DataTypes.ENUM(...Object.values(PlayerStatus)),
-          allowNull: false,
-          defaultValue: PlayerStatus.ACTIVE
-        },
-        joinedDate: {
-          type: DataTypes.DATEONLY,
-          allowNull: true
-        },
-        previousClubs: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: []
-        },
-        contactEmail: {
-          type: DataTypes.STRING(255),
-          allowNull: true,
-          validate: {
-            isEmail: true
-          }
-        },
-        contactPhone: {
-          type: DataTypes.STRING(20),
-          allowNull: true
-        },
-        agentName: {
-          type: DataTypes.STRING(200),
-          allowNull: true
-        },
-        agentEmail: {
-          type: DataTypes.STRING,
-          allowNull: true
-        },
-        metadata: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        }, createdAt: {
-          type: DataTypes.DATE
-        },
-        updatedAt: {
-          type: DataTypes.DATE
-        },
-            createdById: {
-          type:DataTypes.UUID
-        },
-        updatedById: {
-          type:DataTypes.UUID
-        }
-      },
-      {
-        sequelize,
-        tableName: 'players',
-        timestamps: true,
-        paranoid: true,
+
+Player.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    dateOfBirth: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    position: {
+      type: DataTypes.ENUM(...Object.values(PlayerPosition)),
+      allowNull: false
+    },
+    height: {
+      type: DataTypes.DECIMAL(3, 2),
+      allowNull: true,
+      comment: 'Height in meters'
+    },
+    nationality: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    biography: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    jerseyNumber: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      validate: {
+        min: 1,
+        max: 99
+      }
+    },
+    imageUrl: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      validate: {
+        isUrl: true
+      }
+    },
+    status: {
+      type: DataTypes.ENUM(...Object.values(PlayerStatus)),
+      allowNull: false,
+      defaultValue: PlayerStatus.ACTIVE
+    }, 
+    joinedDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    previousClubs: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: []
+    },
+    contactEmail: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      validate: {
+        isEmail: true
+      }
+    },
+    contactPhone: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    agentName: {
+      type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    agentEmail: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    metadata: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    },
+    createdById: {
+      type: DataTypes.UUID
+    },
+    updatedById: {
+      type: DataTypes.UUID
+    }
+  },
+  {
+    sequelize,
+    tableName: 'players',
+    timestamps: true,
+     paranoid: true,
         indexes: [
           { fields: ['name'] },
           { fields: ['position'] },
           { fields: ['status'] },
           { fields: ['createdAt'] }
         ]
-      }
-    );
-
-
+  }
+);
 
 export default Player;

@@ -1,7 +1,7 @@
 
 
 // seeders/ThirdPartyArticleSeeder.ts
-import ThirdPartyArticle, { ThirdPartyArticleAttributes } from "../../models/ThirdPartyArticle";
+import ThirdPartyArticle, { ThirdPartyArticleAttributes } from "@models/ThirdPartyArticle";
 import logger from "../../utils/logger";
 import { developmentThirdPartyArticles } from "../data/development/thirdPartyArticles";
 import { BaseSeeder } from "./base-seeder";

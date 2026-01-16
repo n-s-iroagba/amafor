@@ -1,5 +1,5 @@
 // seeders/AdvertiserSeeder.ts
-import Advertiser, { AdvertiserAttributes } from "../../models/Advertiser";
+import Advertiser, { AdvertiserAttributes } from "@models/Advertiser";
 import logger from "../../utils/logger";
 import { developmentAdvertisers } from "../data/development/advertiser";
 import { BaseSeeder } from "./base-seeder";

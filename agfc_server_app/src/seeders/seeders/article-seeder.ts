@@ -1,7 +1,7 @@
 
 import { Article } from '@models/Article';
 import { ArticleAttributes } from '@models/Article';
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentArticles } from '../data/development/articles';
 import { productionArticles } from '../data/production/articles';
 import { testArticles } from '../data/testing/articles';
