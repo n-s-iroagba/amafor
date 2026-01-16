@@ -4,7 +4,7 @@
   "description": "Amafor Gladiators Digital Ecosystem API",
   "main": "dist/app.js",
   "scripts": {
- "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
     "lint": "eslint . --ext .ts",
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx ts-node -r tsconfig-paths/register src/scripts/seed.ts"
@@ -42,7 +42,8 @@
     "redis": "^4.6.7",
     "sequelize": "^6.37.7",
     "uuid": "^9.0.0",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

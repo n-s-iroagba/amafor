@@ -1,7 +1,6 @@
+import { ITrialistRepository, TrialistRepository } from '@repositories/TrialistRepository';
 import { TrialistAttributes, TrialistCreationAttributes } from '../models/Trialist';
-import { TrialistRepository, ITrialistRepository } from '../repositories/trialist.repository';
-import { AppError } from '../utils/AppError';
-import { uploadToCloudinary } from '../utils/cloudinary';
+
 import { v4 as uuidv4 } from 'uuid';
 
 export interface CreateTrialistData extends Omit<TrialistCreationAttributes, 'id' | 'videoUrl' | 'cvUrl'> {
@@ -34,8 +33,7 @@ export class TrialistService {
       throw new AppError('Trialist must be at least 14 years old', 400);
     }
 
-    // Upload files if provided
-    const uploads = await this.uploadFiles(data.videoFile, data.cvFile);
+
     
     const trialistData: TrialistCreationAttributes = {
       ...data,
@@ -168,37 +166,5 @@ export class TrialistService {
     return age;
   }
 
-  private async uploadFiles(
-    videoFile?: Express.Multer.File,
-    cvFile?: Express.Multer.File
-  ): Promise<{ videoUrl?: string; cvUrl?: string }> {
-    const uploads: { videoUrl?: string; cvUrl?: string } = {};
 
-    if (videoFile) {
-      // Validate video file
-      if (!videoFile.mimetype.startsWith('video/')) {
-        throw new AppError('Invalid video file type', 400);
-      }
-      if (videoFile.size > 100 * 1024 * 1024) { // 100MB limit
-        throw new AppError('Video file size must be less than 100MB', 400);
-      }
-      
-      uploads.videoUrl = await uploadToCloudinary(videoFile, 'trialist_videos');
-    }
-
-    if (cvFile) {
-      // Validate CV file
-      const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-      if (!allowedTypes.includes(cvFile.mimetype)) {
-        throw new AppError('Invalid CV file type. Allowed: PDF, DOC, DOCX', 400);
-      }
-      if (cvFile.size > 10 * 1024 * 1024) { // 10MB limit
-        throw new AppError('CV file size must be less than 10MB', 400);
-      }
-      
-      uploads.cvUrl = await uploadToCloudinary(cvFile, 'trialist_cvs');
-    }
-
-    return uploads;
-  }
 }

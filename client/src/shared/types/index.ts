@@ -34,3 +34,4 @@ export interface AuthUser{
   emailVerified: boolean;
 }
 
+export interface PaginatedData<T>{ data: T[]; total: number; page: number; totalPages: number }

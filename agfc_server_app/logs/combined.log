@@ -10,3 +10,65 @@
 {"level":"info","message":"Starting video seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 05:55:50"}
 {"level":"info","message":"Loading video data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 05:55:50"}
 {"environment":"development","error":"Table 'amafor.videos' doesn't exist","level":"error","message":"Error seeding video:","service":"amafor-gladiators-api","stack":"Error\n    at Query.run (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/dialects/mysql/query.js:46:25)\n    at /home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/sequelize.js:650:28\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async MySQLQueryInterface.bulkInsert (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)\n    at async recursiveBulkCreate (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/model.js:2851:25)\n    at async Function.bulkCreate (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/model.js:2977:12)\n    at async VideoSeeder.seed (/home/udorakpuenyi/amafor/agfc_server_app/src/seeders/seeders/base-seeder.ts:81:24)\n    at async SeedRunner.runAll (/home/udorakpuenyi/amafor/agfc_server_app/src/seeders/seeders/seed-runner.ts:32:11)\n    at async runSeeders (/home/udorakpuenyi/amafor/agfc_server_app/src/scripts/seed.ts:5:5)","timestamp":"2026-01-16 05:55:52"}
+{"level":"info","message":"Running seeder: users","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:40"}
+{"level":"info","message":"Starting user seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:44"}
+{"level":"info","message":"Loading user data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:44"}
+{"level":"info","message":"Successfully seeded 3 user records","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:45"}
+{"level":"info","message":"Running seeder: patrons","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:45"}
+{"level":"info","message":"Starting patron seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:45"}
+{"level":"info","message":"Loading patron data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:45"}
+{"level":"info","message":"Successfully seeded 4 patron records","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:46"}
+{"level":"info","message":"Running seeder: advertisers","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:46"}
+{"level":"info","message":"Starting advertiser seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:46"}
+{"level":"info","message":"Loading advertiser data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:46"}
+{"level":"info","message":"Successfully seeded 3 advertiser records","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:47"}
+{"level":"info","message":"Running seeder: adZones","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:47"}
+{"level":"info","message":"Seeding predefined ad zones...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:47"}
+{"level":"info","message":"Starting ad-zones seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:47"}
+{"level":"info","message":"Loading ad-zones data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:47"}
+{"level":"info","message":"Successfully seeded 5 ad-zones records","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:48"}
+{"level":"info","message":"Running seeder: leagues","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:48"}
+{"level":"info","message":"Starting league seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:48"}
+{"level":"info","message":"Loading league data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:48"}
+{"level":"info","message":"Successfully seeded 2 league records","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:49"}
+{"level":"info","message":"Running seeder: rssFeedSources","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:49"}
+{"level":"info","message":"Starting rssfeedsource seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:49"}
+{"level":"info","message":"Loading rssfeedsource data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:49"}
+{"level":"info","message":"Successfully seeded 3 rssfeedsource records","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:50"}
+{"level":"info","message":"Running seeder: videos","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:50"}
+{"level":"info","message":"Starting video seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:50"}
+{"level":"info","message":"Loading video data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-16 22:50:50"}
+{"environment":"development","error":"Table 'agfc.videos' doesn't exist","level":"error","message":"Error seeding video:","service":"amafor-gladiators-api","stack":"Error\n    at Query.run (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/dialects/mysql/query.js:46:25)\n    at /home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/sequelize.js:650:28\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async MySQLQueryInterface.bulkInsert (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)\n    at async recursiveBulkCreate (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/model.js:2851:25)\n    at async Function.bulkCreate (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/model.js:2977:12)\n    at async VideoSeeder.seed (/home/udorakpuenyi/amafor/agfc_server_app/src/seeders/seeders/base-seeder.ts:81:24)\n    at async SeedRunner.runAll (/home/udorakpuenyi/amafor/agfc_server_app/src/seeders/seeders/seed-runner.ts:32:11)\n    at async runSeeders (/home/udorakpuenyi/amafor/agfc_server_app/src/scripts/seed.ts:5:5)","timestamp":"2026-01-16 22:50:53"}
+{"level":"info","message":"Running seeder: users","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:42"}
+{"level":"info","message":"Starting user seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:42"}
+{"level":"info","message":"Loading user data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:42"}
+{"level":"info","message":"Successfully seeded 3 user records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Running seeder: patrons","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Starting patron seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Loading patron data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Successfully seeded 4 patron records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Running seeder: advertisers","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Starting advertiser seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Loading advertiser data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Successfully seeded 3 advertiser records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Running seeder: adZones","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Seeding predefined ad zones...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Starting ad-zones seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Loading ad-zones data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Successfully seeded 4 ad-zones records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Running seeder: leagues","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Starting league seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Loading league data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:43"}
+{"level":"info","message":"Successfully seeded 2 league records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Running seeder: rssFeedSources","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Starting rssfeedsource seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Loading rssfeedsource data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Successfully seeded 3 rssfeedsource records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Running seeder: videos","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Starting video seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Loading video data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Successfully seeded 4 video records","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Running seeder: trialists","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Starting trialist seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"level":"info","message":"Loading trialist data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-17 00:51:44"}
+{"environment":"development","error":"Table 'agfc.trialists' doesn't exist","level":"error","message":"Error seeding trialist:","service":"amafor-gladiators-api","stack":"Error\n    at Query.run (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/dialects/mysql/query.js:46:25)\n    at /home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/sequelize.js:650:28\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async MySQLQueryInterface.bulkInsert (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/dialects/abstract/query-interface.js:881:21)\n    at async recursiveBulkCreate (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/model.js:2851:25)\n    at async Function.bulkCreate (/home/udorakpuenyi/amafor/agfc_server_app/node_modules/sequelize/src/model.js:2977:12)\n    at async TrialistSeeder.seed (/home/udorakpuenyi/amafor/agfc_server_app/src/seeders/seeders/base-seeder.ts:81:24)\n    at async SeedRunner.runAll (/home/udorakpuenyi/amafor/agfc_server_app/src/seeders/seeders/seed-runner.ts:32:11)\n    at async runSeeders (/home/udorakpuenyi/amafor/agfc_server_app/src/scripts/seed.ts:5:5)","timestamp":"2026-01-17 00:51:44"}

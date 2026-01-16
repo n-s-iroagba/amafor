@@ -1,5 +1,6 @@
-import sequelize from '@config/database';
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+// models/Fixture.ts
+import sequelize from '../config/database';
+import { DataTypes, Model, Optional } from 'sequelize';
 
 export enum FixtureStatus {
   SCHEDULED = 'scheduled',
@@ -20,7 +21,7 @@ export interface FixtureAttributes {
   matchDate: Date;
   homeTeam: string;
   awayTeam: string;
-  competition: string;
+  leagueId: string; // Ensure this exists here
   venue?: string;
   status: FixtureStatus;
   homeScore?: number;
@@ -29,15 +30,11 @@ export interface FixtureAttributes {
   referee?: string;
   weather?: string;
   matchReportArticleId?: string;
-  lineupHome: any;
-  lineupAway: any;
-  stats: any;
   highlightsUrl?: string;
   archiveStatus: ArchiveStatus;
   availableAt?: Date;
   videoUrl?: string;
   videoProvider?: string;
- 
   metadata: Record<string, any>;
   createdById: string;
   updatedById: string;
@@ -46,14 +43,14 @@ export interface FixtureAttributes {
   deletedAt?: Date;
 }
 
-export interface FixtureCreationAttributes extends Optional<FixtureAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'lineupHome' | 'lineupAway' | 'stats' | 'archiveStatus'  | 'metadata'> {}
+export interface FixtureCreationAttributes extends Optional<FixtureAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'archiveStatus' | 'metadata'> {}
 
 export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes> implements FixtureAttributes {
   public id!: string;
   public matchDate!: Date;
   public homeTeam!: string;
   public awayTeam!: string;
-  public competition!: string;
+  public leagueId!: string;
   public venue?: string;
   public status!: FixtureStatus;
   public homeScore?: number;
@@ -62,9 +59,6 @@ export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes>
   public referee?: string;
   public weather?: string;
   public matchReportArticleId?: string;
-  public lineupHome!: any;
-  public lineupAway!: any;
-  public stats!: any;
   public highlightsUrl?: string;
   public archiveStatus!: ArchiveStatus;
   public availableAt?: Date;
@@ -77,7 +71,6 @@ export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes>
   public updatedAt!: Date;
   public deletedAt?: Date;
 }
-
 
 Fixture.init(
   {
@@ -98,9 +91,14 @@ Fixture.init(
       type: DataTypes.STRING(200),
       allowNull: false
     },
-    competition: {
-      type: DataTypes.STRING(200),
-      allowNull: false
+    leagueId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'leagues',
+        key: 'id',
+      },
+      onDelete: 'CASCADE'
     },
     venue: {
       type: DataTypes.STRING(200),
@@ -134,21 +132,6 @@ Fixture.init(
     matchReportArticleId: {
       type: DataTypes.UUID,
       allowNull: true
-    },
-    lineupHome: {
-      type: DataTypes.JSON,
-      allowNull: false,
-      defaultValue: {}
-    },
-    lineupAway: {
-      type: DataTypes.JSON,
-      allowNull: false,
-      defaultValue: {}
-    },
-    stats: {
-      type: DataTypes.JSON,
-      allowNull: false,
-      defaultValue: {}
     },
     highlightsUrl: {
       type: DataTypes.STRING(500),
@@ -199,16 +182,17 @@ Fixture.init(
     }
   },
   {
-    sequelize,  // This comes from the import at the top
+    sequelize,
     tableName: 'fixtures',
     timestamps: true,
     paranoid: true,
     indexes: [
       { fields: ['matchDate'] },
       { fields: ['status'] },
-      { fields: ['competition'] },
+      { fields: ['leagueId'] }, // CORRECTED: Changed 'competition' to 'leagueId'
       { fields: ['createdAt'] }
     ]
   }
 );
+
 export default Fixture;

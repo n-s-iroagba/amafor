@@ -1,6 +1,6 @@
 // models/Video.ts
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize  from '../config/database';
+import { DataTypes, Model, Optional, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import sequelize from '../config/database';
 
 export interface VideoAttributes {
   id: number;
@@ -13,17 +13,17 @@ export interface VideoAttributes {
   updatedAt?: Date;
 }
 
-export interface VideoCreationAttributes extends Optional<VideoAttributes, 'id'> {}
+export interface VideoCreationAttributes extends Optional<VideoAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
 
-class Video extends Model<VideoAttributes, VideoCreationAttributes> implements VideoAttributes {
-  public id!: number;
-  public title!: string;
-  public excerpt!: string;
-  public thumbnail!: string;
-  public videoUrl!: string;
-  public duration!: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+class Video extends Model<InferAttributes<Video>, InferCreationAttributes<Video>> implements VideoAttributes {
+  declare id: CreationOptional<number>;
+  declare title: string;
+  declare excerpt: string;
+  declare thumbnail: string;
+  declare videoUrl: string;
+  declare duration: CreationOptional<number>;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 }
 
 Video.init(
@@ -67,7 +67,7 @@ Video.init(
   {
     sequelize,
     tableName: 'videos',
-    modelName: 'Video',
+  
   }
 );
 

@@ -12,6 +12,7 @@ import { CookieConsent } from '@/features/home/components/CookieConsent';
 import { Footer } from '@/shared/components/Footer';
 import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget';
 import MatchGallerySection from '@/features/fixture/components/MatchGallerySection';
+import FeaturedNews from '@/features/home/components/FeaturedNews';
 
 export default function Homepage() {
   return (
@@ -24,6 +25,7 @@ export default function Homepage() {
       <MatchGallerySection />
       <LatestNewsSection />
       <VideoSection />
+      <FeaturedNews/>
       <SupportSection />
       <Footer />
       <CookieConsent />

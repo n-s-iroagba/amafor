@@ -10,7 +10,7 @@ import Advertiser from './Advertiser';
 import AdZones from './AdZones';
 import RssFeedSource from './RssFeedSource';
 import Video from './Video'; // Added
-import {Trialist} from './Trialist'; // Added
+import Trialist from './Trialist'; // Added
 
 // Content & Staff
 import Article from './Article';
@@ -411,8 +411,8 @@ export const syncDatabase = async (force: boolean = false) => {
     console.error('❌ Database synchronization failed:', error);
     // Debug logging for troubleshooting specific model issues
     console.log('Model Verification:');
-    console.log('Fixture Loaded:', !!Fixture);
-    console.log('FixtureStats Loaded:', !!FixtureStatistics);
+    console.log('Video Loaded:', !!Video);
+    console.log('Trialist Loaded:', !!Trialist);
     console.log('PlayerStats Loaded:', !!PlayerLeagueStatistics);
     throw error;
   }

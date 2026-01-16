@@ -86,10 +86,7 @@ export default function LatestNewsSection() {
               onClick={() => handleArticleClick(article.id)}
             >
         <div className="relative overflow-hidden mb-5">
-                <div
-                  className="h-64 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${article.featuredImage})` }}
-                />
+           
              
               </div>
 

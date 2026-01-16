@@ -21,56 +21,58 @@ export class AdZoneSeeder extends BaseSeeder<AdZoneModel> {
   private getPredefinedZones(): CreationAttributes<AdZoneModel>[] {
     return [
       {
-        name: 'Homepage Banner',
-        zone: AdZone.HOMEPAGE_BANNER,
-        description: 'Primary banner on the homepage, highest visibility',
-        pricePerView: 50, // 0.5 NGN per view
-        type: AdZoneType.BANNER,
-        dimensions: '728x90',
-        maxAds: 3,
-        status: AdZoneStatus.ACTIVE
-      },
-      {
-        name: 'Top Page Banner',
-        zone: AdZone.TOP_PAGE_BANNER,
-        description: 'Banner at the top of all pages',
-        pricePerView: 30, // 0.3 NGN per view
-        type: AdZoneType.BANNER,
-        dimensions: '728x90',
-        maxAds: 2,
-        status: AdZoneStatus.ACTIVE
-      },
-      {
-        name: 'Sidebar Ad',
-        zone: AdZone.SIDEBAR,
-        description: 'Advertisement in the sidebar',
-        pricePerView: 20, // 0.2 NGN per view
-        type: AdZoneType.SIDEBAR,
-        dimensions: '300x250',
-        maxAds: 4,
-        status: AdZoneStatus.ACTIVE
-      },
-      {
-        name: 'Article Footer Ad',
-        zone: AdZone.ARTICLE_FOOTER,
-        description: 'Advertisement at the end of articles',
-        pricePerView: 25, // 0.25 NGN per view
-        type: AdZoneType.FOOTER,
-        dimensions: '728x90',
-        maxAds: 2,
-        status: AdZoneStatus.ACTIVE
-      },
-      {
-        name: 'Mid Article Ad',
-        zone: AdZone.MID_ARTICLE,
-        description: 'Advertisement in the middle of article content',
-        pricePerView: 40, // 0.4 NGN per view
-        type: AdZoneType.INLINE,
-        dimensions: '300x250',
-        maxAds: 1,
-        status: AdZoneStatus.ACTIVE
-      }
-    ];
+    id: 'TP_BAN',
+    name: 'Top Page Banner',
+
+    dimensions: '970x250',
+    maxSize: '2MB',
+    type: AdZoneType.BANNER,
+    description: 'Top of content pages across the site for maximum visibility',
+    pricePerView: 500,
+
+    status: AdZoneStatus.ACTIVE,
+    tags: ['general', 'sports'],
+  },
+  {
+    id: 'SIDEBAR',
+    name: 'Sidebar',
+
+    dimensions: '300x250',
+    maxSize: '1MB',
+    type: AdZoneType.SIDEBAR,
+    description: 'Persistent sidebar placement on content pages for sustained exposure',
+    pricePerView: 250,
+  
+    status: AdZoneStatus.ACTIVE,
+    tags: ['news', 'features'],
+  },
+  {
+    id: 'ART_FOOT',
+    name: 'Article Footer',
+
+    dimensions: '728x90',
+    maxSize: '1.5MB',
+    type: AdZoneType.FOOTER,
+    description: 'Banner at the bottom of article pages after content',
+    pricePerView: 150,
+  
+    status: AdZoneStatus.ACTIVE,
+    tags: ['editorial'],
+  },
+  {
+    id: 'MID_ART',
+    name: 'Mid-Article Banner',
+  
+    dimensions: '640x360',
+    maxSize: '2MB',
+    type: AdZoneType.INLINE,
+    description: 'Video ad embedded within article content after first 100 words',
+    pricePerView: 400,
+
+    status: AdZoneStatus.ACTIVE,
+    tags: ['video', 'engagement'],
+  }
+]
   }
 
   // Override seed method to ensure zones are only seeded if table is empty
@@ -97,12 +99,12 @@ export class AdZoneSeeder extends BaseSeeder<AdZoneModel> {
   async updateZonePrices(newPrices: Record<AdZone, number>): Promise<number> {
     let updatedCount = 0;
     
-    for (const [zone, price] of Object.entries(newPrices)) {
-      const adZone = await this.model.findOne({ where: { zone } });
+    for (const [type, price] of Object.entries(newPrices)) {
+      const adZone = await this.model.findOne({ where: { type } });
       if (adZone) {
         await adZone.update({ pricePerView: price });
         updatedCount++;
-        logger.info(`Updated price for zone ${zone} to ${price} kobo`);
+        logger.info(`Updated price for zone ${type} to ${price} kobo`);
       }
     }
     
@@ -115,7 +117,7 @@ export class AdZoneSeeder extends BaseSeeder<AdZoneModel> {
     let updatedCount = 0;
     
     for (const zoneData of defaultZones) {
-      const adZone = await this.model.findOne({ where: { zone: zoneData.zone } });
+      const adZone = await this.model.findOne({ where: { type: zoneData.type } });
       if (adZone && adZone.pricePerView !== zoneData.pricePerView) {
         await adZone.update({ pricePerView: zoneData.pricePerView });
         updatedCount++;

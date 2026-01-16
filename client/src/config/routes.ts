@@ -121,13 +121,15 @@ export const API_ROUTES = {
 
   ARTICLES: {
     CREATE: `/articles`,
+    HOME_PAGE :'/articles/homepage',
     VIEW: (id: string) => `/articles/${id}`,
     MUTATE: (id: number | null) => `/articles/${id}`,
     LIST: '/articles',
     PUBLISHED: '/articles/published',
     UN_PUBLISHED: '/articles/unpublished',
-    SPORTS: '/articles/sports',
-    GENERAL: '/articles/general',
+    TAG:(tag:string)=> `/articles/tag/${tag}`,
+    SEARCH: '/articles/search',
+    POPULAR_TAGS:'/articles/popular-tags'
   },
   FEEDS: {
     CREATE: `/feeds`,

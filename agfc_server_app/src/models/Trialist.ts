@@ -117,3 +117,4 @@ Trialist.init(
     tableName: 'trialists',
   }
 );
+export default  Trialist

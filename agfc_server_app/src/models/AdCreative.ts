@@ -61,8 +61,13 @@ AdCreative.init(
       allowNull: false,
     },
     zoneId: {
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
       allowNull: false,
+          references: {
+        model: 'ad_zones',
+        key: 'id',
+      },
+      onDelete: 'CASCADE'
     },
     name: {
       type: DataTypes.STRING(255),
