@@ -5,14 +5,14 @@ import sequelize from '../config/database';
 // 1️⃣ Define all attributes that exist in the DB
 export interface ThirdPartyArticleAttributes {
   id: number;
-  rss_feed_source_id: number;
-  original_id: string;
+  rssFeedSourceId: number;
+  originalId: string;
   title: string;
   summary?: string | null;
   content?: string | null;
-  article_url: string;
-  published_at: Date;
-  thumbnail_url?: string | null;
+
+  publishedAt: Date;
+  thumbnailUrl?: string | null;
   created_at?: Date;
 }
 
@@ -28,14 +28,14 @@ export class ThirdPartyArticle
   implements ThirdPartyArticleAttributes
 {
   public id!: number;
-  public rss_feed_source_id!: number;
-  public original_id!: string;
+  public rssFeedSourceId!: number;
+  public originalId!: string;
   public title!: string;
   public summary!: string | null;
   public content!: string | null;
-  public article_url!: string;
-  public published_at!: Date;
-  public thumbnail_url!: string | null;
+
+  public publishedAt!: Date;
+  public thumbnailUrl!: string | null;
   public readonly created_at!: Date;
 }
 
@@ -47,7 +47,7 @@ ThirdPartyArticle.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    rss_feed_source_id: {
+    rssFeedSourceId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -55,7 +55,7 @@ ThirdPartyArticle.init(
         key: 'id',
       },
     },
-    original_id: {
+    originalId: {
       type: DataTypes.STRING(500),
       allowNull: false,
     },
@@ -71,18 +71,12 @@ ThirdPartyArticle.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    article_url: {
-      type: DataTypes.STRING(500),
-      allowNull: false,
-      validate: {
-        isUrl: true,
-      },
-    },
-    published_at: {
+
+    publishedAt: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    thumbnail_url: {
+    thumbnailUrl: {
       type: DataTypes.STRING(500),
       allowNull: true,
     
@@ -97,10 +91,10 @@ ThirdPartyArticle.init(
     indexes: [
       {
         unique: true,
-        fields: ['rss_feed_source_id', 'original_id'],
+        fields: ['rssFeedSourceId', 'originalId'],
       },
       {
-        fields: ['published_at'],
+        fields: ['publishedAt'],
       },
     ],
   }

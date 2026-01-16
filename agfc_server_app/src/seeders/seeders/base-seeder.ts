@@ -1,6 +1,6 @@
 // src/seeders/base-seeder.ts
 import { ModelStatic, Transaction, CreationAttributes, Model } from 'sequelize';
-import logger from '@utils/logger';
+import logger from "../../utils/logger";
 
 export interface SeedOptions {
   truncate?: boolean;
@@ -18,6 +18,11 @@ export abstract class BaseSeeder<T extends Model> {
   constructor(model: ModelStatic<T>, name: string) {
     this.model = model;
     this.name = name;
+  }
+  
+  // Add this method to satisfy the Seeder interface
+  getName(): string {
+    return this.name;
   }
   
   // Return CreationAttributes<T> instead of T
@@ -150,6 +155,11 @@ export abstract class BaseSeederAlt<M extends Model, T extends CreationAttribute
   constructor(model: ModelStatic<M>, name: string) {
     this.model = model;
     this.name = name;
+  }
+  
+  // Add this method to satisfy the Seeder interface
+  getName(): string {
+    return this.name;
   }
   
   abstract getData(environment: string): T[] | Promise<T[]>;

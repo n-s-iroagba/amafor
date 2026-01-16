@@ -14,7 +14,7 @@ import sequelize from '../config/database';
 // Interface for attributes
 export interface GoalAttributes {
   id: number;
-  fixtureId: number;
+  fixtureId: string;
   scorer: string;
   minute: number;
   isPenalty: boolean;

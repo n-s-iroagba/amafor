@@ -20,7 +20,7 @@ class Patron extends Model<PatronAttributes, PatronCreationAttributes> implement
   public name!: string;
     public email!: string;
        public phoneNumber!: string;
-  public position!: string;
+ 
   public imageUrl!: string;
   public bio!: string;
   public readonly createdAt!: Date;
@@ -41,10 +41,12 @@ Patron.init(
   email: {
       type: DataTypes.STRING,
       allowNull: false,
+
     },phoneNumber: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+ 
     imageUrl: {
       type: DataTypes.STRING,
       allowNull: true,

@@ -1,4 +1,4 @@
-import sequelize from '@config/database';
+import sequelize from '../config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 export enum PatronTier {

@@ -1,6 +1,6 @@
 
 import logger from '@utils/logger';
-import { developmentCoachs } from '../data/development/coachs';
+import { developmentCoaches } from '../data/development/coachs';
 import { productionCoachs } from '../data/production/coachs';
 import { testCoachs } from '../data/testing/coachs';
 import Coach, { CoachAttributes } from '@models/Coach';
@@ -45,7 +45,7 @@ export class CoachSeeder extends BaseSeeder<Coach> {
 
   private getDevelopmentData(): CoachAttributes[] {
     try {
-      return developmentCoachs || [];
+      return developmentCoaches || [];
     } catch (error) {
       logger.warn(`No development data found for ${this.name}, returning empty array`);
       return [];

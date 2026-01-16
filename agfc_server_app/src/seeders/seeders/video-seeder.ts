@@ -1,9 +1,9 @@
 
-import logger from '@utils/logger';
+import logger from '../../utils/logger';
 import { developmentVideos } from '../data/development/videos';
 import { productionVideos } from '../data/production/videos';
 import { testVideos } from '../data/testing/videos';
-import Video, { VideoAttributes } from '@models/Video';
+import Video, { VideoAttributes } from '../../models/Video';
 import { BaseSeeder } from './base-seeder';
 
 export class VideoSeeder extends BaseSeeder<Video> {

@@ -31,14 +31,8 @@ export interface PlayerAttributes {
   contactEmail?: string;
   contactPhone?: string;
   agentName?: string;
-  agentContact?: string;
-  appearances: number;
-  goals: number;
-  assists: number;
-  cleanSheets: number;
-  yellowCards: number;
-  redCards: number;
-  minutesPlayed: number;
+  agentEmail?: string;
+
   metadata: Record<string, any>;
   createdById: string;
   updatedById: string;
@@ -47,7 +41,7 @@ export interface PlayerAttributes {
   deletedAt?: Date;
 }
 
-export interface PlayerCreationAttributes extends Optional<PlayerAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'previousClubs' | 'appearances' | 'goals' | 'assists' | 'cleanSheets' | 'yellowCards' | 'redCards' | 'minutesPlayed' | 'metadata'> {}
+export interface PlayerCreationAttributes extends Optional<PlayerAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'previousClubs' | 'metadata'> {}
 
 export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> implements PlayerAttributes {
   public id!: string;
@@ -65,14 +59,7 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
   public contactEmail?: string;
   public contactPhone?: string;
   public agentName?: string;
-  public agentContact?: string;
-  public appearances!: number;
-  public goals!: number;
-  public assists!: number;
-  public cleanSheets!: number;
-  public yellowCards!: number;
-  public redCards!: number;
-  public minutesPlayed!: number;
+  public agentEmail?: string;
   public metadata!: Record<string, any>;
   public createdById!: string;
   public updatedById!: string;
@@ -158,44 +145,9 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
           type: DataTypes.STRING(200),
           allowNull: true
         },
-        agentContact: {
-          type: DataTypes.STRING(200),
+        agentEmail: {
+          type: DataTypes.STRING,
           allowNull: true
-        },
-        appearances: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        goals: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        assists: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        cleanSheets: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        yellowCards: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        redCards: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        minutesPlayed: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
         },
         metadata: {
           type: DataTypes.JSON,
