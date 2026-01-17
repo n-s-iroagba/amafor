@@ -3,8 +3,9 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Upload, X, Calendar as CalendarIcon } from 'lucide-react';
-import api from '@/lib/apiUtils';
-import { uploadFile } from '@/utils/utils';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
+
 
 export default function NewTrialist() {
   const router = useRouter();
@@ -71,7 +72,7 @@ export default function NewTrialist() {
     setUploadProgress(10);
     
     try {
-      const url = await uploadFile(file, type === 'video' ? 'video' : 'document');
+      const url = await uploadFile(file,'image');
       setUploadProgress(100);
       
       if (type === 'video') {

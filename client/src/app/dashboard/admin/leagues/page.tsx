@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
-import { useGet, useDelete } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
+
 
 interface League {
   id: number;
@@ -24,9 +25,7 @@ export default function LeaguesList() {
   const { data: leagues, loading: leaguesLoading } = useGet<League[]>(
     `${API_ROUTES.LEAGUES.LIST}/all`
   );
-  const { handleDelete: deleteLeague } = useDelete(
-    API_ROUTES.LEAGUES.MUTATE(deleteConfirm)
-  );
+
   console.log('LEAA',leagues)
 
   if (leaguesLoading) {
@@ -247,12 +246,12 @@ export default function LeaguesList() {
                               >
                                 Cancel
                               </button>
-                              <button
+                              {/* <button
                                 onClick={() => deleteLeague()}
                                 className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
                               >
                                 Delete
-                              </button>
+                              </button> */}
                             </div>
                           </div>
                         )}

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import api from '@/lib/apiUtils';
-import { cleanText } from '@/utils/utils';
+import api from '@/shared/lib/axios';
+import { cleanText } from '@/shared/utils';
 
  enum ArticleStatus {
   Draft = 'draft',

@@ -1,11 +1,11 @@
 // app/goals/[id]/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useDelete, useGet } from '@/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
+import { useGet} from '@/shared/hooks/useApiQuery';
 
 interface Goal {
   id: number;
@@ -33,7 +33,8 @@ export default function GoalDetail() {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-   const {handleDelete,deleting} = useDelete(API_ROUTES.GOALS.MUTATE(Number(id)))
+
+
 
   if (isLoading) {
     return (
@@ -218,12 +219,12 @@ export default function GoalDetail() {
                 >
                   Cancel
                 </button>
-                <button
+                {/* <button
                   onClick={handleDelete}
                   className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
                 >
                 {deleting?'Deleting':'Delete'}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

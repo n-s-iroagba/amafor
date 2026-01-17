@@ -39,11 +39,11 @@ export default function TrialistsList() {
   const [deletingId, setDeletingId] = useState<string>('');
 
   const { data, refetch, loading } = useGet<TrialistResponse>(
-    API_ROUTES.TRIALISTS.LIST
+    API_ROUTES.COACHES.LIST
   );
-  const { handleDelete: deleteTrialist, deleting: deleteLoading } = useDelete(
-    API_ROUTES.TRIALISTS.MUTATE(deletingId)
-  );
+  // const { handleDelete: deleteTrialist, deleting: deleteLoading } = useDelete(
+  //   API_ROUTES.TRIALISTS.MUTATE(deletingId)
+  // );
 
   const trialists = data?.data;
 
@@ -73,7 +73,7 @@ export default function TrialistsList() {
     }
     setDeletingId(id);
     try {
-      await deleteTrialist();
+      // await deleteTrialist();
       await refetch();
     } catch (err) {
       console.error('Error deleting trialist:', err);
@@ -270,14 +270,14 @@ export default function TrialistsList() {
                           <Edit className="w-3 h-3" />
                           Edit
                         </Link>
-                        <button
+                        {/* <button
                           onClick={() => handleDelete(trialist.id)}
                           disabled={deletingId === trialist.id || deleteLoading}
                           className="inline-flex items-center gap-1 px-3 py-1 text-xs bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <Trash2 className="w-3 h-3" />
                           {deletingId === trialist.id || deleteLoading ? 'Deleting...' : 'Delete'}
-                        </button>
+                        </button> */}
                       </div>
                     </td>
                   </tr>

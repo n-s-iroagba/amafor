@@ -5,9 +5,11 @@ import { useParams, useRouter } from 'next/navigation';
 import { X, ImageIcon, Upload } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
+
 import Image from 'next/image';
-import { uploadFile } from '@/utils/utils';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
+
 
 
 interface Coach {

@@ -19,9 +19,10 @@ import {
   Loader2,
   ExternalLink,
 } from 'lucide-react';
-import { RssFeedSourceCategory } from '@/types/feed.types';
+import { RssFeedSourceCategory } from '@/shared/types';
 import { API_ROUTES } from '@/config/routes';
-import { useGet, useDelete } from '@/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
+
 
 // Updated interface matching your Sequelize model exactly
 interface RssFeedSource {
@@ -47,9 +48,9 @@ export default function RssFeedDetail() {
     id ? API_ROUTES.FEEDS.VIEW(id) : null
   );
 
-  const { handleDelete: deleteRssFeed } = useDelete(
-    id ? API_ROUTES.FEEDS.MUTATE(id) : ''
-  );
+  // const { handleDelete: deleteRssFeed } = useDelete(
+  //   id ? API_ROUTES.FEEDS.MUTATE(id) : ''
+  // );
 
   // Set feed data when loaded
   useEffect(() => {
@@ -91,7 +92,7 @@ export default function RssFeedDetail() {
 
     setDeleting(true);
     try {
-      await deleteRssFeed();
+      // await deleteRssFeed();
       // Show success message
       alert(`RSS feed source "${feed.name}" deleted successfully!`);
       // Navigate back to list

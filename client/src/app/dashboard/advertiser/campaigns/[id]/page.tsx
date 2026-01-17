@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { ArrowLeft, Megaphone, Play, Pause, BarChart3, TrendingUp, Users, MousePointer2, Download, ShieldCheck, Target, Loader2, CheckCircle } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 export default function CampaignDetailPage() {
   const { id } = useParams();
@@ -48,7 +49,7 @@ export default function CampaignDetailPage() {
       )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Link to="/dashboard/advertiser/campaigns" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/advertiser/campaigns" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Campaigns
         </Link>
 

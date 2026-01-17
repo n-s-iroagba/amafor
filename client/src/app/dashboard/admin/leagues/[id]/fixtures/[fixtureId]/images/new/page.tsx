@@ -4,10 +4,11 @@
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import api from '@/lib/apiUtils';
-import { API_ROUTES } from '@/config/routes';
-import { uploadFile } from '@/utils/utils';
 
+import { API_ROUTES } from '@/config/routes';
+
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
 
 
 interface MatchImageCreationAttributes {

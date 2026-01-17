@@ -4,9 +4,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useDelete, useGet } from '@/hooks/useApiQuery';
+
 import { API_ROUTES } from '@/config/routes';
 import Image from 'next/image';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
 interface Video {
   id: number;
@@ -28,7 +29,7 @@ export default function VideosList() {
   const { data, loading, error } = useGet<PaginatedData<Video[]>>(
     API_ROUTES.VIDEOS.LIST
   );
-  const { handleDelete } = useDelete(API_ROUTES.VIDEOS.MUTATE(deleteConfirm));
+  // const { handleDelete } = useDelete(API_ROUTES.VIDEOS.MUTATE(deleteConfirm));
 
   const videos = data?.data;
   
@@ -47,7 +48,7 @@ export default function VideosList() {
 
   const handleDeleteClick = async (videoId: number) => {
     try {
-      await handleDelete();
+    
       setDeleteConfirm(null);
       // The useEffect will handle the refresh
     } catch (error) {

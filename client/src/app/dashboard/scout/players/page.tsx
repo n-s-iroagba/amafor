@@ -3,19 +3,19 @@
 import React, { useState } from 'react';
 import { Search, Filter, Download, ArrowLeft, Shield, UserCheck } from 'lucide-react';
 import Link from 'next/link';
-import { MOCK_PLAYERS } from '../../../../constants';
+
 
 export default function ScoutPlayerDirectory() {
   const [filter, setFilter] = useState('ALL');
+  const players =[]
 
   const filteredPlayers = filter === 'ALL' 
-    ? MOCK_PLAYERS 
-    : MOCK_PLAYERS.filter(p => p.position === filter);
+    ? players : players.filter(p => p.position === filter);
 
   const handleExport = () => {
     // PV-C02 State logic: Simulate CSV Export
     const headers = 'Name,Position,Age,Height,SquadNumber\n';
-    const csv = MOCK_PLAYERS.map(p => `${p.name},${p.position},${p.age},${p.height},${p.jerseyNumber}`).join('\n');
+    const csv = players.map(p => `${p.name},${p.position},${p.age},${p.height},${p.jerseyNumber}`).join('\n');
     const blob = new Blob([headers + csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

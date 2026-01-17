@@ -2,11 +2,13 @@
 'use client';
 import React, { useState } from 'react';
 import { User, Shield, Lock, ArrowLeft, Save, Mail, Trash2, ShieldAlert, Key, Loader2, CheckCircle } from 'lucide-react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function UserPermissionPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
@@ -29,7 +31,7 @@ export default function UserPermissionPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <Link to="/dashboard/admin/users" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/admin/users" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to User List
         </Link>
 

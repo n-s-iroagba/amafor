@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { Play, Pause, SkipBack, SkipForward, ArrowLeft, Shield, Video, Clock, MessageSquare, Plus, Download, BarChart2 } from 'lucide-react';
 import Link from 'next/link';
-// Added useParams from react-router-dom for SPA routing compatibility
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+
 
 // Changed params to optional to resolve TS error in index.tsx
 export default function MatchAnalysisPlayer({ params }: { params?: { id: string } }) {

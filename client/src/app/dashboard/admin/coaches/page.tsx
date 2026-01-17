@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { Users, Search, Filter, Plus, Edit, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_ROUTES } from '@/config/routes';
-import { useGet, useDelete } from '@/hooks/useApiQuery';
+
 import Image from 'next/image';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 interface Coach {
   id: number;
@@ -29,7 +30,7 @@ export default function CoachesList() {
   const { data, refetch, loading } = useGet<CoachResponse>(
     API_ROUTES.COACHES.LIST
   );
-  const { handleDelete: deleteCoach, deleting: deleteLoading } = useDelete(
+  const {mutate: deleteCoach, isPending: deleteLoading } = useDelete(
     API_ROUTES.COACHES.MUTATE(deletingId)
   );
 
@@ -53,7 +54,7 @@ export default function CoachesList() {
     }
     setDeletingId(id);
     try {
-      await deleteCoach();
+      await deleteCoach('');
       await refetch();
     } catch (err) {
       console.error('Error deleting coach:', err);

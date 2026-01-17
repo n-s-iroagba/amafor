@@ -10,28 +10,33 @@ import { useState } from 'react'
 import { Header } from '@/shared/components/Header'
 import { Footer } from '@/shared/components/Footer'
 import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget'
+import { useGet } from '@/shared/hooks/useApiQuery'
+import { Player } from '@/features/player/types'
+import { Article } from '@/features/articles/types'
+import { Fixture } from '@/features/fixture/types'
 
 export default function SearchResults() {
-  const searchParams = useSearchParams()
-  const query = searchParams.get('q') || ''
+   const {data:players} = useGet<Player[]>('')
+     const {data:newsArticles} = useGet<Article[]>('')
+       const {data:fixtures} = useGet<Fixture[]>('')
+
   const [activeTab, setActiveTab] = useState<'all' | 'players' | 'articles' | 'matches'>('all')
 
   // Search logic
-  const searchPlayers = players.filter(p => 
+  const query =''
+  const searchPlayers = players||[].filter(p => 
     p.name.toLowerCase().includes(query.toLowerCase()) ||
     p.position.toLowerCase().includes(query.toLowerCase())
   )
 
-  const searchArticles = newsArticles.filter(a =>
+  const searchArticles = newsArticles||[].filter(a =>
     a.title.toLowerCase().includes(query.toLowerCase()) ||
-    a.snippet.toLowerCase().includes(query.toLowerCase()) ||
-    a.category.toLowerCase().includes(query.toLowerCase())
+    a.excerpt.toLowerCase().includes(query.toLowerCase()) 
   )
 
-  const searchMatches = fixtures.filter(f =>
+  const searchMatches = fixtures||[].filter(f =>
     f.homeTeam.toLowerCase().includes(query.toLowerCase()) ||
-    f.awayTeam.toLowerCase().includes(query.toLowerCase()) ||
-    f.competition.toLowerCase().includes(query.toLowerCase())
+    f.awayTeam.toLowerCase().includes(query.toLowerCase()) 
   )
 
   const totalResults = searchPlayers.length + searchArticles.length + searchMatches.length
@@ -136,8 +141,8 @@ export default function SearchResults() {
                             </div>
                             <div className="flex-1">
                               <h3 className="font-heading text-sky-500 mb-1">{player.name}</h3>
-                              <p className="text-sm text-slate-600">{player.position} • Age {player.age}</p>
-                              <p className="text-sm text-slate-500">{player.height}</p>
+                              {/* <p className="text-sm text-slate-600">{player.position} • Age {player.age}</p>
+                              <p className="text-sm text-slate-500">{player.height}</p> */}
                             </div>
                           </div>
                         </div>
@@ -159,7 +164,7 @@ export default function SearchResults() {
                           href={`/news/${article.id}`}
                           className="group bg-slate-50 border border-slate-200 overflow-hidden flex gap-4 hover:border-sky-600 transition-colors"
                         >
-                          <div 
+                          {/* <div 
                             className="w-32 h-32 bg-cover bg-center shrink-0"
                             style={{ backgroundImage: `url(${article.image})` }}
                           />
@@ -170,11 +175,11 @@ export default function SearchResults() {
                             <h3 className="text-lg font-heading text-sky-500 mt-2 mb-1 line-clamp-2 group-hover:text-sky-600 transition-colors">
                               {article.title}
                             </h3>
-                            <p className="text-sm text-slate-600 line-clamp-2">{article.snippet}</p>
+                            <p className="text-sm text-slate-600 line-clamp-2">{article.excerpt}</p>
                             <p className="text-xs text-slate-500 mt-2">
                               {new Date(article.date).toLocaleDateString()}
                             </p>
-                          </div>
+                          </div> */}
                         </Link>
                       ))}
                     </div>
@@ -187,7 +192,7 @@ export default function SearchResults() {
                     {activeTab === 'all' && (
                       <h2 className="text-2xl font-heading text-sky-500 mb-6">Matches</h2>
                     )}
-                    <div className="grid md:grid-cols-2 gap-6">
+                    {/* <div className="grid md:grid-cols-2 gap-6">
                       {searchMatches.map(match => (
                         <Link
                           key={match.id}
@@ -225,7 +230,7 @@ export default function SearchResults() {
                           </p>
                         </Link>
                       ))}
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

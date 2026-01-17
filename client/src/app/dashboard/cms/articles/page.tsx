@@ -15,7 +15,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
-import { cleanText } from '@/utils/utils';
+import { cleanText } from '@/shared/utils';
 
  interface Article {
   id: number;

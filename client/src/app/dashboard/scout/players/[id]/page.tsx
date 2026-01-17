@@ -1,13 +1,16 @@
 
 'use client';
-import React, { useState, useEffect } from 'react';
-import { MOCK_PLAYERS } from '../../../../constants';
-import { Shield, ArrowLeft, History, FileText, Download, BarChart2, CheckCircle2, Award, Zap, Loader2 } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
+
+import { Shield, ArrowLeft, FileText, Download, BarChart2, Award, Zap, Loader2, Link } from 'lucide-react';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { useParams } from 'next/navigation';
+
 
 export default function ScoutPlayerDetail() {
+  const {data:players} = useGet('')
   const { id } = useParams();
-  const player = MOCK_PLAYERS.find(p => p.id === id) || MOCK_PLAYERS[0];
+  const player = players.find(p => p.id === id) || players[0];
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportReady, setReportReady] = useState(false);
 
@@ -23,7 +26,7 @@ export default function ScoutPlayerDetail() {
     <div className="bg-white min-h-screen">
       <div className="bg-[#2F4F4F] text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link to="/dashboard/scout/players" className="inline-flex items-center text-[#87CEEB] font-bold text-[10px] mb-8 hover:translate-x-[-4px] transition-transform uppercase tracking-widest">
+          <Link href="/dashboard/scout/players" className="inline-flex items-center text-[#87CEEB] font-bold text-[10px] mb-8 hover:translate-x-[-4px] transition-transform uppercase tracking-widest">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Directory
           </Link>
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">

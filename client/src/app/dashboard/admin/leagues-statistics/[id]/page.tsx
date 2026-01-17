@@ -7,14 +7,16 @@ import {
   Trophy, Users, Target, TrendingUp, TrendingDown, 
   Edit, Trash2, Plus, BarChart3, Search, Filter,
   Shield, Flag, Goal, Clock, Award, Star, TrendingUp as TrendingUpIcon,
-  Calendar, Home, Away, Zap, ShieldCheck, Download, Share2, MoreVertical,
+  Calendar, Home, Zap, ShieldCheck, Download, Share2, MoreVertical,
   Upload,
   Printer
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_ROUTES } from '@/config/routes';
-import { useGet, useDelete } from '@/hooks/useApiQuery';
-import { LeagueStatistics, League } from '@/types';
+import { LeagueStatistics } from '@/features/league-statistics/types';
+import { League } from '@/features/league/types';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
+
 
 interface LeagueStatisticsResponse {
   data: LeagueStatistics[];

@@ -3,10 +3,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import api from '@/lib/apiUtils';
+
 import { API_ROUTES } from '@/config/routes';
-import { uploadFile } from '@/utils/utils';
+
 import Image from 'next/image';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
 
 interface Player {
   id: number;

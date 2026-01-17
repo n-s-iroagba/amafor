@@ -1,122 +1,307 @@
 'use client';
-import React from 'react';
-import { MOCK_PATRONS } from '../../../../constants';
-import { Heart, Star, Award, Shield, Plus, Filter, Search, ArrowLeft, Download, UserPlus, Edit2 } from 'lucide-react';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import {
+  Edit,
+  Eye,
+  Plus,
+  Trash2,
+  Loader2,
+  Search,
+  Filter,
+  Users,
+} from 'lucide-react';
 
-export default function PatronAdminPage() {
-  return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link href="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
-          <ArrowLeft className="w-3 h-3 mr-2" /> Central Command
-        </Link>
+import { API_ROUTES } from '@/config/routes';
 
-        <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-          <div>
-            <div className="flex items-center space-x-4 mb-2">
-              <div className="bg-[#2F4F4F] p-3 rounded-2xl">
-                <Heart className="w-6 h-6 text-[#87CEEB]" />
+import Image from 'next/image';
+import api from '@/shared/lib/axios';
+import { useGet } from '@/shared/hooks/useApiQuery';
+
+interface Patron {
+  id: number;
+  name: string;
+  position: string;
+  imageUrl?: string;
+  bio?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export default function PatronListPage() {
+  const { data, loading, error, refetch } = useGet<{ data: Patron[] }>(
+    API_ROUTES.PATRONS.LIST
+  );
+  const [searchTerm, setSearchTerm] = useState('');
+  const [deleteLoading, setDeleteLoading] = useState<number | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
+    null
+  );
+  const patrons = data?.data || [];
+  const handleDelete = async (id: number) => {
+    setDeleteLoading(id);
+    try {
+      await api.delete(API_ROUTES.PATRONS.DELETE(id));
+      await refetch(); // Refresh the list after deletion
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Error deleting patron. Please try again.');
+    } finally {
+      setDeleteLoading(null);
+      setShowDeleteConfirm(null);
+    }
+  };
+
+  const confirmDelete = (id: number) => {
+    setShowDeleteConfirm(id);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(null);
+  };
+
+  // Filter patrons based on search term
+  const filteredPatrons = patrons?.filter(
+    (patron) =>
+      patron.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      patron.position.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Loading skeleton
+  if (loading) {
+    return (
+      <div className="app-container">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse" />
+            <div className="w-32 h-8 bg-gray-200 rounded-lg animate-pulse" />
+          </div>
+          <div className="w-32 h-10 bg-gray-200 rounded-lg animate-pulse" />
+        </div>
+
+        <div className="space-y-4">
+          {[...Array(5)].map((_, index) => (
+            <div
+              key={index}
+              className="p-6 border rounded-lg shadow-sm bg-white animate-pulse"
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full" />
+                  <div className="space-y-2">
+                    <div className="w-32 h-4 bg-gray-200 rounded" />
+                    <div className="w-24 h-3 bg-gray-200 rounded" />
+                  </div>
+                </div>
+                <div className="flex space-x-3">
+                  <div className="w-16 h-8 bg-gray-200 rounded" />
+                  <div className="w-16 h-8 bg-gray-200 rounded" />
+                  <div className="w-16 h-8 bg-gray-200 rounded" />
+                </div>
               </div>
-              <h1 className="text-4xl text-[#2F4F4F] uppercase tracking-tight">Patronage Program (ADM-10)</h1>
-            </div>
-            <p className="text-gray-500 text-sm">Oversee all club patrons, manage wall recognition, and record offline legacy donations.</p>
-          </div>
-          <div className="flex space-x-4">
-            <button className="bg-white px-6 py-4 rounded-2xl border text-[10px] font-black text-[#2F4F4F] hover:border-[#87CEEB] transition-all uppercase tracking-widest">
-              FINANCIAL RECONCILIATION
-            </button>
-            <button className="sky-button flex items-center space-x-2 py-4">
-              <UserPlus className="w-5 h-5" />
-              <span>ADD MANUAL PATRON</span>
-            </button>
-          </div>
-        </header>
-
-        {/* Tier Distribution Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          {[
-            { label: 'Legends', count: 12, color: 'bg-[#2F4F4F]', text: 'text-[#87CEEB]' },
-            { label: 'Advocates', count: 42, color: 'bg-[#87CEEB]', text: 'text-[#2F4F4F]' },
-            { label: 'Patrons', count: 84, color: 'bg-white', text: 'text-[#2F4F4F]' },
-            { label: 'Donors', count: 412, color: 'bg-gray-100', text: 'text-gray-500' }
-          ].map((tier, i) => (
-            <div key={i} className={`${tier.color} p-8 rounded-[2.5rem] shadow-sm border border-gray-100`}>
-              <div className={`text-[10px] font-black uppercase tracking-widest mb-1 ${tier.text}`}>{tier.label}</div>
-              <div className={`text-4xl font-black ${tier.text}`}>{tier.count}</div>
             </div>
           ))}
         </div>
+      </div>
+    );
+  }
 
-        {/* Filters */}
-        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm mb-12 flex flex-wrap items-center gap-8 border border-gray-100">
-          <div className="flex-1 min-w-[300px] relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input type="text" placeholder="Search by name, company, or message..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm" />
-          </div>
-          <div className="flex items-center space-x-3">
-             <Filter className="w-4 h-4 text-gray-400" />
-             <select className="bg-gray-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none">
-                <option>Active Patrons</option>
-                <option>Pending Verification</option>
-                <option>Historical</option>
-             </select>
-          </div>
-        </div>
-
-        {/* Patrons Table */}
-        <div className="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
-          <table className="w-full text-left">
-            <thead className="bg-[#2F4F4F] text-[#87CEEB]">
-              <tr className="text-[10px] font-black uppercase tracking-widest">
-                <th className="px-10 py-6">Entity Identity</th>
-                <th className="px-10 py-6">Tier Level</th>
-                <th className="px-10 py-6">Status</th>
-                <th className="px-10 py-6">Recognition</th>
-                <th className="px-10 py-6 text-right">Commitment</th>
-                <th className="px-10 py-6"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {MOCK_PATRONS.map(patron => (
-                <tr key={patron.id} className="group hover:bg-gray-50 transition-colors text-sm">
-                  <td className="px-10 py-8">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[#87CEEB]/20">
-                        <img src={patron.isCorporate ? patron.logoUrl : patron.portraitUrl} className="w-full h-full object-cover" />
-                      </div>
-                      <div>
-                        <div className="font-black text-[#2F4F4F] uppercase tracking-tight">{patron.name}</div>
-                        <div className="text-[9px] text-gray-400 font-bold uppercase">{patron.isCorporate ? 'Corporate Entity' : 'Individual'}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-10 py-8">
-                    <div className="flex items-center space-x-2">
-                      <Star className="w-3.5 h-3.5 text-[#87CEEB]" />
-                      <span className="font-black uppercase tracking-widest text-[10px] text-[#2F4F4F]">{patron.tier}</span>
-                    </div>
-                  </td>
-                  <td className="px-10 py-8">
-                    <span className="px-3 py-1 bg-green-100 text-green-600 rounded-full text-[9px] font-black uppercase tracking-widest">Active</span>
-                  </td>
-                  <td className="px-10 py-8 text-xs text-gray-400 font-bold uppercase tracking-widest">
-                    {patron.displayName}
-                  </td>
-                  <td className="px-10 py-8 text-right font-black text-[#2F4F4F]">
-                    ₦{patron.tier === 'Legend' ? '50,000' : '25,000'}/mo
-                  </td>
-                  <td className="px-10 py-8 text-right">
-                    <Link href={`/dashboard/admin/patrons/${patron.id}`} className="p-3 text-gray-300 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-xl transition-all inline-block">
-                      <Edit2 className="w-5 h-5" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+  if (error) {
+    return (
+      <div className="app-container">
+        <div className="text-center py-12">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Failed to Load Patrons
+          </h2>
+          <p className="text-gray-600 mb-6">
+            There was an error loading the patron list.
+          </p>
+          <button
+            onClick={() => refetch()}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Try Again
+          </button>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="app-container">
+      {/* Header Section */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-blue-100 rounded-lg">
+            <Users className="w-6 h-6 text-blue-600" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Patrons</h1>
+            <p className="text-gray-600">Manage your organization's patrons</p>
+          </div>
+        </div>
+
+        <Link
+          href="/admin/patrons/new"
+          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+        >
+          <Plus className="w-4 h-4" />
+          Add Patron
+        </Link>
+      </div>
+
+      {/* Search and Filter Section */}
+      <div className="bg-white rounded-lg border shadow-sm p-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search patrons by name or position..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+          <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Filter className="w-4 h-4" />
+            Filter
+          </button>
+        </div>
+      </div>
+
+      {/* Patrons List */}
+      <div className="space-y-4">
+        {filteredPatrons?.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-lg border shadow-sm">
+            <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              {searchTerm ? 'No matching patrons found' : 'No patrons yet'}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              {searchTerm
+                ? 'Try adjusting your search terms'
+                : 'Get started by adding your first patron'}
+            </p>
+            {!searchTerm && (
+              <Link
+                href="/admin/patrons/new"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Add First Patron
+              </Link>
+            )}
+          </div>
+        ) : (
+          filteredPatrons?.map((patron) => (
+            <div
+              key={patron.id}
+              className="p-6 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
+            >
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                {/* Patron Info */}
+                <div className="flex items-center space-x-4 flex-1 min-w-0">
+                  <Image
+                    width={50}
+                    height={50}
+                    unoptimized
+                    src={patron.imageUrl || ''}
+                    alt={patron.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-gray-100"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        '';
+                    }}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <h2 className="font-semibold text-gray-800 truncate">
+                      {patron.name}
+                    </h2>
+                    <p className="text-gray-600 text-sm truncate">
+                      {patron.position}
+                    </p>
+                    {patron.bio && (
+                      <p className="text-gray-500 text-sm mt-1 line-clamp-2">
+                        {patron.bio}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Link
+                    href={`/admin/patrons/${patron.id}`}
+                    className="flex items-center gap-1 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  >
+                    <Eye className="w-4 h-4" />
+                    <span className="hidden sm:inline">View</span>
+                  </Link>
+
+                  <Link
+                    href={`/admin/patrons/${patron.id}/edit`}
+                    className="flex items-center gap-1 px-3 py-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                  >
+                    <Edit className="w-4 h-4" />
+                    <span className="hidden sm:inline">Edit</span>
+                  </Link>
+
+                  {showDeleteConfirm === patron.id ? (
+                    <div className="flex items-center gap-2 bg-red-50 p-2 rounded-lg">
+                      <span className="text-sm text-red-700 font-medium">
+                        Confirm?
+                      </span>
+                      <button
+                        onClick={() => handleDelete(patron.id)}
+                        disabled={deleteLoading === patron.id}
+                        className="text-red-700 hover:text-red-800 disabled:opacity-50"
+                      >
+                        {deleteLoading === patron.id ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          'Yes'
+                        )}
+                      </button>
+                      <button
+                        onClick={cancelDelete}
+                        className="text-gray-600 hover:text-gray-800"
+                      >
+                        No
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => confirmDelete(patron.id)}
+                      disabled={deleteLoading === patron.id}
+                      className="flex items-center gap-1 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {deleteLoading === patron.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
+                      <span className="hidden sm:inline">
+                        {deleteLoading === patron.id ? 'Deleting...' : 'Delete'}
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Stats Footer */}
+      {filteredPatrons && filteredPatrons.length > 0 && (
+        <div className="mt-8 text-center text-gray-500 text-sm">
+          Showing {filteredPatrons.length} of {patrons?.length} patrons
+          {searchTerm && ` matching "${searchTerm}"`}
+        </div>
+      )}
     </div>
   );
 }

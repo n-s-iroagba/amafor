@@ -3,10 +3,11 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useGet, usePost } from '@/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import { Player } from '@/types';
-import api from '@/lib/apiUtils';
+import { Player } from '@/features/player/types';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import api from '@/shared/lib/axios';
+
 
 interface Fixture {
   id: number;

@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { League } from '@/types';
+
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
+import { League } from '@/features/league/types';
+import api from '@/shared/lib/axios';
+
 
 export default function EditLeague() {
   const router = useRouter();

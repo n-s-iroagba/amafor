@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 
 export default function NewLeague() {
   const router = useRouter();

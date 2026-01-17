@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 import { 
   Calendar, 
   Users, 

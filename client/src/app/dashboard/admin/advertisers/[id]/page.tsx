@@ -1,11 +1,13 @@
 'use client';
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle, XCircle, ShieldAlert, Briefcase, ExternalLink, BadgeCheck, FileText, Globe, Loader2 } from 'lucide-react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function AdvertiserReviewDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [processing, setProcessing] = useState<'authorizing' | 'denying' | null>(null);
 
   const company = {
@@ -22,14 +24,14 @@ export default function AdvertiserReviewDetail() {
     setProcessing(type);
     setTimeout(() => {
       setProcessing(null);
-      navigate('/dashboard/admin/advertisers');
+      router.push('/dashboard/admin/advertisers');
     }, 2000);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Link to="/dashboard/admin/advertisers" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/admin/advertisers" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Queue
         </Link>
 

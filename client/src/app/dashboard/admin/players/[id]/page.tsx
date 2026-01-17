@@ -4,9 +4,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useDelete } from '@/hooks/useApiQuery';
-import api from '@/lib/apiUtils';
+
 import Image from 'next/image';
+import api from '@/shared/lib/axios';
 
 
 interface Player {
@@ -30,11 +30,7 @@ const PlayerDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  const {
-    deleting,
-    apiError: deleteError,
-    handleDelete,
-  } = useDelete<{ message: string }>(`/players/${playerId}`);
+
 
   useEffect(() => {
     const fetchPlayer = async () => {
@@ -55,18 +51,18 @@ const PlayerDetailsPage = () => {
     }
   }, [playerId]);
 
-  const handleDeleteClick = async () => {
-    if (window.confirm('Are you sure you want to delete this player? This action cannot be undone.')) {
-      try {
-        await handleDelete();
-        // Redirect to players list after successful deletion
-        router.push('/sports-admin/players');
-      } catch (error) {
-        // Error is handled by the hook
-        console.error('Delete failed:', error);
-      }
-    }
-  };
+  // const handleDeleteClick = async () => {
+  //   if (window.confirm('Are you sure you want to delete this player? This action cannot be undone.')) {
+  //     try {
+  //       await handleDelete();
+  //       // Redirect to players list after successful deletion
+  //       router.push('/sports-admin/players');
+  //     } catch (error) {
+  //       // Error is handled by the hook
+  //       console.error('Delete failed:', error);
+  //     }
+  //   }
+  // };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -135,18 +131,18 @@ const PlayerDetailsPage = () => {
             >
               Edit Player
             </Link>
-            <button
+            {/* <button
               onClick={handleDeleteClick}
               disabled={deleting}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {deleting ? 'Deleting...' : 'Delete Player'}
-            </button>
+            </button> */}
           </div>
         </div>
 
         {/* Error message */}
-        {deleteError && (
+        {/* {deleteError && (
           <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -162,7 +158,7 @@ const PlayerDetailsPage = () => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Player details card */}
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -275,13 +271,13 @@ const PlayerDetailsPage = () => {
           >
             Edit Player
           </Link>
-          <button
+          {/* <button
             onClick={handleDeleteClick}
             disabled={deleting}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {deleting ? 'Deleting...' : 'Delete Player'}
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

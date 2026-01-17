@@ -35,3 +35,11 @@ export interface AuthUser{
 }
 
 export interface PaginatedData<T>{ data: T[]; total: number; page: number; totalPages: number }
+
+export enum RSSFeedCategory{
+  FOOTBALL='football'
+}
+export enum RssFeedSourceCategory {
+  SPORTS = 'sports',
+  GENERAL = 'general',
+}

@@ -2,10 +2,11 @@
 import React from 'react';
 import { Shield, Search, Film, UserSearch, Clock, ChevronRight, FileText } from 'lucide-react';
 import Link from 'next/link';
-import { MOCK_USER, MOCK_PLAYERS } from '../../../constants';
 
 export default function ScoutDashboard() {
-  const recentlyViewed = MOCK_PLAYERS.slice(0, 3);
+  const recentlyViewed = [];
+  const user = {firstName:''}
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -23,7 +24,7 @@ export default function ScoutDashboard() {
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-2">Authenticated Scout Portal</div>
-            <h1 className="text-4xl text-[#2F4F4F]">Welcome, {MOCK_USER.firstName}</h1>
+            <h1 className="text-4xl text-[#2F4F4F]">Welcome, {user.firstName}</h1>
           </div>
           <div className="flex items-center space-x-4">
             <div className="bg-white px-6 py-3 rounded-2xl shadow-sm border border-gray-100 flex items-center space-x-3">

@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
-import { uploadFile } from '@/utils/utils';
+
 import Image from 'next/image'
 import { Calendar, MapPin, Users, Upload, X, Loader2, Trophy, Clock, Ban, Play, Calendar as CalendarIcon } from 'lucide-react';
 import React from 'react';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
 
 enum FixtureStatus {
   WON = 'won',

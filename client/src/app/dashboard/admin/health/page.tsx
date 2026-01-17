@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { Activity, Zap, Cpu, HardDrive, RefreshCw, ArrowLeft, ShieldCheck, Globe, Database, Server, Mail, Play, Lock, Loader2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export default function InfrastructureHealthPage() {
   const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false);
@@ -32,7 +32,7 @@ export default function InfrastructureHealthPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link to="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Central Command
         </Link>
 

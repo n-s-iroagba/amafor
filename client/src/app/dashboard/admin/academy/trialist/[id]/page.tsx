@@ -5,12 +5,13 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import ErrorAlert from '@/components/ErrorAlert';
-import { Trialist } from '@/types';
+
 import { 
   Mail, Phone, Calendar, Ruler, Weight, Footprints, 
   Award, Video, FileText, Clock, User, MapPin 
 } from 'lucide-react';
+import { Trialist } from '@/features/academy/types';
+import { ErrorAlert } from '@/shared/components/Alerts';
 
 export default function TrialistDetail() {
   const params = useParams();
@@ -21,7 +22,7 @@ export default function TrialistDetail() {
     data: trialist,
     loading,
     error,
-  } = useGet<Trialist>(API_ROUTES.TRIALISTS.MUTATE(id as string));
+  } = useGet<Trialist>(API_ROUTES.ARTICLES.MUTATE(Number(id)));
 
   const getStatusColor = (status: string) => {
     switch (status) {

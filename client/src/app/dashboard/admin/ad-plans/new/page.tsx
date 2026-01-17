@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 import { API_ROUTES } from '@/config/routes';
 
 export default function NewAdPlan() {

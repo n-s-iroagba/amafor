@@ -3,8 +3,8 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageIcon, Upload, X } from 'lucide-react';
-import api from '@/lib/apiUtils';
-import { uploadFile } from '@/utils/utils';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
 

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { FileText, Download, Trash2, Search, ArrowLeft, Shield, Eye, Filter, Loader2, AlertCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { FileText, Download, Trash2, Search, ArrowLeft, Shield, Eye, Filter, Loader2, AlertCircle, Link } from 'lucide-react';
+
 
 export default function ScoutReportsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export default function ScoutReportsPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <Link to="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Portal
         </Link>
 

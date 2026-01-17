@@ -16,10 +16,11 @@ import {
   Loader2,
   RefreshCw,
 } from 'lucide-react';
-import api from '@/lib/apiUtils';
-import { ArticleStatus } from '@/types/article.types';
+import { ArticleStatus } from '@/features/articles/types';
+import api from '@/shared/lib/axios';
 
-const CustomEditor = dynamic(() => import('@/components/Editor'), {
+
+const CustomEditor = dynamic(() => import('@/features/articles/components/Editor'), {
   ssr: false,
 });
 
@@ -46,7 +47,7 @@ export default function EditArticlePage() {
   const [article, setArticle] = useState<Article | null>(null);
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
-  const [status, setStatus] = useState<ArticleStatus>(ArticleStatus.Draft);
+  const [status, setStatus] = useState<ArticleStatus>(ArticleStatus.DRAFT);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState('');
@@ -58,7 +59,7 @@ export default function EditArticlePage() {
   const [originalTitle, setOriginalTitle] = useState('');
   const [originalContent, setOriginalContent] = useState('');
   const [originalStatus, setOriginalStatus] = useState<ArticleStatus>(
-    ArticleStatus.Draft
+    ArticleStatus.DRAFT
   );
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function EditArticlePage() {
 
       // Show success message based on status
       const successMessage =
-        status === ArticleStatus.Published
+        status === ArticleStatus.PUBLISHED
           ? 'Article updated and published successfully!'
           : 'Article updated and saved as draft!';
 
@@ -187,14 +188,14 @@ export default function EditArticlePage() {
   // Status dropdown options
   const statusOptions = [
     {
-      value: ArticleStatus.Draft,
+      value: ArticleStatus.DRAFT,
       label: 'Save as Draft',
       description: 'Keep article private for editing',
       icon: Edit,
       color: 'text-amber-600',
     },
     {
-      value: ArticleStatus.Published,
+      value: ArticleStatus.PUBLISHED,
       label: 'Publish Article',
       description: 'Make article public',
       icon: Eye,
@@ -495,7 +496,7 @@ export default function EditArticlePage() {
                 disabled={updating || !hasChanges}
                 onClick={handleUpdate}
                 className={`flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 ${
-                  status === ArticleStatus.Published
+                  status === ArticleStatus.PUBLISHED
                     ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:ring-green-500'
                     : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:ring-amber-500'
                 } disabled:opacity-50 disabled:cursor-not-allowed`}

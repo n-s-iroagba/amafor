@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import {  useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { X, Upload, Calendar as CalendarIcon } from 'lucide-react';
+import {  Upload} from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
-import { uploadFile } from '@/utils/utils';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
+
 
 interface Trialist {
   id: string;
@@ -16,7 +17,7 @@ interface Trialist {
   phone: string;
   dob: string;
   position: string;
-  preferredFoot: 'LEFT' | 'RIGHT' | 'BOTH';
+  preferredFoot:  "RIGHT" | "LEFT" | "BOTH";
   height?: number;
   weight?: number;
   previousClub?: string;
@@ -32,7 +33,7 @@ export default function EditTrialist() {
   const id = params.id as string;
 
   const { data: trialist, loading } = useGet<Trialist>(
-    API_ROUTES.TRIALISTS.VIEW(id)
+    API_ROUTES.PATRONS.DETAIL(Number(id))
   );
 
   const [formData, setFormData] = useState({
@@ -68,26 +69,26 @@ export default function EditTrialist() {
     'Right Winger', 'Left Winger', 'Striker', 'Forward'
   ];
 
-  useEffect(() => {
-    if (trialist) {
-      setFormData({
-        firstName: trialist.firstName,
-        lastName: trialist.lastName,
-        email: trialist.email,
-        phone: trialist.phone,
-        dob: trialist.dob ? trialist.dob.split('T')[0] : '',
-        position: trialist.position,
-        preferredFoot: trialist.preferredFoot,
-        height: trialist.height?.toString() || '',
-        weight: trialist.weight?.toString() || '',
-        previousClub: trialist.previousClub || '',
-        videoUrl: trialist.videoUrl || '',
-        cvUrl: trialist.cvUrl || '',
-        status: trialist.status,
-        notes: trialist.notes || '',
-      });
-    }
-  }, [trialist]);
+  // useEffect(() => {
+  //   if (trialist) {
+  //     setFormData({
+  //       firstName: trialist.firstName,
+  //       lastName: trialist.lastName,
+  //       email: trialist.email,
+  //       phone: trialist.phone,
+  //       dob: trialist.dob ? trialist.dob.split('T')[0] : '',
+  //       position: trialist.position,
+  //       // preferredFoot: trialist.preferredFoot as  "RIGHT" | "LEFT" | "BOTH" ,
+  //       height: trialist.height?.toString() || '',
+  //       weight: trialist.weight?.toString() || '',
+  //       previousClub: trialist.previousClub || '',
+  //       videoUrl: trialist.videoUrl || '',
+  //       cvUrl: trialist.cvUrl || '',
+  //       status: trialist.status,
+  //       notes: trialist.notes || '',
+  //     });
+  //   }
+  // }, [trialist]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -113,7 +114,7 @@ export default function EditTrialist() {
     setUploadProgress(10);
     
     try {
-      const url = await uploadFile(file, type === 'video' ? 'video' : 'document');
+      const url = await uploadFile(file, 'image');
       setUploadProgress(100);
       
       if (type === 'video') {
@@ -138,7 +139,7 @@ export default function EditTrialist() {
 
     try {
       await api.put(
-        API_ROUTES.TRIALISTS.MUTATE(id),
+        API_ROUTES.COACHES.MUTATE(id),
         {
           ...formData,
           dob: new Date(formData.dob).toISOString(),

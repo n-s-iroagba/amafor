@@ -14,9 +14,9 @@ import {
   Save,
   Loader2,
 } from 'lucide-react';
-import { RssFeedSourceCategory } from '@/types/feed.types';
+import { RssFeedSourceCategory } from '@/shared/types';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 
 // Updated interface to match your Sequelize model exactly
 interface RssFeedSource {

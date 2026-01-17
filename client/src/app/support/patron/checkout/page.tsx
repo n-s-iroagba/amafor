@@ -13,9 +13,9 @@ import { SupporterTier } from '@/features/supporter/types'
 
 
 export default function PatronCheckout() {
-  const searchParams = useSearchParams()
+
   const {data:patronTiers} = useGet<SupporterTier[]>('')
-  const preselectedTier = searchParams.get('tier') || 'Advocate'
+  const preselectedTier = ''
   
   const [selectedTier, setSelectedTier] = useState(preselectedTier)
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly' | 'lifetime'>('monthly')

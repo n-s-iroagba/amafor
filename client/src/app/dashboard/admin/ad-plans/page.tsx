@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 
 interface AdPlan {
   id: number;

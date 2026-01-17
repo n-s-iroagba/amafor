@@ -14,9 +14,10 @@ import {
   Save,
   Loader2,
 } from 'lucide-react';
-import { RssFeedSourceCategory } from '@/types/feed.types';
-import api from '@/lib/apiUtils';
+
 import { API_ROUTES } from '@/config/routes';
+import { RssFeedSourceCategory } from '@/shared/types';
+import api from '@/shared/lib/axios';
 
 // Updated interface to match your Sequelize model exactly
 interface RssFeedSource {
@@ -165,50 +166,50 @@ const getCategoryInfo = (cat: RssFeedSourceCategory) => {
         bgColor: 'bg-blue-500',
       };
     
-    case RssFeedSourceCategory.BUSINESS:
-      return {
-        icon: '💼',
-        color: 'text-green-600',
-        bg: 'bg-green-50',
-        border: 'border-green-200',
-        gradientFrom: 'from-green-500',
-        gradientTo: 'to-green-600',
-        hoverColor: 'hover:text-green-600',
-        focusRing: 'focus:ring-green-400',
-        decorationColor: 'decoration-green-500',
-        clockColor: 'text-green-500',
-        bgColor: 'bg-green-500',
-      };
+    // case RssFeedSourceCategory.BUSINESS:
+    //   return {
+    //     icon: '💼',
+    //     color: 'text-green-600',
+    //     bg: 'bg-green-50',
+    //     border: 'border-green-200',
+    //     gradientFrom: 'from-green-500',
+    //     gradientTo: 'to-green-600',
+    //     hoverColor: 'hover:text-green-600',
+    //     focusRing: 'focus:ring-green-400',
+    //     decorationColor: 'decoration-green-500',
+    //     clockColor: 'text-green-500',
+    //     bgColor: 'bg-green-500',
+    //   };
     
-    case RssFeedSourceCategory.ENTERTAINMENT:
-      return {
-        icon: '🎬',
-        color: 'text-purple-600',
-        bg: 'bg-purple-50',
-        border: 'border-purple-200',
-        gradientFrom: 'from-purple-500',
-        gradientTo: 'to-purple-600',
-        hoverColor: 'hover:text-purple-600',
-        focusRing: 'focus:ring-purple-400',
-        decorationColor: 'decoration-purple-500',
-        clockColor: 'text-purple-500',
-        bgColor: 'bg-purple-500',
-      };
+    // case RssFeedSourceCategory.:
+    //   return {
+    //     icon: '🎬',
+    //     color: 'text-purple-600',
+    //     bg: 'bg-purple-50',
+    //     border: 'border-purple-200',
+    //     gradientFrom: 'from-purple-500',
+    //     gradientTo: 'to-purple-600',
+    //     hoverColor: 'hover:text-purple-600',
+    //     focusRing: 'focus:ring-purple-400',
+    //     decorationColor: 'decoration-purple-500',
+    //     clockColor: 'text-purple-500',
+    //     bgColor: 'bg-purple-500',
+    //   };
     
-    case RssFeedSourceCategory.NIGERIA:
-      return {
-        icon: '🇳🇬',
-        color: 'text-green-600',
-        bg: 'bg-green-50',
-        border: 'border-green-200',
-        gradientFrom: 'from-green-500',
-        gradientTo: 'to-green-600',
-        hoverColor: 'hover:text-green-600',
-        focusRing: 'focus:ring-green-400',
-        decorationColor: 'decoration-green-500',
-        clockColor: 'text-green-500',
-        bgColor: 'bg-green-500',
-      };
+    // case RssFeedSourceCategory.NIGERIA:
+    //   return {
+    //     icon: '🇳🇬',
+    //     color: 'text-green-600',
+    //     bg: 'bg-green-50',
+    //     border: 'border-green-200',
+    //     gradientFrom: 'from-green-500',
+    //     gradientTo: 'to-green-600',
+    //     hoverColor: 'hover:text-green-600',
+    //     focusRing: 'focus:ring-green-400',
+    //     decorationColor: 'decoration-green-500',
+    //     clockColor: 'text-green-500',
+    //     bgColor: 'bg-green-500',
+    //   };
     
 
     

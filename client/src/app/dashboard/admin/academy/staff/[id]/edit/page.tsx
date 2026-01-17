@@ -5,8 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { X, Upload, ImageIcon, Award, Briefcase } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
-import { uploadFile } from '@/utils/utils';
+import api from '@/shared/lib/axios';
+import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
 interface AcademyStaff {

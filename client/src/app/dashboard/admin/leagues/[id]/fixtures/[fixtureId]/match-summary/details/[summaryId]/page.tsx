@@ -7,7 +7,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
+
 
 interface MatchSummary {
   id: number;

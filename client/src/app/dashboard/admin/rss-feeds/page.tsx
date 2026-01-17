@@ -19,14 +19,13 @@ import {
   Filter,
   RefreshCw,
 } from 'lucide-react';
-import { useDelete, useGet } from '@/hooks/useApiQuery';
+
 import { API_ROUTES } from '@/config/routes';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { RssFeedSourceCategory } from '@/shared/types';
 
 // Updated to match your Sequelize model exactly
-enum RssFeedSourceCategory {
-  SPORTS = 'sports',
-  GENERAL = 'general',
-}
+
 
 interface RssFeedSource {
   id: number;
@@ -66,9 +65,7 @@ export default function RssFeedList() {
     `${API_ROUTES.FEEDS.LIST}?${queryParams.toString()}`
   );
 
-  const { handleDelete } = useDelete(
-    API_ROUTES.FEEDS.MUTATE(deleteConfirm || 0)
-  );
+
 
   const feeds = data?.data || [];
   const totalPages = data?.totalPages || 0;
@@ -90,20 +87,20 @@ export default function RssFeedList() {
     return category === RssFeedSourceCategory.SPORTS ? '⚽' : '📰';
   };
 
-  const handleDeleteConfirm = async () => {
-    if (!deleteConfirm) return;
+  // const handleDeleteConfirm = async () => {
+  //   if (!deleteConfirm) return;
 
-    setDeleting(true);
-    try {
-      await handleDelete();
-      setDeleteConfirm(null);
-      refetch(); // Refresh the list after deletion
-    } catch (err) {
-      console.error('Delete failed:', err);
-    } finally {
-      setDeleting(false);
-    }
-  };
+  //   setDeleting(true);
+  //   try {
+  //     await handleDelete();
+  //     setDeleteConfirm(null);
+  //     refetch(); // Refresh the list after deletion
+  //   } catch (err) {
+  //     console.error('Delete failed:', err);
+  //   } finally {
+  //     setDeleting(false);
+  //   }
+  // };
 
   const formatDate = (dateString: string | Date) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -556,7 +553,7 @@ export default function RssFeedList() {
                       action cannot be undone.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <button
+                      {/* <button
                         onClick={handleDeleteConfirm}
                         disabled={deleting}
                         className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
@@ -572,7 +569,7 @@ export default function RssFeedList() {
                             Delete
                           </>
                         )}
-                      </button>
+                      </button> */}
                       <button
                         onClick={() => setDeleteConfirm(null)}
                         disabled={deleting}

@@ -21,9 +21,9 @@ import {
   X,
   RefreshCw,
 } from 'lucide-react';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 import { API_ROUTES } from '@/config/routes';
-import { uploadFile } from '@/utils/utils';
+import { uploadFile } from '@/shared/utils';
 
 interface Video {
   id: number;

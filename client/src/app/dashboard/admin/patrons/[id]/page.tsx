@@ -1,135 +1,271 @@
 'use client';
-import React, { useState } from 'react';
-import { Heart, ShieldCheck, ArrowLeft, Save, Globe, MessageSquare, Award, History, Edit3, Loader2, CheckCircle } from 'lucide-react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { MOCK_PATRONS } from '../../../../constants';
 
-export default function PatronManagementDetail() {
+import { API_ROUTES } from '@/config/routes';
+import { useGet } from '@/shared/hooks/useApiQuery';
+
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+
+interface Patron {
+  id: number;
+  name: string;
+  position: string;
+  imageUrl?: string;
+  bio?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export default function PatronDetailsPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const patron = MOCK_PATRONS.find(p => p.id === id) || MOCK_PATRONS[0];
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [showToast, setShowToast] = useState(false);
+  const {
+    data: patron,
+    loading,
+    error,
+  } = useGet<Patron>(API_ROUTES.PATRONS.DETAIL(Number(id)));
 
-  const handleUpdate = () => {
-    setIsUpdating(true);
-    setTimeout(() => {
-      setIsUpdating(false);
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-        navigate('/dashboard/admin/patrons');
-      }, 1500);
-    }, 1800);
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4">
+          <div className="flex items-center justify-center space-x-3">
+            <div className="w-6 h-6 border-t-2 border-b-2 border-sky-500 rounded-full animate-spin"></div>
+            <p className="text-sky-700 font-medium">
+              Loading patron details...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !patron) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full mx-4 text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg
+              className="w-8 h-8 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+          <h2 className="text-xl font-bold text-gray-800 mb-2">
+            Patron Not Found
+          </h2>
+          <p className="text-gray-600 mb-6">
+            The requested patron could not be loaded.
+          </p>
+          <button
+            onClick={() => window.history.back()}
+            className="px-6 py-3 bg-sky-500 text-white rounded-xl hover:bg-sky-600 transition-colors font-medium"
+          >
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      {showToast && (
-        <div className="fixed top-24 right-8 bg-[#2F4F4F] text-white px-8 py-4 rounded-2xl shadow-2xl z-[100] flex items-center space-x-3 border-l-4 border-[#87CEEB] animate-in slide-in-from-right-10 duration-500">
-          <CheckCircle className="w-5 h-5 text-[#87CEEB]" />
-          <span className="text-xs font-black uppercase tracking-widest">Patron Registry Synchronized</span>
-        </div>
-      )}
-
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <Link to="/dashboard/admin/patrons" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
-          <ArrowLeft className="w-3 h-3 mr-2" /> Back to Patronage Hub
-        </Link>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-sky-800 mb-2">
+            Patron Details
+          </h1>
+          <p className="text-sky-600">Learn more about our valued patron</p>
+        </div>
 
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
-          <div className="flex items-center space-x-6">
-            <div className="w-24 h-24 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl bg-gray-200">
-              <img src={patron.isCorporate ? patron.logoUrl : patron.portraitUrl} className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <h1 className="text-3xl text-[#2F4F4F] font-black uppercase tracking-tight">{patron.name}</h1>
-              <div className="flex items-center space-x-3 mt-1">
-                <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-green-200">ACTIVE PATRON</span>
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TIER: {patron.tier}</span>
+        {/* Patron Card */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-sky-100">
+          <div className="bg-gradient-to-r from-sky-500 to-blue-500 p-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              {/* Profile Image */}
+              <div className="relative">
+                <div className="w-32 h-32 rounded-full bg-white p-1 shadow-lg">
+                  {patron.imageUrl ? (
+                    <Image
+                      src={patron.imageUrl}
+                      alt={patron.name}
+                      width={128}
+                      height={128}
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full rounded-full bg-sky-100 flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-sky-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div className="absolute -bottom-2 -right-2 bg-white rounded-full p-2 shadow-lg">
+                  <svg
+                    className="w-5 h-5 text-sky-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Basic Info */}
+              <div className="text-center md:text-left flex-1">
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  {patron.name}
+                </h2>
+                <p className="text-sky-100 text-lg font-medium mb-4">
+                  {patron.position}
+                </p>
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                  <svg
+                    className="w-4 h-4 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
+                    />
+                  </svg>
+                  <span className="text-white text-sm">
+                    Patron ID: #{patron.id}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <button 
-            onClick={handleUpdate}
-            disabled={isUpdating}
-            className="sky-button flex items-center space-x-3 py-5 px-10 disabled:opacity-50 shadow-xl"
-          >
-            {isUpdating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-            <span>{isUpdating ? 'SYNCING REGISTRY...' : 'UPDATE PATRON RECORD'}</span>
-          </button>
-        </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2 space-y-8">
-            <section className="bg-white rounded-[3rem] p-10 shadow-sm border border-gray-100">
-               <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-10 flex items-center">
-                <Globe className="w-4 h-4 mr-3 text-[#87CEEB]" /> Public Recognition (Supporter Wall)
-              </h2>
-              
-              <form className="space-y-8">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">Display Name (Publicly Visible)</label>
-                  <input type="text" defaultValue={patron.displayName} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border border-gray-100 focus:border-[#87CEEB] outline-none font-bold text-[#2F4F4F]" />
+          {/* Bio Section */}
+          <div className="p-8">
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-sky-800 mb-4 flex items-center gap-2">
+                <svg
+                  className="w-5 h-5 text-sky-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                Biography
+              </h3>
+              {patron.bio ? (
+                <div className="bg-sky-50 rounded-xl p-6 border border-sky-200">
+                  <p className="text-gray-700 leading-relaxed">{patron.bio}</p>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">Public Legacy Message</label>
-                  <textarea defaultValue={patron.message} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border border-gray-100 focus:border-[#87CEEB] outline-none font-bold text-[#2F4F4F] h-32 resize-none leading-relaxed" />
+              ) : (
+                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 text-center">
+                  <svg
+                    className="w-8 h-8 text-gray-400 mx-auto mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                    />
+                  </svg>
+                  <p className="text-gray-500">No biography available</p>
                 </div>
-              </form>
-            </section>
+              )}
+            </div>
 
-            <section className="bg-white rounded-[3rem] p-10 shadow-sm border border-gray-100">
-               <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-10 flex items-center">
-                <History className="w-4 h-4 mr-3 text-amber-500" /> Settlement Integrity History
-              </h2>
-              <div className="space-y-4">
-                 {[
-                   { date: 'May 01, 2024', ref: 'PS_RECUR_8812', amount: '₦25,000', status: 'Success' },
-                   { date: 'Apr 01, 2024', ref: 'PS_RECUR_4201', amount: '₦25,000', status: 'Success' },
-                   { date: 'Mar 01, 2024', ref: 'PS_RECUR_1109', amount: '₦25,000', status: 'Success' }
-                 ].map((tx, i) => (
-                   <div key={i} className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl border border-transparent hover:border-gray-200 transition-all">
-                      <div>
-                        <div className="text-xs font-black text-[#2F4F4F] uppercase tracking-widest">{tx.date}</div>
-                        <div className="text-[9px] text-gray-400 font-mono mt-1">REF: {tx.ref}</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-black text-[#2F4F4F]">{tx.amount}</div>
-                        <div className="text-[9px] text-green-500 font-black uppercase tracking-widest mt-1">{tx.status}</div>
-                      </div>
-                   </div>
-                 ))}
-              </div>
-            </section>
+            {/* Additional Info */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {patron.createdAt && (
+                <div>
+                  <h4 className="text-sm font-medium text-sky-700 mb-2">
+                    Member Since
+                  </h4>
+                  <div className="bg-white border border-sky-200 rounded-lg p-4">
+                    <p className="text-gray-700">
+                      {new Date(patron.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {patron.updatedAt && (
+                <div>
+                  <h4 className="text-sm font-medium text-sky-700 mb-2">
+                    Last Updated
+                  </h4>
+                  <div className="bg-white border border-sky-200 rounded-lg p-4">
+                    <p className="text-gray-700">
+                      {new Date(patron.updatedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          <aside className="space-y-8">
-            <div className="bg-[#2F4F4F] text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-               <Heart className="absolute -right-8 -bottom-8 w-40 h-40 text-white/5" />
-               <h3 className="text-lg font-black mb-6 uppercase tracking-tight text-[#87CEEB]">Active Commitment</h3>
-               <div className="space-y-6 relative z-10">
-                  <div className="flex items-center justify-between text-xs font-bold border-b border-white/10 pb-4">
-                    <span className="text-gray-400 uppercase tracking-widest">Next Renewal</span>
-                    <span className="font-mono">JUNE 01, 2024</span>
-                  </div>
-                  <div className="flex items-center justify-between text-xs font-bold border-b border-white/10 pb-4">
-                    <span className="text-gray-400 uppercase tracking-widest">Method</span>
-                    <span className="uppercase">Paystack Card</span>
-                  </div>
-                  <button className="w-full py-4 bg-[#87CEEB] text-[#2F4F4F] rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white transition-all shadow-lg">
-                    MANUAL RECONCILE
-                  </button>
-               </div>
+          {/* Footer */}
+          <div className="bg-sky-50 px-8 py-4 border-t border-sky-100">
+            <div className="flex items-center justify-center gap-2 text-sm text-sky-700">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+              <span>Patron information is securely stored and protected</span>
             </div>
-
-            <div className="bg-blue-50 p-8 rounded-[2.5rem] border border-blue-100 flex items-start space-x-4 shadow-sm">
-              <Award className="w-6 h-6 text-blue-600 flex-none" />
-              <p className="text-[10px] text-blue-800 font-bold uppercase leading-relaxed">
-                Legends and Sponsors have priority placement on the physical Arena Supporter Wall. Verify name spelling against official ID before bulk printing.
-              </p>
-            </div>
-          </aside>
+          </div>
         </div>
       </div>
     </div>

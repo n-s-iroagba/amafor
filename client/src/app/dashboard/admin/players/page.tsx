@@ -4,9 +4,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useDelete, useGet } from '@/hooks/useApiQuery';
+
 import { API_ROUTES } from '@/config/routes';
 import Image from 'next/image';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
 interface Player {
   id: number;
@@ -25,7 +26,7 @@ export default function PlayersList() {
   const {data:players, loading:isLoading} = useGet<Player[]>(API_ROUTES.PLAYERS.LIST)
  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
-  const  {handleDelete} = useDelete(API_ROUTES.PLAYERS.MUTATE(deleteConfirm))
+
 
   
 
@@ -276,7 +277,7 @@ export default function PlayersList() {
                             </svg>
                           </button>
                         </div>
-
+{/* 
                         {deleteConfirm === player.id && (
                           <div className="fixed sm:absolute inset-0 sm:inset-auto sm:mt-2 sm:right-4 sm:left-4 bg-white p-4 rounded-md shadow-lg border border-red-200 z-50 sm:z-10 m-4 sm:m-0">
                             <p className="text-sm text-sky-800 mb-2">
@@ -299,7 +300,7 @@ export default function PlayersList() {
                               </button>
                             </div>
                           </div>
-                        )}
+                        )} */}
                       </td>
                     </tr>
                   ))}

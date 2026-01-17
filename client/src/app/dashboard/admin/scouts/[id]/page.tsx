@@ -2,11 +2,13 @@
 'use client';
 import React, { useState } from 'react';
 import { ArrowLeft, CheckCircle, XCircle, ShieldAlert, Globe, ExternalLink, UserCheck, FileText, ChevronRight, Loader2 } from 'lucide-react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function ScoutApplicationDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [processing, setProcessing] = useState<'approving' | 'rejecting' | null>(null);
 
   const applicant = {
@@ -24,14 +26,14 @@ export default function ScoutApplicationDetail() {
     setProcessing(type);
     setTimeout(() => {
       setProcessing(null);
-      navigate('/dashboard/admin/scouts');
+      router.push('/dashboard/admin/scouts');
     }, 2000);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Link to="/dashboard/admin/scouts" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
+        <Link href="/dashboard/admin/scouts" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Queue
         </Link>
 
@@ -100,7 +102,7 @@ export default function ScoutApplicationDetail() {
                <h2 className="text-sm font-black text-[#2F4F4F] uppercase tracking-widest mb-10 flex items-center">
                 <Globe className="w-4 h-4 mr-2 text-[#87CEEB]" /> Verification Links
               </h2>
-              <Link to="#" className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-all group">
+              <Link href="#" className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-all group">
                 <div className="flex items-center">
                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm mr-4">
                      <Globe className="w-5 h-5 text-blue-500" />

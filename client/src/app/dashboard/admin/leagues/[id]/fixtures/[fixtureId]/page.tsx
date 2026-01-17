@@ -5,15 +5,10 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import GoalsList from '@/components/AdminGoalList';
-import AdminMatchSummary from '@/components/AdminMatchSummary';
-import MatchImagesList from '@/components/AdminMatchGallery';
-import FixtureLineup from '@/components/AdminLineUp';
-import Image from 'next/image';
-import { Lineup } from '@/types';
-import api from '@/lib/apiUtils';
-import { Trash2, Loader2 } from 'lucide-react';
-import { Goal } from '@/types/goal.types';
+import { Lineup } from '@/features/lineup/types';
+import api from '@/shared/lib/axios';
+import { Loader2, Trash2 } from 'lucide-react';
+
 
 interface Fixture {
   id: number;
@@ -40,7 +35,9 @@ interface Fixture {
 images?: MatchImage[];
   lineup: Lineup[];
 }
-
+interface Goal{
+  isPenalty:boolean
+}
 
 interface MatchImage {
   id: number;
@@ -262,7 +259,7 @@ export default function FixtureDetail() {
           </div>
 
           {/* Teams and score */}
-          <div className="p-6 sm:p-8 bg-sky-50 flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* <div className="p-6 sm:p-8 bg-sky-50 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4 flex-1">
               <Image
                 height={50}
@@ -304,7 +301,7 @@ export default function FixtureDetail() {
               </h3>
           
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Tabs */}
@@ -324,7 +321,7 @@ export default function FixtureDetail() {
               </button>
             ))}
           </div>
-
+{/* 
           <div className="p-4 sm:p-6">
             {activeTab === 'overview' && (
               <div>
@@ -350,7 +347,7 @@ export default function FixtureDetail() {
                 <MatchImagesList fixtureId={fixture.id} />
               ) 
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

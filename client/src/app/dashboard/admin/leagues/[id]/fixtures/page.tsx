@@ -15,8 +15,10 @@ import {
   ChevronDown,
   Eye,
 } from 'lucide-react';
-import { useGet, useDelete } from '@/hooks/useApiQuery';
+
 import { API_ROUTES } from '@/config/routes';
+import { FixtureStatus, Fixture } from '@/features/fixture/types';
+import { useGet} from '@/shared/hooks/useApiQuery';
 interface PaginatedData<T> {
   data: T;
   pagination: any;
@@ -58,9 +60,7 @@ export default function FixturesList() {
     `${API_ROUTES.LEAGUES.LIST}/all`
   );
 
-  const { handleDelete: deleteFixture } = useDelete(
-    API_ROUTES.FIXTURES.DELETE(deleteConfirm)
-  );
+
 
   const fixtures = paginatedFixtures?.data;
 

@@ -1,21 +1,22 @@
 'use client';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ShieldAlert, ArrowLeft, Send, MessageSquare, AlertCircle } from 'lucide-react';
-import Link from 'next/link';
 
+import { ShieldAlert, ArrowLeft, Send, MessageSquare, AlertCircle, Link } from 'lucide-react';
+
+
+  import { useRouter } from 'next/navigation';
 export default function CreateDisputePage() {
-  const navigate = useNavigate();
+  const navigate = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard/advertiser/disputes');
+    navigate.push('/dashboard/advertiser/disputes');
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <Link to="/dashboard/advertiser/disputes" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
+        <Link href="/dashboard/advertiser/disputes" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
           <ArrowLeft className="w-3 h-3 mr-2" /> Cancel Dispute
         </Link>
 

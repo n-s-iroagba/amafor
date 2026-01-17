@@ -18,9 +18,9 @@ import {
   CheckCircle2,
   X,
 } from 'lucide-react';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 import { API_ROUTES } from '@/config/routes';
-import { uploadFile } from '@/utils/utils';
+import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
 

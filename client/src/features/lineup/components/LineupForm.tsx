@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Minus, Users, Edit, Save } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/lib/apiUtils';
+import api from '@/shared/lib/axios';
 import { Fixture } from '@/types';
 
 // TypeScript interfaces

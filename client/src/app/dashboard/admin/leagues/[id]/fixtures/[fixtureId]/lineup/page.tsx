@@ -1,13 +1,14 @@
 'use client';
 import React, { useState } from 'react';
-import LineupList from '@/components/LineupList';
-import LineupForm from '@/components/LineupForm';
-import { Lineup, Fixture } from '@/types';
-import { useGet } from '@/shared/hooks/useApiQuery';
 
-import { useParams } from 'next/navigation';
-import { Spinner } from '@/components/Spinner';
 import { API_ROUTES } from '@/config/routes';
+import { Fixture } from '@/features/fixture/types';
+import LineupForm from '@/features/lineup/components/LineupForm';
+import { Lineup } from '@/features/lineup/types';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { useParams } from 'next/navigation';
+import LineupList from '@/features/lineup/components/LineupList';
+
 
 const FixtureLineup = () => {
   const params = useParams();
@@ -45,7 +46,7 @@ const FixtureLineup = () => {
     setPlayerToBeDeleted(null);
   };
 
-  if (!loading) return <Spinner />;
+  if (!loading) return ;
   if (lineup && fixture)
     return (
       <div className="space-y-6">

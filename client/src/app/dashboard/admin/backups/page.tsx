@@ -1,130 +1,249 @@
-'use client';
-import React, { useState } from 'react';
-import { Database, Shield, Download, RefreshCw, History, ArrowLeft, HardDrive, CheckCircle, Clock } from 'lucide-react';
-import Link from 'next/link';
+'use client'
+import { useState } from 'react'
+import { Download, Database, Clock, Shield, AlertCircle, CheckCircle2, Loader2, Trash2 } from 'lucide-react'
 
-export default function BackupManagementPage() {
-  const [isBackingUp, setIsBackingUp] = useState(false);
+export default function AdminBackupsPage() {
+  const [backups, setBackups] = useState([
+    {
+      id: 1,
+      name: 'backup_2026_01_17_14_30',
+      size: '245 MB',
+      created: '2026-01-17T14:30:00',
+      status: 'completed',
+      immutable: true,
+      tables: 12,
+      records: 45823
+    },
+    {
+      id: 2,
+      name: 'backup_2026_01_16_14_30',
+      size: '243 MB',
+      created: '2026-01-16T14:30:00',
+      status: 'completed',
+      immutable: true,
+      tables: 12,
+      records: 45234
+    },
+    {
+      id: 3,
+      name: 'backup_2026_01_15_14_30',
+      size: '241 MB',
+      created: '2026-01-15T14:30:00',
+      status: 'completed',
+      immutable: true,
+      tables: 12,
+      records: 44987
+    }
+  ])
+  
+  const [isCreating, setIsCreating] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
-  const triggerBackup = () => {
-    setIsBackingUp(true);
-    setTimeout(() => setIsBackingUp(false), 3000);
-  };
+  const createBackup = async () => {
+    setIsCreating(true)
+    setShowSuccess(false)
+    
+    // Simulate backup creation
+    setTimeout(() => {
+      const now = new Date()
+      const timestamp = now.toISOString().split('.')[0].replace(/:/g, '_').replace('T', '_')
+      
+      const newBackup = {
+        id: Date.now(),
+        name: `backup_${timestamp}`,
+        size: '246 MB',
+        created: now.toISOString(),
+        status: 'completed',
+        immutable: true,
+        tables: 12,
+        records: 46000
+      }
+      
+      setBackups([newBackup, ...backups])
+      setIsCreating(false)
+      setShowSuccess(true)
+      
+      setTimeout(() => setShowSuccess(false), 5000)
+    }, 3000)
+  }
 
-  const backups = [
-    { id: 'BK-99201', date: '2024-05-20 04:00', size: '1.24 GB', type: 'AUTOMATED', status: 'SUCCESS' },
-    { id: 'BK-99198', date: '2024-05-19 16:42', size: '1.21 GB', type: 'MANUAL', status: 'SUCCESS' },
-    { id: 'BK-99195', date: '2024-05-19 04:00', size: '1.19 GB', type: 'AUTOMATED', status: 'SUCCESS' },
-    { id: 'BK-99190', date: '2024-05-18 04:00', size: '1.18 GB', type: 'AUTOMATED', status: 'SUCCESS' },
-  ];
+  const downloadBackup = (backup) => {
+    alert(`Downloading ${backup.name}...`)
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link href="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
-          <ArrowLeft className="w-3 h-3 mr-2" /> Central Command
-        </Link>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Database Backups</h1>
+              <p className="mt-1 text-sm text-gray-500">Create and manage immutable database backups</p>
+            </div>
+            <button
+              onClick={createBackup}
+              disabled={isCreating}
+              className="flex items-center gap-2 bg-sky-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-sky-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+            >
+              {isCreating ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Creating Backup...
+                </>
+              ) : (
+                <>
+                  <Database className="w-5 h-5" />
+                  Create New Backup
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
 
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Success Message */}
+        {showSuccess && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+            <div>
+              <p className="text-green-800 font-medium">Backup created successfully</p>
+              <p className="text-green-700 text-sm">Your immutable backup has been created and is now available for download</p>
+            </div>
+          </div>
+        )}
+
+        {/* Info Banner */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+          <Shield className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
           <div>
-            <div className="flex items-center space-x-4 mb-4">
-              <div className="bg-[#2F4F4F] p-3 rounded-2xl shadow-xl">
-                <Database className="w-8 h-8 text-[#87CEEB]" />
-              </div>
-              <h1 className="text-4xl text-[#2F4F4F] uppercase tracking-tighter font-black">DATA RESILIENCE (ADM-12)</h1>
-            </div>
-            <p className="text-gray-500 text-sm">Manage immutable database snapshots. Certified disaster recovery path for the Gladiators ecosystem.</p>
+            <h3 className="text-blue-900 font-semibold mb-1">Immutable Backups</h3>
+            <p className="text-blue-800 text-sm">
+              All backups are immutable and cannot be modified or deleted for 30 days. This ensures data integrity and compliance with retention policies.
+            </p>
           </div>
-          <button 
-            onClick={triggerBackup}
-            disabled={isBackingUp}
-            className="sky-button flex items-center space-x-3 py-5 px-10 text-xs tracking-widest disabled:opacity-50 group"
-          >
-            <RefreshCw className={`w-5 h-5 ${isBackingUp ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
-            <span>{isBackingUp ? 'SYNCHRONIZING SNAPSHOT...' : 'TRIGGER MANUAL BACKUP'}</span>
-          </button>
-        </header>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-8 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
-                <h3 className="text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">Snapshot History</h3>
-                <span className="text-[9px] font-bold text-gray-400 uppercase">Retention: 30 Days</span>
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-500 text-sm font-medium">Total Backups</p>
+                <p className="text-3xl font-bold text-gray-900 mt-1">{backups.length}</p>
               </div>
-              <table className="w-full text-left">
-                <thead className="bg-[#2F4F4F] text-[#87CEEB]">
-                  <tr className="text-[9px] font-black uppercase tracking-widest">
-                    <th className="px-8 py-4">Snapshot ID</th>
-                    <th className="px-8 py-4">Creation Date</th>
-                    <th className="px-8 py-4">Size</th>
-                    <th className="px-8 py-4">Type</th>
-                    <th className="px-8 py-4"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50 font-mono text-[11px]">
-                  {backups.map(bk => (
-                    <tr key={bk.id} className="group hover:bg-gray-50 transition-colors">
-                      <td className="px-8 py-6 font-bold text-[#2F4F4F]">{bk.id}</td>
-                      <td className="px-8 py-6 text-gray-400">{bk.date}</td>
-                      <td className="px-8 py-6 font-black text-[#2F4F4F]">{bk.size}</td>
-                      <td className="px-8 py-6">
-                        <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${
-                          bk.type === 'MANUAL' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'
-                        }`}>
-                          {bk.type}
+              <div className="bg-sky-100 p-3 rounded-lg">
+                <Database className="w-6 h-6 text-sky-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-500 text-sm font-medium">Total Storage</p>
+                <p className="text-3xl font-bold text-gray-900 mt-1">729 MB</p>
+              </div>
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <Download className="w-6 h-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-500 text-sm font-medium">Latest Backup</p>
+                <p className="text-lg font-bold text-gray-900 mt-1">
+                  {backups.length > 0 ? formatDate(backups[0].created).split(',')[0] : 'N/A'}
+                </p>
+              </div>
+              <div className="bg-green-100 p-3 rounded-lg">
+                <Clock className="w-6 h-6 text-green-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Backups List */}
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 className="text-lg font-semibold text-gray-900">Backup History</h2>
+          </div>
+
+          <div className="divide-y divide-gray-200">
+            {backups.map((backup) => (
+              <div key={backup.id} className="p-6 hover:bg-gray-50 transition">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{backup.name}</h3>
+                      {backup.immutable && (
+                        <span className="flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
+                          <Shield className="w-3 h-3" />
+                          Immutable
                         </span>
-                      </td>
-                      <td className="px-8 py-6 text-right">
-                        <button className="p-2 text-gray-300 hover:text-[#87CEEB] transition-all">
-                          <Download className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                      )}
+                      <span className="flex items-center gap-1 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Completed
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {formatDate(backup.created)}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Database className="w-4 h-4" />
+                        {backup.tables} tables
+                      </div>
+                      <div>
+                        {backup.records.toLocaleString()} records
+                      </div>
+                      <div className="font-medium text-gray-900">
+                        {backup.size}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => downloadBackup(backup)}
+                    className="ml-4 flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
 
-          <aside className="space-y-8">
-            <div className="bg-[#2F4F4F] text-white p-10 rounded-[3rem] relative overflow-hidden shadow-2xl">
-              <Shield className="absolute -right-8 -bottom-8 w-40 h-40 text-white/5" />
-              <h4 className="text-xl font-black uppercase tracking-tight mb-6 text-[#87CEEB]">Recovery Matrix</h4>
-              <ul className="space-y-6 relative z-10">
-                <li className="flex items-start">
-                  <Clock className="w-5 h-5 mr-4 text-[#87CEEB] flex-none" />
-                  <p className="text-[11px] text-gray-400 font-bold uppercase leading-relaxed">
-                    Point-in-time recovery (PITR) available for the last <span className="text-white">72 hours</span>.
-                  </p>
-                </li>
-                <li className="flex items-start">
-                  <HardDrive className="w-5 h-5 mr-4 text-[#87CEEB] flex-none" />
-                  <p className="text-[11px] text-gray-400 font-bold uppercase leading-relaxed">
-                    Cross-region replication active: <span className="text-white">Lagos A -> Nairobi B</span>.
-                  </p>
-                </li>
-              </ul>
-              <button className="w-full mt-10 py-4 bg-white/10 hover:bg-white/20 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
-                INITIATE ROLLBACK (SECURE)
-              </button>
-            </div>
-
-            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 text-center">
-               <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                 <CheckCircle className="w-8 h-8 text-green-500" />
-               </div>
-               <h4 className="text-sm font-black text-[#2F4F4F] uppercase tracking-tight mb-2">Redundancy Verified</h4>
-               <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-6 leading-relaxed">
-                 Mirror node AG-ARENA-SEC-01 reports 100% data parity.
-               </p>
-               <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                  <div className="bg-green-500 h-full w-full" />
-               </div>
-            </div>
-          </aside>
+        {/* Retention Policy */}
+        <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-amber-900 font-semibold mb-1">Retention Policy</h3>
+            <p className="text-amber-800 text-sm">
+              Backups are retained for 90 days and are immutable for the first 30 days. After 90 days, backups are automatically archived to cold storage.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

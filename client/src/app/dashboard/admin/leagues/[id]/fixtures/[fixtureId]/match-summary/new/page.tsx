@@ -13,8 +13,9 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
-import api from '@/lib/apiUtils';
+
 import { API_ROUTES } from '@/config/routes';
+import api from '@/shared/lib/axios';
 
 interface MatchSummaryAttributes {
   id: number;

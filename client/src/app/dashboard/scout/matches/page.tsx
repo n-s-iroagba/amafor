@@ -1,14 +1,13 @@
 
 'use client';
-import React from 'react';
-import { Film, Play, Clock, ArrowLeft, Trophy, MapPin, Shield } from 'lucide-react';
+
+import { Play, Clock, ArrowLeft, Shield } from 'lucide-react';
 import Link from 'next/link';
-import { MOCK_FIXTURES } from '../../../../constants';
+
 
 export default function MatchArchivesLibrary() {
   const archives = [
-    { ...MOCK_FIXTURES[0], status: 'available', quality: '1080p', duration: '94:12' },
-    { ...MOCK_FIXTURES[1], status: 'processing', quality: '-', duration: '-' },
+
   ];
 
   return (

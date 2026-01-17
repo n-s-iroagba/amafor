@@ -1,16 +1,16 @@
 'use client';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { MOCK_USER } from '../constants';
+
 import { Shield } from 'lucide-react';
 
 export default function DashboardRouter() {
   const router = useRouter();
-
+const user = {userType:'admin'}
   useEffect(() => {
     // In a real app, we check the actual session. Here we use the mock user.
     const timer = setTimeout(() => {
-      switch(MOCK_USER.userType) {
+      switch(user.userType) {
         case 'super_admin':
         case 'admin':
           router.push('/dashboard/admin');

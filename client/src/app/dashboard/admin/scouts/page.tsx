@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { UserCheck, XCircle, CheckCircle, Info, ArrowLeft, ExternalLink, ShieldCheck, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { UserCheck, XCircle, CheckCircle, Info, ArrowLeft, ExternalLink, ShieldCheck, ChevronRight, Link } from 'lucide-react';
+
 
 export default function ScoutVerificationQueue() {
   const [applications, setApplications] = useState([
@@ -16,7 +16,7 @@ export default function ScoutVerificationQueue() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link to="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Dashboard
         </Link>
 
@@ -59,7 +59,7 @@ export default function ScoutVerificationQueue() {
               </div>
 
               <div className="lg:w-80 flex flex-col justify-center space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-12">
-                <Link to={`/dashboard/admin/scouts/${app.id}`} className="w-full py-4 bg-[#2F4F4F] text-[#87CEEB] rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all">
+                <Link href={`/dashboard/admin/scouts/${app.id}`} className="w-full py-4 bg-[#2F4F4F] text-[#87CEEB] rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all">
                   VIEW FULL DOSSIER <ChevronRight className="w-4 h-4 ml-1" />
                 </Link>
                 <div className="grid grid-cols-2 gap-3">
