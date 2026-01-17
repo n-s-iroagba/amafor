@@ -41,7 +41,7 @@ app.get('/health', (req, res) => {
 });
 
 // Mount all API routes under /api/v1
-app.use('/api/v1', apiRoutes);
+app.use('/api', apiRoutes);
 
 
 

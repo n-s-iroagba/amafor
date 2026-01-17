@@ -19,6 +19,7 @@ export default function Homepage() {
     <>
       <Header />
       <HeroSection />
+      
       <NextFixtureSection />
       <AcademyScoutingSection />
       <TrialistsSection />
