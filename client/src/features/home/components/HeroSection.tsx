@@ -50,7 +50,7 @@ export default function HeroSection() {
             <Image
               src="https://images.unsplash.com/photo-1574629810360-7efbbe195018"
               alt="Football action"
-              height={800}
+              height={200}
               width={800}
               priority
               className="object-cover"
@@ -71,7 +71,7 @@ export default function HeroSection() {
             <div
               className="absolute bottom-0 left-0 right-0 h-20 bg-white z-20"
               style={{
-                clipPath: 'polygon(0 35%, 100% 0, 100% 100%, 0 100%)',
+                clipPath: 'polygon(0 25%, 100% 0, 100% 100%, 0 100%)',
               }}
             />
 
