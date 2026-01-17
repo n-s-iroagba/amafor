@@ -45,9 +45,14 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/dh2cpesxu/**',
       },
-      {
+        {
+        protocol: 'http',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },   {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+        pathname: '/**',
       },
       {
         protocol: 'https',

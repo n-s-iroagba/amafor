@@ -44,51 +44,48 @@ export default function HeroSection() {
             </div>
           </div>
 
-  {/* RIGHT IMAGE BLOCK */}
-<div className="relative h-[450px] sm:h-[550px] md:h-[600px] lg:h-[700px]">
-  <div className="relative inset-0 rounded-2xl overflow-hidden h-full">
-    {/* BASE IMAGE */}
-    <div className="relative w-full h-full">
-      <Image
-        src="https://images.unsplash.com/photo-1574629810360-7efbbe195018"
-        alt="Football action"
-        fill
-        priority
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, 50vw"
-      />
-    </div>
+          {/* RIGHT IMAGE BLOCK - SIMPLIFIED */}
+          <div className="relative h-[450px] sm:h-[550px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden">
+            {/* Direct Image container - no extra nesting */}
+            <Image
+              src="https://images.unsplash.com/photo-1574629810360-7efbbe195018"
+              alt="Football action"
+              height={800}
+              width={800}
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
 
-    {/* IMAGE CLIP SHAPE */}
-    <div
-      className="absolute inset-0 z-10"
-      style={{
-        clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)',
-        background:
-          'linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25))',
-      }}
-    />
+            {/* IMAGE CLIP SHAPE */}
+            <div
+              className="absolute inset-0 z-10"
+              style={{
+                clipPath: 'polygon(0 0, 100% 0, 100% 85%, 0 100%)',
+                background:
+                  'linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.25))',
+              }}
+            />
 
-    {/* WHITE ACCENT CUT */}
-    <div
-      className="absolute bottom-0 left-0 right-0 h-40 bg-white z-20"
-      style={{
-        clipPath: 'polygon(0 35%, 100% 0, 100% 100%, 0 100%)',
-      }}
-    />
+            {/* WHITE ACCENT CUT */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-20 bg-white z-20"
+              style={{
+                clipPath: 'polygon(0 35%, 100% 0, 100% 100%, 0 100%)',
+              }}
+            />
 
-    {/* COLOR STRIPE */}
-    <div className="absolute bottom-0 left-0 right-0 h-3 bg-sky-400 z-30" />
+            {/* COLOR STRIPE */}
+            <div className="absolute bottom-0 left-0 right-0 h-3 bg-sky-400 z-30" />
 
-    {/* SEASON BADGE */}
-    <div className="absolute top-8 right-8 bg-sky-500/95 backdrop-blur-sm p-6 text-white z-30">
-      <div className="text-4xl font-black mb-1">2026</div>
-      <div className="text-xs font-bold uppercase tracking-widest">
-        Season
-      </div>
-    </div>
-  </div>
-</div>
+            {/* SEASON BADGE */}
+            <div className="absolute top-8 right-8 bg-sky-500/95 backdrop-blur-sm p-6 text-white z-30">
+              <div className="text-4xl font-black mb-1">2026</div>
+              <div className="text-xs font-bold uppercase tracking-widest">
+                Season
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

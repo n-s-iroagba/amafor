@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SystemNotificationRepository = exports.AuditLogRepository = exports.PatronSubscriptionRepository = exports.DonationRepository = exports.AdCampaignRepository = exports.FixtureRepository = exports.ArticleRepository = exports.PlayerRepository = exports.UserRepository = void 0;
+var UserRepository_1 = require("./UserRepository");
+Object.defineProperty(exports, "UserRepository", { enumerable: true, get: function () { return UserRepository_1.UserRepository; } });
+var PlayerRepository_1 = require("./PlayerRepository");
+Object.defineProperty(exports, "PlayerRepository", { enumerable: true, get: function () { return PlayerRepository_1.PlayerRepository; } });
+var ArticleRepository_1 = require("./ArticleRepository");
+Object.defineProperty(exports, "ArticleRepository", { enumerable: true, get: function () { return ArticleRepository_1.ArticleRepository; } });
+var FixtureRepository_1 = require("./FixtureRepository");
+Object.defineProperty(exports, "FixtureRepository", { enumerable: true, get: function () { return FixtureRepository_1.FixtureRepository; } });
+var AdCampaignRepository_1 = require("./AdCampaignRepository");
+Object.defineProperty(exports, "AdCampaignRepository", { enumerable: true, get: function () { return AdCampaignRepository_1.AdCampaignRepository; } });
+var DonationRepository_1 = require("./DonationRepository");
+Object.defineProperty(exports, "DonationRepository", { enumerable: true, get: function () { return DonationRepository_1.DonationRepository; } });
+var PatronSubscriptionRepository_1 = require("./PatronSubscriptionRepository");
+Object.defineProperty(exports, "PatronSubscriptionRepository", { enumerable: true, get: function () { return PatronSubscriptionRepository_1.PatronSubscriptionRepository; } });
+var AuditLogRepository_1 = require("./AuditLogRepository");
+Object.defineProperty(exports, "AuditLogRepository", { enumerable: true, get: function () { return AuditLogRepository_1.AuditLogRepository; } });
+var SystemNotificationRepository_1 = require("./SystemNotificationRepository");
+Object.defineProperty(exports, "SystemNotificationRepository", { enumerable: true, get: function () { return SystemNotificationRepository_1.SystemNotificationRepository; } });
+//# sourceMappingURL=index.js.map

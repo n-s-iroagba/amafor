@@ -1,0 +1,50 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PaymentGatewayController = void 0;
+const PaymentGatewayService_1 = __importDefault(require("../services/PaymentGatewayService"));
+const logger_1 = __importDefault(require("../utils/logger"));
+class PaymentGatewayController {
+    static async handleWebhook(req, res) {
+        try {
+            const success = await PaymentGatewayService_1.default.processEvent(req.body);
+            if (success) {
+                logger_1.default.info('Webhook processed successfully');
+                res.status(200).json({ status: 'success' });
+            }
+        }
+        catch (error) {
+            console.error('Webhook error:', error);
+            res.status(500).json({ status: 'error', message: 'Internal server error' });
+        }
+    }
+    static async initializePayment(req, res) {
+        console.log(req.body);
+        try {
+            const response = await PaymentGatewayService_1.default.initializePayment(req.body);
+            res.status(200).json(response.data);
+        }
+        catch (error) {
+            logger_1.default.error('Failed to initialize payment:', error.response?.data || error.message);
+            res.status(500).json({ error: 'Failed to initialize payment' });
+        }
+    }
+    static async verifyTransaction(req, res) {
+        try {
+            const { reference } = req.params;
+            if (!reference) {
+                res.status(400).json({ error: 'Transaction reference is required' });
+            }
+            const response = await PaymentGatewayService_1.default.verifyTransaction(reference);
+            res.status(200).json(response);
+        }
+        catch (error) {
+            logger_1.default.error('Failed to verify transaction:', error.response?.data || error.message);
+            res.status(500).json({ error: 'Failed to verify transaction' });
+        }
+    }
+}
+exports.PaymentGatewayController = PaymentGatewayController;
+//# sourceMappingURL=PaymentGatewayController.js.map
