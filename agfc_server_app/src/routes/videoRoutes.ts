@@ -1,15 +1,9 @@
 // routes/videoRoutes.ts
 import { Router } from 'express';
 
-import { validate } from '../middleware/validation';
-import { 
-  idParamSchema, 
-  paginationQuerySchema, 
-  videoCreateSchema, 
-  videoUpdateSchema
-} from '../validations';
+
+
 import { VideoController } from '../controllers/VideoController';
-import { upload } from '../middleware/upload';
 
 const router = Router();
 
