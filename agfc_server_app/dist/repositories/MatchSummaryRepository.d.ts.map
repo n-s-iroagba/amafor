@@ -1,1 +1,0 @@
-{"version":3,"file":"MatchSummaryRepository.d.ts","sourceRoot":"","sources":["../../src/repositories/MatchSummaryRepository.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,kBAAkB,CAAC;AAClD,OAAO,YAAY,MAAM,wBAAwB,CAAC;AAGlD,qBAAa,sBAAuB,SAAQ,cAAc,CAAC,YAAY,CAAC;;IAKhE,aAAa,CAAC,SAAS,EAAE,MAAM,GAAG,OAAO,CAAC,YAAY,GAAG,IAAI,CAAC;CAQrE"}

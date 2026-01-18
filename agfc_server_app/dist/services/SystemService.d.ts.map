@@ -1,1 +1,0 @@
-{"version":3,"file":"SystemService.d.ts","sourceRoot":"","sources":["../../src/services/SystemService.ts"],"names":[],"mappings":"AAIA,qBAAa,aAAa;IACxB,OAAO,CAAC,gBAAgB,CAA+B;;IAM1C,eAAe,IAAI,OAAO,CAAC,GAAG,CAAC;IA2B/B,kBAAkB,CAC7B,KAAK,EAAE,MAAM,EACb,OAAO,EAAE,MAAM,EACf,IAAI,EAAE,MAAM,EACZ,QAAQ,EAAE,MAAM,EAChB,YAAY,CAAC,EAAE,MAAM;IA+BV,sBAAsB;;;;;;;CASpC"}
