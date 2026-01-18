@@ -64,7 +64,7 @@ const SOCIAL_PLATFORMS = [
 
 const CONTACT_INFO = {
   address: 'Amafor Gladiators Stadium',
-  city: 'Lagos, Nigeria',
+  city: 'Amafor Imerienwe, Ngor Okpala LGA, Imo State, Nigeria',
   email: 'info@amaforgladiatorsfc.com',
   phone: '+234 XXX XXX XXXX',
 } as const;

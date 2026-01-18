@@ -1,7 +1,7 @@
 // src/lib/apiutils.ts
 import { API_ROUTES } from '@/config/routes';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-const route = process.env.NODE_ENV ==='production'?'https://amafor.fly.dev/api':'http://localhost:5000/api'
+const route = process.env.NODE_ENV ==='production'?'https://agfc_server_app.fly.dev/api':'http://localhost:5000/api'
 // Single axios instance
 const api = axios.create({
   baseURL: route,

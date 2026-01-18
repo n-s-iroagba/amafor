@@ -85,15 +85,15 @@ const FeaturedNews: React.FC = () => {
     });
   };
 
-  // Fixed Styling Configuration (Amber Theme)
+  // Fixed Styling Configuration (sky Theme)
   const config = {
-    gradientFrom: 'from-amber-500',
-    gradientTo: 'to-amber-600',
-    hoverColor: 'hover:text-amber-600',
-    focusRing: 'focus:ring-amber-400',
-    decorationColor: 'decoration-amber-500',
-    clockColor: 'text-amber-500',
-    bgColor: 'bg-amber-500',
+    gradientFrom: 'from-sky-500',
+    gradientTo: 'to-sky-600',
+    hoverColor: 'hover:text-sky-600',
+    focusRing: 'focus:ring-sky-400',
+    decorationColor: 'decoration-sky-500',
+    clockColor: 'text-sky-500',
+    bgColor: 'bg-sky-500',
   };
 
   // Initial Loading State (Skeleton)
@@ -127,11 +127,11 @@ const FeaturedNews: React.FC = () => {
         >
           <div className="text-center sm:text-left">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-6 h-6 text-amber-600" />
+              <TrendingUp className="w-6 h-6 text-sky-600" />
               Featured News
             </h2>
             <p className="text-gray-500 text-sm mt-1">
-              Curated stories from around the world
+              Curated sports news from around the world
             </p>
           </div>
         </motion.div>
@@ -177,7 +177,7 @@ const FeaturedNews: React.FC = () => {
                   
                   {/* Category/Date Badge on Image */}
                   <div className="absolute top-4 left-4">
-                    <span className="bg-white/90 backdrop-blur-sm text-amber-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                    <span className="bg-white/90 backdrop-blur-sm text-sky-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                       News
                     </span>
                   </div>
@@ -189,7 +189,7 @@ const FeaturedNews: React.FC = () => {
                     <span>{formatDate(item.published_at ?? item.isoDate)}</span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-sky-600 transition-colors">
                     <a
                       href={item.article_url}
                       target="_blank"
@@ -212,7 +212,7 @@ const FeaturedNews: React.FC = () => {
                       href={item.article_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300"
+                      className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300"
                     >
                       <ArrowRight className="w-4 h-4" />
                     </a>
@@ -229,7 +229,7 @@ const FeaturedNews: React.FC = () => {
             <button
               onClick={handleLoadMore}
               disabled={isLoadingMore}
-              className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-800 px-8 py-3 rounded-full font-semibold shadow-sm hover:shadow-md hover:bg-gray-50 hover:text-amber-600 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed group"
+              className="inline-flex items-center gap-2 bg-white border border-gray-200 text-gray-800 px-8 py-3 rounded-full font-semibold shadow-sm hover:shadow-md hover:bg-gray-50 hover:text-sky-600 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed group"
             >
               {isLoadingMore ? (
                 <>

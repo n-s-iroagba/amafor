@@ -3,6 +3,7 @@ export interface Article {
   title: string;
   content: string;
   excerpt?: string;
+  featuredImage?: string;
   tags: ArticleTag[];
   authorId: string;
   viewCount: number;
@@ -12,6 +13,7 @@ export interface Article {
   status: ArticleStatus;
   scheduledPublishAt?: Date;
   publishedAt?: Date;
+  adZones: any[];
   metadata: Record<string, any>;
   createdAt: Date;
   updatedAt: Date;
