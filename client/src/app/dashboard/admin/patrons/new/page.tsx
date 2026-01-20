@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { API_ROUTES } from '@/config/routes';
+import { usePost } from '@/shared/hooks/useApiQuery';
 import Image from 'next/image';
 import api from '@/shared/lib/axios';
 
- const uploadFile = async (
+const uploadFile = async (
   file: File,
   type: 'thumbnail' | 'video' | 'image'
 ) => {
@@ -38,6 +39,8 @@ export default function NewPatronPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const router = useRouter();
+
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.PATRONS.CREATE);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -93,7 +96,7 @@ export default function NewPatronPage() {
       }
 
       // Submit patron data with the uploaded image URL
-      await api.post(API_ROUTES.PATRONS.CREATE, {
+      await post({
         ...form,
         imageUrl: finalImageUrl || null,
       });

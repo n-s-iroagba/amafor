@@ -9,7 +9,7 @@ export default function ProViewAccess() {
   return (
     <>
       <Header />
-      
+
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="bg-sky-900 text-white py-20">
@@ -20,10 +20,10 @@ export default function ProViewAccess() {
             <h1 className="text-5xl font-heading mb-6">Pro View Portal</h1>
             <div className="h-1 w-16 bg-sky-700 mx-auto mb-6"></div>
             <p className="text-xl text-slate-200 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Exclusive access to comprehensive player data, match archives, and verified information 
+              Exclusive access to comprehensive player data, match archives, and verified information
               for professional scouts and talent evaluators worldwide.
             </p>
-            <Link 
+            <Link
               href="/pro-view/apply"
               className="inline-flex items-center gap-2 bg-sky-700 hover:bg-sky-800 text-white px-10 py-4 rounded-lg transition-colors font-semibold text-lg"
             >
@@ -43,7 +43,7 @@ export default function ProViewAccess() {
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Verified Player Profiles</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Access comprehensive, verified data including biometrics, position details, 
+                  Access comprehensive, verified data including biometrics, position details,
                   and complete playing history with immutable audit trails.
                 </p>
               </div>
@@ -52,9 +52,9 @@ export default function ProViewAccess() {
                 <div className="w-14 h-14 bg-sky-100 rounded-lg flex items-center justify-center mb-6">
                   <Video className="w-7 h-7 text-sky-700" />
                 </div>
-                <h3 className="text-xl font-heading text-sky-500 mb-3">Full Match Archives</h3>
+                <h3 className="text-xl font-heading text-sky-500 mb-3">Full Fixture Archives</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Watch complete match recordings with high-quality video streaming, 
+                  Watch complete match recordings with high-quality video streaming,
                   available within 30 minutes of final whistle.
                 </p>
               </div>
@@ -65,7 +65,7 @@ export default function ProViewAccess() {
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Data Export Tools</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Export player data to CSV for offline analysis and integration with 
+                  Export player data to CSV for offline analysis and integration with
                   your scouting management systems.
                 </p>
               </div>
@@ -76,7 +76,7 @@ export default function ProViewAccess() {
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Verified Information</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  All data is maintained by our professional staff with complete change 
+                  All data is maintained by our professional staff with complete change
                   history and audit logs for transparency.
                 </p>
               </div>
@@ -87,7 +87,7 @@ export default function ProViewAccess() {
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Advanced Search & Filters</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Find players quickly with advanced filtering by position, age, physical attributes, 
+                  Find players quickly with advanced filtering by position, age, physical attributes,
                   and more with sub-2-second search performance.
                 </p>
               </div>
@@ -98,7 +98,7 @@ export default function ProViewAccess() {
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Recent Activity Tracking</h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Keep track of recently viewed players for easy access to prospects 
+                  Keep track of recently viewed players for easy access to prospects
                   you're monitoring.
                 </p>
               </div>
@@ -112,7 +112,7 @@ export default function ProViewAccess() {
             <div className="bg-white border border-slate-200 p-12 rounded-lg shadow-card">
               <h2 className="text-4xl font-heading text-sky-500 text-center mb-6">Who Can Apply?</h2>
               <p className="text-slate-600 mb-12 text-center leading-relaxed">
-                Pro View access is granted to verified professional scouts and talent evaluators. 
+                Pro View access is granted to verified professional scouts and talent evaluators.
                 Eligible applicants include:
               </p>
               <div className="grid md:grid-cols-2 gap-8">
@@ -167,10 +167,10 @@ export default function ProViewAccess() {
           <div className="container mx-auto px-4 text-center max-w-3xl">
             <h2 className="text-4xl font-heading text-sky-500 mb-6">Ready to Apply?</h2>
             <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-              Join professional scouts from around the world who trust Amafor Gladiators FC 
+              Join professional scouts from around the world who trust Amafor Gladiators FC
               for reliable player information and comprehensive match data.
             </p>
-            <Link 
+            <Link
               href="/pro-view/apply"
               className="inline-flex items-center gap-2 bg-sky-900 hover:bg-sky-900/90 text-white px-10 py-4 rounded-lg transition-colors font-semibold text-lg mb-8"
             >

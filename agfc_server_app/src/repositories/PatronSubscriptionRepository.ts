@@ -1,8 +1,8 @@
-import { FindOptions, Op} from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { PatronSubscription, PatronSubscriptionAttributes, PatronSubscriptionCreationAttributes, PatronTier, SubscriptionFrequency, SubscriptionStatus } from '@models/PatronSubscription';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import  logger  from '@utils/logger';
+import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
 import { underscoredIf } from 'sequelize/types/utils';
 import { PatronSubscriptionWithPatron } from 'src/types/patronSubscription';
@@ -21,30 +21,30 @@ export class PatronSubscriptionRepository extends BaseRepository<PatronSubscript
     super(PatronSubscription);
     this.auditLogRepository = new AuditLogRepository();
   }
-public async deactivateCurrent(patronId: string): Promise<void> {
+  public async deactivateCurrent(patronId: string): Promise<void> {
     await this.model.update(
-      { status: SubscriptionStatus.CANCELLED,endDate: new Date() },
+      { status: SubscriptionStatus.CANCELLED, endDate: new Date() },
       { where: { patronId, status: 'ACTIVE' } }
     );
   }
 
-  public async findActiveByPatrongId(patronId: string): Promise<PatronSubscription | null> {
+  public async findActiveByPatronId(patronId: string): Promise<PatronSubscription | null> {
     return this.model.findOne({
-      where: { 
-        patronId, 
+      where: {
+        patronId,
         status: 'ACTIVE',
-   
-      }  
+
+      }
     });
   }
   async createWithAudit(data: PatronSubscriptionCreationAttributes, auditData: any): Promise<PatronSubscription> {
     return tracer.startActiveSpan('repository.PatronSubscription.createWithAudit', async (span) => {
       const transaction = await PatronSubscription.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('patronId', data.patronId);
         span.setAttribute('tier', data.tier);
-        
+
         // Calculate next billing date
         const nextBillingDate = this.calculateNextBillingDate(data.frequency);
         const subscriptionData = {
@@ -54,7 +54,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
         };
 
         const subscription = await this.create(subscriptionData, { transaction });
-        
+
         // Create audit log
         await this.auditLogRepository.create({
           patronId: auditData.patronId,
@@ -91,22 +91,22 @@ public async deactivateCurrent(patronId: string): Promise<void> {
   async updateWithAudit(id: string, data: Partial<PatronSubscriptionAttributes>, auditData: any): Promise<PatronSubscription | null> {
     return tracer.startActiveSpan('repository.PatronSubscription.updateWithAudit', async (span) => {
       const transaction = await PatronSubscription.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('id', id);
-        
+
         const subscription = await this.findById(id, { transaction });
         if (!subscription) {
           throw new Error('Patron subscription not found');
         }
 
         const oldValue = subscription.toJSON();
-        
+
         // Update subscription
         await subscription.update(data, { transaction });
-        
+
         // Get changes
-        const changes = (Object.keys(data)as Array<keyof PatronSubscriptionAttributes>)
+        const changes = (Object.keys(data) as Array<keyof PatronSubscriptionAttributes>)
           .filter(key => subscription.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -149,7 +149,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
     return tracer.startActiveSpan('repository.PatronSubscription.cancelSubscription', async (span) => {
       try {
         span.setAttribute('id', id);
-        
+
         return await this.updateWithAudit(
           id,
           {
@@ -177,7 +177,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
         span.setAttribute('status', status);
         span.setAttribute('paymentReference', paymentReference);
         if (nextBillingDate) span.setAttribute('nextBillingDate', nextBillingDate.toISOString());
-        
+
         const updateData: Partial<PatronSubscriptionAttributes> = {
           status,
           paymentReference
@@ -212,16 +212,16 @@ public async deactivateCurrent(patronId: string): Promise<void> {
         span.setAttribute('filters', JSON.stringify(filters));
 
         const where: any = { patronId };
-        
+
         // Apply filters
         if (filters.tier) {
           where.tier = filters.tier;
         }
-        
+
         if (filters.status) {
           where.status = filters.status;
         }
-        
+
         if (filters.frequency) {
           where.frequency = filters.frequency;
         }
@@ -250,16 +250,16 @@ public async deactivateCurrent(patronId: string): Promise<void> {
         span.setAttribute('filters', JSON.stringify(filters));
 
         const where: any = { status: SubscriptionStatus.ACTIVE };
-        
+
         // Apply filters
         if (filters.tier) {
           where.tier = filters.tier;
         }
-        
+
         if (filters.frequency) {
           where.frequency = filters.frequency;
         }
-        
+
         if (filters.search) {
           where[Op.or] = [
             { displayName: { [Op.like]: `%${filters.search}%` } },
@@ -459,7 +459,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
   async processSubscriptionRenewals(): Promise<{ renewed: number; failed: number }> {
     return tracer.startActiveSpan('repository.PatronSubscription.processSubscriptionRenewals', async (span) => {
       const transaction = await PatronSubscription.sequelize!.transaction();
-      
+
       try {
         const now = new Date();
         const renewals = await this.findAll({
@@ -478,7 +478,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
           try {
             // Calculate next billing date
             const nextBillingDate = this.calculateNextBillingDate(subscription.frequency, subscription.nextBillingDate || subscription.startedAt);
-            
+
             await subscription.update(
               {
                 nextBillingDate,
@@ -504,7 +504,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
         }
 
         await transaction.commit();
-        
+
         span.setAttributes({
           renewed,
           failed
@@ -657,12 +657,12 @@ public async deactivateCurrent(patronId: string): Promise<void> {
     return tracer.startActiveSpan('repository.PatronSubscription.exportPatronData', async (span) => {
       try {
         span.setAttribute('format', format);
-        
+
         const subscriptions = await this.findAll({
           include: ['patron'],
           raw: true,
           nest: true
-        })as PatronSubscriptionWithPatron[];
+        }) as PatronSubscriptionWithPatron[];
 
         // Transform for export
         const exportData = subscriptions.map(subscription => ({
@@ -696,7 +696,7 @@ public async deactivateCurrent(patronId: string): Promise<void> {
   private calculateMonthsActive(startedAt: Date, frequency: SubscriptionFrequency): number {
     const now = new Date();
     const diffMonths = (now.getFullYear() - startedAt.getFullYear()) * 12 + (now.getMonth() - startedAt.getMonth());
-    
+
     switch (frequency) {
       case SubscriptionFrequency.MONTHLY:
         return diffMonths;

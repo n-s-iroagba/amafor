@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  Calendar, 
-  MapPin, 
-  Trophy, 
-  Images, 
-  ChevronRight, 
+import {
+  Calendar,
+  MapPin,
+  Trophy,
+  Images,
+  ChevronRight,
   Search,
   Filter,
   Loader2,
@@ -19,7 +19,7 @@ import {
 
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
-import { FixtureStatus, FixtureWithLeague, MatchImage } from '@/features/fixture/types';
+import { FixtureStatus, FixtureWithLeague, FixtureImage } from '@/features/fixture/types';
 
 
 export default function GalleryPage() {
@@ -29,11 +29,11 @@ export default function GalleryPage() {
   const [selectedYear, setSelectedYear] = useState<string>('all');
 
   // Fetch fixtures with their images
-  const { 
-    data: fixturesData, 
-    loading, 
-    error, 
-    refetch 
+  const {
+    data: fixturesData,
+    loading,
+    error,
+    refetch
   } = useGet<FixtureWithLeague[]>('/api/fixtures/gallery', {
     params: {
       include: 'league,images',
@@ -50,13 +50,13 @@ export default function GalleryPage() {
   // Extract unique years from fixtures
   const years = Array.from(
     new Set(
-      fixturesData?.map(fixture => new Date(fixture.date).getFullYear().toString()) || []
+      fixturesData?.map(fixture => new Date(fixture.matchDate).getFullYear().toString()) || []
     )
   ).sort((a, b) => parseInt(b) - parseInt(a));
 
   // Filter fixtures based on search and filters
   const filteredFixtures = fixturesData?.filter(fixture => {
-    const matchesSearch = 
+    const matchesSearch =
       fixture.homeTeam.toLowerCase().includes(searchTerm.toLowerCase()) ||
       fixture.awayTeam.toLowerCase().includes(searchTerm.toLowerCase()) ||
       fixture.venue.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,21 +64,21 @@ export default function GalleryPage() {
 
     const matchesStatus = statusFilter === 'all' || fixture.status === statusFilter;
     const matchesLeague = leagueFilter === 'all' || fixture.league?.id?.toString() === leagueFilter;
-    const matchesYear = selectedYear === 'all' || 
-      new Date(fixture.date).getFullYear().toString() === selectedYear;
+    const matchesYear = selectedYear === 'all' ||
+      new Date(fixture.matchDate).getFullYear().toString() === selectedYear;
 
     return matchesSearch && matchesStatus && matchesLeague && matchesYear;
   });
 
   // Group fixtures by date
   const groupedFixtures = filteredFixtures?.reduce((acc, fixture) => {
-    const date = new Date(fixture.date).toLocaleDateString('en-US', {
+    const date = new Date(fixture.matchDate).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
-    
+
     if (!acc[date]) {
       acc[date] = [];
     }
@@ -87,13 +87,13 @@ export default function GalleryPage() {
   }, {} as Record<string, FixtureWithLeague[]>);
 
   // Mock images for each fixture (in real app, this would come from API)
-  const getMockImages = (fixtureId: number): MatchImage[] => {
+  const getMockImages = (fixtureId: number): FixtureImage[] => {
     const imageCount = Math.floor(Math.random() * 8) + 1; // 1-8 images
     return Array.from({ length: imageCount }, (_, i) => ({
       id: `${fixtureId}-${i}`,
       fixtureId: fixtureId.toString(),
       url: `https://images.unsplash.com/photo-${Date.now()}-${i}?auto=format&fit=crop&w=800&q=80`,
-      description: `Match action ${i + 1}`
+      description: `Fixture action ${i + 1}`
     }));
   };
 
@@ -172,9 +172,9 @@ export default function GalleryPage() {
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
         <div className="container mx-auto max-w-7xl px-4 py-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Match Gallery</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Fixture Gallery</h1>
           <p className="text-slate-300 text-lg max-w-3xl">
-            Relive the action through photos from our matches. Browse through fixtures, 
+            Relive the action through photos from our matches. Browse through fixtures,
             view match highlights, and explore game moments.
           </p>
         </div>
@@ -290,7 +290,7 @@ export default function GalleryPage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {fixtures.map((fixture) => {
-                  const fixtureImages = getMockImages(fixture.id);
+                  const fixtureImages = getMockImages(Number(fixture.id));
                   const firstImage = fixtureImages[0];
 
                   return (
@@ -335,7 +335,7 @@ export default function GalleryPage() {
                               <div className="text-sm text-slate-600">Home</div>
                             </div>
                           </div>
-                          
+
                           <div className="text-center">
                             {fixture.status === FixtureStatus.SCHEDULED ? (
                               <div className="text-sm text-slate-500">VS</div>
@@ -345,7 +345,7 @@ export default function GalleryPage() {
                               </div>
                             )}
                             <div className="text-xs text-slate-500 mt-1">
-                              {formatDate(fixture.date)}
+                              {formatDate(String(fixture.matchDate))}
                             </div>
                           </div>
 
@@ -374,7 +374,7 @@ export default function GalleryPage() {
                             <div className="aspect-video bg-slate-100 relative overflow-hidden">
                               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
                               {/* In real app, use next/image */}
-                              <div 
+                              <div
                                 className="w-full h-full bg-cover bg-center"
                                 style={{ backgroundImage: `url(${firstImage.url})` }}
                               />
@@ -402,7 +402,7 @@ export default function GalleryPage() {
             <Images className="h-16 w-16 text-slate-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-slate-700 mb-2">No fixtures found</h3>
             <p className="text-slate-500 mb-6">
-              {fixturesData?.length === 0 
+              {fixturesData?.length === 0
                 ? "No fixtures have been added to the gallery yet."
                 : "Try adjusting your filters to see more results."}
             </p>

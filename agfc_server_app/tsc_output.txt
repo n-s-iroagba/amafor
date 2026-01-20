@@ -1,0 +1,462 @@
+src/controllers/AcademyStaffController.ts(2,83): error TS2307: Cannot find module '@/services/AcademyStaffService' or its corresponding type declarations.
+src/controllers/AcademyStaffController.ts(3,24): error TS2307: Cannot find module '@/utils/logger' or its corresponding type declarations.
+src/controllers/AcademyStaffController.ts(4,24): error TS2307: Cannot find module '@/utils/tracer' or its corresponding type declarations.
+src/controllers/AcademyStaffController.ts(5,34): error TS2307: Cannot find module 'express-validator' or its corresponding type declarations.
+src/controllers/AcademyStaffController.ts(15,91): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(64,88): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(105,91): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(157,91): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(210,91): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(244,93): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(268,91): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(310,98): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AcademyStaffController.ts(353,95): error TS7006: Parameter 'span' implicitly has an 'any' type.
+src/controllers/AdZoneController.ts(78,29): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/DonationController.ts(2,10): error TS2305: Module '"../services"' has no exported member 'DonationService'.
+src/controllers/FeedsController.ts(4,42): error TS2307: Cannot find module '../services/ThirdPartyArticleService' or its corresponding type declarations.
+src/controllers/FeedsController.ts(6,46): error TS2307: Cannot find module '../validations/rssFeed.schema' or its corresponding type declarations.
+src/controllers/GoalController.ts(22,55): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/controllers/GoalController.ts(31,44): error TS2339: Property 'getGoalsByFixture' does not exist on type 'GoalService'.
+src/controllers/GoalController.ts(40,54): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/controllers/GoalController.ts(49,41): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/controllers/GoalController.ts(58,44): error TS2339: Property 'getGoalsByScorer' does not exist on type 'GoalService'.
+src/controllers/GoalController.ts(67,44): error TS2551: Property 'getPenaltyGoals' does not exist on type 'GoalService'. Did you mean 'getEarlyGoals'?
+src/controllers/LeagueStatisticsController.ts(2,97): error TS2307: Cannot find module '../services/leagueStatistics.service' or its corresponding type declarations.
+src/controllers/LeagueStatisticsController.ts(3,26): error TS2307: Cannot find module '../utils/AppError' or its corresponding type declarations.
+src/controllers/LineupController.ts(13,47): error TS2551: Property 'createLineupPlayer' does not exist on type 'LineupService'. Did you mean 'createLineup'?
+src/controllers/LineupController.ts(22,47): error TS2551: Property 'getLineupPlayerById' does not exist on type 'LineupService'. Did you mean 'getLineupById'?
+src/controllers/LineupController.ts(31,47): error TS2551: Property 'getLineupByFixture' does not exist on type 'LineupService'. Did you mean 'getLineupById'?
+src/controllers/LineupController.ts(40,49): error TS2339: Property 'getStartersByFixture' does not exist on type 'LineupService'.
+src/controllers/LineupController.ts(49,52): error TS2339: Property 'getSubstitutesByFixture' does not exist on type 'LineupService'.
+src/controllers/LineupController.ts(58,47): error TS2551: Property 'updateLineupPlayer' does not exist on type 'LineupService'. Did you mean 'updateLineup'?
+src/controllers/LineupController.ts(67,32): error TS2551: Property 'deleteLineupPlayer' does not exist on type 'LineupService'. Did you mean 'deleteLineup'?
+src/controllers/LineupController.ts(76,47): error TS2551: Property 'batchUpdateLineup' does not exist on type 'LineupService'. Did you mean 'updateLineup'?
+src/controllers/PaymentController.ts(17,21): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(21,46): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(22,47): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(22,69): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(39,21): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(52,21): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(56,46): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(57,47): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(57,69): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(74,21): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(151,26): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentController.ts(166,21): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
+src/controllers/PaymentGatewayController.ts(2,8): error TS1192: Module '"/home/udorakpuenyi/amafor/agfc_server_app/src/services/PaymentGatewayService"' has no default export.
+src/controllers/TrialistController.ts(2,73): error TS2307: Cannot find module '../services/trialist.service' or its corresponding type declarations.
+src/controllers/TrialistController.ts(3,30): error TS2307: Cannot find module '../middleware/asyncHandler' or its corresponding type declarations.
+src/controllers/TrialistController.ts(4,26): error TS2307: Cannot find module '../utils/AppError' or its corresponding type declarations.
+src/controllers/TrialistController.ts(5,24): error TS2307: Cannot find module '../middleware/uploadMiddleware' or its corresponding type declarations.
+src/jobs/RssFeedCronJob.ts(1,37): error TS2307: Cannot find module 'node-cron' or its corresponding type declarations.
+src/jobs/ThirdPartyArticle.ts(3,31): error TS2307: Cannot find module './RssFeedSource' or its corresponding type declarations.
+src/middleware/validate.ts(2,34): error TS2503: Cannot find namespace 'z'.
+src/middleware/validate.ts(3,3): error TS2304: Cannot find name 'asyncHandler'.
+src/middleware/validate.ts(3,58): error TS2552: Cannot find name 'NextFunction'. Did you mean 'Function'?
+src/middleware/validate.ts(7,20): error TS2339: Property 'query' does not exist on type 'Request'.
+src/middleware/validate.ts(8,21): error TS2339: Property 'params' does not exist on type 'Request'.
+src/middleware/validate.ts(12,28): error TS2304: Cannot find name 'z'.
+src/middleware/validate.ts(13,24): error TS18046: 'error' is of type 'unknown'.
+src/middleware/validate.ts(13,41): error TS7006: Parameter 'err' implicitly has an 'any' type.
+src/middleware/validate.ts(17,13): error TS2349: This expression is not callable.
+  Type 'Number' has no call signatures.
+src/repositories/AdCreativeRepository.ts(146,41): error TS2322: Type 'WhereAttributeHash<AdCreativeAttributes>' is not assignable to type 'WhereOptions<InferAttributes<AdCreative, { omit: never; }>> | undefined'.
+  Type 'WhereAttributeHash<AdCreativeAttributes>' is not assignable to type 'WhereAttributeHash<InferAttributes<AdCreative, { omit: never; }>>'.
+    Type 'WhereAttributeHash<AdCreativeAttributes>' is not assignable to type '{ id?: WhereAttributeHashValue<string & { [CreationAttributeBrand]?: true | undefined; }>; $id$?: WhereAttributeHashValue<string & { [CreationAttributeBrand]?: true | undefined; }>; ... 23 more ...; $updated_at$?: WhereAttributeHashValue<...>; }'.
+      Types of property 'created_at' are incompatible.
+        Type 'WhereAttributeHashValue<Date | undefined>' is not assignable to type 'WhereAttributeHashValue<Date & { [CreationAttributeBrand]?: true | undefined; }>'.
+          Type 'WhereOperators<undefined>' is not assignable to type 'WhereAttributeHashValue<Date & { [CreationAttributeBrand]?: true | undefined; }>'.
+            Type 'WhereOperators<undefined>' is not assignable to type 'WhereOperators<Date & { [CreationAttributeBrand]?: true | undefined; }>'.
+              Types of property '[Op.eq]' are incompatible.
+                Type 'AllowAnyAll<OperatorValues<undefined>>' is not assignable to type 'AllowAnyAll<OperatorValues<Date & { [CreationAttributeBrand]?: true | undefined; }>> | undefined'.
+                  Type '{ [OpTypes.all]: Literal | (WhereSerializableValue | undefined)[] | { [OpTypes.values]: (string | number | boolean | Date | ... 7 more ... | undefined)[]; }; }' is not assignable to type 'AllowAnyAll<OperatorValues<Date & { [CreationAttributeBrand]?: true | undefined; }>> | undefined'.
+                    Type '{ [OpTypes.all]: Literal | (WhereSerializableValue | undefined)[] | { [OpTypes.values]: (string | number | boolean | Date | ... 7 more ... | undefined)[]; }; }' is not assignable to type '{ [OpTypes.all]: Literal | (WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[] | { ...; }; }'.
+                      Types of property '[Op.all]' are incompatible.
+                        Type 'Literal | (WhereSerializableValue | undefined)[] | { [OpTypes.values]: (string | number | boolean | Date | Fn | Col | ... 5 more ... | undefined)[]; }' is not assignable to type 'Literal | (WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[] | { [OpTypes.values]: (string | ... 10 more ... | (Date & { ...; }))[]; }'.
+                          Type '(WhereSerializableValue | undefined)[]' is not assignable to type 'Literal | (WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[] | { [OpTypes.values]: (string | ... 10 more ... | (Date & { ...; }))[]; }'.
+                            Type '(WhereSerializableValue | undefined)[]' is not assignable to type '(WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[]'.
+                              Type 'WhereSerializableValue | undefined' is not assignable to type 'WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; })'.
+                                Type 'undefined' is not assignable to type 'WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; })'.
+src/repositories/DonationRepository.ts(2,90): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/repositories/LineupRepository.ts(298,29): error TS2551: Property 'player' does not exist on type 'Lineup'. Did you mean 'playerId'?
+src/repositories/FixtureSummaryRepository.ts(2,26): error TS2307: Cannot find module '../models/FixtureSummary' or its corresponding type declarations.
+src/repositories/PlayerRepository.ts(251,31): error TS2339: Property 'appearances' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(252,25): error TS2339: Property 'goals' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(253,27): error TS2339: Property 'assists' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(254,31): error TS2339: Property 'cleanSheets' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(255,31): error TS2339: Property 'yellowCards' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(256,28): error TS2339: Property 'redCards' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(257,33): error TS2339: Property 'minutesPlayed' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(258,33): error TS2339: Property 'appearances' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(259,21): error TS2339: Property 'goals' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(259,36): error TS2339: Property 'assists' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(259,60): error TS2339: Property 'appearances' does not exist on type 'Player'.
+src/repositories/PlayerRepository.ts(283,77): error TS2339: Property 'appearances' does not exist on type 'Partial<PlayerAttributes>'.
+src/repositories/PlayerRepository.ts(284,65): error TS2339: Property 'goals' does not exist on type 'Partial<PlayerAttributes>'.
+src/repositories/PlayerRepository.ts(285,69): error TS2339: Property 'assists' does not exist on type 'Partial<PlayerAttributes>'.
+src/repositories/PlayerRepository.ts(286,77): error TS2339: Property 'cleanSheets' does not exist on type 'Partial<PlayerAttributes>'.
+src/repositories/PlayerRepository.ts(287,77): error TS2339: Property 'yellowCards' does not exist on type 'Partial<PlayerAttributes>'.
+src/repositories/PlayerRepository.ts(288,71): error TS2339: Property 'redCards' does not exist on type 'Partial<PlayerAttributes>'.
+src/repositories/PlayerRepository.ts(289,81): error TS2339: Property 'minutesPlayed' does not exist on type 'Partial<PlayerAttributes>'.
+src/routes/a/AuthService.ts(12,8): error TS2307: Cannot find module '../types/auth.types' or its corresponding type declarations.
+src/routes/a/AuthService.ts(13,63): error TS2307: Cannot find module '../utils/errors' or its corresponding type declarations.
+src/routes/a/AuthService.ts(14,20): error TS2307: Cannot find module '../utils/logger' or its corresponding type declarations.
+src/routes/a/AuthService.ts(16,26): error TS2307: Cannot find module './EmailService' or its corresponding type declarations.
+src/routes/a/AuthService.ts(17,33): error TS2307: Cannot find module './PasswordService' or its corresponding type declarations.
+src/routes/a/AuthService.ts(18,45): error TS2307: Cannot find module './TokenService' or its corresponding type declarations.
+src/routes/a/AuthService.ts(19,29): error TS2307: Cannot find module './user.service' or its corresponding type declarations.
+src/routes/a/AuthService.ts(20,37): error TS2307: Cannot find module './VerificationService' or its corresponding type declarations.
+src/routes/a/AuthService.ts(21,28): error TS2307: Cannot find module '../repositories/UserRepository' or its corresponding type declarations.
+src/routes/a/AuthService.ts(22,18): error TS2307: Cannot find module '../models/User' or its corresponding type declarations.
+src/routes/a/AuthService.ts(23,35): error TS2307: Cannot find module './AdvertiserService' or its corresponding type declarations.
+src/routes/a/authRoutes.ts(4,35): error TS2307: Cannot find module '../middleware/auth' or its corresponding type declarations.
+src/routes/a/authRoutes.ts(6,32): error TS2307: Cannot find module '../controllers/AuthController' or its corresponding type declarations.
+src/routes/academyRoutes.ts(3,48): error TS2307: Cannot find module '../middlewares' or its corresponding type declarations.
+src/routes/academyStaffRoutes.ts(2,40): error TS2307: Cannot find module '@/controllers/AcademyStaffController' or its corresponding type declarations.
+src/routes/academyStaffRoutes.ts(7,8): error TS2307: Cannot find module '@/middleware/staffValidation' or its corresponding type declarations.
+src/routes/academyStaffRoutes.ts(8,41): error TS2307: Cannot find module '@/middleware/auth' or its corresponding type declarations.
+src/routes/academyStaffRoutes.ts(9,26): error TS2307: Cannot find module '@/middleware/validate' or its corresponding type declarations.
+src/routes/authRoutes.ts(4,33): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/authRoutes.ts(5,25): error TS2307: Cannot find module '../schemas/user' or its corresponding type declarations.
+src/routes/clubLeagueRoutes.ts(2,44): error TS2307: Cannot find module '../controllers/leagueStatistics.controller' or its corresponding type declarations.
+src/routes/clubLeagueRoutes.ts(3,42): error TS2307: Cannot find module '../validations/leagueStatistics.validation' or its corresponding type declarations.
+src/routes/feedsRoutes.ts(4,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/feedsRoutes.ts(8,8): error TS2307: Cannot find module '../validations/rssFeed.schema' or its corresponding type declarations.
+src/routes/goalRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/goalRoutes.ts(11,8): error TS2307: Cannot find module '../validations/goal.schema' or its corresponding type declarations.
+src/routes/lineupRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/lineupRoutes.ts(11,8): error TS2307: Cannot find module '../validations/lineup.schema' or its corresponding type declarations.
+src/routes/matchImageRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/matchImageRoutes.ts(10,8): error TS2307: Cannot find module '../validations/matchImage.schema' or its corresponding type declarations.
+src/routes/matchSummaryRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/matchSummaryRoutes.ts(10,8): error TS2307: Cannot find module '../validations/matchSummary.schema' or its corresponding type declarations.
+src/routes/patronageRoutes.ts(3,32): error TS2307: Cannot find module '../middlewares' or its corresponding type declarations.
+src/routes/paymentRoutes.ts(7,45): error TS2339: Property 'getPaymentsByAdvertiserId' does not exist on type 'typeof PaymentController'.
+src/routes/paymentRoutes.ts(8,35): error TS2339: Property 'getAllPayments' does not exist on type 'typeof PaymentController'.
+src/routes/playerRoutes.ts(3,48): error TS2307: Cannot find module '../middlewares' or its corresponding type declarations.
+src/routes/systemRoutes.ts(4,41): error TS2307: Cannot find module '../middleware/auth' or its corresponding type declarations.
+src/routes/trialistRoutes.ts(2,57): error TS2307: Cannot find module '../controllers/trialist.controller' or its corresponding type declarations.
+src/routes/trialistRoutes.ts(7,8): error TS2307: Cannot find module '../validations/trialist.validation' or its corresponding type declarations.
+src/routes/userRoutes.ts(3,41): error TS2307: Cannot find module '../middleware/auth' or its corresponding type declarations.
+src/routes/userRoutes.ts(4,33): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/userRoutes.ts(5,25): error TS2307: Cannot find module '../schemas/user' or its corresponding type declarations.
+src/seeders/data/production/donations.ts(1,36): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/seeders/data/production/matchsummarys.ts(1,40): error TS2307: Cannot find module '@models/FixtureSummary' or its corresponding type declarations.
+src/seeders/data/testing/donations.ts(1,36): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/seeders/data/testing/matchsummarys.ts(1,40): error TS2307: Cannot find module '@models/FixtureSummary' or its corresponding type declarations.
+src/seeders/seeders/donation-seeder.ts(2,26): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/seeders/seeders/donation-seeder.ts(3,36): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/seeders/seeders/donation-seeder.ts(5,38): error TS2307: Cannot find module '../data/development/donations' or its corresponding type declarations.
+src/services/AcademyService.ts(1,10): error TS2305: Module '"../repositories"' has no exported member 'AcademyRepository'.
+src/services/AcademyService.ts(3,10): error TS2305: Module '"../models"' has no exported member 'Application'.
+src/services/AcademyService.ts(3,23): error TS2305: Module '"../models"' has no exported member 'NewsItem'.
+src/services/AcademyStaffService.ts(155,41): error TS2339: Property 'Op' does not exist on type 'Sequelize'.
+src/services/AcademyStaffService.ts(156,48): error TS2339: Property 'Op' does not exist on type 'Sequelize'.
+src/services/AcademyStaffService.ts(157,48): error TS2339: Property 'Op' does not exist on type 'Sequelize'.
+src/services/AcademyStaffService.ts(164,61): error TS2339: Property 'Op' does not exist on type 'Sequelize'.
+src/services/AcademyStaffService.ts(167,61): error TS2339: Property 'Op' does not exist on type 'Sequelize'.
+src/services/AdCreativeService.ts(7,32): error TS2304: Cannot find name 'AdCampaignService'.
+src/services/AdCreativeService.ts(11,36): error TS2304: Cannot find name 'SubscriptionService'.
+src/services/AdCreativeService.ts(15,56): error TS2339: Property 'data' does not exist on type 'AdCreative[]'.
+src/services/AdCreativeService.ts(19,53): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/services/AdCreativeService.ts(23,44): error TS2339: Property 'findBySubscription' does not exist on type 'AdCreativeRepository'.
+src/services/AdCreativeService.ts(32,24): error TS2339: Property 'subscriptionId' does not exist on type 'Partial<AdCreative>'.
+src/services/AdCreativeService.ts(33,95): error TS2339: Property 'subscriptionId' does not exist on type 'Partial<AdCreative>'.
+src/services/AdCreativeService.ts(39,51): error TS2345: Argument of type 'Partial<AdCreative>' is not assignable to parameter of type 'AdCreativeCreationAttributes'.
+  Type 'Partial<AdCreative>' is not assignable to type 'Omit<AdCreativeAttributes, "id" | "views" | "created_at" | "updated_at" | "numberOfViews">'.
+    Types of property 'type' are incompatible.
+      Type 'string | undefined' is not assignable to type 'string'.
+        Type 'undefined' is not assignable to type 'string'.
+src/services/AdCreativeService.ts(43,44): error TS2339: Property 'updateById' does not exist on type 'AdCreativeRepository'.
+src/services/AdCreativeService.ts(47,44): error TS2339: Property 'deleteById' does not exist on type 'AdCreativeRepository'.
+src/services/AdCreativeService.ts(51,47): error TS2551: Property 'findByAdsZone' does not exist on type 'AdCreativeRepository'. Did you mean 'findByZoneId'?
+src/services/AdCreativeService.ts(59,26): error TS7006: Parameter 'minAd' implicitly has an 'any' type.
+src/services/AdCreativeService.ts(59,33): error TS7006: Parameter 'currentAd' implicitly has an 'any' type.
+src/services/AdZoneService.ts(122,19): error TS2339: Property 'isAvailable' does not exist on type 'AdZoneModel'.
+src/services/AdZoneService.ts(159,19): error TS2339: Property 'isAvailable' does not exist on type 'AdZoneModel'.
+src/services/AdZoneService.ts(247,19): error TS2339: Property 'isAvailable' does not exist on type 'AdZoneModel'.
+src/services/AdvertisingService.ts(2,10): error TS2459: Module '"../models"' declares 'AdCampaign' locally, but it is not exported.
+src/services/AdvertisingService.ts(2,22): error TS2305: Module '"../models"' has no exported member 'AdCampaignCreationAttributes'.
+src/services/AdvertisingService.ts(68,51): error TS2339: Property 'findActiveForZone' does not exist on type 'AdCampaignRepository'.
+src/services/AnalyticsService.ts(65,47): error TS2339: Property 'sumCompletedAmounts' does not exist on type 'DonationRepository'.
+src/services/AuditService.ts(2,10): error TS2305: Module '"../models"' has no exported member 'AuditLogCreationAttributes'.
+src/services/AuditService.ts(44,59): error TS2345: Argument of type 'string' is not assignable to parameter of type 'EntityType'.
+src/services/AuthService.ts(3,10): error TS2459: Module '"../models"' declares 'User' locally, but it is not exported.
+src/services/AuthService.ts(3,16): error TS2305: Module '"../models"' has no exported member 'UserCreationAttributes'.
+src/services/AuthService.ts(4,36): error TS2305: Module '"../utils"' has no exported member 'security'.
+src/services/AuthService.ts(80,13): error TS2367: This comparison appears to be unintentional because the types 'UserStatus' and '"SUSPENDED"' have no overlap.
+src/services/ContentService.ts(1,10): error TS2305: Module '"../repositories"' has no exported member 'ContentRepository'.
+src/services/ContentService.ts(3,10): error TS2459: Module '"../models"' declares 'Article' locally, but it is not exported.
+src/services/ContentService.ts(3,19): error TS2305: Module '"../models"' has no exported member 'ArticleCreationAttributes'.
+src/services/EmailService.ts(2,41): error TS2307: Cannot find module 'nodemailer' or its corresponding type declarations.
+src/services/EmailService.ts(248,105): error TS2551: Property 'verificationCode' does not exist on type 'User'. Did you mean 'verificationToken'?
+src/services/EmailService.ts(404,97): error TS2339: Property 'amountPaid' does not exist on type 'Payment'.
+src/services/EmailService.ts(408,62): error TS2339: Property 'paidAt' does not exist on type 'Payment'.
+src/services/EmailService.ts(408,89): error TS2339: Property 'paidAt' does not exist on type 'Payment'.
+src/services/EmailService.ts(510,70): error TS2339: Property 'amountPaid' does not exist on type 'Payment'.
+src/services/GoalService.ts(141,7): error TS2322: Type '{ id: number & { [CreationAttributeBrand]?: true | undefined; }; scorer: string; minute: number; isPenalty: boolean; fixtureDetails: { id: any; homeTeam: any; awayTeam: any; matchDate: any; }; }[]' is not assignable to type 'GoalAnalytics[]'.
+  Type '{ id: number & { [CreationAttributeBrand]?: true; }; scorer: string; minute: number; isPenalty: boolean; fixtureDetails: { id: any; homeTeam: any; awayTeam: any; matchDate: any; }; }' is not assignable to type 'GoalAnalytics'.
+    Types of property 'id' are incompatible.
+      Type 'number & { [CreationAttributeBrand]?: true | undefined; }' is not assignable to type 'string'.
+src/services/GoalService.ts(146,30): error TS2551: Property 'fixture' does not exist on type 'Goal'. Did you mean 'fixtureId'?
+src/services/GoalService.ts(147,20): error TS2551: Property 'fixture' does not exist on type 'Goal'. Did you mean 'fixtureId'?
+src/services/GoalService.ts(148,26): error TS2551: Property 'fixture' does not exist on type 'Goal'. Did you mean 'fixtureId'?
+src/services/GoalService.ts(149,26): error TS2551: Property 'fixture' does not exist on type 'Goal'. Did you mean 'fixtureId'?
+src/services/GoalService.ts(150,27): error TS2551: Property 'fixture' does not exist on type 'Goal'. Did you mean 'fixtureId'?
+src/services/GoalService.ts(203,41): error TS2339: Property 'getLateGoals' does not exist on type 'IGoalRepository'.
+src/services/GoalService.ts(204,22): error TS7006: Parameter 'g' implicitly has an 'any' type.
+src/services/GoalService.ts(208,41): error TS2339: Property 'getEarlyGoals' does not exist on type 'IGoalRepository'.
+src/services/GoalService.ts(209,22): error TS7006: Parameter 'g' implicitly has an 'any' type.
+src/services/GoalService.ts(266,60): error TS2304: Cannot find name 'CreateGoalData'.
+src/services/LeagueStatisticsService.ts(8,8): error TS2307: Cannot find module '../repositories/leagueStatistics.repository' or its corresponding type declarations.
+src/services/LeagueStatisticsService.ts(9,26): error TS2307: Cannot find module '../utils/AppError' or its corresponding type declarations.
+src/services/LeagueStatisticsService.ts(13,18): error TS2430: Interface 'CreateLeagueStatisticsData' incorrectly extends interface 'Omit<LeagueStatisticsCreationAttributes, "id">'.
+  Types of property 'goalsFor' are incompatible.
+    Type 'number | undefined' is not assignable to type 'number'.
+      Type 'undefined' is not assignable to type 'number'.
+src/services/LineupService.ts(74,38): error TS2339: Property 'firstName' does not exist on type 'Player'.
+src/services/LineupService.ts(74,58): error TS2339: Property 'lastName' does not exist on type 'Player'.
+src/services/LineupService.ts(167,25): error TS2339: Property 'getFormation' does not exist on type 'ILineupRepository'.
+src/services/LineupService.ts(171,32): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/services/LineupService.ts(172,38): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/services/LineupService.ts(223,32): error TS2339: Property 'firstName' does not exist on type 'Player'.
+src/services/LineupService.ts(223,52): error TS2339: Property 'lastName' does not exist on type 'Player'.
+src/services/LineupService.ts(264,31): error TS2339: Property 'firstName' does not exist on type 'Player'.
+src/services/LineupService.ts(264,51): error TS2339: Property 'lastName' does not exist on type 'Player'.
+src/services/LineupService.ts(377,25): error TS2339: Property 'getFormation' does not exist on type 'ILineupRepository'.
+src/services/FixtureImageService.ts(3,25): error TS2305: Module '"../utils/errors"' has no exported member 'DatabaseError'.
+src/services/FixtureImageService.ts(28,60): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/services/FixtureImageService.ts(56,60): error TS2339: Property 'updateById' does not exist on type 'FixtureImageRepository'.
+src/services/FixtureImageService.ts(71,55): error TS2339: Property 'deleteById' does not exist on type 'FixtureImageRepository'.
+src/services/FixtureService.ts(2,10): error TS2459: Module '"../models"' declares 'Fixture' locally, but it is not exported.
+src/services/FixtureService.ts(2,19): error TS2305: Module '"../models"' has no exported member 'FixtureCreationAttributes'.
+src/services/FixtureSummaryService.ts(3,25): error TS2305: Module '"../utils/errors"' has no exported member 'DatabaseError'.
+src/services/FixtureSummaryService.ts(4,27): error TS2307: Cannot find module '../models/FixtureSummary' or its corresponding type declarations.
+src/services/FixtureSummaryService.ts(18,59): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/services/FixtureSummaryService.ts(24,77): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/services/FixtureSummaryService.ts(37,64): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/services/FixtureSummaryService.ts(50,69): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+src/services/FixtureSummaryService.ts(61,64): error TS2339: Property 'updateById' does not exist on type 'FixtureSummaryRepository'.
+src/services/FixtureSummaryService.ts(75,57): error TS2339: Property 'deleteById' does not exist on type 'FixtureSummaryRepository'.
+src/services/PasswordService.ts(1,20): error TS2307: Cannot find module 'bcryptjs' or its corresponding type declarations.
+src/services/PasswordService.ts(4,28): error TS2307: Cannot find module '../utils/crpto.util' or its corresponding type declarations.
+src/services/PatronageService.ts(2,10): error TS2459: Module '"../models"' declares 'PatronSubscription' locally, but it is not exported.
+src/services/PatronageService.ts(52,43): error TS2339: Property 'findActiveByUserId' does not exist on type 'PatronSubscriptionRepository'.
+src/services/PaymentService.ts(14,26): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/services/PaymentService.ts(88,13): error TS2322: Type '{ userId: string; reference: string; amount: number; currency: Currency; status: PaymentStatus.PENDING; type: PaymentType.ADVERTISEMENT; provider: PaymentProvider.PAYSTACK; ... 4 more ...; metadata: { ...; }; }' is not assignable to type 'PaymentCreationAttributes'.
+  Type '{ userId: string; reference: string; amount: number; currency: Currency; status: PaymentStatus.PENDING; type: PaymentType.ADVERTISEMENT; provider: PaymentProvider.PAYSTACK; ... 4 more ...; metadata: { ...; }; }' is missing the following properties from type 'Omit<PaymentAttributes, "id" | "createdAt" | "updatedAt" | "verifiedAt" | "refundedAt">': ipAddress, userAgent, providerReference, subscriptionId
+src/services/PaymentService.ts(173,9): error TS2322: Type 'string | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+src/services/PaymentService.ts(179,9): error TS2322: Type 'string | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+src/services/PaymentService.ts(180,9): error TS2322: Type 'string | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
+src/services/PaymentService.ts(411,37): error TS2322: Type '"active"' is not assignable to type 'Fn | Col | Literal | CampaignStatus | undefined'.
+src/services/PaymentService.ts(414,67): error TS2339: Property 'donationId' does not exist on type 'Payment'.
+src/services/PaymentService.ts(416,58): error TS2339: Property 'donationId' does not exist on type 'Payment'.
+src/services/PaymentService.ts(419,67): error TS2339: Property 'donationId' does not exist on type 'Payment'.
+src/services/PaymentService.ts(487,19): error TS2339: Property 'user' does not exist on type 'Payment'.
+src/services/PaymentService.ts(490,26): error TS2339: Property 'user' does not exist on type 'Payment'.
+src/services/PlayerService.ts(3,10): error TS2459: Module '"../models"' declares 'Player' locally, but it is not exported.
+src/services/PlayerService.ts(3,18): error TS2305: Module '"../models"' has no exported member 'PlayerCreationAttributes'.
+src/services/PlayerService.ts(27,33): error TS2339: Property 'firstName' does not exist on type 'Player'.
+src/services/PlayerService.ts(27,53): error TS2339: Property 'lastName' does not exist on type 'Player'.
+src/services/PlayerService.ts(50,98): error TS2339: Property 'lastName' does not exist on type 'Player'.
+src/services/PlayerService.ts(116,29): error TS2339: Property 'firstName' does not exist on type 'Player'.
+src/services/PlayerService.ts(116,49): error TS2339: Property 'lastName' does not exist on type 'Player'.
+src/services/PlayerService.ts(118,27): error TS2551: Property 'stats' does not exist on type 'Player'. Did you mean 'status'?
+src/services/PlayerService.ts(119,30): error TS2339: Property 'physicalAttributes' does not exist on type 'Player'.
+src/services/ReceiptService.ts(2,39): error TS2307: Cannot find module '../models/AdSubscriptionPayment' or its corresponding type declarations.
+src/services/RssFeedFetcherService.ts(2,20): error TS2307: Cannot find module 'rss-parser' or its corresponding type declarations.
+src/services/RssFeedFetcherService.ts(8,45): error TS2307: Cannot find module '../repositories/ThirdPartyArticleRepository' or its corresponding type declarations.
+src/services/RssFeedFetcherService.ts(110,5): error TS2561: Object literal may only specify known properties, but 'rss_feed_source_id' does not exist in type 'ThirdPartyArticleCreationAttributes'. Did you mean to write 'rssFeedSourceId'?
+src/services/RssFeedFetcherService.ts(119,20): error TS2339: Property 'article_url' does not exist on type 'ThirdPartyArticleCreationAttributes'.
+src/services/RssFeedSourceService.ts(2,10): error TS2724: '"../repositories/RssFeedSourceRepository"' has no exported member named 'RssFeedSourceRepository'. Did you mean 'RssFeedRepository'?
+src/services/TokenService.ts(14,8): error TS2307: Cannot find module '../types/token.types' or its corresponding type declarations.
+src/services/TokenService.ts(15,10): error TS2305: Module '"../utils/errors"' has no exported member 'UnauthorizedError'.
+src/services/TokenService.ts(15,39): error TS2305: Module '"../utils/errors"' has no exported member 'InternalServerError'.
+src/services/TokenService.ts(170,32): error TS2551: Property 'verificationCode' does not exist on type 'User'. Did you mean 'verificationToken'?
+src/services/TokenService.ts(197,32): error TS2551: Property 'verificationCode' does not exist on type 'User'. Did you mean 'verificationToken'?
+src/services/TrialistService.ts(27,17): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(33,17): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(41,17): error TS2304: Cannot find name 'uploads'.
+src/services/TrialistService.ts(42,14): error TS2304: Cannot find name 'uploads'.
+src/services/TrialistService.ts(52,17): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(70,69): error TS2339: Property 'findAll' does not exist on type 'ITrialistRepository'.
+src/services/TrialistService.ts(87,17): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(94,19): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(102,19): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(107,32): error TS2339: Property 'uploadFiles' does not exist on type 'TrialistService'.
+src/services/TrialistService.ts(129,17): error TS2304: Cannot find name 'AppError'.
+src/services/TrialistService.ts(136,17): error TS2304: Cannot find name 'AppError'.
+src/services/UploadService.ts(2,59): error TS2307: Cannot find module '../cloudinary' or its corresponding type declarations.
+src/services/UserService.ts(3,10): error TS2459: Module '"../models"' declares 'User' locally, but it is not exported.
+src/services/UserService.ts(3,16): error TS2305: Module '"../models"' has no exported member 'UserAttributes'.
+src/services/VerificationService.ts(4,28): error TS2307: Cannot find module '../utils/codeHelper' or its corresponding type declarations.
+src/services/VerificationService.ts(8,10): error TS2305: Module '"../utils/errors"' has no exported member 'BadRequestError'.
+src/services/VerificationService.ts(8,27): error TS2305: Module '"../utils/errors"' has no exported member 'ForbiddenError'.
+src/services/VerificationService.ts(9,28): error TS2307: Cannot find module '../types/auth.types' or its corresponding type declarations.
+src/services/VerificationService.ts(11,20): error TS2307: Cannot find module '../config' or its corresponding type declarations.
+src/services/VerificationService.ts(12,29): error TS2307: Cannot find module './user.service' or its corresponding type declarations.
+src/services/VerificationService.ts(44,12): error TS2551: Property 'verificationCode' does not exist on type 'User'. Did you mean 'verificationToken'?
+src/services/VerificationService.ts(50,35): error TS2322: Type 'string' is not assignable to type 'number'.
+src/services/VerificationService.ts(82,14): error TS2551: Property 'verificationCode' does not exist on type 'User'. Did you mean 'verificationToken'?
+src/services/index.ts(10,15): error TS2307: Cannot find module './DonationService' or its corresponding type declarations.
+src/types/adCampaign.ts(2,10): error TS2614: Module '"@models/Advertiser"' has no exported member 'Advertiser'. Did you mean to use 'import Advertiser from "@models/Advertiser"' instead?
+src/utils/email.ts(1,24): error TS2307: Cannot find module 'nodemailer' or its corresponding type declarations.
+src/utils/email.ts(2,10): error TS2614: Module '"./logger"' has no exported member 'logger'. Did you mean to use 'import logger from "./logger"' instead?
+src/utils/email.ts(31,21): error TS7006: Parameter 'error' implicitly has an 'any' type.
+src/utils/email.ts(155,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(159,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(166,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(420,24): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(425,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/helpers.ts(2,10): error TS2614: Module '"./logger"' has no exported member 'logger'. Did you mean to use 'import logger from "./logger"' instead?
+src/utils/helpers.ts(195,7): error TS2322: Type 'number' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'number'.
+src/utils/helpers.ts(196,7): error TS2322: Type 'number' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'number'.
+src/utils/helpers.ts(201,7): error TS2322: Type 'string' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'string'.
+src/utils/helpers.ts(202,7): error TS2322: Type 'string' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'string'.
+src/utils/helpers.ts(403,9): error TS2322: Type 'unknown' is not assignable to type 'Error'.
+src/utils/helpers.ts(414,16): error TS2454: Variable 'lastError' is used before being assigned.
+src/utils/helpers.ts(417,11): error TS2454: Variable 'lastError' is used before being assigned.
+src/utils/metrics.ts(7,3): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'DefaultMetricsCollectorConfiguration'.
+src/utils/metrics.ts(183,19): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(3,10): error TS2614: Module '"./logger"' has no exported member 'logger'. Did you mean to use 'import logger from "./logger"' instead?
+src/utils/paystack.ts(5,32): error TS2307: Cannot find module '@models/Donation' or its corresponding type declarations.
+src/utils/paystack.ts(191,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(195,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(195,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(199,57): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(230,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(234,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(234,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(238,55): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(272,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(276,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(276,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(280,62): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(321,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(325,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(325,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(329,54): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(363,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(367,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(367,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(371,56): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(380,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'boolean'.
+src/utils/paystack.ts(380,68): error TS2345: Argument of type '(span: Span) => boolean' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'boolean' is not assignable to type 'Promise<unknown>'.
+src/utils/paystack.ts(404,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(525,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(586,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(631,27): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(636,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(5,10): error TS2614: Module '"./logger"' has no exported member 'logger'. Did you mean to use 'import logger from "./logger"' instead?
+src/utils/security.ts(32,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(57,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(70,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(79,25): error TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.
+src/utils/security.ts(95,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(108,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(116,25): error TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | PrivateKeyInput | JsonWebKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.
+src/utils/security.ts(131,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(144,57): error TS2345: Argument of type '(span: Span) => string | JwtPayload' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string | JwtPayload' is not assignable to type 'Promise<unknown>'.
+    Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(160,33): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(163,61): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(173,64): error TS2345: Argument of type '(span: Span) => string | JwtPayload' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string | JwtPayload' is not assignable to type 'Promise<unknown>'.
+    Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(189,41): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(192,65): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(202,3): error TS2739: Type 'Promise<unknown>' is missing the following properties from type '{ token: string; expires: Date; }': token, expires
+src/utils/security.ts(202,71): error TS2345: Argument of type '(span: Span) => { token: string; expires: Date; }' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type '{ token: string; expires: Date; }' is missing the following properties from type 'Promise<unknown>': then, catch, finally, [Symbol.toStringTag]
+src/utils/security.ts(217,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(230,3): error TS2739: Type 'Promise<unknown>' is missing the following properties from type '{ token: string; expires: Date; }': token, expires
+src/utils/security.ts(230,72): error TS2345: Argument of type '(span: Span) => { token: string; expires: Date; }' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type '{ token: string; expires: Date; }' is missing the following properties from type 'Promise<unknown>': then, catch, finally, [Symbol.toStringTag]
+src/utils/security.ts(245,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(258,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(258,60): error TS2345: Argument of type '(span: Span) => string' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(275,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(288,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(288,56): error TS2345: Argument of type '(span: Span) => string' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(303,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(316,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(316,63): error TS2345: Argument of type '(span: Span) => string' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(328,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(341,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'boolean'.
+src/utils/security.ts(341,63): error TS2345: Argument of type '(span: Span) => boolean' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'boolean' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(360,32): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(2,83): error TS2307: Cannot find module '@aws-sdk/client-s3' or its corresponding type declarations.
+src/utils/storage.ts(3,30): error TS2307: Cannot find module '@aws-sdk/s3-request-presigner' or its corresponding type declarations.
+src/utils/storage.ts(4,19): error TS2307: Cannot find module 'sharp' or its corresponding type declarations.
+src/utils/storage.ts(6,10): error TS2614: Module '"./logger"' has no exported member 'logger'. Did you mean to use 'import logger from "./logger"' instead?
+src/utils/storage.ts(277,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(281,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(289,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(379,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(383,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(389,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(430,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(434,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(440,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(514,59): error TS18046: 'imageError' is of type 'unknown'.
+src/utils/storage.ts(538,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(542,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(549,39): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(607,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(610,59): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(656,9): error TS2304: Cannot find name 'warnings'.
+src/utils/storage.ts(682,62): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(702,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(705,60): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(706,37): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(769,26): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(775,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/validation.ts(3,10): error TS2614: Module '"./logger"' has no exported member 'logger'. Did you mean to use 'import logger from "./logger"' instead?
+src/utils/validation.ts(538,20): error TS18046: 'validationError' is of type 'unknown'.
+src/utils/validation.ts(542,18): error TS18046: 'validationError' is of type 'unknown'.
+src/utils/validation.ts(595,18): error TS18046: 'validationError' is of type 'unknown'.
+src/validation-schema/academyStaffSchema.ts(1,36): error TS2307: Cannot find module 'express-validator' or its corresponding type declarations.
+src/validation-schema/trialistSchema.ts(3,30): error TS2307: Cannot find module '../middleware/asyncHandler' or its corresponding type declarations.
+src/validation-schema/trialistSchema.ts(37,24): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["LEFT", "RIGHT", "BOTH"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/validation-schema/trialistSchema.ts(106,24): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["LEFT", "RIGHT", "BOTH"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/validation-schema/trialistSchema.ts(150,17): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["PENDING", "REVIEWED", "INVITED", "REJECTED"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.

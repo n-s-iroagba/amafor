@@ -1,21 +1,21 @@
 import { Router } from 'express';
-import { MatchImageController } from '../controllers/MatchImageController';
+import { FixtureImageController } from '../controllers/FixtureImageController';
 import { validate } from '../middleware/validation';
 import {
-  createMatchImageSchema,
-  updateMatchImageSchema,
-  getMatchImageSchema,
-  deleteMatchImageSchema,
-  getMatchImagesByFixtureSchema,
+  createFixtureImageSchema,
+  updateFixtureImageSchema,
+  getFixtureImageSchema,
+  deleteFixtureImageSchema,
+  getFixtureImagesByFixtureSchema,
 } from '../validations/matchImage.schema';
 
 const router = Router();
-const matchImageController = new MatchImageController();
+const matchImageController = new FixtureImageController();
 
-router.post('/:fixtureId',  matchImageController.createMatchImage);
-router.get('/fixture/:fixtureId', validate(getMatchImagesByFixtureSchema), matchImageController.getMatchImagesByFixture);
-router.get('/:id', validate(getMatchImageSchema), matchImageController.getMatchImage);
-router.put('/:id', validate(updateMatchImageSchema), matchImageController.updateMatchImage);
-router.delete('/:id', validate(deleteMatchImageSchema), matchImageController.deleteMatchImage);
+router.post('/:fixtureId', matchImageController.createFixtureImage);
+router.get('/fixture/:fixtureId', validate(getFixtureImagesByFixtureSchema), matchImageController.getFixtureImagesByFixture);
+router.get('/:id', validate(getFixtureImageSchema), matchImageController.getFixtureImage);
+router.put('/:id', validate(updateFixtureImageSchema), matchImageController.updateFixtureImage);
+router.delete('/:id', validate(deleteFixtureImageSchema), matchImageController.deleteFixtureImage);
 
 export default router;

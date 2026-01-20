@@ -1,21 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
-import { MatchService } from '../services';
+import { FixtureService } from '../services';
 import { structuredLogger } from '../utils';
 
-export class MatchController {
-  private matchService: MatchService;
+export class FixtureController {
+  private matchService: FixtureService;
 
   constructor() {
-    this.matchService = new MatchService();
+    this.matchService = new FixtureService();
   }
 
   // Admin Only
   public createFixture = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const creatorId = (req as any).user.id;
-      // Matches service: createFixture(data, creatorId)
+      // Fixturees service: createFixture(data, creatorId)
       const match = await this.matchService.createFixture(req.body, creatorId);
-      
+
       res.status(201).json({
         success: true,
         data: match
@@ -30,8 +30,8 @@ export class MatchController {
     try {
       const { id } = req.params;
       const updaterId = (req as any).user.id;
-      
-      // Matches service: recordResult(id, data, updaterId)
+
+      // Fixturees service: recordResult(id, data, updaterId)
       const match = await this.matchService.recordResult(id, req.body, updaterId);
 
       structuredLogger.info('MATCH_RESULT_UPDATED', { matchId: id, result: `${match.homeScore}-${match.awayScore}` });
@@ -45,12 +45,12 @@ export class MatchController {
     }
   };
 
-  public getUpcomingMatches = async (req: Request, res: Response, next: NextFunction) => {
+  public getUpcomingFixturees = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-      // Matches service: getUpcoming(limit)
+      // Fixturees service: getUpcoming(limit)
       const matches = await this.matchService.getUpcoming(limit);
-      
+
       res.status(200).json({
         success: true,
         data: matches
@@ -63,9 +63,9 @@ export class MatchController {
   public getLeagueTable = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const season = req.query.season as string || 'current';
-      // Matches service: calculateLeagueTable(season)
+      // Fixturees service: calculateLeagueTable(season)
       const table = await this.matchService.calculateLeagueTable(season);
-      
+
       res.status(200).json({
         success: true,
         data: table
@@ -75,11 +75,11 @@ export class MatchController {
     }
   };
 
-  public listAllMatches = async (req: Request, res: Response, next: NextFunction) => {
+  public listAllFixturees = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Matches service: findAll(filters)
+      // Fixturees service: findAll(filters)
       const matches = await this.matchService.findAll(req.query);
-      
+
       res.status(200).json({
         success: true,
         results: matches.length,

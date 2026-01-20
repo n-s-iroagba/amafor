@@ -1,32 +1,44 @@
 // app/leagues/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 
-interface League {
-  id: number;
-  name: string;
-  season: string;
-  isFriendly: boolean;
-  createdAt: string;
-}
+import { League } from '@/shared/types';
 
 export default function LeaguesList() {
   const router = useRouter();
 
- 
   const [deleteConfirm, setDeleteConfirm] = useState<number>(0);
+  const [deletingId, setDeletingId] = useState<number>(0);
 
-  const { data: leagues, loading: leaguesLoading } = useGet<League[]>(
+  const { data: leagues, loading: leaguesLoading, refetch } = useGet<League[]>(
     `${API_ROUTES.LEAGUES.LIST}/all`
   );
 
-  console.log('LEAA',leagues)
+  const { delete: deleteLeague, isPending: deleteLoading } = useDelete(
+    API_ROUTES.LEAGUES.MUTATE
+  );
+
+  const handleDeleteLeague = async () => {
+    if (!deleteConfirm) return;
+    setDeletingId(deleteConfirm);
+    try {
+      await deleteLeague(deleteConfirm);
+      await refetch();
+    } catch (err) {
+      console.error('Error deleting league:', err);
+    } finally {
+      setDeletingId(0);
+      setDeleteConfirm(0);
+    }
+  };
+
+  console.log('LEAA', leagues);
 
   if (leaguesLoading) {
     return (
@@ -211,7 +223,7 @@ export default function LeaguesList() {
                             </svg>
                           </Link>
                           <button
-                            onClick={() => setDeleteConfirm(league.id)}
+                            onClick={() => setDeleteConfirm(Number(league.id))}
                             className="text-red-600 hover:text-red-900 transition-colors text-xs sm:text-sm"
                             title="Delete"
                           >
@@ -246,12 +258,13 @@ export default function LeaguesList() {
                               >
                                 Cancel
                               </button>
-                              {/* <button
-                                onClick={() => deleteLeague()}
-                                className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
+                              <button
+                                onClick={handleDeleteLeague}
+                                disabled={deletingId === deleteConfirm || deleteLoading}
+                                className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors disabled:opacity-50"
                               >
-                                Delete
-                              </button> */}
+                                {deletingId === deleteConfirm ? 'Deleting...' : 'Delete'}
+                              </button>
                             </div>
                           </div>
                         )}

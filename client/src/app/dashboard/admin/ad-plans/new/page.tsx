@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 export default function NewAdPlan() {
@@ -13,7 +13,8 @@ export default function NewAdPlan() {
   const [zone, setZone] = useState('top_banner');
   const [price, setPrice] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.ADS.PLANS.CREATE);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -35,10 +36,8 @@ export default function NewAdPlan() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
-      await api.post(API_ROUTES.ADS.PLANS.CREATE, {
+      await post({
         name,
         description: description || null,
         maxImpressions: maxImpressions ? parseInt(maxImpressions) : null,
@@ -50,8 +49,6 @@ export default function NewAdPlan() {
     } catch (error) {
       alert('An Error Occurred');
       console.error('Error creating ad plan:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -80,9 +77,8 @@ export default function NewAdPlan() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.name ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter plan name"
             />
             {errors.name && (
@@ -122,9 +118,8 @@ export default function NewAdPlan() {
                 onChange={(e) => setPrice(e.target.value)}
                 min="0"
                 step="0.01"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.price ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.price ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="0.00"
               />
               {errors.price && (
@@ -145,9 +140,8 @@ export default function NewAdPlan() {
                 value={maxImpressions}
                 onChange={(e) => setMaxImpressions(e.target.value)}
                 min="1"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.maxImpressions ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.maxImpressions ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter maximum impressions"
               />
               {errors.maxImpressions && (
@@ -169,9 +163,8 @@ export default function NewAdPlan() {
               id="zone"
               value={zone}
               onChange={(e) => setZone(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.zone ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.zone ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
             >
               <option value="top_banner">Top Banner</option>
               <option value="footer_banner">Footer Banner</option>
@@ -180,8 +173,8 @@ export default function NewAdPlan() {
               <p className="mt-1 text-sm text-red-600">{errors.zone}</p>
             )}
             <p className="mt-1 text-xs text-sky-600">
-              {zone === 'top_banner' 
-                ? 'Top banner appears at the top of the page' 
+              {zone === 'top_banner'
+                ? 'Top banner appears at the top of the page'
                 : 'Footer banner appears at the bottom of the page'
               }
             </p>

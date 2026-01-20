@@ -1,5 +1,6 @@
+import { AuditLogCreationAttributes, EntityType } from '@models/AuditLog';
 import { AuditLogRepository } from '../repositories';
-import { AuditLogCreationAttributes } from '../models';
+
 import { structuredLogger, tracer } from '../utils';
 
 export class AuditService {
@@ -21,10 +22,10 @@ export class AuditService {
           data.userId || 'system',
           data.entityType,
           data.entityId || 'unknown',
-          { 
-            details: data.details, 
+          {
+            details: data,
             ip: data.ipAddress,
-            metadata: data.metadata 
+            metadata: data.metadata
           }
         );
 
@@ -41,7 +42,7 @@ export class AuditService {
   public async getEntityHistory(entityType: string, entityId: string, page: number = 1, limit: number = 20) {
     return tracer.startActiveSpan('service.AuditService.getEntityHistory', async (span) => {
       try {
-        return await this.auditLogRepository.findByEntity(entityType, entityId, { page, limit });
+        return await this.auditLogRepository.findByEntity(entityType as EntityType, entityId, { page, limit });
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
         structuredLogger.error('Failed to fetch entity history', { error: error.message, entityType, entityId });

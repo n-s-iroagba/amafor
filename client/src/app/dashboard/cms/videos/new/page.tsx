@@ -18,7 +18,7 @@ import {
   CheckCircle2,
   X,
 } from 'lucide-react';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
@@ -31,18 +31,19 @@ export default function NewVideo() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [duration, setDuration] = useState('');
-  
+
   // File states
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
   const [selectedThumbnail, setSelectedThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>('');
-  
+
   // UI states
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState('');
+
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.VIDEOS.CREATE);
 
   const videoInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
@@ -130,10 +131,10 @@ export default function NewVideo() {
       }, 200);
 
       const uploadedUrl = await uploadFile(file, type);
-      
+
       clearInterval(progressInterval);
       setUploadProgress(100);
-      
+
       return uploadedUrl;
     } catch (error) {
       console.error('Upload error:', error);
@@ -181,8 +182,6 @@ export default function NewVideo() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
       // Upload files to Cloudinary
       const [videoUrl, thumbnailUrl] = await Promise.all([
@@ -191,7 +190,7 @@ export default function NewVideo() {
       ]);
 
       // Create video record
-      const response = await api.post(API_ROUTES.VIDEOS.CREATE, {
+      const response: any = await post({
         title: title.trim(),
         excerpt: excerpt.trim(),
         videoUrl,
@@ -199,7 +198,7 @@ export default function NewVideo() {
         duration: duration ? parseInt(duration) : null,
       });
 
-      if (response && response.data) {
+      if (response) {
         setSuccess('Video created successfully!');
         setTimeout(() => {
           router.push('/sports-admin/videos');
@@ -209,11 +208,9 @@ export default function NewVideo() {
       }
     } catch (error: any) {
       console.error('Error creating video:', error);
-      setErrors({ 
-        general: error.message || 'Failed to create video. Please try again.' 
+      setErrors({
+        general: error.message || 'Failed to create video. Please try again.'
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -299,9 +296,8 @@ export default function NewVideo() {
                     setTitle(e.target.value);
                     if (errors.title) setErrors(prev => ({ ...prev, title: '' }));
                   }}
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.title ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.title ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Enter a descriptive title for your video"
                   maxLength={200}
                 />
@@ -332,9 +328,8 @@ export default function NewVideo() {
                     if (errors.excerpt) setErrors(prev => ({ ...prev, excerpt: '' }));
                   }}
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.excerpt ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.excerpt ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Describe what your video is about..."
                   maxLength={500}
                 />
@@ -367,9 +362,8 @@ export default function NewVideo() {
                   }}
                   min="1"
                   max="1440"
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.duration ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.duration ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Enter video duration in minutes (optional)"
                 />
                 {errors.duration && (
@@ -383,184 +377,182 @@ export default function NewVideo() {
                 </p>
               </div>
 
-               <div className="space-y-6">
-            {/* Video File Upload */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
-            >
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Video className="w-5 h-5 text-sky-600" />
-                Video File *
-              </h2>
-              
-              <input
-                type="file"
-                ref={videoInputRef}
-                onChange={handleVideoSelect}
-                accept="video/mp4,video/webm,video/ogg,video/quicktime"
-                className="hidden"
-              />
-              
-              {!selectedVideo ? (
-                <button
-                  type="button"
-                  onClick={() => videoInputRef.current?.click()}
-                  disabled={isUploading}
-                  className={`w-full p-8 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-                    errors.video 
-                      ? 'border-red-300 bg-red-50 text-red-700' 
-                      : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
-                  } disabled:opacity-50`}
+              <div className="space-y-6">
+                {/* Video File Upload */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
                 >
-                  <Video className="w-12 h-12 mx-auto mb-3 opacity-60" />
-                  <p className="font-medium mb-1">Choose Video File</p>
-                  <p className="text-sm opacity-75">MP4, WebM, OGG, MOV</p>
-                  <p className="text-xs mt-2">Max 500MB</p>
-                </button>
-              ) : (
-                <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Video className="w-5 h-5 text-sky-600" />
-                      <span className="font-medium text-sm text-gray-900 truncate">
-                        {selectedVideo.name}
-                      </span>
-                    </div>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <Video className="w-5 h-5 text-sky-600" />
+                    Video File *
+                  </h2>
+
+                  <input
+                    type="file"
+                    ref={videoInputRef}
+                    onChange={handleVideoSelect}
+                    accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                    className="hidden"
+                  />
+
+                  {!selectedVideo ? (
                     <button
                       type="button"
-                      onClick={removeVideo}
+                      onClick={() => videoInputRef.current?.click()}
                       disabled={isUploading}
-                      className="text-gray-400 hover:text-red-500 transition-colors"
+                      className={`w-full p-8 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.video
+                          ? 'border-red-300 bg-red-50 text-red-700'
+                          : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                        } disabled:opacity-50`}
                     >
-                      <X className="w-4 h-4" />
+                      <Video className="w-12 h-12 mx-auto mb-3 opacity-60" />
+                      <p className="font-medium mb-1">Choose Video File</p>
+                      <p className="text-sm opacity-75">MP4, WebM, OGG, MOV</p>
+                      <p className="text-xs mt-2">Max 500MB</p>
                     </button>
-                  </div>
-                  <p className="text-xs text-gray-600">
-                    {formatFileSize(selectedVideo.size)}
-                  </p>
-                </div>
-              )}
-              
-              {errors.video && (
-                <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.video}
-                </p>
-              )}
-            </motion.div>
-
-            {/* Thumbnail Upload */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
-            >
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-sky-600" />
-                Thumbnail Image *
-              </h2>
-              
-              <input
-                type="file"
-                ref={thumbnailInputRef}
-                onChange={handleThumbnailSelect}
-                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-                className="hidden"
-              />
-              
-              {!selectedThumbnail ? (
-                <button
-                  type="button"
-                  onClick={() => thumbnailInputRef.current?.click()}
-                  disabled={isUploading}
-                  className={`w-full p-8 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-                    errors.thumbnail 
-                      ? 'border-red-300 bg-red-50 text-red-700' 
-                      : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
-                  } disabled:opacity-50`}
-                >
-                  <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-60" />
-                  <p className="font-medium mb-1">Choose Thumbnail</p>
-                  <p className="text-sm opacity-75">JPEG, PNG, WebP, GIF</p>
-                  <p className="text-xs mt-2">Max 10MB</p>
-                </button>
-              ) : (
-                <div className="space-y-4">
-                  <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <ImageIcon className="w-4 h-4 text-sky-600" />
-                        <span className="font-medium text-sm text-gray-900 truncate">
-                          {selectedThumbnail.name}
-                        </span>
+                  ) : (
+                    <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <Video className="w-5 h-5 text-sky-600" />
+                          <span className="font-medium text-sm text-gray-900 truncate">
+                            {selectedVideo.name}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={removeVideo}
+                          disabled={isUploading}
+                          className="text-gray-400 hover:text-red-500 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={removeThumbnail}
-                        disabled={isUploading}
-                        className="text-gray-400 hover:text-red-500 transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                      <p className="text-xs text-gray-600">
+                        {formatFileSize(selectedVideo.size)}
+                      </p>
                     </div>
-                    <p className="text-xs text-gray-600">
-                      {formatFileSize(selectedThumbnail.size)}
-                    </p>
-                  </div>
-                  
-                  {/* Thumbnail Preview */}
-                  <div className="border border-gray-200 rounded-lg overflow-hidden">
-                    <Image
-                      unoptimized
-                      width={50}
-                      height={50}
-                      src={thumbnailPreview}
-                      alt="Thumbnail preview"
-                      className="w-full h-32 object-cover"
-                    />
-                  </div>
-                </div>
-              )}
-              
-              {errors.thumbnail && (
-                <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.thumbnail}
-                </p>
-              )}
-            </motion.div>
+                  )}
 
-            {/* Help Text */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-sky-50 border border-sky-200 rounded-xl p-6"
-            >
-              <h3 className="text-sm font-semibold text-sky-800 mb-3 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4" />
-                Upload Tips
-              </h3>
-              <ul className="text-sm text-sky-700 space-y-2">
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 flex-shrink-0" />
-                  <span>Videos should be in MP4 format for best compatibility</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 flex-shrink-0" />
-                  <span>Thumbnail images should be at least 1280x720 pixels</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 flex-shrink-0" />
-                  <span>Upload may take several minutes for large files</span>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
+                  {errors.video && (
+                    <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.video}
+                    </p>
+                  )}
+                </motion.div>
+
+                {/* Thumbnail Upload */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+                >
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-sky-600" />
+                    Thumbnail Image *
+                  </h2>
+
+                  <input
+                    type="file"
+                    ref={thumbnailInputRef}
+                    onChange={handleThumbnailSelect}
+                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                    className="hidden"
+                  />
+
+                  {!selectedThumbnail ? (
+                    <button
+                      type="button"
+                      onClick={() => thumbnailInputRef.current?.click()}
+                      disabled={isUploading}
+                      className={`w-full p-8 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.thumbnail
+                          ? 'border-red-300 bg-red-50 text-red-700'
+                          : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                        } disabled:opacity-50`}
+                    >
+                      <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-60" />
+                      <p className="font-medium mb-1">Choose Thumbnail</p>
+                      <p className="text-sm opacity-75">JPEG, PNG, WebP, GIF</p>
+                      <p className="text-xs mt-2">Max 10MB</p>
+                    </button>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <ImageIcon className="w-4 h-4 text-sky-600" />
+                            <span className="font-medium text-sm text-gray-900 truncate">
+                              {selectedThumbnail.name}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={removeThumbnail}
+                            disabled={isUploading}
+                            className="text-gray-400 hover:text-red-500 transition-colors"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <p className="text-xs text-gray-600">
+                          {formatFileSize(selectedThumbnail.size)}
+                        </p>
+                      </div>
+
+                      {/* Thumbnail Preview */}
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <Image
+                          unoptimized
+                          width={50}
+                          height={50}
+                          src={thumbnailPreview}
+                          alt="Thumbnail preview"
+                          className="w-full h-32 object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {errors.thumbnail && (
+                    <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.thumbnail}
+                    </p>
+                  )}
+                </motion.div>
+
+                {/* Help Text */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="bg-sky-50 border border-sky-200 rounded-xl p-6"
+                >
+                  <h3 className="text-sm font-semibold text-sky-800 mb-3 flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Upload Tips
+                  </h3>
+                  <ul className="text-sm text-sky-700 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 flex-shrink-0" />
+                      <span>Videos should be in MP4 format for best compatibility</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 flex-shrink-0" />
+                      <span>Thumbnail images should be at least 1280x720 pixels</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-sky-400 rounded-full mt-1.5 flex-shrink-0" />
+                      <span>Upload may take several minutes for large files</span>
+                    </li>
+                  </ul>
+                </motion.div>
+              </div>
 
               {/* Submit Button */}
               <motion.button
@@ -598,7 +590,7 @@ export default function NewVideo() {
                   </h3>
                   <div className="space-y-2">
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div 
+                      <div
                         className="bg-sky-600 h-3 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
@@ -613,7 +605,7 @@ export default function NewVideo() {
           </div>
 
           {/* File Upload Sidebar - 1/3 width */}
-         
+
         </div>
       </div>
     </div>

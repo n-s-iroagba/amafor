@@ -3,11 +3,16 @@
 import React, { useState } from 'react';
 import { Megaphone, Layout, Upload, Target, Calculator, CreditCard, Check, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 export default function CreateCampaignPage() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [targetViews, setTargetViews] = useState(10000);
+  const { post, isPending } = usePost(API_ROUTES.ADVERTISER.CAMPAIGNS.CREATE);
   const ratePerView = 4.20;
 
   const steps = [
@@ -26,6 +31,19 @@ export default function CreateCampaignPage() {
   const nextStep = () => setStep(s => Math.min(s + 1, 4));
   const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
+  const handleFinalize = async () => {
+    try {
+      await post({
+        zoneId: selectedZone,
+        targetViews,
+        ratePerView,
+      });
+      router.push('/dashboard/advertiser');
+    } catch (error) {
+      console.error('Failed to create campaign:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
@@ -39,9 +57,8 @@ export default function CreateCampaignPage() {
             {steps.map((s, i) => (
               <React.Fragment key={s.id}>
                 <div className={`flex items-center space-x-2 ${step >= s.id ? 'text-[#2F4F4F]' : 'text-gray-300'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${
-                    step === s.id ? 'bg-[#87CEEB] border-[#87CEEB] text-[#2F4F4F]' : step > s.id ? 'bg-green-500 border-green-500 text-white' : 'border-gray-200'
-                  }`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${step === s.id ? 'bg-[#87CEEB] border-[#87CEEB] text-[#2F4F4F]' : step > s.id ? 'bg-green-500 border-green-500 text-white' : 'border-gray-200'
+                    }`}>
                     {step > s.id ? <Check className="w-4 h-4" /> : s.icon}
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">{s.label}</span>
@@ -61,9 +78,8 @@ export default function CreateCampaignPage() {
                   <button
                     key={z.id}
                     onClick={() => setSelectedZone(z.id)}
-                    className={`p-8 rounded-[2rem] border-2 text-left transition-all ${
-                      selectedZone === z.id ? 'border-[#87CEEB] bg-[#87CEEB]/5 shadow-inner' : 'border-gray-100 hover:border-[#87CEEB]/30'
-                    }`}
+                    className={`p-8 rounded-[2rem] border-2 text-left transition-all ${selectedZone === z.id ? 'border-[#87CEEB] bg-[#87CEEB]/5 shadow-inner' : 'border-gray-100 hover:border-[#87CEEB]/30'
+                      }`}
                   >
                     <div className="text-[10px] font-black text-[#87CEEB] mb-2 uppercase tracking-widest">{z.price} / VIEW</div>
                     <h3 className="text-lg font-bold mb-1 text-[#2F4F4F]">{z.name}</h3>
@@ -99,7 +115,7 @@ export default function CreateCampaignPage() {
                 <div>
                   <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Content Category (OR logic)</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {['Football News', 'Match Reports', 'Academy Updates', 'Player Spotlight', 'Club Announcements'].map(tag => (
+                    {['Football News', 'Fixture Reports', 'Academy Updates', 'Player Spotlight', 'Club Announcements'].map(tag => (
                       <button key={tag} className="px-6 py-4 rounded-2xl border border-gray-100 text-[10px] font-black text-gray-500 hover:border-[#87CEEB] hover:text-[#2F4F4F] transition-all uppercase tracking-widest text-center">
                         {tag}
                       </button>
@@ -128,11 +144,11 @@ export default function CreateCampaignPage() {
                 <div className="space-y-6">
                   <div>
                     <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Target Unique Views</label>
-                    <input 
-                      type="number" 
+                    <input
+                      type="number"
                       value={targetViews}
                       onChange={(e) => setTargetViews(parseInt(e.target.value))}
-                      className="w-full px-8 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] text-2xl font-black text-[#2F4F4F] focus:border-[#87CEEB] outline-none" 
+                      className="w-full px-8 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] text-2xl font-black text-[#2F4F4F] focus:border-[#87CEEB] outline-none"
                     />
                     <p className="text-[10px] text-gray-400 mt-2 font-bold uppercase tracking-tight">Min. 1,000 views required per campaign.</p>
                   </div>
@@ -148,35 +164,35 @@ export default function CreateCampaignPage() {
                   </div>
                 </div>
                 <div className="space-y-6">
-                   <div className="bg-[#2F4F4F] p-10 rounded-[2.5rem] text-white">
-                      <h4 className="text-xs font-black text-[#87CEEB] uppercase tracking-widest mb-6">Payment Method</h4>
-                      <div className="space-y-4">
-                        <button className="w-full p-6 rounded-2xl border-2 border-[#87CEEB] bg-[#87CEEB]/10 flex items-center justify-between">
-                          <div className="flex items-center">
-                            <CreditCard className="w-5 h-5 mr-4 text-[#87CEEB]" />
-                            <span className="text-sm font-bold">Paystack (Card/Transfer)</span>
-                          </div>
-                          <Check className="w-5 h-5 text-[#87CEEB]" />
-                        </button>
-                      </div>
-                      <p className="text-[10px] text-gray-400 mt-8 leading-relaxed">
-                        Campaign will be submitted for manual review after successful payment. Approval usually occurs within <span className="text-white">2 business days</span>.
-                      </p>
-                   </div>
+                  <div className="bg-[#2F4F4F] p-10 rounded-[2.5rem] text-white">
+                    <h4 className="text-xs font-black text-[#87CEEB] uppercase tracking-widest mb-6">Payment Method</h4>
+                    <div className="space-y-4">
+                      <button className="w-full p-6 rounded-2xl border-2 border-[#87CEEB] bg-[#87CEEB]/10 flex items-center justify-between">
+                        <div className="flex items-center">
+                          <CreditCard className="w-5 h-5 mr-4 text-[#87CEEB]" />
+                          <span className="text-sm font-bold">Paystack (Card/Transfer)</span>
+                        </div>
+                        <Check className="w-5 h-5 text-[#87CEEB]" />
+                      </button>
+                    </div>
+                    <p className="text-[10px] text-gray-400 mt-8 leading-relaxed">
+                      Campaign will be submitted for manual review after successful payment. Approval usually occurs within <span className="text-white">2 business days</span>.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
           <div className="mt-16 flex items-center justify-between pt-10 border-t border-gray-100">
-            <button 
+            <button
               onClick={prevStep}
               className={`text-xs font-black uppercase tracking-widest text-gray-400 hover:text-[#2F4F4F] flex items-center ${step === 1 ? 'invisible' : ''}`}
             >
               <ArrowLeft className="w-4 h-4 mr-2" /> Previous Step
             </button>
             {step < 4 ? (
-              <button 
+              <button
                 onClick={nextStep}
                 disabled={step === 1 && !selectedZone}
                 className="sky-button flex items-center space-x-3 disabled:opacity-50"
@@ -185,9 +201,13 @@ export default function CreateCampaignPage() {
                 <ArrowRight className="w-4 h-4" />
               </button>
             ) : (
-              <button className="sky-button bg-green-500 hover:bg-green-600 text-white flex items-center space-x-3 px-10">
+              <button
+                onClick={handleFinalize}
+                disabled={isPending}
+                className="sky-button bg-green-500 hover:bg-green-600 text-white flex items-center space-x-3 px-10 disabled:opacity-50"
+              >
                 <CreditCard className="w-4 h-4" />
-                <span>FINALIZE & PAY</span>
+                <span>{isPending ? 'PROCESSING...' : 'FINALIZE & PAY'}</span>
               </button>
             )}
           </div>

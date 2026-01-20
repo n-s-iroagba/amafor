@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 
 import Image from 'next/image';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import api from '@/shared/lib/axios';
 
 interface Patron {
@@ -16,7 +16,7 @@ interface Patron {
   bio: string | null;
 }
 
- const uploadFile = async (
+const uploadFile = async (
   file: File,
   type: 'thumbnail' | 'video' | 'image'
 ) => {
@@ -40,13 +40,16 @@ export default function EditPatronPage() {
   const { id } = useParams();
   const router = useRouter();
   const patronId = id as string;
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     data: patron,
     loading,
     error,
   } = useGet<Patron>(API_ROUTES.PATRONS.DETAIL(Number(patronId)));
+
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.PATRONS.UPDATE(Number(patronId))
+  );
 
   const [form, setForm] = useState<Partial<Patron>>({
     name: '',
@@ -64,7 +67,7 @@ export default function EditPatronPage() {
       setForm({
         name: patron.name,
         position: patron.position,
-        imageUrl: patron.imageUrl ,
+        imageUrl: patron.imageUrl,
         bio: patron.bio,
       });
     }
@@ -106,7 +109,7 @@ export default function EditPatronPage() {
     e.preventDefault();
     setIsUploading(true);
     setUploadError(null);
-    setIsSubmitting(true);
+
     try {
       let finalImageUrl = form.imageUrl;
 
@@ -123,7 +126,7 @@ export default function EditPatronPage() {
       }
 
       // Update patron data with the uploaded image URL
-      await api.put(API_ROUTES.PATRONS.UPDATE(Number(patronId)), {
+      await put({
         ...form,
         imageUrl: finalImageUrl || null,
       });
@@ -133,7 +136,6 @@ export default function EditPatronPage() {
       console.error('Failed to update patron:', error);
       setUploadError('Failed to update patron. Please try again.');
     } finally {
-      setIsSubmitting(false);
       setIsUploading(false);
     }
   };
@@ -311,7 +313,7 @@ export default function EditPatronPage() {
             placeholder="Enter a short biography"
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={form.bio||''}
+            value={form.bio || ''}
             onChange={handleChange}
           />
         </div>

@@ -4,33 +4,42 @@
  * Test utilities for observability hooks
  */
 
+// Mock function interface for type safety
+interface MockFunction<T = any> {
+  (...args: any[]): T;
+  mockReturnValue: (value: any) => MockFunction<T>;
+  mockResolvedValue: (value: any) => MockFunction<Promise<T>>;
+  mockClear: () => void;
+  mockImplementation: (impl: (...args: any[]) => T) => MockFunction<T>;
+}
+
 // Create a mock function factory that works in both browser and Node.js
-const createMockFunction = (implementation?: (...args: any[]) => any) => {
+const createMockFunction = <T = any>(implementation?: (...args: any[]) => T): MockFunction<T> => {
   // In test environment, use jest.fn if available
   if (typeof jest !== 'undefined' && jest.fn) {
-    return implementation ? jest.fn(implementation) : jest.fn();
+    return (implementation ? jest.fn(implementation) : jest.fn()) as unknown as MockFunction<T>;
   }
-  
+
   // In browser, create a simple mock function
-  const mockFn = implementation ? (...args: any[]) => implementation(...args) : () => {};
-  
+  const mockFn: any = implementation ? (...args: any[]) => implementation(...args) : () => { };
+
   // Add mock function properties
-  mockFn.mockReturnValue = (value: any) => {
+  mockFn.mockReturnValue = (value: any): MockFunction<T> => {
     const fn = () => value;
     Object.assign(fn, mockFn);
-    return fn;
+    return fn as MockFunction<T>;
   };
-  
-  mockFn.mockResolvedValue = (value: any) => {
+
+  mockFn.mockResolvedValue = (value: any): MockFunction<Promise<T>> => {
     const fn = async () => value;
     Object.assign(fn, mockFn);
-    return fn;
+    return fn as MockFunction<Promise<T>>;
   };
-  
-  mockFn.mockClear = () => {};
+
+  mockFn.mockClear = () => { };
   mockFn.mockImplementation = (impl: any) => impl;
-  
-  return mockFn;
+
+  return mockFn as MockFunction<T>;
 };
 
 const createMockFn = createMockFunction;
@@ -93,7 +102,7 @@ export function createTestWrapper() {
  */
 export function setupStorageMocks() {
   if (typeof window === 'undefined') return { store: {}, sessionStore: {} };
-  
+
   let store: Record<string, string> = {};
   let sessionStore: Record<string, string> = {};
 

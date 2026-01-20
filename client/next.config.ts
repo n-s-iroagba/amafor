@@ -1,13 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has TypeScript errors.
-    ignoreBuildErrors: true,
-  },
-  
+
+
   // Turbopack configuration - empty to suppress warning
   turbopack: {},
 
@@ -23,13 +18,9 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   },
 
-  reactStrictMode: false, // Set to false to suppress strict mode warnings
+  reactStrictMode: true, // Set to false to suppress strict mode warnings
 
-  // Suppress all build output warnings
-  onDemandEntries: {
-    maxInactiveAge: 25 * 1000,
-    pagesBufferLength: 2,
-  },
+
 
   images: {
     remotePatterns: [
@@ -45,11 +36,11 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/dh2cpesxu/**',
       },
-        {
+      {
         protocol: 'http',
         hostname: 'images.unsplash.com',
         pathname: '/**',
-      },   {
+      }, {
         protocol: 'https',
         hostname: 'images.unsplash.com',
         pathname: '/**',

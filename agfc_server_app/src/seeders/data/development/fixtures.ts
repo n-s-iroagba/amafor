@@ -10,7 +10,7 @@ const LEAGUE_ID = '11111111-aaaa-1111-aaaa-111111111111'; // Premier Youth Leagu
 const ADMIN_USER_ID = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
 
 export const developmentFixtures: FixtureAttributes[] = [
-  // 1. Completed Match
+  // 1. Completed Fixture
   {
     id: 'f1f1f1f1-f1f1-f1f1-f1f1-f1f1f1f1f1f1',
     matchDate: YESTERDAY,
@@ -32,7 +32,7 @@ export const developmentFixtures: FixtureAttributes[] = [
     createdAt: YESTERDAY,
     updatedAt: YESTERDAY,
   },
-  // 2. Scheduled Match
+  // 2. Scheduled Fixture
   {
     id: 'f2f2f2f2-f2f2-f2f2-f2f2-f2f2f2f2f2f2',
     matchDate: NEXT_WEEK,

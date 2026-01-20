@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { X, Upload, ImageIcon, Award, Briefcase } from 'lucide-react';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/shared/lib/axios';
 import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
@@ -27,7 +26,11 @@ export default function EditStaff() {
   const id = params.id as string;
 
   const { data: staff, loading } = useGet<AcademyStaff>(
-    API_ROUTES.STAFF.VIEW(id)
+    API_ROUTES.ACADEMY.STAFF.VIEW(id)
+  );
+
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.ACADEMY.STAFF.UPDATE(id)
   );
 
   const [formData, setFormData] = useState({
@@ -43,7 +46,6 @@ export default function EditStaff() {
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -66,8 +68,8 @@ export default function EditStaff() {
         initials: staff.initials || '',
         imageUrl: staff.imageUrl || '',
         category: staff.category || '',
-        qualifications: staff.qualifications && staff.qualifications.length > 0 
-          ? staff.qualifications 
+        qualifications: staff.qualifications && staff.qualifications.length > 0
+          ? staff.qualifications
           : [''],
         yearsOfExperience: staff.yearsOfExperience?.toString() || '',
       });
@@ -76,11 +78,11 @@ export default function EditStaff() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.role.trim()) newErrors.role = 'Role is required';
     if (!formData.category) newErrors.category = 'Category is required';
-    
+
     const validQualifications = formData.qualifications.filter(q => q.trim() !== '');
     if (validQualifications.length === 0) {
       newErrors.qualifications = 'At least one qualification is required';
@@ -122,7 +124,7 @@ export default function EditStaff() {
     const updatedQualifications = [...formData.qualifications];
     updatedQualifications[index] = value;
     setFormData(prev => ({ ...prev, qualifications: updatedQualifications }));
-    
+
     if (errors.qualifications && value.trim() !== '') {
       setErrors(prev => ({ ...prev, qualifications: '' }));
     }
@@ -143,28 +145,20 @@ export default function EditStaff() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setIsSubmitting(true);
 
     try {
-      await api.put(
-        API_ROUTES.STAFF.MUTATE(id),
-        {
-          ...formData,
-          qualifications: formData.qualifications.filter(q => q.trim() !== ''),
-          yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
-          initials: formData.initials || null,
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      await put({
+        ...formData,
+        qualifications: formData.qualifications.filter(q => q.trim() !== ''),
+        yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
+        initials: formData.initials || null,
+      });
 
       router.push('/sports-admin/staff');
     } catch (error) {
       console.error('Error updating staff:', error);
       setErrors({ submit: 'Failed to update staff member. Please try again.' });
     } finally {
-      setIsSubmitting(false);
       setUploadProgress(0);
     }
   };
@@ -314,7 +308,7 @@ export default function EditStaff() {
                 + Add another
               </button>
             </div>
-            
+
             <div className="space-y-3">
               {formData.qualifications.map((qualification, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -347,11 +341,10 @@ export default function EditStaff() {
             <div>
               <div
                 onClick={() => imageInputRef.current?.click()}
-                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-                  imageFile || formData.imageUrl
+                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile || formData.imageUrl
                     ? 'border-green-300 bg-green-50'
                     : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
-                }`}
+                  }`}
               >
                 <input
                   ref={imageInputRef}

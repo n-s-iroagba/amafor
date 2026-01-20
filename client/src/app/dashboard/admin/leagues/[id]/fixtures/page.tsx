@@ -10,22 +10,20 @@ import {
   Plus,
   Filter,
   Clock,
-  Users,
-  Search,
   ChevronDown,
   Eye,
 } from 'lucide-react';
 
 import { API_ROUTES } from '@/config/routes';
 import { FixtureStatus, Fixture } from '@/features/fixture/types';
-import { useGet} from '@/shared/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 interface PaginatedData<T> {
   data: T;
   pagination: any;
 }
 
- interface League {
-  id: number;
+interface League {
+  id: string;
   name: string;
   season: string;
   isFriendly: boolean;
@@ -39,7 +37,7 @@ type TabType = 'all' | FixtureStatus;
 
 export default function FixturesList() {
   const router = useRouter();
-  const [deleteConfirm, setDeleteConfirm] = useState<string | number>('');
+
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [selectedLeague, setSelectedLeague] = useState<string>('all');
   const [selectedSeason, setSelectedSeason] = useState<string>('all');
@@ -89,7 +87,7 @@ export default function FixturesList() {
 
   const getStatusIcon = (status: FixtureStatus) => {
     switch (status) {
-      case FixtureStatus.PLAYING:
+      case FixtureStatus.COMPLETED:
         return <Clock className="w-3 h-3" />;
       case FixtureStatus.SCHEDULED:
         return <Calendar className="w-3 h-3" />;
@@ -300,11 +298,10 @@ export default function FixturesList() {
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setActiveTab('all')}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        activeTab === 'all'
-                          ? 'bg-sky-600 text-white shadow-lg'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'all'
+                        ? 'bg-sky-600 text-white shadow-lg'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
                     >
                       All
                     </button>
@@ -314,11 +311,10 @@ export default function FixturesList() {
                         <button
                           key={status}
                           onClick={() => setActiveTab(status)}
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-all capitalize ${
-                            activeTab === status
-                              ? 'bg-sky-600 text-white shadow-lg'
-                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                          }`}
+                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-all capitalize ${activeTab === status
+                            ? 'bg-sky-600 text-white shadow-lg'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
                         >
                           {status}{' '}
                           {tabCounts[status] ? `(${tabCounts[status]})` : ''}
@@ -343,8 +339,8 @@ export default function FixturesList() {
               </h3>
               <p className="text-gray-500 mb-6">
                 {activeTab !== 'all' ||
-                selectedLeague !== 'all' ||
-                selectedSeason !== 'all'
+                  selectedLeague !== 'all' ||
+                  selectedSeason !== 'all'
                   ? 'Try adjusting your filters to see more results'
                   : 'Get started by creating your first fixture'}
               </p>
@@ -366,7 +362,7 @@ export default function FixturesList() {
                   <thead className="bg-gradient-to-r from-sky-50 to-blue-50">
                     <tr>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                        Match
+                        Fixture
                       </th>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                         League
@@ -427,7 +423,7 @@ export default function FixturesList() {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2 text-gray-700">
                               <Calendar className="w-4 h-4 text-sky-600" />
-                              {new Date(fixture.date).toLocaleString()}
+                              {new Date(fixture.matchDate).toLocaleString()}
                             </div>
                           </td>
                           <td className="px-6 py-4">
@@ -479,7 +475,7 @@ export default function FixturesList() {
                     }
                   >
                     <div className="p-6">
-                      {/* Match Header */}
+                      {/* Fixture Header */}
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                           <Trophy className="w-5 h-5 text-sky-600" />
@@ -522,7 +518,7 @@ export default function FixturesList() {
                         <div className="flex items-center gap-2 text-gray-600">
                           <Calendar className="w-4 h-4 text-sky-600" />
                           <span className="text-sm">
-                            {new Date(fixture.date).toLocaleString()}
+                            {new Date(fixture.matchDate).toLocaleString()}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-600">

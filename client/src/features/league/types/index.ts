@@ -1,7 +1,6 @@
 export interface League {
-  id: number;
+  id: string;
   name: string;
-  logo?:string
   season: string;
   isFriendly: boolean;
   createdAt?: Date;

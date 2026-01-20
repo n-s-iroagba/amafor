@@ -6,9 +6,9 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
-import { 
-  Mail, Phone, Calendar, Ruler, Weight, Footprints, 
-  Award, Video, FileText, Clock, User, MapPin 
+import {
+  Mail, Phone, Calendar, Ruler, Weight, Footprints,
+  Award, Video, FileText, Clock, User, MapPin
 } from 'lucide-react';
 import { Trialist } from '@/features/academy/types';
 import { ErrorAlert } from '@/shared/components/Alerts';
@@ -17,7 +17,7 @@ export default function TrialistDetail() {
   const params = useParams();
   const router = useRouter();
   const id = params.id;
-  
+
   const {
     data: trialist,
     loading,
@@ -43,7 +43,7 @@ export default function TrialistDetail() {
     }
   };
 
-  const calculateAge = (dob: Date) => {
+  const calculateAge = (dob: Date | string) => {
     const birthDate = new Date(dob);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();

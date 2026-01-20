@@ -4,11 +4,11 @@ import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { 
-  Calendar, 
-  MapPin, 
-  Trophy, 
-  Users, 
+import {
+  Calendar,
+  MapPin,
+  Trophy,
+  Users,
   Search,
   Filter,
   ChevronRight,
@@ -39,11 +39,11 @@ export default function FixturesPage() {
   const [expandedLeagues, setExpandedLeagues] = useState<string[]>([]);
 
   // Fetch fixtures with leagues
-  const { 
-    data: fixturesData, 
-    loading, 
-    error, 
-    refetch 
+  const {
+    data: fixturesData,
+    loading,
+    error,
+    refetch
   } = useGet<FixtureWithLeague[]>('/api/fixtures', {
     params: {
       include: 'league',
@@ -85,20 +85,20 @@ export default function FixturesPage() {
     // Apply date filter
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     switch (dateFilter) {
       case 'today':
         filtered = filtered.filter(fixture => {
-          const fixtureDate = new Date(fixture.date);
+          const fixtureDate = new Date(fixture.matchDate);
           fixtureDate.setHours(0, 0, 0, 0);
           return fixtureDate.getTime() === today.getTime();
         });
         break;
       case 'upcoming':
-        filtered = filtered.filter(fixture => new Date(fixture.date) > new Date());
+        filtered = filtered.filter(fixture => new Date(fixture.matchDate) > new Date());
         break;
       case 'past':
-        filtered = filtered.filter(fixture => new Date(fixture.date) < new Date());
+        filtered = filtered.filter(fixture => new Date(fixture.matchDate) < new Date());
         break;
     }
 
@@ -106,15 +106,15 @@ export default function FixturesPage() {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'date_asc':
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return new Date(a.matchDate).getTime() - new Date(b.matchDate).getTime();
         case 'date_desc':
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return new Date(b.matchDate).getTime() - new Date(a.matchDate).getTime();
         case 'league_asc':
           return (a.league?.name || '').localeCompare(b.league?.name || '');
         case 'league_desc':
           return (b.league?.name || '').localeCompare(a.league?.name || '');
         default:
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return new Date(b.matchDate).getTime() - new Date(a.matchDate).getTime();
       }
     });
 
@@ -124,7 +124,7 @@ export default function FixturesPage() {
   // Group fixtures by league
   const groupedFixtures = useMemo(() => {
     const groups: Record<string, FixtureWithLeague[]> = {};
-    
+
     filteredFixtures.forEach(fixture => {
       const leagueName = fixture.league?.name || 'Other';
       if (!groups[leagueName]) {
@@ -138,12 +138,12 @@ export default function FixturesPage() {
 
   // Get fixture status display
   const getStatusDisplay = (fixture: FixtureWithLeague) => {
-    const fixtureDate = new Date(fixture.date);
+    const fixtureDate = new Date(fixture.matchDate);
     const now = new Date();
-    
+
     if (fixture.status === FixtureStatus.SCHEDULED) {
       if (fixtureDate < now) {
-        return { text: 'Match Started', color: 'text-blue-600', bg: 'bg-blue-100' };
+        return { text: 'Fixture Started', color: 'text-blue-600', bg: 'bg-blue-100' };
       }
       const diffHours = Math.abs(fixtureDate.getTime() - now.getTime()) / (1000 * 60 * 60);
       if (diffHours < 24) {
@@ -153,7 +153,7 @@ export default function FixturesPage() {
       }
       return { text: 'Scheduled', color: 'text-gray-600', bg: 'bg-gray-100' };
     }
-    
+
     const statusMap = {
       [FixtureStatus.WON]: { text: 'Won', color: 'text-green-600', bg: 'bg-green-100' },
       [FixtureStatus.LOST]: { text: 'Lost', color: 'text-red-600', bg: 'bg-red-100' },
@@ -161,7 +161,7 @@ export default function FixturesPage() {
       [FixtureStatus.PLAYING]: { text: 'Live', color: 'text-blue-600', bg: 'bg-blue-100' },
       [FixtureStatus.CANCELLED]: { text: 'Cancelled', color: 'text-gray-600', bg: 'bg-gray-300' },
     };
-    
+
     return statusMap[fixture.status] || { text: fixture.status, color: 'text-gray-600', bg: 'bg-gray-100' };
   };
 
@@ -170,7 +170,7 @@ export default function FixturesPage() {
     const now = new Date();
     const diffTime = Math.abs(date.getTime() - now.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) {
       return `Today, ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     } else if (diffDays === 1) {
@@ -178,7 +178,7 @@ export default function FixturesPage() {
     } else if (diffDays < 7) {
       return `${date.toLocaleDateString([], { weekday: 'long' })}, ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
-    
+
     return date.toLocaleDateString([], {
       weekday: 'short',
       month: 'short',
@@ -196,7 +196,7 @@ export default function FixturesPage() {
     );
   };
 
-  const handleFixtureClick = (fixtureId: number) => {
+  const handleFixtureClick = (fixtureId: string | number) => {
     router.push(`/fixtures/${fixtureId}`);
   };
 
@@ -379,7 +379,7 @@ export default function FixturesPage() {
                 <option value="all">All Dates</option>
                 <option value="today">Today</option>
                 <option value="upcoming">Upcoming</option>
-                <option value="past">Past Matches</option>
+                <option value="past">Past Fixturees</option>
               </select>
             </div>
           </div>
@@ -446,7 +446,7 @@ export default function FixturesPage() {
                 <div className="border-t border-slate-200">
                   {fixtures.map((fixture) => {
                     const statusDisplay = getStatusDisplay(fixture);
-                    
+
                     return (
                       <div
                         key={fixture.id}
@@ -459,7 +459,7 @@ export default function FixturesPage() {
                             <div className="flex items-center gap-3">
                               <div className="text-left">
                                 <div className="font-medium text-slate-800">
-                                  {formatDate(fixture.date)}
+                                  {formatDate(fixture.matchDate as string)}
                                 </div>
                                 <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium mt-2 ${statusDisplay.bg} ${statusDisplay.color}`}>
                                   {statusDisplay.text}
@@ -468,7 +468,7 @@ export default function FixturesPage() {
                             </div>
                           </div>
 
-                          {/* Match Info */}
+                          {/* Fixture Info */}
                           <div className="lg:w-2/4">
                             <div className="flex items-center justify-between">
                               <div className="text-center lg:w-2/5">
@@ -530,7 +530,7 @@ export default function FixturesPage() {
               <Calendar className="h-16 w-16 text-slate-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-slate-700 mb-2">No fixtures found</h3>
               <p className="text-slate-500 mb-6">
-                {fixturesData?.length === 0 
+                {fixturesData?.length === 0
                   ? "No fixtures have been scheduled yet."
                   : "Try adjusting your filters to see more results."}
               </p>

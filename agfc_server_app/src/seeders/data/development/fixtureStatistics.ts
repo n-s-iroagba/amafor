@@ -1,14 +1,14 @@
 // data/development/fixture-statistics.ts
 import { FixtureStatisticsAttributes } from "../../../models/FixtureStatistics";
 
-// Matches the Completed Fixture ID from developmentFixtures
+// Fixturees the Completed Fixture ID from developmentFixtures
 const FIXTURE_ID = 'f1f1f1f1-f1f1-f1f1-f1f1-f1f1f1f1f1f1';
 
 export const developmentFixtureStatistics: FixtureStatisticsAttributes[] = [
   {
     id: 's1s1s1s1-s1s1-s1s1-s1s1-s1s1s1s1s1s1',
     fixtureId: FIXTURE_ID,
-    
+
     // Possession (Academy dominated)
     homePossession: 62,
     awayPossession: 38,
@@ -34,7 +34,7 @@ export const developmentFixtureStatistics: FixtureStatisticsAttributes[] = [
     // Other
     homeOffsides: 4,
     awayOffsides: 1,
-    
+
     createdAt: new Date(),
     updatedAt: new Date(),
   }

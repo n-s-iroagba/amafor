@@ -6,15 +6,7 @@ import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
 import redisClient from 'src/redis/redisClient';
 
-export interface PaginatedData<T> {
-  data: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-}
+import { PaginatedData } from 'src/types';
 
 export interface HomepageArticles {
   featured: Article[];
@@ -39,7 +31,7 @@ export class ArticleService {
       try {
         // Try to get from Redis cache
         const cachedData = await this.getFromCache<Article[]>(this.HOMEPAGE_CACHE_KEY);
-        
+
         if (cachedData) {
           logger.debug('Serving homepage articles from cache');
           span.setAttribute('cache.hit', true);
@@ -49,17 +41,17 @@ export class ArticleService {
         span.setAttribute('cache.hit', false);
 
         // Fetch fresh data from database
-        const  latest = await  this.articleRepository.findPublished({}, { sortBy: 'publishedAt', sortOrder: 'desc' }, { page: 1, limit: 5 })
-         
+        const latest = await this.articleRepository.findPublished({}, { sortBy: 'publishedAt', sortOrder: 'desc' }, { page: 1, limit: 5 })
+
 
 
         // Cache the result
         await this.setCache(this.HOMEPAGE_CACHE_KEY, latest, this.CACHE_TTL);
-        
-   
+
+
         span.setAttribute('articles.latest', latest.data.length);
-     
-        
+
+
         return latest.data;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -90,10 +82,10 @@ export class ArticleService {
 
         // Generate cache key based on parameters
         const cacheKey = this.generatePublishedCacheKey(page, limit, filters, sort);
-        
+
         // Try to get from Redis cache
         const cachedData = await this.getFromCache<PaginatedData<Article>>(cacheKey);
-        
+
         if (cachedData) {
           logger.debug(`Serving published articles page ${page} from cache`);
           span.setAttribute('cache.hit', true);
@@ -125,7 +117,7 @@ export class ArticleService {
 
         span.setAttribute('articles.count', result.data.length);
         span.setAttribute('total', result.total);
-        
+
         return paginatedData;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -143,10 +135,10 @@ export class ArticleService {
     return tracer.startActiveSpan('service.Article.getArticleById', async (span) => {
       try {
         span.setAttribute('id', id);
-        
+
         const cacheKey = `article:${id}`;
         const cachedArticle = await this.getFromCache<Article>(cacheKey);
-        
+
         if (cachedArticle) {
           logger.debug(`Serving article ${id} from cache`);
           span.setAttribute('cache.hit', true);
@@ -180,21 +172,21 @@ export class ArticleService {
     return tracer.startActiveSpan('service.Article.invalidateArticleCache', async (span) => {
       try {
         span.setAttribute('articleId', articleId || 'all');
-        
+
         if (articleId) {
           // Invalidate specific article cache
           await redisClient.del(`article:${articleId}`);
         }
-        
+
         // Invalidate all published articles caches
         const keys = await redisClient.keys(`${this.PUBLISHED_CACHE_PREFIX}*`);
         if (keys.length > 0) {
           await redisClient.del(keys);
         }
-        
+
         // Invalidate homepage cache
         await this.invalidateHomepageCache();
-        
+
         logger.info(`Article cache invalidated for ${articleId || 'all articles'}`);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
@@ -240,50 +232,51 @@ export class ArticleService {
       logger.warn(`Redis cache write error for key ${key}`, { error });
     }
   }
+}
 
   private generatePublishedCacheKey(
-    page: number,
-    limit: number,
-    filters: ArticleFilterOptions,
-    sort: ArticleSortOptions
-  ): string {
-    const filterStr = Object.entries(filters)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([key, value]) => `${key}:${value}`)
-      .join('|');
-    
-    const sortStr = `${sort.sortBy || 'publishedAt'}:${sort.sortOrder || 'desc'}`;
-    
-    return `${this.PUBLISHED_CACHE_PREFIX}page:${page}:limit:${limit}:filters:${filterStr}:sort:${sortStr}`;
-  }
+  page: number,
+  limit: number,
+  filters: ArticleFilterOptions,
+  sort: ArticleSortOptions
+): string {
+  const filterStr = Object.entries(filters)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `${key}:${value}`)
+    .join('|');
 
-  private async invalidateHomepageCache(): Promise<void> {
-    try {
-      await redisClient.del(this.HOMEPAGE_CACHE_KEY);
-    } catch (error) {
-      logger.warn('Error invalidating homepage cache', { error });
-    }
+  const sortStr = `${sort.sortBy || 'publishedAt'}:${sort.sortOrder || 'desc'}`;
+
+  return `${this.PUBLISHED_CACHE_PREFIX}page:${page}:limit:${limit}:filters:${filterStr}:sort:${sortStr}`;
+}
+
+  private async invalidateHomepageCache(): Promise < void> {
+  try {
+    await redisClient.del(this.HOMEPAGE_CACHE_KEY);
+  } catch(error) {
+    logger.warn('Error invalidating homepage cache', { error });
   }
+}
 
   // Warm up cache (can be called on server startup)
-  async warmCache(): Promise<void> {
-    try {
-      logger.info('Warming up article cache...');
-      
-      // Cache homepage articles
-      await this.fetchHomepageArticles();
-      
-      // Cache first 3 pages of published articles
-      const promises = [];
-      for (let page = 1; page <= 3; page++) {
-        promises.push(this.fetchAllPublishedArticles(page, 10));
-      }
-      
-      await Promise.all(promises);
-      logger.info('Article cache warmed up successfully');
+  async warmCache(): Promise < void> {
+  try {
+    logger.info('Warming up article cache...');
+
+    // Cache homepage articles
+    await this.fetchHomepageArticles();
+
+    // Cache first 3 pages of published articles
+    const promises = [];
+    for(let page = 1; page <= 3; page++) {
+  promises.push(this.fetchAllPublishedArticles(page, 10));
+}
+
+await Promise.all(promises);
+logger.info('Article cache warmed up successfully');
     } catch (error) {
-      logger.error('Error warming up article cache', { error });
-    }
+  logger.error('Error warming up article cache', { error });
+}
   }
 }
 

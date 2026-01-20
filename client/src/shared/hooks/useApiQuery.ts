@@ -12,15 +12,7 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import api from '../lib/axios';
 import { handleError } from '../utils';
-
-// Type for API response
-export interface ApiResponse<T = any> {
-  data: T;
-  success: boolean;
-  result?: number;
-  message?: string;
-  errorCode?: string;
-}
+import { ApiResponse, PaginatedData } from '../types';
 
 // Helper type for query parameters
 export type QueryParams = Record<string, string | number | boolean | undefined>;
@@ -39,7 +31,7 @@ export const useGet = <T = any>(
 
   const queryKey: QueryKey = useMemo(() => {
     if (!resourceUrl) return [];
-    return options?.params 
+    return options?.params
       ? [resourceUrl, options.params]
       : [resourceUrl];
   }, [resourceUrl, options?.params]);
@@ -205,10 +197,10 @@ export const useDelete = <U = any>(
 
   const mutation = useMutation<U, Error, string | number>({
     mutationFn: async (id: string | number): Promise<U> => {
-      const url = typeof resourceUrl === 'function' 
-        ? resourceUrl(id) 
+      const url = typeof resourceUrl === 'function'
+        ? resourceUrl(id)
         : `${resourceUrl}/${id}`;
-      
+
       const response = await api.delete<ApiResponse<U>>(url);
       return response.data.data;
     },

@@ -10,7 +10,7 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import api from '@/shared/lib/axios';
 
 
-interface MatchSummary {
+interface FixtureSummary {
   id: number;
   fixtureId: number;
   summary: string;
@@ -20,6 +20,7 @@ interface MatchSummary {
     homeTeam: string;
     awayTeam: string;
     date: string;
+    matchDate?: string; // Alias for date
     status: string;
     homeTeamLogo: string;
     awayTeamLogo: string;
@@ -27,18 +28,18 @@ interface MatchSummary {
   };
 }
 
-export default function MatchSummaryDetail() {
+export default function FixtureSummaryDetail() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-   const {
-     data:summary ,
-     loading: summaryLoading,
-     error: summaryError,
-     refetch: refetchSummary,
-   } = useGet<MatchSummary>(
-     API_ROUTES.MATCH_SUMMARY.VIEW(id )
-   );
+  const {
+    data: summary,
+    loading: summaryLoading,
+    error: summaryError,
+    refetch: refetchSummary,
+  } = useGet<FixtureSummary>(
+    API_ROUTES.MATCH_SUMMARY.VIEW(id)
+  );
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -47,9 +48,9 @@ export default function MatchSummaryDetail() {
 
   const handleDelete = async () => {
     try {
-     await api.delete(API_ROUTES.MATCH_SUMMARY.VIEW(id));
+      await api.delete(API_ROUTES.MATCH_SUMMARY.VIEW(id));
       router.push(`/sports-admin/fixtures/${summary?.fixtureId}`)
-   
+
     } catch (error) {
       console.error('Error deleting match summary:', error);
     }
@@ -79,7 +80,7 @@ export default function MatchSummaryDetail() {
   if (!summary) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 flex items-center justify-center">
-        <div className="text-sky-700">Match summary not found</div>
+        <div className="text-sky-700">Fixture summary not found</div>
       </div>
     );
   }
@@ -114,7 +115,7 @@ export default function MatchSummaryDetail() {
             <div className="flex justify-between items-start">
               <div>
                 <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
-                  Match Summary
+                  Fixture Summary
                 </h2>
                 <div className="flex items-center mt-2 space-x-4">
                   <span
@@ -143,7 +144,7 @@ export default function MatchSummaryDetail() {
 
           <div className="p-4 sm:p-6">
             <h3 className="text-lg font-medium text-sky-800 mb-4">
-              Match Details
+              Fixture Details
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -154,9 +155,9 @@ export default function MatchSummaryDetail() {
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center">
                     <Image
-                                           width={50}
-                                           height={50}
-                                           unoptimized
+                      width={50}
+                      height={50}
+                      unoptimized
                       className="h-8 w-8 rounded-full object-cover mr-2"
                       src={summary.fixture.homeTeamLogo}
                       alt={summary.fixture.homeTeam}
@@ -168,9 +169,9 @@ export default function MatchSummaryDetail() {
                   <span className="text-sm text-sky-500">vs</span>
                   <div className="flex items-center">
                     <Image
-                        width={50}
-                        height={50}
-                        unoptimized
+                      width={50}
+                      height={50}
+                      unoptimized
                       className="h-8 w-8 rounded-full object-cover mr-2"
                       src={summary.fixture.awayTeamLogo}
                       alt={summary.fixture.awayTeam}
@@ -187,7 +188,7 @@ export default function MatchSummaryDetail() {
                   Date & Venue
                 </label>
                 <div className="text-sm text-sky-900">
-                  {new Date(summary.fixture.date).toLocaleDateString()} at{' '}
+                  {new Date(summary.fixture.date || summary.fixture.matchDate || '').toLocaleDateString()} at{' '}
                   {summary.fixture.venue}
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import { ITrialistRepository, TrialistRepository } from '@repositories/TrialistRepository';
 import { TrialistAttributes, TrialistCreationAttributes } from '../models/Trialist';
-
+import { AppError } from '@utils/errors';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface CreateTrialistData extends Omit<TrialistCreationAttributes, 'id' | 'videoUrl' | 'cvUrl'> {
@@ -33,8 +33,9 @@ export class TrialistService {
       throw new AppError('Trialist must be at least 14 years old', 400);
     }
 
+    // Upload files if provided
+    const uploads = await this.uploadFiles(data.videoFile, data.cvFile);
 
-    
     const trialistData: TrialistCreationAttributes = {
       ...data,
       id: uuidv4(),
@@ -67,8 +68,8 @@ export class TrialistService {
       sortOrder?: 'ASC' | 'DESC';
     } = {}
   ): Promise<{ trialists: TrialistAttributes[]; total: number; page: number; totalPages: number }> {
-    const { rows: trialists, count: total } = await this.repository.findAll(filters, options);
-    
+    const { rows: trialists, count: total } = await this.repository.findAllFiltered(filters, options);
+
     const page = options.page || 1;
     const limit = options.limit || 10;
     const totalPages = Math.ceil(total / limit);
@@ -105,7 +106,7 @@ export class TrialistService {
 
     // Upload new files if provided
     const uploads = await this.uploadFiles(data.videoFile, data.cvFile);
-    
+
     const updateData: Partial<TrialistAttributes> = {
       ...data,
       videoUrl: uploads.videoUrl || trialist.videoUrl,
@@ -113,12 +114,12 @@ export class TrialistService {
     };
 
     // Remove undefined values
-    Object.keys(updateData).forEach(key => 
+    Object.keys(updateData).forEach(key =>
       updateData[key as keyof TrialistAttributes] === undefined && delete updateData[key as keyof TrialistAttributes]
     );
 
     await this.repository.update(id, updateData);
-    
+
     // Return updated trialist
     return await this.repository.findById(id) as TrialistAttributes;
   }
@@ -158,13 +159,30 @@ export class TrialistService {
     const today = new Date();
     let age = today.getFullYear() - dob.getFullYear();
     const monthDiff = today.getMonth() - dob.getMonth();
-    
+
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
       age--;
     }
-    
+
     return age;
   }
 
+  private async uploadFiles(
+    videoFile?: Express.Multer.File,
+    cvFile?: Express.Multer.File
+  ): Promise<{ videoUrl?: string; cvUrl?: string }> {
+    const result: { videoUrl?: string; cvUrl?: string } = {};
 
+    // In a real implementation, you would upload to cloud storage
+    // For now, we'll use local file paths or placeholder URLs
+    if (videoFile) {
+      result.videoUrl = `/uploads/trialists/videos/${videoFile.filename || videoFile.originalname}`;
+    }
+
+    if (cvFile) {
+      result.cvUrl = `/uploads/trialists/cvs/${cvFile.filename || cvFile.originalname}`;
+    }
+
+    return result;
+  }
 }

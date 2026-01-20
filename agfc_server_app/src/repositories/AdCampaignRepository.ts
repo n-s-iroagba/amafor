@@ -1,11 +1,12 @@
-import { FindOptions, Op} from 'sequelize';
+import { FindOptions, Op } from 'sequelize';
 import { AdCampaign, AdCampaignAttributes, AdCampaignCreationAttributes, CampaignStatus, AdZone, PaymentStatus } from '@models/AdCampaign';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import  logger  from '@utils/logger';
+import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
 import sequelize from 'sequelize/types/sequelize';
 import { AdCampaignWithAdvertiser } from 'src/types/adCampaign';
+import AdCreative from '@models/AdCreative';
 
 export interface AdCampaignFilterOptions {
   status?: CampaignStatus;
@@ -23,16 +24,25 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
     super(AdCampaign);
     this.auditLogRepository = new AuditLogRepository();
   }
-  public async findActive(zone: string): Promise<AdCampaign[]> {
+
+  public async findActiveForZone(zone: string): Promise<AdCampaign[]> {
     return this.model.findAll({
       where: {
+
         status: 'ACTIVE',
         startDate: { [Op.lte]: new Date() },
         endDate: { [Op.gte]: new Date() }
-      }
+      },
+      include: [
+        {
+          model: AdCreative,
+          where: {
+            zoneId: zone
+          }
+        }
+      ]
     });
   }
-
   public async incrementImpressions(id: string): Promise<void> {
     await this.model.increment('viewsDelivered', { where: { id } });
   }
@@ -48,13 +58,13 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
   async createWithAudit(data: AdCampaignCreationAttributes, auditData: any): Promise<AdCampaign> {
     return tracer.startActiveSpan('repository.AdCampaign.createWithAudit', async (span) => {
       const transaction = await AdCampaign.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('name', data.name);
         span.setAttribute('advertiserId', data.advertiserId);
-        
+
         const campaign = await this.create(data, { transaction });
-        
+
         // Create audit log
         await this.auditLogRepository.create({
           userId: auditData.userId,
@@ -78,7 +88,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         return campaign;
       } catch (error) {
         await transaction.rollback();
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating ad campaign with audit', { error, data });
         throw error;
@@ -91,20 +101,20 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
   async updateWithAudit(id: string, data: Partial<AdCampaignAttributes>, auditData: any): Promise<AdCampaign | null> {
     return tracer.startActiveSpan('repository.AdCampaign.updateWithAudit', async (span) => {
       const transaction = await AdCampaign.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('id', id);
-        
+
         const campaign = await this.findById(id, { transaction });
         if (!campaign) {
           throw new Error('Campaign not found');
         }
 
         const oldValue = campaign.toJSON();
-        
+
         // Update campaign
         await campaign.update(data, { transaction });
-        
+
         // Get changes
         const changes = (Object.keys(data) as Array<keyof AdCampaignAttributes>)
           .filter(key => campaign.get(key) !== oldValue[key])
@@ -135,7 +145,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         return campaign;
       } catch (error) {
         await transaction.rollback();
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating ad campaign with audit: ${id}`, { error, data });
         throw error;
@@ -152,16 +162,16 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         span.setAttribute('filters', JSON.stringify(filters));
 
         const where: any = { advertiserId };
-        
+
         // Apply filters
         if (filters.status) {
           where.status = filters.status;
         }
-        
+
         if (filters.zone) {
           where.zone = filters.zone;
         }
-        
+
         if (filters.dateFrom || filters.dateTo) {
           const dateField = filters.status === CampaignStatus.ACTIVE ? 'startDate' : 'createdAt';
           where[dateField] = {};
@@ -172,7 +182,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
             where[dateField][Op.lte] = filters.dateTo;
           }
         }
-        
+
         if (filters.search) {
           where[Op.or] = [
             { name: { [Op.like]: `%${filters.search}%` } },
@@ -198,7 +208,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           };
         }
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding ad campaigns by advertiser', { error, advertiserId, filters });
         throw error;
@@ -212,7 +222,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
     return tracer.startActiveSpan('repository.AdCampaign.findByStatus', async (span) => {
       try {
         span.setAttribute('status', status);
-        
+
         const options: FindOptions = {
           where: { status },
           order: [['updatedAt', 'DESC']],
@@ -232,7 +242,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           };
         }
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding ad campaigns by status', { error, status });
         throw error;
@@ -248,7 +258,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         span.setAttribute('id', id);
         span.setAttribute('paymentStatus', paymentStatus);
         span.setAttribute('paymentReference', paymentReference);
-        
+
         const updateData: Partial<AdCampaignAttributes> = {
           paymentStatus,
           paymentReference,
@@ -257,7 +267,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating ad campaign payment status: ${id}`, { error, paymentStatus, paymentReference });
         throw error;
@@ -271,14 +281,14 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
     return tracer.startActiveSpan('repository.AdCampaign.pauseCampaign', async (span) => {
       try {
         span.setAttribute('id', id);
-        
+
         return await this.updateWithAudit(
           id,
           { status: CampaignStatus.PAUSED },
           auditData
         );
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error pausing ad campaign: ${id}`, { error });
         throw error;
@@ -292,14 +302,14 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
     return tracer.startActiveSpan('repository.AdCampaign.resumeCampaign', async (span) => {
       try {
         span.setAttribute('id', id);
-        
+
         return await this.updateWithAudit(
           id,
           { status: CampaignStatus.ACTIVE },
           auditData
         );
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error resuming ad campaign: ${id}`, { error });
         throw error;
@@ -312,11 +322,11 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
   async incrementViews(id: string, uniqueViews: number = 0): Promise<void> {
     return tracer.startActiveSpan('repository.AdCampaign.incrementViews', async (span) => {
       const transaction = await AdCampaign.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('id', id);
         span.setAttribute('uniqueViews', uniqueViews);
-        
+
         const campaign = await this.findById(id, { transaction });
         if (!campaign) {
           throw new Error('Campaign not found');
@@ -332,7 +342,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         }
 
         // Check if campaign has reached its target
-        if (campaign.spent ===campaign.budget) {
+        if (campaign.spent === campaign.budget) {
           updates.status = CampaignStatus.COMPLETED;
         }
 
@@ -342,7 +352,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         logger.debug(`Ad campaign views incremented: ${id}`);
       } catch (error) {
         await transaction.rollback();
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error incrementing ad campaign views: ${id}`, { error });
         throw error;
@@ -371,23 +381,23 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
         span.setAttribute('id', id);
         if (startDate) span.setAttribute('startDate', startDate.toISOString());
         if (endDate) span.setAttribute('endDate', endDate.toISOString());
-        
+
         const campaign = await this.findById(id);
         if (!campaign) {
           throw new Error('Campaign not found');
         }
 
-    
+
         const remainingBudget = campaign.budget - campaign.spent;
         const deliveryRate = campaign.viewsDelivered / Math.max(1, this.daysBetween(campaign.startDate || campaign.createdAt, new Date()));
-       
-     
+
+
 
         const metrics = {
           campaignId: campaign.id,
-         
+
           viewsDelivered: campaign.viewsDelivered,
-    
+
           uniqueViews: campaign.uniqueViews,
           totalImpressions: campaign.viewsDelivered * 1.5, // Estimated impressions (1.5x views)
           clickThroughRate: campaign.uniqueViews > 0 ? (campaign.uniqueViews / campaign.viewsDelivered) * 100 : 0,
@@ -395,7 +405,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
           totalSpent: campaign.spent,
           remainingBudget,
           deliveryRate,
-         
+
         };
 
         span.setAttributes({
@@ -406,7 +416,7 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
 
         return metrics;
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error getting ad campaign performance metrics: ${id}`, { error, startDate, endDate });
         throw error;
@@ -421,41 +431,41 @@ export class AdCampaignRepository extends BaseRepository<AdCampaign> {
       try {
         span.setAttribute('zone', zone);
         if (tags) span.setAttribute('tags', JSON.stringify(tags));
-        
+
         const now = new Date();
-     const whereConditions: any = {
-  zone,
-  status: CampaignStatus.ACTIVE,
-  paymentStatus: PaymentStatus.PAID,
-  [Op.and]: []
-};
+        const whereConditions: any = {
+          zone,
+          status: CampaignStatus.ACTIVE,
+          paymentStatus: PaymentStatus.PAID,
+          [Op.and]: []
+        };
 
-// Add start date conditions
-whereConditions[Op.and].push({
-  [Op.or]: [
-    { startDate: { [Op.lte]: now } },
-    { startDate: null }
-  ]
-});
+        // Add start date conditions
+        whereConditions[Op.and].push({
+          [Op.or]: [
+            { startDate: { [Op.lte]: now } },
+            { startDate: null }
+          ]
+        });
 
-// Add end date conditions
-whereConditions[Op.and].push({
-  [Op.or]: [
-    { endDate: { [Op.gte]: now } },
-    { endDate: null }
-  ]
-});
+        // Add end date conditions
+        whereConditions[Op.and].push({
+          [Op.or]: [
+            { endDate: { [Op.gte]: now } },
+            { endDate: null }
+          ]
+        });
 
-const campaigns = await this.findAll({
-  where: whereConditions,
-  order: [
-    [this.model.sequelize!.literal(`CASE WHEN targeting->'$.tags' IS NOT NULL THEN 1 ELSE 2 END`), 'ASC'],
-    ['createdAt', 'DESC']
-  ]
-});
+        const campaigns = await this.findAll({
+          where: whereConditions,
+          order: [
+            [this.model.sequelize!.literal(`CASE WHEN targeting->'$.tags' IS NOT NULL THEN 1 ELSE 2 END`), 'ASC'],
+            ['createdAt', 'DESC']
+          ]
+        });
 
         // Filter by tags if provided
-        const filteredCampaigns = tags ? 
+        const filteredCampaigns = tags ?
           campaigns.filter(campaign => {
             const campaignTags = campaign.targeting || [];
             return campaignTags.length === 0 || campaignTags.some((tag: string) => tags.includes(tag));
@@ -463,17 +473,17 @@ const campaigns = await this.findAll({
           campaigns;
 
         // Filter out campaigns that have reached their view limit
-        const availableCampaigns = filteredCampaigns.filter(campaign => 
+        const availableCampaigns = filteredCampaigns.filter(campaign =>
           campaign.spent < campaign.budget
         );
 
         span.setAttribute('total', campaigns.length);
         span.setAttribute('filtered', filteredCampaigns.length);
         span.setAttribute('available', availableCampaigns.length);
-        
+
         return availableCampaigns;
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting campaigns for ad placement', { error, zone, tags });
         throw error;
@@ -503,7 +513,7 @@ const campaigns = await this.findAll({
         span.setAttribute('paused', completedCampaigns.length);
         return completedCampaigns.length;
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error checking and pausing completed campaigns', { error });
         throw error;
@@ -588,10 +598,10 @@ const campaigns = await this.findAll({
 
         span.setAttribute('totalRevenue', analytics.totalRevenue);
         span.setAttribute('activeCampaigns', analytics.activeCampaigns);
-        
+
         return analytics;
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting advertising analytics', { error, dateFrom, dateTo });
         throw error;
@@ -604,33 +614,33 @@ const campaigns = await this.findAll({
   private generateRevenueByDay(dateFrom: Date, dateTo: Date, campaigns: AdCampaign[]): any[] {
     const days = Math.ceil((dateTo.getTime() - dateFrom.getTime()) / (1000 * 60 * 60 * 24));
     const revenueByDay = [];
-    
+
     for (let i = 0; i <= days; i++) {
       const date = new Date(dateFrom);
       date.setDate(date.getDate() + i);
-      
+
       // Calculate revenue for this day
       const dayRevenue = campaigns
         .filter(campaign => {
           const campaignDate = campaign.createdAt;
           return campaignDate.getDate() === date.getDate() &&
-                 campaignDate.getMonth() === date.getMonth() &&
-                 campaignDate.getFullYear() === date.getFullYear();
+            campaignDate.getMonth() === date.getMonth() &&
+            campaignDate.getFullYear() === date.getFullYear();
         })
         .reduce((sum, campaign) => sum + campaign.spent, 0);
-      
+
       revenueByDay.push({
         date: date.toISOString().split('T')[0],
         revenue: dayRevenue,
         campaigns: campaigns.filter(campaign => {
           const campaignDate = campaign.createdAt;
           return campaignDate.getDate() === date.getDate() &&
-                 campaignDate.getMonth() === date.getMonth() &&
-                 campaignDate.getFullYear() === date.getFullYear();
+            campaignDate.getMonth() === date.getMonth() &&
+            campaignDate.getFullYear() === date.getFullYear();
         }).length
       });
     }
-    
+
     return revenueByDay;
   }
 
@@ -662,11 +672,11 @@ const campaigns = await this.findAll({
           id: campaign.id,
           name: campaign.name,
           advertiser: campaign.advertiser?.contactEmail,
-    
+
           status: campaign.status,
           budget: campaign.budget,
           spent: campaign.spent,
-   
+
           viewsDelivered: campaign.viewsDelivered,
           uniqueViews: campaign.uniqueViews,
           cpv: campaign.cpv,
@@ -679,7 +689,7 @@ const campaigns = await this.findAll({
 
         return exportData;
       } catch (error) {
-             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error exporting campaign data: ${id}`, { error, format });
         throw error;

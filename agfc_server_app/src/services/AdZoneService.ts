@@ -2,6 +2,7 @@
 import { AdZone } from '@models/AdCampaign';
 import { AdZoneAttributes } from '@models/AdZones';
 import { AdZoneRepository, IAdZoneRepository } from '@repositories/AdZoneRepository';
+import { AppError } from '@utils/errors';
 
 import logger from '@utils/logger';
 
@@ -67,7 +68,7 @@ export class AdZoneService {
   async updateZonePrice(data: ZonePriceUpdateData): Promise<AdZoneAttributes> {
     try {
       const { zone, pricePerView, updatedBy } = data;
-      
+
       // Validate price
       if (pricePerView < 1) {
         throw new AppError('Price per view must be at least 1 kobo', 400);
@@ -119,9 +120,6 @@ export class AdZoneService {
         throw new AppError(`Zone ${zone} not found`, 404);
       }
 
-      if (!adZone.isAvailable()) {
-        throw new AppError(`Zone ${zone} is not available`, 400);
-      }
 
       const costPerImpression = adZone.pricePerView; // In kobo
       const totalCost = costPerImpression * impressions; // In kobo
@@ -150,15 +148,13 @@ export class AdZoneService {
   async checkZoneAvailability(data: ZoneAvailabilityCheck): Promise<ZoneSelectionResult> {
     try {
       const { zone, budget, impressions } = data;
-      
+
       const adZone = await this.repository.findByZone(zone);
       if (!adZone) {
         throw new AppError(`Zone ${zone} not found`, 404);
       }
 
-      if (!adZone.isAvailable()) {
-        throw new AppError(`Zone ${zone} is not available`, 400);
-      }
+
 
       const totalCost = adZone.pricePerView * impressions;
       const costPerImpression = adZone.pricePerView;
@@ -182,7 +178,7 @@ export class AdZoneService {
   async getBestZoneForBudget(budget: number, impressions: number): Promise<ZoneSelectionResult | null> {
     try {
       const availableZones = await this.repository.getAvailableZonesForBudget(budget, impressions);
-      
+
       if (availableZones.length === 0) {
         return null;
       }
@@ -230,57 +226,4 @@ export class AdZoneService {
     }
   }
 
-  async validateZoneForCampaign(zone: AdZone, adDimensions: string): Promise<{
-    isValid: boolean;
-    message?: string;
-    zoneDetails?: AdZoneAttributes;
-  }> {
-    try {
-      const adZone = await this.repository.findByZone(zone);
-      if (!adZone) {
-        return {
-          isValid: false,
-          message: `Zone ${zone} not found`
-        };
-      }
-
-      if (!adZone.isAvailable()) {
-        return {
-          isValid: false,
-          message: `Zone ${zone} is not available`
-        };
-      }
-
-      // Check if ad dimensions match zone dimensions
-      if (adZone.dimensions !== adDimensions) {
-        return {
-          isValid: false,
-          message: `Ad dimensions (${adDimensions}) do not match zone dimensions (${adZone.dimensions})`
-        };
-      }
-
-      return {
-        isValid: true,
-        zoneDetails: adZone.toJSON() as AdZoneAttributes
-      };
-    } catch (error: any) {
-      logger.error('Failed to validate zone for campaign', {
-        zone,
-        adDimensions,
-        error: error.message
-      });
-      return {
-        isValid: false,
-        message: 'Failed to validate zone'
-      };
-    }
-  }
-}
-
-// Helper class for application errors
-class AppError extends Error {
-  constructor(public message: string, public statusCode: number) {
-    super(message);
-    this.name = 'AppError';
-  }
 }

@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/shared/lib/axios';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
 interface ClubLeagueStats {
   id: number;
@@ -27,10 +27,9 @@ interface League {
 export default function EditLeagueStats() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id;
+  const statsId = params.statsId as string;
 
-  const [leagues, setLeagues] = useState<League[]>([]);
-  const [leagueId, setLeagueId] = useState('');
+  const [selectedLeagueId, setSelectedLeagueId] = useState('');
   const [position, setPosition] = useState('');
   const [points, setPoints] = useState('');
   const [goalsFor, setGoalsFor] = useState('');
@@ -39,50 +38,34 @@ export default function EditLeagueStats() {
   const [draws, setDraws] = useState('');
   const [losses, setLosses] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const { data: leagues, loading: leaguesLoading } = useGet<League[]>(
+    API_ROUTES.LEAGUES.LIST
+  );
+  const { data: statsData, loading: statsLoading } = useGet<ClubLeagueStats>(
+    API_ROUTES.LEAGUE_STATS.LIST
+  );
+  const { put, isPending: isSubmitting } = usePut(`/api/league-stats/${statsId}`);
+
+  const isLoading = leaguesLoading || statsLoading;
 
   useEffect(() => {
-    if (id) {
-      Promise.all([fetchLeagues(), fetchLeagueStats()]);
+    if (statsData) {
+      setSelectedLeagueId(statsData.leagueId.toString());
+      setPosition(statsData.position.toString());
+      setPoints(statsData.points.toString());
+      setGoalsFor(statsData.goalsFor.toString());
+      setGoalsAgainst(statsData.goalsAgainst.toString());
+      setWins(statsData.wins.toString());
+      setDraws(statsData.draws.toString());
+      setLosses(statsData.losses.toString());
     }
-  }, [id]);
-
-  const fetchLeagues = async () => {
-    try {
-      const response = await api.get(API_ROUTES.LEAGUES.LIST);
-
-      const data = await response.data;
-      setLeagues(data);
-    } catch (error) {
-      console.error('Error fetching leagues:', error);
-    }
-  };
-
-  const fetchLeagueStats = async () => {
-    try {
-      const response = await api.get(API_ROUTES.LEAGUE_STATS.LIST);
-
-      const data: ClubLeagueStats = await response.data;
-      setLeagueId(data.leagueId.toString());
-      setPosition(data.position.toString());
-      setPoints(data.points.toString());
-      setGoalsFor(data.goalsFor.toString());
-      setGoalsAgainst(data.goalsAgainst.toString());
-      setWins(data.wins.toString());
-      setDraws(data.draws.toString());
-      setLosses(data.losses.toString());
-    } catch (error) {
-      console.error('Error fetching league stats:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [statsData]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!leagueId) newErrors.leagueId = 'League is required';
+    if (!selectedLeagueId) newErrors.leagueId = 'League is required';
     if (!position.trim()) newErrors.position = 'Position is required';
     if (!points.trim()) newErrors.points = 'Points are required';
     if (!goalsFor.trim()) newErrors.goalsFor = 'Goals for is required';
@@ -101,35 +84,21 @@ export default function EditLeagueStats() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
-      const response = await fetch(`/api/league-stats/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          leagueId: parseInt(leagueId),
-          position: parseInt(position),
-          points: parseInt(points),
-          goalsFor: parseInt(goalsFor),
-          goalsAgainst: parseInt(goalsAgainst),
-          wins: parseInt(wins),
-          draws: parseInt(draws),
-          losses: parseInt(losses),
-        }),
+      await put({
+        leagueId: parseInt(selectedLeagueId),
+        position: parseInt(position),
+        points: parseInt(points),
+        goalsFor: parseInt(goalsFor),
+        goalsAgainst: parseInt(goalsAgainst),
+        wins: parseInt(wins),
+        draws: parseInt(draws),
+        losses: parseInt(losses),
       });
 
-      if (response.ok) {
-        router.push('/league-stats');
-      } else {
-        console.error('Failed to update league stats');
-      }
+      router.push('/league-stats');
     } catch (error) {
       console.error('Error updating league stats:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -163,14 +132,13 @@ export default function EditLeagueStats() {
             </label>
             <select
               id="leagueId"
-              value={leagueId}
-              onChange={(e) => setLeagueId(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.leagueId ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              value={selectedLeagueId}
+              onChange={(e) => setSelectedLeagueId(e.target.value)}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.leagueId ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
             >
               <option value="">Select a league</option>
-              {leagues.map((league) => (
+              {leagues?.map((league) => (
                 <option key={league.id} value={league.id}>
                   {league.name} - {league.season}
                 </option>
@@ -195,9 +163,8 @@ export default function EditLeagueStats() {
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
                 min="1"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.position ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.position ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="League position"
               />
               {errors.position && (
@@ -218,9 +185,8 @@ export default function EditLeagueStats() {
                 value={points}
                 onChange={(e) => setPoints(e.target.value)}
                 min="0"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.points ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.points ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Total points"
               />
               {errors.points && (
@@ -243,9 +209,8 @@ export default function EditLeagueStats() {
                 value={goalsFor}
                 onChange={(e) => setGoalsFor(e.target.value)}
                 min="0"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.goalsFor ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.goalsFor ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Goals scored"
               />
               {errors.goalsFor && (
@@ -266,9 +231,8 @@ export default function EditLeagueStats() {
                 value={goalsAgainst}
                 onChange={(e) => setGoalsAgainst(e.target.value)}
                 min="0"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.goalsAgainst ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.goalsAgainst ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Goals conceded"
               />
               {errors.goalsAgainst && (
@@ -293,9 +257,8 @@ export default function EditLeagueStats() {
                 value={wins}
                 onChange={(e) => setWins(e.target.value)}
                 min="0"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.wins ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.wins ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Wins"
               />
               {errors.wins && (
@@ -316,9 +279,8 @@ export default function EditLeagueStats() {
                 value={draws}
                 onChange={(e) => setDraws(e.target.value)}
                 min="0"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.draws ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.draws ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Draws"
               />
               {errors.draws && (
@@ -339,9 +301,8 @@ export default function EditLeagueStats() {
                 value={losses}
                 onChange={(e) => setLosses(e.target.value)}
                 min="0"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.losses ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.losses ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Losses"
               />
               {errors.losses && (

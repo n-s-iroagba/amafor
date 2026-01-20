@@ -4,13 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { 
-  Users, 
-  Search, 
+import {
+  Users,
+  Search,
 
-  Edit, 
-  Trash2, 
-  Eye, 
+  Edit,
+  Trash2,
+  Eye,
   UserPlus,
 
   Loader2,
@@ -26,7 +26,7 @@ import {
   MoreVertical
 } from 'lucide-react';
 import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
-import { AcademyStaff } from '@/features/academy/types';
+import { AcademyStaff, PaginatedData } from '@/shared/types';
 import { DeletionConfirmationModal } from '@/shared/components/DeleteModal';
 
 
@@ -37,14 +37,14 @@ export default function AcademyStaffPage() {
   const [sortBy, setSortBy] = useState<string>('name_asc');
   const [selectedStaff, setSelectedStaff] = useState<AcademyStaff | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  
+
   // Fetch staff data
-  const { 
-    data: staffData, 
-    loading, 
-    error, 
-    refetch 
-  } = useGet<AcademyStaff[]>('/api/academy/staff', {
+  const {
+    data,
+    loading,
+    error,
+    refetch
+  } = useGet<PaginatedData<AcademyStaff>>('/api/academy/staff', {
     params: {
       sort: 'name',
       limit: 100
@@ -52,21 +52,21 @@ export default function AcademyStaffPage() {
   });
 
   // Delete staff member
-  const { 
-    delete: deleteStaff, 
-    isPending: deleting, 
-    error: deleteError 
+  const {
+    delete: deleteStaff,
+    isPending: deleting,
+    error: deleteError
   } = useDelete<AcademyStaff>('/api/academy/staff');
-
+  const staffData = data.data
   // Filter and sort staff
-  const filteredStaff = staffData?.filter(staff => {
-    const matchesSearch = 
+  const filteredStaff = staffData.filter(staff => {
+    const matchesSearch =
       staff.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       staff.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
       staff.bio.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesCategory = categoryFilter === 'all' || staff.category === categoryFilter;
-    
+
     return matchesSearch && matchesCategory;
   }) || [];
 
@@ -126,7 +126,7 @@ export default function AcademyStaffPage() {
 
   const confirmDelete = async () => {
     if (!selectedStaff) return;
-    
+
     try {
       await deleteStaff(selectedStaff.id);
       refetch();
@@ -255,7 +255,7 @@ export default function AcademyStaffPage() {
               <div>
                 <div className="text-2xl font-bold text-slate-800">
                   {Math.round(
-                    (staffData?.reduce((sum, staff) => sum + (staff.yearsOfExperience || 0), 0) || 0) / 
+                    (staffData?.reduce((sum, staff) => sum + (staff.yearsOfExperience || 0), 0) || 0) /
                     (staffData?.length || 1)
                   )}
                 </div>
@@ -446,7 +446,7 @@ export default function AcademyStaffPage() {
             <Users className="h-16 w-16 text-slate-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-slate-700 mb-2">No staff found</h3>
             <p className="text-slate-500 mb-6">
-              {staffData?.length === 0 
+              {staffData?.length === 0
                 ? "No staff members have been added yet."
                 : "Try adjusting your search or filters."}
             </p>
@@ -464,14 +464,14 @@ export default function AcademyStaffPage() {
 
       {/* Delete Confirmation Modal */}
       <DeletionConfirmationModal error={''}
-          onClose={() => {
-              setShowDeleteModal(false);
-              setSelectedStaff(null);
-          } }
-          handleDelete={confirmDelete}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setSelectedStaff(null);
+        }}
+        handleDelete={confirmDelete}
 
-          message={`Are you sure you want to delete ${selectedStaff?.name}? This action cannot be undone.`} isDeleting={false}       
-       
+        message={`Are you sure you want to delete ${selectedStaff?.name}? This action cannot be undone.`} isDeleting={false}
+
       />
     </div>
   );

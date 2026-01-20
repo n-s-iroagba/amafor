@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function ScoutDashboard() {
   const recentlyViewed = [];
-  const user = {firstName:''}
+  const user = { firstName: '' }
 
 
   return (
@@ -60,12 +60,12 @@ export default function ScoutDashboard() {
               </div>
             </Link>
 
-             <Link href="/dashboard/scout/matches" className="group bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all md:col-span-2">
+            <Link href="/dashboard/scout/matches" className="group bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all md:col-span-2">
               <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mb-8">
                 <Film className="w-6 h-6 text-[#2F4F4F]" />
               </div>
-              <h3 className="text-2xl mb-2 text-[#2F4F4F]">Match Archives</h3>
-              <p className="text-gray-500 text-sm mb-6">Full match footage available 30 minutes post-whistle for tactical analysis.</p>
+              <h3 className="text-2xl mb-2 text-[#2F4F4F]">Fixture Archives</h3>
+              <p className="text-gray-500 text-sm mb-6">Full fixture footage available 30 minutes post-whistle for tactical analysis.</p>
               <div className="flex items-center text-[#2F4F4F] text-xs font-black tracking-widest uppercase">
                 Open Library <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </div>

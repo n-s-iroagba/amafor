@@ -1,21 +1,21 @@
 import { Router } from 'express';
-import { MatchSummaryController } from '../controllers/MatchSummaryController';
+import { FixtureSummaryController } from '../controllers/FixtureSummaryController';
 import { validate } from '../middleware/validation';
 import {
-  createMatchSummarySchema,
-  updateMatchSummarySchema,
-  getMatchSummarySchema,
-  deleteMatchSummarySchema,
-  getMatchSummaryByFixtureSchema,
+  createFixtureSummarySchema,
+  updateFixtureSummarySchema,
+  getFixtureSummarySchema,
+  deleteFixtureSummarySchema,
+  getFixtureSummaryByFixtureSchema,
 } from '../validations/matchSummary.schema';
 
 const router = Router();
-const matchSummaryController = new MatchSummaryController();
+const matchSummaryController = new FixtureSummaryController();
 
-router.post('/:fixtureId', matchSummaryController.createMatchSummary);
-router.get('/fixture/:fixtureId', validate(getMatchSummaryByFixtureSchema), matchSummaryController.getMatchSummaryByFixture);
-router.get('/:id', validate(getMatchSummarySchema), matchSummaryController.getMatchSummary);
-router.put('/:id', validate(updateMatchSummarySchema), matchSummaryController.updateMatchSummary);
-router.delete('/:id', validate(deleteMatchSummarySchema), matchSummaryController.deleteMatchSummary);
+router.post('/:fixtureId', matchSummaryController.createFixtureSummary);
+router.get('/fixture/:fixtureId', validate(getFixtureSummaryByFixtureSchema), matchSummaryController.getFixtureSummaryByFixture);
+router.get('/:id', validate(getFixtureSummarySchema), matchSummaryController.getFixtureSummary);
+router.put('/:id', validate(updateFixtureSummarySchema), matchSummaryController.updateFixtureSummary);
+router.delete('/:id', validate(deleteFixtureSummarySchema), matchSummaryController.deleteFixtureSummary);
 
 export default router;  

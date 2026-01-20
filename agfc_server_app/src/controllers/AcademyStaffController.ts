@@ -47,7 +47,7 @@ export class AcademyStaffController {
           error: error.message,
           body: req.body
         });
-        
+
         const statusCode = error.message.includes('Invalid category') ? 400 : 500;
         res.status(statusCode).json({
           success: false,
@@ -64,11 +64,11 @@ export class AcademyStaffController {
     return tracer.startActiveSpan('controller.AcademyStaffController.getStaff', async (span) => {
       try {
         const { id } = req.params;
-        
+
         span.setAttribute('staffId', id);
-        
+
         const staff = await this.staffService.getStaffById(id);
-        
+
         if (!staff) {
           span.setStatus({ code: 2, message: 'Staff not found' });
           res.status(404).json({
@@ -89,7 +89,7 @@ export class AcademyStaffController {
           error: error.message,
           staffId: req.params.id
         });
-        
+
         res.status(500).json({
           success: false,
           errorCode: 'STAFF_FETCH_ERROR',
@@ -126,13 +126,14 @@ export class AcademyStaffController {
 
         res.status(200).json({
           success: true,
-          data: result.data,
-          pagination: {
+          data: {
+            data: result.data,
             total: result.total,
             page: result.page,
             totalPages: result.totalPages,
             hasNext: result.hasNext,
-            hasPrevious: result.hasPrevious
+            hasPrev: result.hasPrevious,
+            limit: filters.limit
           }
         });
       } catch (error: any) {
@@ -141,7 +142,7 @@ export class AcademyStaffController {
           error: error.message,
           query: req.query
         });
-        
+
         res.status(500).json({
           success: false,
           errorCode: 'STAFF_LIST_ERROR',
@@ -191,10 +192,10 @@ export class AcademyStaffController {
           staffId: req.params.id,
           body: req.body
         });
-        
-        const statusCode = error.message.includes('not found') ? 404 : 
-                          error.message.includes('Invalid category') ? 400 : 500;
-        
+
+        const statusCode = error.message.includes('not found') ? 404 :
+          error.message.includes('Invalid category') ? 400 : 500;
+
         res.status(statusCode).json({
           success: false,
           errorCode: 'STAFF_UPDATE_ERROR',
@@ -226,9 +227,9 @@ export class AcademyStaffController {
           error: error.message,
           staffId: req.params.id
         });
-        
+
         const statusCode = error.message.includes('not found') ? 404 : 500;
-        
+
         res.status(statusCode).json({
           success: false,
           errorCode: 'STAFF_DELETE_ERROR',
@@ -252,7 +253,7 @@ export class AcademyStaffController {
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
         logger.error('CONTROLLER_STAFF_STATS_ERROR', { error: error.message });
-        
+
         res.status(500).json({
           success: false,
           errorCode: 'STAFF_STATS_ERROR',
@@ -268,7 +269,7 @@ export class AcademyStaffController {
     return tracer.startActiveSpan('controller.AcademyStaffController.searchStaff', async (span) => {
       try {
         const { name } = req.query;
-        
+
         if (!name || typeof name !== 'string') {
           span.setStatus({ code: 2, message: 'Invalid search term' });
           res.status(400).json({
@@ -294,7 +295,7 @@ export class AcademyStaffController {
           error: error.message,
           query: req.query
         });
-        
+
         res.status(500).json({
           success: false,
           errorCode: 'STAFF_SEARCH_ERROR',
@@ -337,7 +338,7 @@ export class AcademyStaffController {
           error: error.message,
           category: req.params.category
         });
-        
+
         res.status(500).json({
           success: false,
           errorCode: 'STAFF_CATEGORY_ERROR',
@@ -380,9 +381,9 @@ export class AcademyStaffController {
           error: error.message,
           importCount: req.body?.length || 0
         });
-        
+
         const statusCode = error.message.includes('Invalid data') ? 400 : 500;
-        
+
         res.status(statusCode).json({
           success: false,
           errorCode: 'STAFF_BULK_IMPORT_ERROR',

@@ -1,11 +1,11 @@
 // services/RssFeedFetcherService.ts
 import Parser from 'rss-parser';
 import { RssFeedSourceService } from './RssFeedSourceService';
-
 import { RssFeedSource, RssFeedSourceCategory } from '../models/RssFeedSource';
 import redis from '../redis/redisClient';
 import { ThirdPartyArticle, ThirdPartyArticleCreationAttributes } from '../models/ThirdPartyArticle';
-import { ThirdPartyArticleRepository } from '../repositories/ThirdPartyArticleRepository';
+import { ThirdPartyArticleRepository } from '@repositories/ThirdPartyArticleRepository';
+
 
 
 // Custom type for RSS parser
@@ -38,54 +38,54 @@ export class RssFeedFetcherService {
 
 
 
-async fetchFeeds(category:RssFeedSourceCategory,page?:number|string,limit?:number|string): Promise<{ success: number; errors: number,articles:ThirdPartyArticle[] }> {
-   const cacheKey = `articles:${category}:page:${page}:limit:${limit}`
+  async fetchFeeds(category: RssFeedSourceCategory, page?: number | string, limit?: number | string): Promise<{ success: number; errors: number, articles: ThirdPartyArticle[] }> {
+    const cacheKey = `articles:${category}:page:${page}:limit:${limit}`
 
-  // Check cache
-  // const cached = await redis.get(cacheKey);
-  // if (cached) {
-  //   console.log('Returning cached feeds summary');
-  //   return JSON.parse(cached);
-  // }
-  let articles:ThirdPartyArticle[]=[]
-  const feeds = await this.rssFeedSourceService.getFeedsByCategory(category);
-  let successCount = 0;
-  let errorCount = 0;
+    // Check cache
+    // const cached = await redis.get(cacheKey);
+    // if (cached) {
+    //   console.log('Returning cached feeds summary');
+    //   return JSON.parse(cached);
+    // }
+    let articles: ThirdPartyArticle[] = []
+    const feeds = await this.rssFeedSourceService.getFeedsByCategory(category);
+    let successCount = 0;
+    let errorCount = 0;
 
-  for (const feed of feeds) {
-    try {
-      const fetchedArticles = await this.fetchFeed(feed);
-      if(fetchedArticles)[...fetchedArticles,articles]
-      successCount++;
-    } catch (error) {
-      console.error(`Error fetching feed ${feed.name}:`, error);
-      await this.rssFeedSourceService.updateFetchStatus(feed.id, 'ERROR');
-      errorCount++;
+    for (const feed of feeds) {
+      try {
+        const fetchedArticles = await this.fetchFeed(feed);
+        if (fetchedArticles) [...fetchedArticles, articles]
+        successCount++;
+      } catch (error) {
+        console.error(`Error fetching feed ${feed.name}:`, error);
+        await this.rssFeedSourceService.updateFetchStatus(feed.id, 'ERROR');
+        errorCount++;
+      }
     }
+
+    const result = { success: successCount, errors: errorCount, articles: articles };
+
+    // Cache for 5 minutes
+    await redis.set(cacheKey, JSON.stringify(articles), 'EX', 30000);
+
+    return result;
   }
 
-  const result = { success: successCount, errors: errorCount,articles:articles };
 
-  // Cache for 5 minutes
-  await redis.set(cacheKey, JSON.stringify(articles), 'EX', 30000);
-
-  return result;
-}
-
-
-  async fetchFeed(feed: RssFeedSource): Promise<ThirdPartyArticle[]|void> {
+  async fetchFeed(feed: RssFeedSource): Promise<ThirdPartyArticle[] | void> {
     try {
       console.log(`Fetching feed: ${feed.name}`);
-      
+
       const parsedFeed = await this.parser.parseURL(feed.feedUrl);
-      
+
       if (!parsedFeed.items || parsedFeed.items.length === 0) {
         await this.rssFeedSourceService.updateFetchStatus(feed.id, 'EMPTY');
         return;
       }
-      let articles:ThirdPartyArticle[] = []
+      let articles: ThirdPartyArticle[] = []
       let processedCount = 0;
-      
+
       for (const item of parsedFeed.items) {
         try {
           const article = await this.processFeedItem(feed, item);
@@ -98,29 +98,29 @@ async fetchFeeds(category:RssFeedSourceCategory,page?:number|string,limit?:numbe
 
       await this.rssFeedSourceService.updateFetchStatus(feed.id, `SUCCESS: ${processedCount} items`);
       console.log(`Processed ${processedCount} items from ${feed.name}`);
-     return articles 
+      return articles
     } catch (error) {
       await this.rssFeedSourceService.updateFetchStatus(feed.id, 'ERROR');
       throw error;
     }
   }
 
-private async processFeedItem(feed: RssFeedSource, item: any): Promise<ThirdPartyArticle> {
-  const articleData: ThirdPartyArticleCreationAttributes = {
-    rss_feed_source_id: feed.id,
-    original_id: item.guid || item.id || item.link || Date.now().toString(),
-    title: item.title || 'No title',
-    summary: item.summary || item.description || null,
-    content: item['content:encoded'] || item.content || item.summary || item.description || null,
-    article_url: item.link || '',
-    published_at: item.pubDate ? new Date(item.pubDate) : new Date(),
-    thumbnail_url: this.extractThumbnailUrl(item)
-  };
-  if (!articleData.article_url) {
-    throw new Error('Article URL is required');
+  private async processFeedItem(feed: RssFeedSource, item: any): Promise<ThirdPartyArticle> {
+    const articleUrl = item.link || '';
+    const articleData: ThirdPartyArticleCreationAttributes = {
+      rssFeedSourceId: feed.id,
+      originalId: item.guid || item.id || item.link || Date.now().toString(),
+      title: item.title || 'No title',
+      summary: item.summary || item.description || null,
+      content: item['content:encoded'] || item.content || item.summary || item.description || null,
+      publishedAt: item.pubDate ? new Date(item.pubDate) : new Date(),
+      thumbnailUrl: this.extractThumbnailUrl(item)
+    };
+    if (!articleUrl) {
+      throw new Error('Article URL is required');
+    }
+    return (await this.thirdPartyArticleRepository.createOrUpdateArticle(articleData)).article;
   }
-  return(await this.thirdPartyArticleRepository.createOrUpdateArticle(articleData)).article;
-}
 
 
   private extractThumbnailUrl(item: any): string | null {
@@ -140,28 +140,28 @@ private async processFeedItem(feed: RssFeedSource, item: any): Promise<ThirdPart
     // Extract from content (first image)
     if (item.content || item['content:encoded']) {
       const content = item['content:encoded'] || item.content;
-      const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
-      if (imgMatch && imgMatch[1]) {
-        return imgMatch[1];
+      const imgFixture = content.match(/<img[^>]+src="([^">]+)"/);
+      if (imgFixture && imgFixture[1]) {
+        return imgFixture[1];
       }
     }
 
     return null;
   }
 
-async scheduleRegularFetch(intervalMinutes: number = 30): Promise<NodeJS.Timeout> {
-  return setInterval(() => {
-    // Loop through all RssFeedSourceCategory enum values
-    Object.values(RssFeedSourceCategory).forEach(category => {
-      this.fetchFeeds(category)
-        .then(({ success, errors }) => {
-          console.log(`Scheduled feed fetch (${category}) completed: ${success} succeeded, ${errors} failed`);
-        })
-        .catch(error => {
-          console.error(`Scheduled feed fetch (${category}) failed:`, error);
-        });
-    });
-  }, intervalMinutes * 60 * 1000);
-}
+  async scheduleRegularFetch(intervalMinutes: number = 30): Promise<NodeJS.Timeout> {
+    return setInterval(() => {
+      // Loop through all RssFeedSourceCategory enum values
+      Object.values(RssFeedSourceCategory).forEach(category => {
+        this.fetchFeeds(category)
+          .then(({ success, errors }) => {
+            console.log(`Scheduled feed fetch (${category}) completed: ${success} succeeded, ${errors} failed`);
+          })
+          .catch(error => {
+            console.error(`Scheduled feed fetch (${category}) failed:`, error);
+          });
+      });
+    }, intervalMinutes * 60 * 1000);
+  }
 
 }

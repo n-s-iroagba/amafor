@@ -4,7 +4,7 @@ export * from './SystemService';
 export * from './UserService';
 export * from './AuthService';
 export * from './PlayerService';
-export * from './MatchService';
+export * from './FixtureService';
 export * from './AcademyService';
 export * from './ContentService';
 export * from './DonationService';

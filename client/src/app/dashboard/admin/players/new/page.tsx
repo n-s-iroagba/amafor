@@ -5,14 +5,13 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { API_ROUTES } from '@/config/routes';
-
+import { usePost } from '@/shared/hooks/useApiQuery';
 import Image from 'next/image';
-import api from '@/shared/lib/axios';
 import { uploadFile } from '@/shared/utils';
 
 export default function NewPlayer() {
   const router = useRouter();
-  
+
   const [name, setName] = useState('');
   const [position, setPosition] = useState('');
   const [jerseyNumber, setJerseyNumber] = useState('');
@@ -21,12 +20,12 @@ export default function NewPlayer() {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.PLAYERS.CREATE);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,10 +78,10 @@ export default function NewPlayer() {
       }, 200);
 
       const uploadedUrl = await uploadFile(selectedFile, 'image');
-      
+
       clearInterval(progressInterval);
       setUploadProgress(100);
-      
+
       return uploadedUrl;
     } catch (error) {
       console.error('Upload error:', error);
@@ -126,17 +125,15 @@ export default function NewPlayer() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
       let finalImageUrl = imageUrl;
-      
+
       // Upload new image if selected
       if (selectedFile) {
         finalImageUrl = await handleUpload();
       }
 
-      const response = await api.post(API_ROUTES.PLAYERS.CREATE, {
+      const result = await post({
         name,
         position,
         jerseyNumber: parseInt(jerseyNumber),
@@ -146,7 +143,7 @@ export default function NewPlayer() {
         nationality: nationality || null,
       });
 
-      if (response) {
+      if (result) {
         router.push('/sports-admin/players');
         router.refresh();
       } else {
@@ -156,8 +153,6 @@ export default function NewPlayer() {
     } catch (error) {
       console.error('Error creating player:', error);
       setErrors(prev => ({ ...prev, submit: 'Failed to create player. Please try again.' }));
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -179,16 +174,16 @@ export default function NewPlayer() {
             <label className="block text-sm font-medium text-sky-700 mb-2">
               Player Photo
             </label>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 items-start">
               {/* Image Preview */}
               <div className="flex-shrink-0">
                 <div className="w-32 h-32 border-2 border-dashed border-sky-300 rounded-lg overflow-hidden bg-sky-50 flex items-center justify-center">
                   {imagePreview ? (
                     <Image
-                    unoptimized
-                    height={50}
-                    width={50}
+                      unoptimized
+                      height={50}
+                      width={50}
                       src={imagePreview}
                       alt="Player preview"
                       className="w-full h-full object-cover"
@@ -202,12 +197,12 @@ export default function NewPlayer() {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Upload Progress */}
                 {isUploading && (
                   <div className="mt-2">
                     <div className="w-full bg-sky-200 rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-sky-600 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
@@ -228,7 +223,7 @@ export default function NewPlayer() {
                   accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                   className="hidden"
                 />
-                
+
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -238,7 +233,7 @@ export default function NewPlayer() {
                   >
                     Choose Image
                   </button>
-                  
+
                   {(imagePreview || imageUrl) && (
                     <button
                       type="button"
@@ -250,13 +245,13 @@ export default function NewPlayer() {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="text-xs text-sky-600">
                   <p>• Supported formats: JPEG, PNG, WebP, GIF</p>
                   <p>• Maximum file size: 5MB</p>
                   <p>• Recommended: Square aspect ratio, 500x500px or larger</p>
                 </div>
-                
+
                 {errors.image && (
                   <p className="text-sm text-red-600">{errors.image}</p>
                 )}
@@ -278,9 +273,8 @@ export default function NewPlayer() {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.name ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter player name"
               />
               {errors.name && (
@@ -299,9 +293,8 @@ export default function NewPlayer() {
                 id="position"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.position ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.position ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               >
                 <option value="">Select position</option>
                 <option value="Goalkeeper">Goalkeeper</option>
@@ -330,9 +323,8 @@ export default function NewPlayer() {
                 onChange={(e) => setJerseyNumber(e.target.value)}
                 min="1"
                 max="99"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.jerseyNumber ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.jerseyNumber ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter jersey number"
               />
               {errors.jerseyNumber && (
@@ -377,7 +369,7 @@ export default function NewPlayer() {
           </div>
 
           {/* Removed the old Image URL input since we're using file upload now */}
-          
+
           <div>
             <label
               htmlFor="bio"

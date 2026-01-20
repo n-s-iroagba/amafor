@@ -24,24 +24,24 @@ export interface LeagueStatisticsAttributes {
   form?: string; // Last 5 matches form (e.g., "WWDLW")
   cleanSheets?: number;
   failedToScore?: number;
-  avgGoalsPerMatch?: number;
-  avgGoalsConcededPerMatch?: number;
-  lastMatchDate?: Date;
+  avgGoalsPerFixture?: number;
+  avgGoalsConcededPerFixture?: number;
+  lastFixtureDate?: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 // Define creation attributes
 export interface LeagueStatisticsCreationAttributes extends Optional<
-  LeagueStatisticsAttributes, 
-  'id' | 'matchesPlayed' | 'wins' | 'draws' | 'losses' | 'points' | 
-  'goalDifference' | 'homeGoalsFor' | 'homeGoalsAgainst' | 'awayGoalsFor' | 
-  'awayGoalsAgainst' | 'form' | 'cleanSheets' | 'failedToScore' | 
-  'avgGoalsPerMatch' | 'avgGoalsConcededPerMatch' | 'lastMatchDate'
-> {}
+  LeagueStatisticsAttributes,
+  'id' | 'matchesPlayed' | 'wins' | 'draws' | 'losses' | 'points' |
+  'goalDifference' | 'homeGoalsFor' | 'homeGoalsAgainst' | 'awayGoalsFor' |
+  'awayGoalsAgainst' | 'form' | 'cleanSheets' | 'failedToScore' |
+  'avgGoalsPerFixture' | 'avgGoalsConcededPerFixture' | 'lastFixtureDate'
+> { }
 
 export class LeagueStatistics extends Model<
-  LeagueStatisticsAttributes, 
+  LeagueStatisticsAttributes,
   LeagueStatisticsCreationAttributes
 > implements LeagueStatisticsAttributes {
   public id!: string;
@@ -63,9 +63,9 @@ export class LeagueStatistics extends Model<
   public form?: string;
   public cleanSheets?: number;
   public failedToScore?: number;
-  public avgGoalsPerMatch?: number;
-  public avgGoalsConcededPerMatch?: number;
-  public lastMatchDate?: Date;
+  public avgGoalsPerFixture?: number;
+  public avgGoalsConcededPerFixture?: number;
+  public lastFixtureDate?: Date;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -221,7 +221,7 @@ LeagueStatistics.init(
         min: 0,
       },
     },
-    avgGoalsPerMatch: {
+    avgGoalsPerFixture: {
       type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
       defaultValue: 0,
@@ -229,7 +229,7 @@ LeagueStatistics.init(
         min: 0,
       },
     },
-    avgGoalsConcededPerMatch: {
+    avgGoalsConcededPerFixture: {
       type: DataTypes.DECIMAL(5, 2),
       allowNull: false,
       defaultValue: 0,
@@ -237,7 +237,7 @@ LeagueStatistics.init(
         min: 0,
       },
     },
-    lastMatchDate: {
+    lastFixtureDate: {
       type: DataTypes.DATE,
       allowNull: true,
     },
@@ -273,24 +273,24 @@ LeagueStatistics.init(
       beforeValidate: (statistic: LeagueStatistics) => {
         // Calculate goal difference
         statistic.goalDifference = statistic.goalsFor - statistic.goalsAgainst;
-        
+
         // Calculate points (3 for win, 1 for draw)
         statistic.points = (statistic.wins || 0) * 3 + (statistic.draws || 0);
-        
+
         // Calculate matches played if not provided
         if (!statistic.matchesPlayed) {
-          statistic.matchesPlayed = 
-            (statistic.wins || 0) + 
-            (statistic.draws || 0) + 
+          statistic.matchesPlayed =
+            (statistic.wins || 0) +
+            (statistic.draws || 0) +
             (statistic.losses || 0);
         }
-        
+
         // Calculate averages if matches played > 0
         if (statistic.matchesPlayed > 0) {
-          statistic.avgGoalsPerMatch = Number(
+          statistic.avgGoalsPerFixture = Number(
             (statistic.goalsFor / statistic.matchesPlayed).toFixed(2)
           );
-          statistic.avgGoalsConcededPerMatch = Number(
+          statistic.avgGoalsConcededPerFixture = Number(
             (statistic.goalsAgainst / statistic.matchesPlayed).toFixed(2)
           );
         }

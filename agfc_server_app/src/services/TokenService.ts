@@ -7,17 +7,19 @@ import logger from '../utils/logger'
 import {
   AccessTokenPayload,
 
+  EmailVerificationTokenPayload,
+
   JwtPayload,
   ResetPasswordTokenPayload,
   TokenGenerationOptions,
   TokenVerificationResult,
 } from '../types/token.types'
-import { UnauthorizedError, AppError, InternalServerError } from '../utils/errors'
-import User from '../models/User'
+import { UnauthorizedError, AppError, InternalServerError } from '@utils/errors'
+import User from '@models/User'
 
 // Extended interfaces for specialized tokens
 
- export class TokenService {
+export class TokenService {
   private readonly defaultOptions: Partial<TokenGenerationOptions> = {
     issuer: 'your-app-name',
     audience: 'your-app-Users',
@@ -59,7 +61,7 @@ import User from '../models/User'
     try {
       // Create minimal payload with only essential fields
       const accessTokenPayload: JwtPayload = {
-        id: payload.id,
+
 
         email: payload.email,
         role: payload.role,
@@ -75,7 +77,7 @@ import User from '../models/User'
       }
 
       const signOptions: SignOptions = {
-        expiresIn: options.expiresIn,
+        expiresIn: options.expiresIn as number,
         issuer: options.issuer,
         audience: options.audience,
         subject: options.subject,
@@ -113,11 +115,11 @@ import User from '../models/User'
   ): string {
     try {
       // Create minimal payload with only essential fields
-      const resetTokenPayload: JwtPayload = {
+      const resetTokenPayload: ResetPasswordTokenPayload = {
         id: payload.id,
 
         email: payload.email,
-     
+
         tokenType: 'reset_password',
         purpose: 'password_reset',
       }
@@ -131,7 +133,7 @@ import User from '../models/User'
       }
 
       const signOptions: SignOptions = {
-        expiresIn: options.expiresIn,
+        expiresIn: options.expiresIn as number,
         issuer: options.issuer,
         audience: options.audience,
         subject: options.subject,
@@ -163,11 +165,14 @@ import User from '../models/User'
    */
   generateEmailVerificationToken(User: User, customExpiresIn?: StringValue | number): string {
     try {
-      // Extract only essential fields from the User model
-      const verificationTokenPayload: JwtPayload = {
-        userId: User.id,
-        email: User.email,
-        verificationCode: User.verificationCode,
+      const { email, verificationToken } = User
+      if (!email || !verificationToken) {
+        throw new Error('Email and verification token are required')
+      }
+      const verificationTokenPayload: EmailVerificationTokenPayload = {
+
+        email,
+        verificationToken,
         tokenType: 'email_verification',
         purpose: 'email_verification',
       }
@@ -181,7 +186,7 @@ import User from '../models/User'
       }
 
       const signOptions: SignOptions = {
-        expiresIn: options.expiresIn,
+        expiresIn: options.expiresIn as number,
         issuer: options.issuer,
         audience: options.audience,
         subject: options.subject,
@@ -194,7 +199,7 @@ import User from '../models/User'
         userId: User.id,
         email: User.email,
         expiresIn: options.expiresIn,
-        verificationCode: User.verificationCode,
+        verificationToken: User.verificationToken,
         tokenLength: token.length,
       })
 
@@ -217,7 +222,7 @@ import User from '../models/User'
   ): string {
     // Create minimal payload with only essential fields
     const refreshPayload: JwtPayload = {
-      id: payload.id,
+
 
       email: payload.email,
       role: payload.role,
@@ -233,7 +238,7 @@ import User from '../models/User'
 
     try {
       const signOptions: SignOptions = {
-        expiresIn: options.expiresIn,
+        expiresIn: options.expiresIn as number,
         issuer: options.issuer,
         audience: options.audience,
         algorithm: 'HS256',
@@ -242,7 +247,9 @@ import User from '../models/User'
       const token = jwt.sign(refreshPayload, secret, signOptions)
 
       logger.info('Refresh token generated successfully', {
-        userId: payload.userId || payload.userId,
+
+        email: payload.email,
+        expiresIn: options.expiresIn,
         tokenLength: token.length,
       })
 
@@ -285,17 +292,15 @@ import User from '../models/User'
       }) as JwtPayload
       console.log('decoded is', decoded)
       // Validate token type matches expected type
-      if (decoded.tokenType && decoded.tokenType !== tokenType) {
+      if (decoded.tokenType && decoded.tokenType !== tokenType && decoded.user) {
         logger.warn('Token type mismatch', {
           expected: tokenType,
           actual: decoded.tokenType,
-          userId: decoded.user.id,
+          userId: decoded?.user.id,
         })
 
         throw new UnauthorizedError(
-          `Invalid token type. Expected ${tokenType} but got ${decoded.tokenType}`,
-          'TOKEN_TYPE_MISMATCH',
-          { expected: tokenType, actual: decoded.tokenType }
+          `Invalid token type. Expected ${tokenType} but got ${decoded.tokenType}`
         )
       }
 
@@ -305,40 +310,32 @@ import User from '../models/User'
 
       if (isExpired) {
         logger.warn('Token is expired (manual check)', {
-          userId: decoded.userId,
+
           tokenType: decoded.tokenType,
           exp: decoded.exp,
           now,
         })
 
-        throw new UnauthorizedError('Token has expired', 'TOKEN_EXPIRED', {
-          exp: decoded.exp,
-          now,
-          expiredAt: new Date(decoded.exp! * 1000),
-        })
+        throw new UnauthorizedError('Token has expired')
       }
 
       // Check not before claim
       if (decoded.nbf && decoded.nbf > now) {
         logger.warn('Token not yet valid', {
-          userId: decoded.userId,
+
           tokenType: decoded.tokenType,
           nbf: decoded.nbf,
           now,
         })
 
-        throw new UnauthorizedError('Token not yet valid', 'TOKEN_NOT_BEFORE', {
-          nbf: decoded.nbf,
-          now,
-          validFrom: new Date(decoded.nbf * 1000),
-        })
+        throw new UnauthorizedError('Token not yet valid')
       }
 
       const expiresIn = decoded.exp ? decoded.exp - now : undefined
       const expiresAt = decoded.exp ? new Date(decoded.exp * 1000) : undefined
 
       logger.info('Token verified successfully', {
-        userId: decoded.userId,
+
         tokenType: decoded.tokenType,
         expiresIn,
         expiresAt,
@@ -354,17 +351,15 @@ import User from '../models/User'
         })
 
         if (error instanceof jwt.TokenExpiredError) {
-          throw new UnauthorizedError('Token has expired', 'TOKEN_EXPIRED', {
-            expiredAt: error.expiredAt,
-          })
+          throw new UnauthorizedError('Token has expired')
         }
 
         if (error instanceof jwt.NotBeforeError) {
-          throw new UnauthorizedError('Token not active', 'TOKEN_NOT_BEFORE', { date: error.date })
+          throw new UnauthorizedError('Token not active')
         }
 
         // Generic JWT error (malformed, invalid signature, etc.)
-        throw new UnauthorizedError('Invalid token', 'TOKEN_INVALID', { reason: error.message })
+        throw new UnauthorizedError('Invalid token')
       }
 
       // Re-throw our custom errors
@@ -378,9 +373,7 @@ import User from '../models/User'
         tokenType,
       })
 
-      throw new InternalServerError('Token verification failed', 'TOKEN_VERIFICATION_ERROR', {
-        originalError: error instanceof Error ? error.message : String(error),
-      })
+      throw new InternalServerError('Token verification failed')
     }
   }
 
@@ -509,11 +502,11 @@ import User from '../models/User'
     purpose?: string
   } | null {
     const decoded = this.decodeToken(token)
-    if (!decoded) return null
+    if (!decoded || !decoded.user) return null
 
     return {
-      userId: decoded.userId,
-  
+
+
       email: decoded.email,
       role: decoded.role,
       tokenType: decoded.tokenType,
@@ -545,13 +538,13 @@ import User from '../models/User'
   /**
    * Generate token pair (access + refresh) - legacy method
    */
-  generateTokenPair(payload: Omit<JwtPayload, 'iat' | 'exp' | 'nbf' | 'tokenType'>): {
+  generateTokenPair(payload: Omit<JwtPayload, 'iat' | 'exp' | 'tokenType'>): {
     accessToken: string
     refreshToken: string
     accessExpiresIn: number
     refreshExpiresIn: number
   } {
-    const accessToken = this.generateAccessToken(payload)
+    const accessToken = this.generateAccessToken(payload as AccessTokenPayload)
     const refreshToken = this.generateRefreshToken(payload, '7d')
 
     return {
@@ -562,13 +555,6 @@ import User from '../models/User'
     }
   }
 
-  /**
-   * Validate token format before verification
-   */
-  private isValidTokenFormat(token: string): boolean {
-    const parts = token.split('.')
-    return parts.length === 3 && parts.every(part => part.length > 0)
-  }
 
   /**
    * Get token expiration defaults

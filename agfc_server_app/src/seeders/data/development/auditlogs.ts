@@ -1,8 +1,8 @@
 // data/development/audit-log.ts
-import { 
-  AuditLogAttributes, 
-  AuditAction, 
-  EntityType 
+import {
+  AuditLogAttributes,
+  AuditAction,
+  EntityType
 } from "../../../models/AuditLog";
 
 // IDs from previous steps
@@ -34,7 +34,7 @@ export const developmentAuditLogs: AuditLogAttributes[] = [
     createdAt: ONE_HOUR_AGO,
     updatedAt: ONE_HOUR_AGO,
   },
-  // 2. Creating the Match Report Article
+  // 2. Creating the Fixture Report Article
   {
     id: 'log2log2-log2-log2-log2-log2log2log2',
     timestamp: THIRTY_MINS_AGO,

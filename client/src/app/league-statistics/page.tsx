@@ -1,6 +1,6 @@
 'use client';
 
-import { useState} from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -8,11 +8,11 @@ import {
   Trophy,
   TrendingUp,
   Target,
- 
+
   ChevronRight,
   Loader2,
   AlertCircle,
- 
+
   Shield,
 
   Target as TargetIcon,
@@ -27,6 +27,7 @@ import { League } from '@/features/league/types';
 import { LeagueTableProps } from '@/features/league-statistics/types';
 
 interface LeagueWithTable extends League {
+  logo?: string;
   table?: LeagueTableProps[];
   amaforPosition?: number;
   amaforStats?: LeagueTableProps;
@@ -40,11 +41,11 @@ export default function LeagueStatisticsPage() {
   const [expandedLeagues, setExpandedLeagues] = useState<string[]>([]);
 
   // Fetch leagues with their tables
-  const { 
-    data: leaguesData, 
-    loading, 
-    error, 
-    refetch 
+  const {
+    data: leaguesData,
+    loading,
+    error,
+    refetch
   } = useGet<LeagueWithTable[]>('/api/leagues/tables', {
     params: {
       include: 'table',
@@ -54,16 +55,16 @@ export default function LeagueStatisticsPage() {
 
   // Filter and sort leagues
   const filteredLeagues = leaguesData?.filter(league => {
-    const matchesSearch = 
+    const matchesSearch =
       league.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       league.season?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     // Filter by status (active/completed)
     const currentYear = new Date().getFullYear();
     const leagueYear = parseInt(league.season || '2024');
-    
-  
-    
+
+
+
     return matchesSearch;
   });
 
@@ -86,7 +87,7 @@ export default function LeagueStatisticsPage() {
   // Get performance trend
   const getTrendIcon = (league: LeagueWithTable) => {
     if (!league.amaforPosition) return null;
-    
+
     // Mock trend based on position (in real app, compare with previous season)
     if (league.amaforPosition <= 3) return <TrendingUp className="h-5 w-5 text-green-500" />;
     if (league.amaforPosition >= 8) return <TrendingDown className="h-5 w-5 text-red-500" />;
@@ -116,9 +117,9 @@ export default function LeagueStatisticsPage() {
   const summaryStats = {
     totalLeagues: leaguesData?.length || 0,
     activeLeagues: leaguesData?.length || 0,
-    totalPoints: leaguesData?.reduce((sum, league) => 
+    totalPoints: leaguesData?.reduce((sum, league) =>
       sum + (league.amaforStats?.points || 0), 0) || 0,
-    totalGoals: leaguesData?.reduce((sum, league) => 
+    totalGoals: leaguesData?.reduce((sum, league) =>
       sum + (league.amaforStats?.goalsFor || 0), 0) || 0
   };
 
@@ -166,7 +167,7 @@ export default function LeagueStatisticsPage() {
         <div className="container mx-auto max-w-7xl px-4 py-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">League Statistics</h1>
           <p className="text-slate-300 text-lg max-w-3xl">
-            Track Amafor Gladiators FC performance across all competitions. 
+            Track Amafor Gladiators FC performance across all competitions.
             View standings, statistics, and progress in every league.
           </p>
         </div>
@@ -322,7 +323,7 @@ export default function LeagueStatisticsPage() {
                         <div className="flex items-center gap-4 text-sm text-slate-600 mt-1">
                           <span>Season: {league.season || '2023/24'}</span>
                           <span>•</span>
-                          
+
                         </div>
                       </div>
                     </div>
@@ -377,7 +378,7 @@ export default function LeagueStatisticsPage() {
                       <h4 className="font-semibold text-slate-800 mb-4">
                         League Table Preview
                       </h4>
-                      
+
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead>
@@ -396,13 +397,12 @@ export default function LeagueStatisticsPage() {
                           </thead>
                           <tbody>
                             {league.table.slice(0, 5).map((team) => (
-                              <tr 
+                              <tr
                                 key={team.team}
-                                className={`border-b border-slate-100 last:border-b-0 ${
-                                  team.team === 'Amafor Gladiators' 
-                                    ? 'bg-blue-50' 
+                                className={`border-b border-slate-100 last:border-b-0 ${team.team === 'Amafor Gladiators'
+                                    ? 'bg-blue-50'
                                     : 'hover:bg-slate-50'
-                                }`}
+                                  }`}
                               >
                                 <td className="py-3 px-4">
                                   <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${getPositionColor(team.position)}`}>
@@ -424,13 +424,12 @@ export default function LeagueStatisticsPage() {
                                 <td className="py-3 px-4 text-slate-700 font-medium">{team.goalsFor}</td>
                                 <td className="py-3 px-4 text-slate-700">{team.goalsAgainst}</td>
                                 <td className="py-3 px-4">
-                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                    team.goalDifference > 0 
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${team.goalDifference > 0
                                       ? 'bg-green-100 text-green-800'
                                       : team.goalDifference < 0
-                                      ? 'bg-red-100 text-red-800'
-                                      : 'bg-yellow-100 text-yellow-800'
-                                  }`}>
+                                        ? 'bg-red-100 text-red-800'
+                                        : 'bg-yellow-100 text-yellow-800'
+                                    }`}>
                                     {team.goalDifference > 0 ? '+' : ''}{team.goalDifference}
                                   </span>
                                 </td>
@@ -462,7 +461,7 @@ export default function LeagueStatisticsPage() {
               <Trophy className="h-16 w-16 text-slate-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-slate-700 mb-2">No leagues found</h3>
               <p className="text-slate-500">
-                {leaguesData?.length === 0 
+                {leaguesData?.length === 0
                   ? "No league statistics available yet."
                   : "Try adjusting your filters to see more results."}
               </p>

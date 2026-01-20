@@ -1,21 +1,21 @@
 // data/development/article.ts
-import { 
-  ArticleAttributes, 
-  ArticleTag, 
-  ArticleStatus 
+import {
+  ArticleAttributes,
+  ArticleTag,
+  ArticleStatus
 } from "../../../models/Article";
 
 // Admin User ID from User seeder
 const AUTHOR_ID = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
 
 export const developmentArticles: ArticleAttributes[] = [
-  // 1. A detailed Match Report (Simulating WYSIWYG output)
+  // 1. A detailed Fixture Report (Simulating WYSIWYG output)
   {
     id: 'art1art1-art1-art1-art1-art1art1art1',
     title: 'Academy U17s Clinch Thrilling Victory Against City Strikers',
     // Simulating HTML content from a rich text editor
     content: `
-      <h2>Match Overview</h2>
+      <h2>Fixture Overview</h2>
       <p>In a display of sheer determination, the <strong>Academy U17 team</strong> secured a vital 2-1 victory over City Strikers at the Main Arena yesterday.</p>
       
       <h3>First Half Dominance</h3>
@@ -30,7 +30,7 @@ export const developmentArticles: ArticleAttributes[] = [
       <blockquote>"This is the spirit we want to see every week." - Coach Michael Johnson</blockquote>
     `,
     excerpt: 'A late penalty decided the fate of the intense derby match at the Main Arena yesterday.',
-    featuredImage: 'https://placehold.co/800x400/1d3557/ffffff?text=Match+Report',
+    featuredImage: 'https://placehold.co/800x400/1d3557/ffffff?text=Fixture+Report',
     tags: [ArticleTag.MATCH_REPORT, ArticleTag.FOOTBALL_NEWS],
     authorId: AUTHOR_ID,
     viewCount: 1250,
@@ -42,7 +42,7 @@ export const developmentArticles: ArticleAttributes[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  
+
   // 2. An Academy Update
   {
     id: 'art2art2-art2-art2-art2-art2art2art2',

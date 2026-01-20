@@ -4,7 +4,8 @@ import path from 'path'
 
 import logger from '../utils/logger'
 import User from '../models/User'
-import { AdSubscriptionPayment } from '../models/AdSubscriptionPayment'
+import Payment from '@models/Payment'
+
 
 interface EmailConfig {
   host: string
@@ -32,7 +33,7 @@ interface EmailOptions {
 interface ReceiptEmailData {
   to: string
   advertiserName: string
-  payment: AdSubscriptionPayment
+  payment: Payment
   receiptData: any
 
 }
@@ -40,21 +41,21 @@ interface ReceiptEmailData {
 interface FailedPaymentEmailData {
   to: string
   advertiserName: string
-  payment:  AdSubscriptionPayment
+  payment: Payment
   failureReason: string
 }
- 
+
 
 class EmailService {
   private transporter: Transporter
   private config: EmailConfig
   private static instance: EmailService
-  private clientUrl:string
+  private clientUrl: string
 
   constructor(private readonly url: string) {
     this.config = this.getEmailConfig()
     this.transporter = this.createTransporter()
-    this.clientUrl = process.env.NODE_ENV === 'production'?'https://www.palmwebtv.com':'http://localhost:3000'
+    this.clientUrl = process.env.NODE_ENV === 'production' ? 'https://www.amaforgaladiatorsfc.com' : 'http://localhost:3000'
   }
 
   // Singleton pattern for EmailService
@@ -68,20 +69,18 @@ class EmailService {
     return EmailService.instance
   }
 
-private getEmailConfig(): EmailConfig {
-  return {
-    host: 'mail.privateemail.com',     // If you're using Gmail SMTP
-    port: 465,
-    secure: true,               // true for port 465
-
-    auth: {
-      user: 'do-not-reply@palmwebtv.com',
-      pass: 'palmweb4425',
-    },
-
-    from: 'do-not-reply@palmwebtv.com'
+  private getEmailConfig(): EmailConfig {
+    return {
+      host: process.env.SMTP_HOST || 'mail.privateemail.com',
+      port: parseInt(process.env.SMTP_PORT || '465'),
+      secure: true,
+      auth: {
+        user: process.env.SMTP_USER || '',
+        pass: process.env.SMTP_PASS || '',
+      },
+      from: process.env.SMTP_FROM || 'do-not-reply@palmwebtv.com'
+    }
   }
-}
 
 
   private createTransporter(): Transporter {
@@ -237,7 +236,7 @@ private getEmailConfig(): EmailConfig {
           <body>
             <div class="container">
               <div class="header">
-                <h1 style="margin: 0;">Welcome ${user.username}!</h1>
+                <h1 style="margin: 0;">Welcome ${user.firstName}!</h1>
                 <p style="margin: 10px 0 0 0; opacity: 0.9;">Please verify your email address</p>
               </div>
               
@@ -246,7 +245,7 @@ private getEmailConfig(): EmailConfig {
                 
                 <div class="details-box">
                   <h3 class="mt-0">Verification Code</h3>
-                  <p style="font-size: 24px; font-weight: bold; color: #007bff; margin: 10px 0;">${user.verificationCode}</p>
+                  <p style="font-size: 24px; font-weight: bold; color: #007bff; margin: 10px 0;">${user.verificationToken}</p>
                   <p><em>You can also use the button below for quick verification</em></p>
                 </div>
                 
@@ -402,11 +401,11 @@ private getEmailConfig(): EmailConfig {
                     </tr>
                     <tr style="border-bottom: 1px solid #eee;">
                       <td style="padding: 8px 0; font-weight: 600;">Amount:</td>
-                      <td style="padding: 8px 0; color: #28a745; font-weight: 600;">$ ${payment.amountPaid.toLocaleString()}</td>
+                      <td style="padding: 8px 0; color: #28a745; font-weight: 600;">$ ${payment.amount.toLocaleString()}</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #eee;">
                       <td style="padding: 8px 0; font-weight: 600;">Payment Date:</td>
-                      <td style="padding: 8px 0;">${(payment.paidAt?new Date(payment?.paidAt):new Date()).toLocaleDateString(
+                      <td style="padding: 8px 0;">${(payment.verifiedAt ? new Date(payment.verifiedAt) : new Date()).toLocaleDateString(
         'en-US',
         {
           year: 'numeric',
@@ -508,7 +507,7 @@ private getEmailConfig(): EmailConfig {
                     </tr>
                     <tr style="border-bottom: 1px solid #f5c6cb;">
                       <td style="padding: 8px 0; font-weight: 600;">Amount:</td>
-                      <td style="padding: 8px 0;">${'NGN'} ${payment.amountPaid.toLocaleString()}</td>
+                      <td style="padding: 8px 0;">${'NGN'} ${payment.amount.toLocaleString()}</td>
                     </tr>
                     <tr>
                       <td style="padding: 8px 0; font-weight: 600;">Failure Reason:</td>
@@ -654,7 +653,7 @@ private getEmailConfig(): EmailConfig {
     }
   }
 
-  
+
 }
 export default EmailService // Replace with your actual client URL
 

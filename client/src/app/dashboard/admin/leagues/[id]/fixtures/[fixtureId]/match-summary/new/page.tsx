@@ -15,9 +15,9 @@ import {
 import { useParams, useRouter } from 'next/navigation';
 
 import { API_ROUTES } from '@/config/routes';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
 
-interface MatchSummaryAttributes {
+interface FixtureSummaryAttributes {
   id: number;
   fixtureId: number;
   summary: string;
@@ -25,11 +25,10 @@ interface MatchSummaryAttributes {
   updatedAt?: Date;
 }
 
-const CreateMatchSummaryForm = ({}) => {
+const CreateFixtureSummaryForm = ({ }) => {
   const router = useRouter();
   const [summary, setSummary] = useState('');
   const { fixtureId } = useParams();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [errors, setErrors] = useState<{ summary?: string }>({});
   const [wordCount, setWordCount] = useState(0);
@@ -37,6 +36,10 @@ const CreateMatchSummaryForm = ({}) => {
     'idle' | 'saving' | 'saved' | 'error'
   >('idle');
   const [isDirty, setIsDirty] = useState(false);
+
+  const { post, isPending: isSubmitting } = usePost(
+    API_ROUTES.MATCH_SUMMARY.CREATE(String(fixtureId))
+  );
 
   // Auto-save functionality
   useEffect(() => {
@@ -65,7 +68,7 @@ const CreateMatchSummaryForm = ({}) => {
     const newErrors: { summary?: string } = {};
 
     if (!summary.trim()) {
-      newErrors.summary = 'Match summary is required';
+      newErrors.summary = 'Fixture summary is required';
     } else if (summary.trim().length < 50) {
       newErrors.summary = 'Summary must be at least 50 characters long';
     } else if (summary.trim().length > 3000) {
@@ -91,7 +94,6 @@ const CreateMatchSummaryForm = ({}) => {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
     setSaveStatus('saving');
 
     try {
@@ -99,14 +101,12 @@ const CreateMatchSummaryForm = ({}) => {
         fixtureId,
         summary: summary.trim(),
       };
-      await api.post(API_ROUTES.MATCH_SUMMARY.CREATE(String(fixtureId)),matchSummary)
-      router.push(`/sports-admin/fixtures/${fixtureId}`)
+      await post(matchSummary);
+      router.push(`/sports-admin/fixtures/${fixtureId}`);
     } catch (error) {
       console.error('Error creating match summary:', error);
       setSaveStatus('error');
       alert('Failed to create match summary. Please try again.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -193,7 +193,7 @@ const CreateMatchSummaryForm = ({}) => {
                   </div>
                   <div>
                     <h1 className="text-3xl font-bold text-sky-900 mb-1">
-                      Create Match Summary
+                      Create Fixture Summary
                     </h1>
                     <div className="flex items-center gap-4 text-sky-600">
                       <span>Fixture ID: #{fixtureId}</span>
@@ -210,11 +210,10 @@ const CreateMatchSummaryForm = ({}) => {
 
               <button
                 onClick={() => setShowPreview(!showPreview)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  showPreview
-                    ? 'bg-sky-500 text-white shadow-lg'
-                    : 'bg-white text-sky-600 border border-sky-200 hover:border-sky-300 shadow-sm hover:shadow-md'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${showPreview
+                  ? 'bg-sky-500 text-white shadow-lg'
+                  : 'bg-white text-sky-600 border border-sky-200 hover:border-sky-300 shadow-sm hover:shadow-md'
+                  }`}
               >
                 {showPreview ? (
                   <EyeOff className="w-4 h-4" />
@@ -232,7 +231,7 @@ const CreateMatchSummaryForm = ({}) => {
               </span>
               <span className="text-sky-400">/</span>
               <span className="hover:text-sky-800 cursor-pointer transition-colors">
-                Match Summaries
+                Fixture Summaries
               </span>
               <span className="text-sky-400">/</span>
               <span className="hover:text-sky-800 cursor-pointer transition-colors">
@@ -253,7 +252,7 @@ const CreateMatchSummaryForm = ({}) => {
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                       <Sparkles className="w-5 h-5" />
-                      Match Summary Details
+                      Fixture Summary Details
                     </h2>
                     <div className="text-sky-100 text-sm">
                       {wordCount} words
@@ -279,7 +278,7 @@ const CreateMatchSummaryForm = ({}) => {
                         htmlFor="summary"
                         className="block text-sm font-medium text-sky-900"
                       >
-                        Match Summary <span className="text-red-500">*</span>
+                        Fixture Summary <span className="text-red-500">*</span>
                       </label>
                       <div className="flex items-center gap-4 text-xs">
                         <span className={`font-medium ${getCharacterColor()}`}>
@@ -298,15 +297,14 @@ const CreateMatchSummaryForm = ({}) => {
                         id="summary"
                         value={summary}
                         onChange={(e) => handleSummaryChange(e.target.value)}
-                        className={`w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200 resize-none bg-white/50 backdrop-blur-sm text-gray-800 placeholder-sky-400 ${
-                          errors.summary
-                            ? 'border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50/50'
-                            : 'border-sky-200 hover:border-sky-300'
-                        } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`w-full px-4 py-4 border rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all duration-200 resize-none bg-white/50 backdrop-blur-sm text-gray-800 placeholder-sky-400 ${errors.summary
+                          ? 'border-red-300 focus:ring-red-500 focus:border-red-500 bg-red-50/50'
+                          : 'border-sky-200 hover:border-sky-300'
+                          } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                         placeholder="🏆 Enter a comprehensive match summary...
 
 Include key highlights such as:
-• Match timeline and critical moments
+• Fixture timeline and critical moments
 • Goal scorers and assists
 • Outstanding player performances
 • Tactical formations and strategies
@@ -320,13 +318,12 @@ Include key highlights such as:
                       <div className="absolute bottom-2 right-2">
                         <div className="w-16 h-2 bg-sky-100 rounded-full overflow-hidden">
                           <div
-                            className={`h-full transition-all duration-300 ${
-                              summary.length < 50
-                                ? 'bg-red-400'
-                                : summary.length > 2700
-                                  ? 'bg-orange-400'
-                                  : 'bg-sky-400'
-                            }`}
+                            className={`h-full transition-all duration-300 ${summary.length < 50
+                              ? 'bg-red-400'
+                              : summary.length > 2700
+                                ? 'bg-orange-400'
+                                : 'bg-sky-400'
+                              }`}
                             style={{
                               width: `${Math.min((summary.length / 3000) * 100, 100)}%`,
                             }}
@@ -367,7 +364,7 @@ Include key highlights such as:
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 bg-sky-400 rounded-full"></div>
-                          <span>Match atmosphere & crowd</span>
+                          <span>Fixture atmosphere & crowd</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-1.5 h-1.5 bg-sky-400 rounded-full"></div>
@@ -467,4 +464,4 @@ Include key highlights such as:
   );
 };
 
-export default CreateMatchSummaryForm;
+export default CreateFixtureSummaryForm;

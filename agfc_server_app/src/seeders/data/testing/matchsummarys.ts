@@ -1,6 +1,6 @@
-import { MatchSummaryAttributes } from '@models/MatchSummary';
+import { FixtureSummaryAttributes } from '@models/FixtureSummary';
 
-export const testMatchSummarys: MatchSummaryAttributes[] = [
-  // Add minimal test data for MatchSummary here
+export const testFixtureSummarys: FixtureSummaryAttributes[] = [
+  // Add minimal test data for FixtureSummary here
   // Keep it minimal for fast tests
 ];

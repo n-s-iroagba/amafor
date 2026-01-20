@@ -3,7 +3,7 @@ import { AcademyStaffRepository } from "@repositories/AcademyStaffRepository";
 import logger from "@utils/logger";
 import tracer from "@utils/tracer";
 import { AuditService } from "./AuditService";
-
+import { Op } from "sequelize";
 
 export interface CreateStaffDTO {
   name: string;
@@ -16,7 +16,7 @@ export interface CreateStaffDTO {
   yearsOfExperience?: number;
 }
 
-export interface UpdateStaffDTO extends Partial<CreateStaffDTO> {}
+export interface UpdateStaffDTO extends Partial<CreateStaffDTO> { }
 
 export interface StaffFilters {
   category?: string;
@@ -149,22 +149,22 @@ export class AcademyStaffService {
         } = filters;
 
         const where: any = {};
-        
+
         if (category) where.category = category;
         if (searchTerm) {
-          where[AcademyStaff.sequelize!.Op.or] = [
-            { name: { [AcademyStaff.sequelize!.Op.like]: `%${searchTerm}%` } },
-            { role: { [AcademyStaff.sequelize!.Op.like]: `%${searchTerm}%` } }
+          where[Op.or] = [
+            { name: { [Op.like]: `%${searchTerm}%` } },
+            { role: { [Op.like]: `%${searchTerm}%` } }
           ];
         }
-        
+
         if (minExperience !== undefined || maxExperience !== undefined) {
           where.yearsOfExperience = {};
           if (minExperience !== undefined) {
-            where.yearsOfExperience[AcademyStaff.sequelize!.Op.gte] = minExperience;
+            where.yearsOfExperience[Op.gte] = minExperience;
           }
           if (maxExperience !== undefined) {
-            where.yearsOfExperience[AcademyStaff.sequelize!.Op.lte] = maxExperience;
+            where.yearsOfExperience[Op.lte] = maxExperience;
           }
         }
 
@@ -217,7 +217,7 @@ export class AcademyStaffService {
         }
 
         const [updatedCount, updatedStaff] = await this.staffRepository.update(id, data);
-        
+
         if (updatedCount === 0) {
           throw new Error('Staff member not found or no changes made');
         }
@@ -281,7 +281,7 @@ export class AcademyStaffService {
         }
 
         const deletedCount = await this.staffRepository.delete(id);
-        
+
         if (deletedCount === 0) {
           throw new Error('Failed to delete staff member');
         }
@@ -296,7 +296,7 @@ export class AcademyStaffService {
           entityName: staff.name,
           changes: [],
           ipAddress: '0.0.0.0',
-          metadata: { 
+          metadata: {
             role: staff.role,
             category: staff.category,
             experience: staff.yearsOfExperience
@@ -327,7 +327,7 @@ export class AcademyStaffService {
       try {
         const stats = await this.staffRepository.getStaffStats();
         const qualificationCounts = await this.staffRepository.getQualificationCounts();
-        
+
         // Get top 5 qualifications
         const topQualifications = Object.entries(qualificationCounts)
           .sort(([, a], [, b]) => b - a)
@@ -400,21 +400,21 @@ export class AcademyStaffService {
     return tracer.startActiveSpan('service.AcademyStaffService.bulkImportStaff', async (span) => {
       try {
         span.setAttribute('importCount', staffData.length);
-        
+
         // Validate all records
         const validCategories = ['coaching', 'medical', 'administrative', 'technical', 'scouting'];
         const invalidRecords: string[] = [];
-        
+
         staffData.forEach((data, index) => {
           if (data.category && !validCategories.includes(data.category)) {
             invalidRecords.push(`Record ${index + 1}: Invalid category "${data.category}"`);
           }
         });
-        
+
         if (invalidRecords.length > 0) {
           throw new Error(`Invalid data: ${invalidRecords.join(', ')}`);
         }
-        
+
         // Generate initials for records without them
         const processedData = staffData.map(data => ({
           ...data,
@@ -424,9 +424,9 @@ export class AcademyStaffService {
             .join('')
             .slice(0, 2)
         }));
-        
+
         const importedStaff = await this.staffRepository.bulkCreate(processedData);
-        
+
         // Audit log for bulk import
         await this.auditService.logAction({
           userId,
@@ -437,17 +437,17 @@ export class AcademyStaffService {
           entityName: `${importedStaff.length} staff members`,
           changes: [],
           ipAddress: '0.0.0.0',
-          metadata: { 
+          metadata: {
             count: importedStaff.length,
             categories: [...new Set(staffData.map(s => s.category))].filter(Boolean)
           }
         });
-        
+
         logger.info('STAFF_BULK_IMPORTED', {
           count: importedStaff.length,
           userId
         });
-        
+
         return importedStaff;
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });

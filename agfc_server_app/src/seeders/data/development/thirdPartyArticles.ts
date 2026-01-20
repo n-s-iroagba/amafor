@@ -4,7 +4,7 @@ import { ThirdPartyArticleAttributes } from "../../../models/ThirdPartyArticle";
 export const developmentThirdPartyArticles: ThirdPartyArticleAttributes[] = [
   {
     id: 1,
-    rssFeedSourceId: 1, // Matches 'Goal.com Nigeria' from RssFeedSource seeder
+    rssFeedSourceId: 1, // Fixturees 'Goal.com Nigeria' from RssFeedSource seeder
     originalId: 'https://www.goal.com/en-ng/news/super-eagles-qualify-afcon/12345abcde',
     title: 'Super Eagles secure AFCON ticket with game to spare',
     summary: 'Nigeria have booked their place in the next Africa Cup of Nations after a hard-fought draw in Sierra Leone.',
@@ -15,7 +15,7 @@ export const developmentThirdPartyArticles: ThirdPartyArticleAttributes[] = [
   },
   {
     id: 2,
-    rssFeedSourceId: 3, // Matches 'BBC Sport' from RssFeedSource seeder
+    rssFeedSourceId: 3, // Fixturees 'BBC Sport' from RssFeedSource seeder
     originalId: 'http://www.bbc.co.uk/sport/football/55555555',
     title: 'African Talent: The next generation of stars',
     summary: 'A look at the top 5 emerging talents from West African academies making waves in Europe.',

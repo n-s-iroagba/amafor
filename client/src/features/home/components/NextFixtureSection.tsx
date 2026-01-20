@@ -25,7 +25,7 @@ const NextFixtureSection: React.FC = () => {
     if (!fixture) return;
     const interval = setInterval(() => {
       const now = new Date().getTime();
-      const kickoff = new Date(fixture.date).getTime();
+      const kickoff = new Date(fixture.matchDate).getTime();
       const diff = kickoff - now;
 
       if (diff <= 0) {
@@ -65,7 +65,7 @@ const NextFixtureSection: React.FC = () => {
             {/* Date + League */}
             <div className="mb-8">
               <p className="text-xl md:text-2xl font-light text-sky-100">
-                {new Date(fixture.date).toLocaleDateString('en-US', {
+                {new Date(fixture.matchDate).toLocaleDateString('en-US', {
                   weekday: 'long',
                   day: 'numeric',
                   month: 'long',
@@ -74,7 +74,7 @@ const NextFixtureSection: React.FC = () => {
               </p>
               <p className="text-base md:text-lg text-cyan-200 font-medium">
                 Kick Off{' '}
-                {new Date(fixture.date).toLocaleTimeString([], {
+                {new Date(fixture.matchDate).toLocaleTimeString([], {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}{' '}
@@ -89,18 +89,18 @@ const NextFixtureSection: React.FC = () => {
                 <div className="text-center group w-full max-w-[200px]">
                   <div className="relative mb-4">
                     <div className="w-20 h-20 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl mx-auto">
-                       <Image
-                                     src={fixture.homeTeamLogo}
-                                     alt={`${fixture.homeTeam}'s logo`}
-                                     width={56}
-                                     height={56}
-                                     className="object-contain rounded-full border-2 border-sky-500"
-                                     priority
-                                     quality={85}
-                                     sizes="(max-width: 640px) 40px, 56px"
-                                
-                                     loading="eager"
-                                   />
+                      <Image
+                        src={fixture.homeTeamLogo}
+                        alt={`${fixture.homeTeam}'s logo`}
+                        width={56}
+                        height={56}
+                        className="object-contain rounded-full border-2 border-sky-500"
+                        priority
+                        quality={85}
+                        sizes="(max-width: 640px) 40px, 56px"
+
+                        loading="eager"
+                      />
                     </div>
                   </div>
                   <p className="font-bold text-lg">{fixture.homeTeam}</p>
@@ -122,18 +122,18 @@ const NextFixtureSection: React.FC = () => {
                 <div className="text-center group w-full max-w-[200px]">
                   <div className="relative mb-4">
                     <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center shadow-2xl mx-auto">
-                             <Image
-                                     src={fixture.awayTeamLogo}
-                                   alt={`${fixture.awayTeam}'s logo`}
-                                     width={56}
-                                     height={56}
-                                     className="object-contain rounded-full border-2 border-sky-500"
-                                     priority
-                                     quality={85}
-                                     sizes="(max-width: 640px) 40px, 56px"
-                                
-                                     loading="eager"
-                                   />
+                      <Image
+                        src={fixture.awayTeamLogo}
+                        alt={`${fixture.awayTeam}'s logo`}
+                        width={56}
+                        height={56}
+                        className="object-contain rounded-full border-2 border-sky-500"
+                        priority
+                        quality={85}
+                        sizes="(max-width: 640px) 40px, 56px"
+
+                        loading="eager"
+                      />
                     </div>
                   </div>
                   <p className="font-bold text-lg">{fixture.awayTeam}</p>
@@ -141,7 +141,7 @@ const NextFixtureSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Match Center Button */}
+            {/* Fixture Center Button */}
             <div className="flex justify-center">
               <button className="group relative px-10 py-4 bg-gradient-to-r from-sky-500 to-cyan-500 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-all">
                 <span className="relative z-10 flex items-center justify-center">

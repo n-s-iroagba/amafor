@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize  from '../config/database';
+import sequelize from '../config/database';
 
-export interface MatchImageAttributes {
+export interface FixtureImageAttributes {
   id: number;
   fixtureId: number;
   imageUrl: string;
@@ -10,9 +10,9 @@ export interface MatchImageAttributes {
   updatedAt?: Date;
 }
 
-export interface MatchImageCreationAttributes extends Optional<MatchImageAttributes, 'id'|'createdAt'|'updatedAt'> {}
+export interface FixtureImageCreationAttributes extends Optional<FixtureImageAttributes, 'id' | 'createdAt' | 'updatedAt'> { }
 
-class MatchImage extends Model<MatchImageAttributes, MatchImageCreationAttributes> implements MatchImageAttributes {
+class FixtureImage extends Model<FixtureImageAttributes, FixtureImageCreationAttributes> implements FixtureImageAttributes {
   public id!: number;
   public fixtureId!: number;
   public imageUrl!: string;
@@ -21,7 +21,7 @@ class MatchImage extends Model<MatchImageAttributes, MatchImageCreationAttribute
   public readonly updatedAt!: Date;
 }
 
-MatchImage.init(
+FixtureImage.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -59,4 +59,4 @@ MatchImage.init(
   }
 );
 
-export default MatchImage;
+export default FixtureImage;

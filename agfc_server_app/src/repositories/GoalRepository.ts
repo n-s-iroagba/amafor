@@ -15,13 +15,13 @@ export interface IGoalRepository {
   count(options?: any): Promise<number>;
   paginate(page: number, limit: number, options?: any): Promise<any>;
   exists(id: string): Promise<boolean>;
-  
+
   // Goal-specific methods
   findByFixtureId(fixtureId: string): Promise<Goal[]>;
   findByScorer(scorer: string): Promise<Goal[]>;
   findPenaltyGoals(): Promise<Goal[]>;
   findGoalsInTimeRange(minMinute?: number, maxMinute?: number): Promise<Goal[]>;
-  
+
   // Analytics and statistics
   getFixtureGoalCount(fixtureId: string): Promise<number>;
   getScorerStats(scorer: string): Promise<{
@@ -30,21 +30,25 @@ export interface IGoalRepository {
     averageMinute: number;
     fixturesScoredIn: number;
   }>;
-  
+
   getTopScorers(limit?: number): Promise<Array<{ scorer: string; totalGoals: number }>>;
-  getMatchTimeline(fixtureId: string): Promise<Goal[]>;
-  
+  getFixtureTimeline(fixtureId: string): Promise<Goal[]>;
+
   // Business logic
-  getMatchResultByGoals(fixtureId: string): Promise<{ homeGoals: number; awayGoals: number } | null>;
+  getFixtureResultByGoals(fixtureId: string): Promise<{ homeGoals: number; awayGoals: number } | null>;
   hasScoredInFixture(fixtureId: string, scorer: string): Promise<boolean>;
-  
+
   // Bulk operations
   bulkCreateForFixture(fixtureId: string, goals: GoalCreationAttributes[]): Promise<Goal[]>;
   deleteByFixtureId(fixtureId: string): Promise<number>;
-  
+
   // Search and filtering
   searchGoalsByScorer(query: string): Promise<Goal[]>;
   getGoalsByMinuteRange(fixtureId?: number): Promise<Record<string, number>>;
+
+  // Time-based goal lookups
+  getLateGoals(fixtureId?: number): Promise<Goal[]>;
+  getEarlyGoals(fixtureId?: number): Promise<Goal[]>;
 }
 export class GoalRepository extends BaseRepository<Goal> implements IGoalRepository {
   constructor() {
@@ -78,7 +82,7 @@ export class GoalRepository extends BaseRepository<Goal> implements IGoalReposit
   // 🔍 Find goals within a specific time range
   async findGoalsInTimeRange(minMinute?: number, maxMinute?: number): Promise<Goal[]> {
     const where: WhereOptions<GoalAttributes> = {};
-    
+
     if (minMinute !== undefined && maxMinute !== undefined) {
       where.minute = { [Op.between]: [minMinute, maxMinute] };
     } else if (minMinute !== undefined) {
@@ -150,7 +154,7 @@ export class GoalRepository extends BaseRepository<Goal> implements IGoalReposit
   }
 
   // 📅 Get match timeline (goals in chronological order)
-  async getMatchTimeline(fixtureId: string): Promise<Goal[]> {
+  async getFixtureTimeline(fixtureId: string): Promise<Goal[]> {
     return await this.findAll({
       where: { fixtureId },
       order: [['minute', 'ASC']],
@@ -163,14 +167,14 @@ export class GoalRepository extends BaseRepository<Goal> implements IGoalReposit
   }
 
   // ⚽ Get match result based on goals
-  async getMatchResultByGoals(fixtureId: string): Promise<{ homeGoals: number; awayGoals: number } | null> {
+  async getFixtureResultByGoals(fixtureId: string): Promise<{ homeGoals: number; awayGoals: number } | null> {
     const fixture = await Fixture.findByPk(fixtureId);
     if (!fixture) {
       return null;
     }
 
     const goals = await this.findByFixtureId(fixtureId);
-    
+
     // This assumes we have a way to determine if a goal is for home or away
     // You might need to adjust this based on your actual data structure
     let homeGoals = 0;
@@ -308,7 +312,7 @@ export class GoalRepository extends BaseRepository<Goal> implements IGoalReposit
     const where: WhereOptions<GoalAttributes> = {
       minute: { [Op.gte]: 80 }
     };
-    
+
     if (fixtureId) {
       where.fixtureId = fixtureId;
     }
@@ -324,7 +328,7 @@ export class GoalRepository extends BaseRepository<Goal> implements IGoalReposit
     const where: WhereOptions<GoalAttributes> = {
       minute: { [Op.lte]: 20 }
     };
-    
+
     if (fixtureId) {
       where.fixtureId = fixtureId;
     }
@@ -338,30 +342,30 @@ export class GoalRepository extends BaseRepository<Goal> implements IGoalReposit
   // 📈 Get goal statistics for a competition/season
   async getCompetitionStats(competition?: string): Promise<{
     totalGoals: number;
-    averageGoalsPerMatch: number;
+    averageGoalsPerFixture: number;
     totalPenalties: number;
-    mostGoalsInAMatch: number;
+    mostGoalsInAFixture: number;
   }> {
     // This would require joining with Fixture table
     // For simplicity, we'll return basic stats
-    
+
     const [totalGoals, totalPenalties] = await Promise.all([
       this.count(),
       this.count({ where: { isPenalty: true } })
     ]);
 
     const totalFixtures = await Fixture.count();
-    const averageGoalsPerMatch = totalFixtures > 0 ? totalGoals / totalFixtures : 0;
+    const averageGoalsPerFixture = totalFixtures > 0 ? totalGoals / totalFixtures : 0;
 
     // Find match with most goals (would need a more complex query)
     // For now, we'll use a placeholder
-    const mostGoalsInAMatch = 10; // This would need to be calculated
+    const mostGoalsInAFixture = 10; // This would need to be calculated
 
     return {
       totalGoals,
-      averageGoalsPerMatch: parseFloat(averageGoalsPerMatch.toFixed(2)),
+      averageGoalsPerFixture: parseFloat(averageGoalsPerFixture.toFixed(2)),
       totalPenalties,
-      mostGoalsInAMatch
+      mostGoalsInAFixture
     };
   }
 }

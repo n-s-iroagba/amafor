@@ -1,16 +1,16 @@
 // data/development/match-image.ts
-import { MatchImageAttributes } from "../../../models/MatchImage";
+import { FixtureImageAttributes } from "../../../models/FixtureImage";
 
 // IDs from previous steps
-// Note: Fixture ID in MatchImage model is defined as UUID in DB but referred to in interface
+// Note: Fixture ID in FixtureImage model is defined as UUID in DB but referred to in interface
 // Ensure the ID string matches exactly.
 const FIXTURE_ID = 'f1f1f1f1-f1f1-f1f1-f1f1-f1f1f1f1f1f1';
 
-export const developmentMatchImages: MatchImageAttributes[] = [
+export const developmentFixtureImages: FixtureImageAttributes[] = [
   {
     id: 1,
     fixtureId: FIXTURE_ID as any, // Type casting if interface expects number vs UUID string
-    imageUrl: 'https://placehold.co/800x600/1d3557/ffffff?text=Match+Kickoff',
+    imageUrl: 'https://placehold.co/800x600/1d3557/ffffff?text=Fixture+Kickoff',
     caption: 'The teams lining up before the kickoff.',
     createdAt: new Date(),
     updatedAt: new Date(),

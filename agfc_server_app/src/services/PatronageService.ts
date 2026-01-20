@@ -1,5 +1,6 @@
+import PatronSubscription from '@models/PatronSubscription';
 import { PatronSubscriptionRepository, UserRepository } from '../repositories';
-import { PatronSubscription } from '../models';
+
 import { structuredLogger, tracer } from '../utils';
 
 export class PatronageService {
@@ -35,7 +36,7 @@ export class PatronageService {
         await this.userRepo.update(userId, { isPatron: true, patronTier: tier });
 
         structuredLogger.business('PATRON_SUBSCRIBED', amount, userId, { tier });
-        
+
         return subscription;
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
@@ -49,15 +50,15 @@ export class PatronageService {
   public async checkSubscriptionStatus(userId: string): Promise<{ isActive: boolean; tier?: string }> {
     return tracer.startActiveSpan('service.PatronageService.checkSubscriptionStatus', async (span) => {
       try {
-        const sub = await this.patronRepo.findActiveByUserId(userId);
-        
+        const sub = await this.patronRepo.findActiveByPatronId(userId);
+
         if (!sub) return { isActive: false };
 
         // Logic to check if expired
         const now = new Date();
-        if (sub.nextBillingDate < now) {
-            // In a real system, we would trigger a renewal check here or mark as 'PAST_DUE'
-            return { isActive: false, tier: sub.tier }; 
+        if (sub.nextBillingDate && sub.nextBillingDate < now) {
+          // In a real system, we would trigger a renewal check here or mark as 'PAST_DUE'
+          return { isActive: false, tier: sub.tier };
         }
 
         return { isActive: true, tier: sub.tier };

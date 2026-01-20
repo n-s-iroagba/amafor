@@ -14,7 +14,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { ArticleStatus } from '@/features/articles/types';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
 
 
 const CustomEditor = dynamic(() => import('@/features/articles/components/Editor'), {
@@ -32,9 +32,10 @@ export default function NewArticlePage() {
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [status, setStatus] = useState<ArticleStatus>(ArticleStatus.DRAFT);
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+
+  const { post, isPending: loading } = usePost('/articles/amafor');
 
   // Validation function
   const validateForm = (): ValidationErrors => {
@@ -69,19 +70,12 @@ export default function NewArticlePage() {
       return;
     }
 
-    setLoading(true);
     try {
-      const res = await api.post(
-        '/articles/amafor',
-        {
-          title: title.trim(),
-          content: editorContent.trim(),
-          status,
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const res: any = await post({
+        title: title.trim(),
+        content: editorContent.trim(),
+        status,
+      });
 
       // Show success message based on status
       const successMessage =
@@ -92,15 +86,13 @@ export default function NewArticlePage() {
       // You can replace this with a proper toast notification
       alert(successMessage);
 
-      router.push(`/sports-admin/sport-articles/${res.data.id}`);
+      router.push(`/sports-admin/sport-articles/${res.id}`);
     } catch (err: any) {
       console.error(err);
       const errorMessage =
         err.response?.data?.message ||
         'Error creating article. Please try again.';
       setErrors({ general: errorMessage });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -185,11 +177,10 @@ export default function NewArticlePage() {
                     }
                   }}
                   placeholder="Enter a compelling article title..."
-                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.title
+                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.title
                       ? 'border-red-300 bg-red-50'
                       : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                    }`}
                   maxLength={200}
                 />
                 <div className="absolute right-3 top-3 text-xs text-gray-400">
@@ -228,9 +219,8 @@ export default function NewArticlePage() {
                     </span>
                   </div>
                   <ChevronDown
-                    className={`w-4 h-4 text-gray-400 transform transition-transform duration-200 ${
-                      showStatusDropdown ? 'rotate-180' : ''
-                    }`}
+                    className={`w-4 h-4 text-gray-400 transform transition-transform duration-200 ${showStatusDropdown ? 'rotate-180' : ''
+                      }`}
                   />
                 </button>
 
@@ -252,11 +242,10 @@ export default function NewArticlePage() {
                             setStatus(option.value);
                             setShowStatusDropdown(false);
                           }}
-                          className={`w-full px-4 py-3 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors duration-150 flex items-start gap-3 ${
-                            status === option.value
+                          className={`w-full px-4 py-3 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors duration-150 flex items-start gap-3 ${status === option.value
                               ? 'bg-sky-50 border-r-2 border-sky-500'
                               : ''
-                          }`}
+                            }`}
                         >
                           <IconComponent
                             className={`w-5 h-5 ${option.color} flex-shrink-0 mt-0.5`}
@@ -286,11 +275,10 @@ export default function NewArticlePage() {
                 Article Content <span className="text-red-500">*</span>
               </label>
               <div
-                className={`border rounded-xl overflow-hidden transition-all duration-200 ${
-                  errors.content
+                className={`border rounded-xl overflow-hidden transition-all duration-200 ${errors.content
                     ? 'border-red-300 bg-red-50'
                     : 'border-gray-300 hover:border-gray-400 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500'
-                }`}
+                  }`}
               >
                 <CustomEditor
                   value={editorContent}
@@ -318,7 +306,7 @@ export default function NewArticlePage() {
                 {editorContent.replace(/<[^>]*>/g, '').length} characters
               </div>
             </div>
-            
+
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
@@ -326,11 +314,10 @@ export default function NewArticlePage() {
                 type="button"
                 disabled={loading}
                 onClick={handleSubmit}
-                className={`flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 ${
-                  status === ArticleStatus.PUBLISHED
+                className={`flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 ${status === ArticleStatus.PUBLISHED
                     ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:ring-green-500'
                     : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:ring-amber-500'
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
               >

@@ -17,7 +17,7 @@ import {
 
 import { API_ROUTES } from '@/config/routes';
 import { RssFeedSourceCategory } from '@/shared/types';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
 
 // Updated interface to match your Sequelize model exactly
 interface RssFeedSource {
@@ -48,7 +48,8 @@ export default function NewRssFeedSource() {
 
   // UI state
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.FEEDS.CREATE);
 
   const validateForm = (): ValidationErrors => {
     const newErrors: ValidationErrors = {};
@@ -97,10 +98,8 @@ export default function NewRssFeedSource() {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      const response = await api.post(API_ROUTES.FEEDS.CREATE, {
+      await post({
         name: name.trim(),
         feedUrl: feedUrl.trim(),
         category,
@@ -113,8 +112,6 @@ export default function NewRssFeedSource() {
       setErrors({
         general: 'Network error. Please check your connection and try again.',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -134,101 +131,101 @@ export default function NewRssFeedSource() {
         break;
     }
   };
-const getCategoryInfo = (cat: RssFeedSourceCategory) => {
-  switch (cat) {
-    case RssFeedSourceCategory.SPORTS:
-      return {
-        icon: '⚽',
-        color: 'text-orange-600',
-        bg: 'bg-orange-50',
-        border: 'border-orange-200',
-        gradientFrom: 'from-orange-500',
-        gradientTo: 'to-orange-600',
-        hoverColor: 'hover:text-orange-600',
-        focusRing: 'focus:ring-orange-400',
-        decorationColor: 'decoration-orange-500',
-        clockColor: 'text-orange-500',
-        bgColor: 'bg-orange-500',
-      };
-    
-    case RssFeedSourceCategory.GENERAL:
-      return {
-        icon: '📰',
-        color: 'text-blue-600',
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        gradientFrom: 'from-blue-500',
-        gradientTo: 'to-blue-600',
-        hoverColor: 'hover:text-blue-600',
-        focusRing: 'focus:ring-blue-400',
-        decorationColor: 'decoration-blue-500',
-        clockColor: 'text-blue-500',
-        bgColor: 'bg-blue-500',
-      };
-    
-    // case RssFeedSourceCategory.BUSINESS:
-    //   return {
-    //     icon: '💼',
-    //     color: 'text-green-600',
-    //     bg: 'bg-green-50',
-    //     border: 'border-green-200',
-    //     gradientFrom: 'from-green-500',
-    //     gradientTo: 'to-green-600',
-    //     hoverColor: 'hover:text-green-600',
-    //     focusRing: 'focus:ring-green-400',
-    //     decorationColor: 'decoration-green-500',
-    //     clockColor: 'text-green-500',
-    //     bgColor: 'bg-green-500',
-    //   };
-    
-    // case RssFeedSourceCategory.:
-    //   return {
-    //     icon: '🎬',
-    //     color: 'text-purple-600',
-    //     bg: 'bg-purple-50',
-    //     border: 'border-purple-200',
-    //     gradientFrom: 'from-purple-500',
-    //     gradientTo: 'to-purple-600',
-    //     hoverColor: 'hover:text-purple-600',
-    //     focusRing: 'focus:ring-purple-400',
-    //     decorationColor: 'decoration-purple-500',
-    //     clockColor: 'text-purple-500',
-    //     bgColor: 'bg-purple-500',
-    //   };
-    
-    // case RssFeedSourceCategory.NIGERIA:
-    //   return {
-    //     icon: '🇳🇬',
-    //     color: 'text-green-600',
-    //     bg: 'bg-green-50',
-    //     border: 'border-green-200',
-    //     gradientFrom: 'from-green-500',
-    //     gradientTo: 'to-green-600',
-    //     hoverColor: 'hover:text-green-600',
-    //     focusRing: 'focus:ring-green-400',
-    //     decorationColor: 'decoration-green-500',
-    //     clockColor: 'text-green-500',
-    //     bgColor: 'bg-green-500',
-    //   };
-    
+  const getCategoryInfo = (cat: RssFeedSourceCategory) => {
+    switch (cat) {
+      case RssFeedSourceCategory.SPORTS:
+        return {
+          icon: '⚽',
+          color: 'text-orange-600',
+          bg: 'bg-orange-50',
+          border: 'border-orange-200',
+          gradientFrom: 'from-orange-500',
+          gradientTo: 'to-orange-600',
+          hoverColor: 'hover:text-orange-600',
+          focusRing: 'focus:ring-orange-400',
+          decorationColor: 'decoration-orange-500',
+          clockColor: 'text-orange-500',
+          bgColor: 'bg-orange-500',
+        };
 
-    
-    default:
-      return {
-        icon: '📰',
-        color: 'text-gray-600',
-        bg: 'bg-gray-50',
-        border: 'border-gray-200',
-        gradientFrom: 'from-gray-500',
-        gradientTo: 'to-gray-600',
-        hoverColor: 'hover:text-gray-600',
-        focusRing: 'focus:ring-gray-400',
-        decorationColor: 'decoration-gray-500',
-        clockColor: 'text-gray-500',
-        bgColor: 'bg-gray-500',
-      };
-  }
-};
+      case RssFeedSourceCategory.GENERAL:
+        return {
+          icon: '📰',
+          color: 'text-blue-600',
+          bg: 'bg-blue-50',
+          border: 'border-blue-200',
+          gradientFrom: 'from-blue-500',
+          gradientTo: 'to-blue-600',
+          hoverColor: 'hover:text-blue-600',
+          focusRing: 'focus:ring-blue-400',
+          decorationColor: 'decoration-blue-500',
+          clockColor: 'text-blue-500',
+          bgColor: 'bg-blue-500',
+        };
+
+      // case RssFeedSourceCategory.BUSINESS:
+      //   return {
+      //     icon: '💼',
+      //     color: 'text-green-600',
+      //     bg: 'bg-green-50',
+      //     border: 'border-green-200',
+      //     gradientFrom: 'from-green-500',
+      //     gradientTo: 'to-green-600',
+      //     hoverColor: 'hover:text-green-600',
+      //     focusRing: 'focus:ring-green-400',
+      //     decorationColor: 'decoration-green-500',
+      //     clockColor: 'text-green-500',
+      //     bgColor: 'bg-green-500',
+      //   };
+
+      // case RssFeedSourceCategory.:
+      //   return {
+      //     icon: '🎬',
+      //     color: 'text-purple-600',
+      //     bg: 'bg-purple-50',
+      //     border: 'border-purple-200',
+      //     gradientFrom: 'from-purple-500',
+      //     gradientTo: 'to-purple-600',
+      //     hoverColor: 'hover:text-purple-600',
+      //     focusRing: 'focus:ring-purple-400',
+      //     decorationColor: 'decoration-purple-500',
+      //     clockColor: 'text-purple-500',
+      //     bgColor: 'bg-purple-500',
+      //   };
+
+      // case RssFeedSourceCategory.NIGERIA:
+      //   return {
+      //     icon: '🇳🇬',
+      //     color: 'text-green-600',
+      //     bg: 'bg-green-50',
+      //     border: 'border-green-200',
+      //     gradientFrom: 'from-green-500',
+      //     gradientTo: 'to-green-600',
+      //     hoverColor: 'hover:text-green-600',
+      //     focusRing: 'focus:ring-green-400',
+      //     decorationColor: 'decoration-green-500',
+      //     clockColor: 'text-green-500',
+      //     bgColor: 'bg-green-500',
+      //   };
+
+
+
+      default:
+        return {
+          icon: '📰',
+          color: 'text-gray-600',
+          bg: 'bg-gray-50',
+          border: 'border-gray-200',
+          gradientFrom: 'from-gray-500',
+          gradientTo: 'to-gray-600',
+          hoverColor: 'hover:text-gray-600',
+          focusRing: 'focus:ring-gray-400',
+          decorationColor: 'decoration-gray-500',
+          clockColor: 'text-gray-500',
+          bgColor: 'bg-gray-500',
+        };
+    }
+  };
   const selectedCategoryInfo = getCategoryInfo(category);
 
   return (
@@ -288,11 +285,10 @@ const getCategoryInfo = (cat: RssFeedSourceCategory) => {
                   id="name"
                   value={name}
                   onChange={(e) => handleFieldChange('name', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.name
+                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.name
                       ? 'border-red-300 bg-red-50'
                       : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                    }`}
                   placeholder="Enter a descriptive name for this RSS feed source"
                   maxLength={255}
                 />
@@ -331,11 +327,10 @@ const getCategoryInfo = (cat: RssFeedSourceCategory) => {
                 id="feedUrl"
                 value={feedUrl}
                 onChange={(e) => handleFieldChange('feedUrl', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                  errors.feedUrl
+                className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.feedUrl
                     ? 'border-red-300 bg-red-50'
                     : 'border-gray-300 hover:border-gray-400'
-                }`}
+                  }`}
                 placeholder="https://example.com/rss.xml"
               />
               {errors.feedUrl && (
@@ -372,11 +367,10 @@ const getCategoryInfo = (cat: RssFeedSourceCategory) => {
                       key={cat}
                       type="button"
                       onClick={() => setCategory(cat)}
-                      className={`relative p-4 rounded-xl border-2 transition-all duration-200 text-left hover:shadow-sm ${
-                        isSelected
+                      className={`relative p-4 rounded-xl border-2 transition-all duration-200 text-left hover:shadow-sm ${isSelected
                           ? `${categoryInfo.border} ${categoryInfo.bg} shadow-sm`
                           : 'border-gray-200 hover:border-gray-300 bg-white'
-                      }`}
+                        }`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

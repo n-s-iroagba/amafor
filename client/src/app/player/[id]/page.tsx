@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { notFound, useParams } from 'next/navigation';
-import { Shirt, Calendar, MapPin} from 'lucide-react';
+import { Shirt, Calendar, MapPin } from 'lucide-react';
 
 import { API_ROUTES } from '@/config/routes';
 import { Player } from '@/features/player/types';
@@ -40,19 +40,20 @@ const PlayerPage: React.FC = () => {
     notFound();
   }
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | string) => {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    }).format(date);
+    }).format(new Date(date));
   };
 
-  const calculateAge = (dob: Date) => {
+  const calculateAge = (dob: Date | string) => {
     const today = new Date();
-    let age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+    const birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
     return age;

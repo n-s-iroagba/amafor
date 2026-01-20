@@ -15,7 +15,7 @@ import logger from '../utils/logger'
 
 import EmailService from './EmailService'
 import { PasswordService } from './PasswordService'
-import tokenService, { TokenService }  from './TokenService'
+import tokenService, { TokenService } from './TokenService'
 import { UserService } from './user.service'
 import { VerificationService } from './VerificationService'
 import UserRepository from '../repositories/UserRepository'
@@ -55,14 +55,14 @@ export class AuthService {
     } = data;
 
 
-  const userData = { username, email, password, confirmPassword };
-  const advertiser = { companyName, contactName, contact_email, contact_phone };
+    const userData = { username, email, password, confirmPassword };
+    const advertiser = { companyName, contactName, contact_email, contact_phone };
     try {
       logger.info('Sign up process started', { email: data.email })
 
       const hashedPassword = await this.passwordService.hashPassword(data.password)
       const existingUser = await this.userRepository.findUserByEmail(data.email)
-      if(existingUser){
+      if (existingUser) {
         throw new ConflictError('User with this email already exists .')
       }
       const user = await this.userRepository.createUser({
@@ -70,7 +70,7 @@ export class AuthService {
         password: hashedPassword,
         role: Role.ADVERTISER,
       })
-        new AdvertiserService().create({userId:user.id,...advertiser})
+      new AdvertiserService().create({ userId: user.id, ...advertiser })
       const response = await this.verificationService.intiateEmailVerificationProcess(user)
 
       logger.info('Sign up completed successfully', { userId: user.id })
@@ -92,9 +92,9 @@ export class AuthService {
         ...data,
         password: hashedPassword,
         role: Role.SPORTS_ADMIN,
-        isEmailVerified:false
+        isEmailVerified: false
       })
-   await this.verificationService.intiateEmailVerificationProcess(user)
+      await this.verificationService.intiateEmailVerificationProcess(user)
 
       logger.info('Sign up completed successfully', { userId: user.id })
       return user
@@ -114,7 +114,7 @@ export class AuthService {
         isEmailVerified: false,
         email: data.email
       })
-const response= await this.verificationService.intiateEmailVerificationProcess(user)
+      const response = await this.verificationService.intiateEmailVerificationProcess(user)
       logger.info('Sign up completed successfully', { userId: user.id })
       return response
     } catch (error) {
@@ -161,7 +161,7 @@ const response= await this.verificationService.intiateEmailVerificationProcess(u
       logger.info('Token refresh attempted')
 
       const { decoded } = this.tokenService.verifyToken(refreshToken, 'refresh')
-  
+
 
       const adminId = decoded.id
       if (!adminId) {
@@ -189,14 +189,14 @@ const response= await this.verificationService.intiateEmailVerificationProcess(u
       // const { decoded } = this.tokenService.verifyToken(data.verificationToken, 'email_verification')
       // console.log(decoded)
       // const userId = decoded?.AdminId ?? decoded?.userId
-      const user = await User.findOne({where:{verificationToken:data.verificationToken}})
+      const user = await User.findOne({ where: { verificationToken: data.verificationToken } })
 
       if (!user) {
         logger.warn('Invalid verification token provided')
         throw new BadRequestError('Unsuitable token')
       }
 
-    
+
       this.verificationService.validateVerificationCode(user, data.verificationCode)
       await this.userService.markUserAsVerified(user)
 
@@ -216,7 +216,7 @@ const response= await this.verificationService.intiateEmailVerificationProcess(u
   /**
    * Generates a new email verification code.
    */
-  async generateNewCode( token: string): Promise<string> {
+  async generateNewCode(token: string): Promise<string> {
     try {
       logger.info('New verification code generation requested')
       return await this.verificationService.regenerateVerificationCode(token)
@@ -303,8 +303,8 @@ const response= await this.verificationService.intiateEmailVerificationProcess(u
   // ----------------- helpers -----------------
 
   private async validatePassword(user: any, password: string): Promise<void> {
-    const isMatch = await this.passwordService.comparePasswords(password, user.password)
-    if (!isMatch) {
+    const isFixture = await this.passwordService.comparePasswords(password, user.password)
+    if (!isFixture) {
       logger.warn('Password validation failed', { userId: user.id })
       throw new BadRequestError('Invalid credentials', 'INVALID_CREDENTIALS')
     }

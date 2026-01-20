@@ -17,7 +17,7 @@ export interface ILineupRepository {
   count(options?: any): Promise<number>;
   paginate(page: number, limit: number, options?: any): Promise<any>;
   exists(id: string): Promise<boolean>;
-  
+
   // Lineup-specific methods
   findByFixtureId(fixtureId: string): Promise<Lineup[]>;
   findByPlayerId(playerId: string): Promise<Lineup[]>;
@@ -25,7 +25,7 @@ export interface ILineupRepository {
   findStarters(fixtureId: string): Promise<Lineup[]>;
   findSubstitutes(fixtureId: string): Promise<Lineup[]>;
   findCaptain(fixtureId: string): Promise<Lineup | null>;
-  
+
   // Analytics and statistics
   getPlayerAppearances(playerId: string): Promise<{ starts: number; subs: number; total: number }>;
   getFixtureLineupStats(fixtureId: string): Promise<{
@@ -34,20 +34,23 @@ export interface ILineupRepository {
     substitutes: number;
     byPosition: Record<string, number>;
   }>;
-  
+
   // Business logic
   updatePlayerPosition(fixtureId: string, playerId: string, position: string): Promise<boolean>;
   toggleStarterStatus(id: string): Promise<boolean>;
   setCaptain(fixtureId: string, playerId: string): Promise<boolean>;
-  
+
   // Bulk operations
   bulkCreateForFixture(fixtureId: string, lineups: LineupCreationAttributes[]): Promise<Lineup[]>;
   replaceFixtureLineup(fixtureId: string, lineups: LineupCreationAttributes[]): Promise<Lineup[]>;
   deleteByFixtureId(fixtureId: string): Promise<number>;
-  
+
   // Search and filtering
   searchLineupsByPlayerName(query: string): Promise<Lineup[]>;
   getLineupsByTeam(fixtureId: string, team?: 'home' | 'away'): Promise<Lineup[]>;
+
+  // Formation
+  getFormation(fixtureId: string): Promise<string>;
 }
 export class LineupRepository extends BaseRepository<Lineup> implements ILineupRepository {
   constructor() {
@@ -164,39 +167,39 @@ export class LineupRepository extends BaseRepository<Lineup> implements ILineupR
 
 
 
-// Alternative approach - directly use model.update
-async updatePlayerPosition(fixtureId: string, playerId: string, position: string): Promise<boolean> {
-  const [affectedCount] = await this.model.update(
-    { position },
-    { where: { fixtureId, playerId } }
-  );
-  return affectedCount > 0;
-}
-
-// 🔄 Toggle starter/substitute status
-async toggleStarterStatus(id: string): Promise<boolean> {
-  const lineup = await this.findById(id);
-  if (!lineup) {
-    return false;
+  // Alternative approach - directly use model.update
+  async updatePlayerPosition(fixtureId: string, playerId: string, position: string): Promise<boolean> {
+    const [affectedCount] = await this.model.update(
+      { position },
+      { where: { fixtureId, playerId } }
+    );
+    return affectedCount > 0;
   }
 
-  // Call parent class update method with correct signature
-  const [affectedCount] = await super.update(id, { 
-    isStarter: !lineup.isStarter 
-  });
-  
-  // Or use the model directly:
-  // const [affectedCount] = await this.model.update(
-  //   { isStarter: !lineup.isStarter },
-  //   { where: { id } }
-  // );
+  // 🔄 Toggle starter/substitute status
+  async toggleStarterStatus(id: string): Promise<boolean> {
+    const lineup = await this.findById(id);
+    if (!lineup) {
+      return false;
+    }
 
-  return affectedCount > 0;
-}
+    // Call parent class update method with correct signature
+    const [affectedCount] = await super.update(id, {
+      isStarter: !lineup.isStarter
+    });
+
+    // Or use the model directly:
+    // const [affectedCount] = await this.model.update(
+    //   { isStarter: !lineup.isStarter },
+    //   { where: { id } }
+    // );
+
+    return affectedCount > 0;
+  }
   // ⭐ Set captain for fixture
   async setCaptain(fixtureId: string, playerId: string): Promise<boolean> {
     const transaction = await this.model.sequelize!.transaction();
-    
+
     try {
       // Remove captain from current captain
       await this.model.update(
@@ -238,7 +241,7 @@ async toggleStarterStatus(id: string): Promise<boolean> {
   // 🔄 Replace entire fixture lineup
   async replaceFixtureLineup(fixtureId: string, lineups: LineupCreationAttributes[]): Promise<Lineup[]> {
     const transaction = await this.model.sequelize!.transaction();
-    
+
     try {
       // Delete existing lineups
       await this.deleteByFixtureId(fixtureId);
@@ -287,7 +290,7 @@ async toggleStarterStatus(id: string): Promise<boolean> {
     }
 
     const lineups = await this.findByFixtureId(fixtureId);
-    
+
     if (!team) {
       return lineups;
     }
@@ -297,7 +300,7 @@ async toggleStarterStatus(id: string): Promise<boolean> {
     const teamLineups = lineups.filter(lineup => {
       const player = lineup.player;
       if (!player) return false;
-      
+
       // Assuming Player has a team property
       const playerTeam = (player as any).team;
       if (team === 'home') {
@@ -335,55 +338,55 @@ async toggleStarterStatus(id: string): Promise<boolean> {
 
     return await super.create(data);
   }
-// 🎯 Override update to handle captain validation
-async update(id: string, data: Partial<LineupAttributes>): Promise<[number, Lineup[]]> {
-  // If setting captain, ensure only one captain per fixture
-  if (data.captain === true) {
-    const lineup = await this.findById(id);
-    if (lineup) {
-      const transaction = await this.model.sequelize!.transaction();
-      
-      try {
-        // Remove captain from current captain (excluding current record)
-        await this.model.update(
-          { captain: false },
-          { 
-            where: { 
-              fixtureId: lineup.fixtureId, 
-              captain: true,
-              id: { [Op.ne]: id } // Don't update the current record
-            }, 
-            transaction 
-          } as any
-        );
+  // 🎯 Override update to handle captain validation
+  async update(id: string, data: Partial<LineupAttributes>): Promise<[number, Lineup[]]> {
+    // If setting captain, ensure only one captain per fixture
+    if (data.captain === true) {
+      const lineup = await this.findById(id);
+      if (lineup) {
+        const transaction = await this.model.sequelize!.transaction();
 
-        // Update the current lineup
-        const [affectedCount, updatedRecords] = await this.model.update(
-          data,
-          { 
-            where: { id }, 
-            transaction,
-            returning: true 
-          } as any
-        );
+        try {
+          // Remove captain from current captain (excluding current record)
+          await this.model.update(
+            { captain: false },
+            {
+              where: {
+                fixtureId: lineup.fixtureId,
+                captain: true,
+                id: { [Op.ne]: id } // Don't update the current record
+              },
+              transaction
+            } as any
+          );
 
-        await transaction.commit();
-        return [affectedCount, updatedRecords as Lineup[]];
-      } catch (error) {
-        await transaction.rollback();
-        throw error;
+          // Update the current lineup
+          const [affectedCount, updatedRecords] = await this.model.update(
+            data,
+            {
+              where: { id },
+              transaction,
+              returning: true
+            } as any
+          );
+
+          await transaction.commit();
+          return [affectedCount, updatedRecords as Lineup[]];
+        } catch (error) {
+          await transaction.rollback();
+          throw error;
+        }
       }
     }
-  }
 
-  // For non-captain updates, use the base method
-  return await super.update(id, data);
-}
+    // For non-captain updates, use the base method
+    return await super.update(id, data);
+  }
 
   // 🔧 Get formation for fixture
   async getFormation(fixtureId: string): Promise<string> {
     const starters = await this.findStarters(fixtureId);
-    
+
     // Count players by position category
     const positionCounts: Record<string, number> = {
       'Defender': 0,

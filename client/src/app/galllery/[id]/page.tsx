@@ -3,17 +3,17 @@
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { 
-  Calendar, 
-  MapPin, 
-  Trophy, 
-  Images, 
+import {
+  Calendar,
+  MapPin,
+  Trophy,
+  Images,
   ChevronLeft,
   Download,
   Share2,
   Eye,
   Home,
- 
+
   AlertCircle,
   Loader2,
   Maximize2,
@@ -24,32 +24,32 @@ import {
   GlobeIcon
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
-import { FixtureWithLeague, MatchImage, FixtureStatus } from '@/features/fixture/types';
+import { FixtureWithLeague, FixtureImage, FixtureStatus } from '@/features/fixture/types';
 
 
 export default function FixtureGalleryPage() {
   const params = useParams();
   const router = useRouter();
   const fixtureId = params.id as string;
-  
+
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   // Fetch fixture details
-  const { 
-    data: fixture, 
-    loading: fixtureLoading, 
-    error: fixtureError 
+  const {
+    data: fixture,
+    loading: fixtureLoading,
+    error: fixtureError
   } = useGet<FixtureWithLeague>(`/api/fixtures/${fixtureId}`, {
     params: { include: 'league' }
   });
 
   // Fetch match images for this fixture
-  const { 
-    data: images, 
-    loading: imagesLoading, 
-    error: imagesError 
-  } = useGet<MatchImage[]>(`/api/fixtures/${fixtureId}/images`);
+  const {
+    data: images,
+    loading: imagesLoading,
+    error: imagesError
+  } = useGet<FixtureImage[]>(`/api/fixtures/${fixtureId}/images`);
 
   const loading = fixtureLoading || imagesLoading;
   const error = fixtureError || imagesError;
@@ -132,7 +132,7 @@ export default function FixtureGalleryPage() {
             <ChevronLeft className="h-5 w-5" />
             Back to Gallery
           </button>
-          
+
           <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-red-800 mb-2">
@@ -192,7 +192,7 @@ export default function FixtureGalleryPage() {
 
               <div className="flex items-center gap-2 text-slate-300 mb-2">
                 <Calendar className="h-5 w-5" />
-                <span>{formatDate(fixture.date)}</span>
+                <span>{formatDate(String(fixture.matchDate))}</span>
               </div>
               <div className="flex items-center gap-2 text-slate-300">
                 <MapPin className="h-5 w-5" />
@@ -200,7 +200,7 @@ export default function FixtureGalleryPage() {
               </div>
             </div>
 
-            {/* Match Score */}
+            {/* Fixture Score */}
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 min-w-[300px]">
               <div className="flex items-center justify-between mb-6">
                 <div className="text-center">
@@ -285,7 +285,7 @@ export default function FixtureGalleryPage() {
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                   <div className="relative aspect-[16/9] bg-slate-100">
                     {/* In real app, use next/image */}
-                    <div 
+                    <div
                       className="w-full h-full bg-cover bg-center"
                       style={{ backgroundImage: `url(${selectedImage.url})` }}
                     />
@@ -296,7 +296,7 @@ export default function FixtureGalleryPage() {
                       <Maximize2 className="h-5 w-5" />
                     </button>
                   </div>
-                  
+
                   <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                       <div>
@@ -333,17 +333,16 @@ export default function FixtureGalleryPage() {
                   >
                     <LeftIcon className="h-5 w-5" />
                   </button>
-                  
+
                   <div className="flex items-center gap-2">
                     {images.map((_, index) => (
                       <button
                         key={index}
                         onClick={() => setSelectedImageIndex(index)}
-                        className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                          index === selectedImageIndex
-                            ? 'bg-slate-800'
-                            : 'bg-slate-300 hover:bg-slate-400'
-                        }`}
+                        className={`w-2.5 h-2.5 rounded-full transition-colors ${index === selectedImageIndex
+                          ? 'bg-slate-800'
+                          : 'bg-slate-300 hover:bg-slate-400'
+                          }`}
                       />
                     ))}
                   </div>
@@ -361,20 +360,19 @@ export default function FixtureGalleryPage() {
 
             {/* Thumbnail Grid */}
             <div className="mb-12">
-              <h3 className="text-xl font-semibold text-slate-800 mb-6">All Match Photos</h3>
+              <h3 className="text-xl font-semibold text-slate-800 mb-6">All Fixture Photos</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {images.map((image, index) => (
                   <button
                     key={image.id}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`group relative aspect-square rounded-lg overflow-hidden transition-all ${
-                      index === selectedImageIndex
-                        ? 'ring-2 ring-slate-800 ring-offset-2'
-                        : 'hover:ring-2 hover:ring-slate-400'
-                    }`}
+                    className={`group relative aspect-square rounded-lg overflow-hidden transition-all ${index === selectedImageIndex
+                      ? 'ring-2 ring-slate-800 ring-offset-2'
+                      : 'hover:ring-2 hover:ring-slate-400'
+                      }`}
                   >
                     {/* In real app, use next/image */}
-                    <div 
+                    <div
                       className="w-full h-full bg-cover bg-center"
                       style={{ backgroundImage: `url(${image.url})` }}
                     />
@@ -431,12 +429,12 @@ export default function FixtureGalleryPage() {
           >
             ✕
           </button>
-          
+
           <div className="relative max-w-7xl max-h-[80vh]">
             {/* In real app, use next/image */}
-            <div 
+            <div
               className="w-full h-full bg-contain bg-center bg-no-repeat"
-              style={{ 
+              style={{
                 backgroundImage: `url(${selectedImage.url})`,
                 aspectRatio: '16/9'
               }}
@@ -458,7 +456,7 @@ export default function FixtureGalleryPage() {
           >
             <LeftIcon className="h-8 w-8" />
           </button>
-          
+
           <button
             onClick={() => setSelectedImageIndex(prev => Math.min(images?.length - 1 || 0, prev + 1))}
             disabled={selectedImageIndex === (images?.length || 1) - 1}

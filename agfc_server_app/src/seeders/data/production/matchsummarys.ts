@@ -1,6 +1,6 @@
-import { MatchSummaryAttributes } from '@models/MatchSummary';
+import { FixtureSummaryAttributes } from '@models/FixtureSummary';
 
-export const productionMatchSummarys: MatchSummaryAttributes[] = [
-  // Add essential production data for MatchSummary here
+export const productionFixtureSummarys: FixtureSummaryAttributes[] = [
+  // Add essential production data for FixtureSummary here
   // Only include critical data needed for production
 ];

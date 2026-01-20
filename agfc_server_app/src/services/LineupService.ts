@@ -4,6 +4,7 @@ import { Lineup, LineupAttributes, LineupCreationAttributes } from '@models/Line
 import { Fixture } from '@models/Fixture';
 import { Player } from '@models/Player';
 import logger from '@utils/logger';
+import { AppError } from '@utils/errors';
 
 export interface CreateLineupData extends Omit<LineupCreationAttributes, 'id' | 'createdAt' | 'updatedAt'> {
   fixtureId: string;
@@ -11,7 +12,7 @@ export interface CreateLineupData extends Omit<LineupCreationAttributes, 'id' | 
   jerseyNumber?: number;
 }
 
-export interface UpdateLineupData extends Partial<Omit<LineupAttributes, 'id' | 'createdAt' | 'updatedAt'>> {}
+export interface UpdateLineupData extends Partial<Omit<LineupAttributes, 'id' | 'createdAt' | 'updatedAt'>> { }
 
 export interface LineupAnalytics {
   fixtureId: string;
@@ -71,7 +72,7 @@ export class LineupService {
       // Validate position is valid for player's primary position
       const playerPrimaryPosition = (player as any).primaryPosition;
       if (playerPrimaryPosition && !this.isValidPositionTransition(playerPrimaryPosition, data.position)) {
-        logger.warn(`Player ${player.firstName} ${player.lastName} is playing out of position: ${data.position} (primary: ${playerPrimaryPosition})`);
+        logger.warn(`Player ${player.name} is playing out of position: ${data.position} (primary: ${playerPrimaryPosition})`);
       }
 
       const lineup = await this.repository.create(data);
@@ -149,7 +150,7 @@ export class LineupService {
     if (result === 0) {
       throw new AppError('Lineup entry not found', 404);
     }
-    
+
     logger.info('Lineup entry deleted', { lineupId: id });
   }
 
@@ -168,8 +169,8 @@ export class LineupService {
       ]);
 
       return {
-        starters: starters.map(s => s.toJSON() as LineupAttributes),
-        substitutes: substitutes.map(s => s.toJSON() as LineupAttributes),
+        starters: starters.map((s: Lineup) => s.toJSON() as LineupAttributes),
+        substitutes: substitutes.map((s: Lineup) => s.toJSON() as LineupAttributes),
         captain: captain ? captain.toJSON() as LineupAttributes : null,
         formation
       };
@@ -220,7 +221,7 @@ export class LineupService {
       logger.info('Captain set for fixture', {
         fixtureId,
         captainId: playerId,
-        captainName: `${player.firstName} ${player.lastName}`
+        captainName: player.name
       });
 
       return updatedLineup.toJSON() as LineupAttributes;
@@ -252,7 +253,7 @@ export class LineupService {
         positionCounts[position] = (positionCounts[position] || 0) + 1;
       });
 
-      const favoritePosition = Object.keys(positionCounts).reduce((a, b) => 
+      const favoritePosition = Object.keys(positionCounts).reduce((a, b) =>
         positionCounts[a] > positionCounts[b] ? a : b, 'Unknown'
       );
 
@@ -261,7 +262,7 @@ export class LineupService {
 
       return {
         playerId,
-        playerName: `${player.firstName} ${player.lastName}`,
+        playerName: player.name,
         totalAppearances: appearances.total,
         starts: appearances.starts,
         substituteAppearances: appearances.subs,
@@ -379,10 +380,11 @@ export class LineupService {
       ]);
 
       const captains = [];
-      if (captain && captain.player) {
+      const captainData = captain as any;
+      if (captainData && captainData.player) {
         captains.push({
-          playerId: captain.playerId,
-          playerName: `${captain.player.firstName} ${captain.player.lastName}`
+          playerId: captainData.playerId,
+          playerName: captainData.player.name
         });
       }
 
@@ -417,22 +419,14 @@ export class LineupService {
       'Forward': ['RW', 'LW', 'CF', 'ST']
     };
 
-    const primaryGroup = Object.keys(positionGroups).find(group => 
+    const primaryGroup = Object.keys(positionGroups).find(group =>
       positionGroups[group].includes(primary)
     );
 
-    const newGroup = Object.keys(positionGroups).find(group => 
+    const newGroup = Object.keys(positionGroups).find(group =>
       positionGroups[group].includes(newPosition)
     );
 
     return primaryGroup === newGroup;
-  }
-}
-
-// Helper class for application errors
-class AppError extends Error {
-  constructor(public message: string, public statusCode: number) {
-    super(message);
-    this.name = 'AppError';
   }
 }

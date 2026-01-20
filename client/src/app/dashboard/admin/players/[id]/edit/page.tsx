@@ -5,9 +5,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 import { API_ROUTES } from '@/config/routes';
-
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import Image from 'next/image';
-import api from '@/shared/lib/axios';
 import { uploadFile } from '@/shared/utils';
 
 interface Player {
@@ -26,7 +25,7 @@ interface Player {
 export default function EditPlayer() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id;
+  const id = params.id as string;
 
   // Form state
   const [name, setName] = useState('');
@@ -37,58 +36,42 @@ export default function EditPlayer() {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [nationality, setNationality] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
+  const { data: playerData, loading: isLoading } = useGet<Player>(
+    API_ROUTES.PLAYERS.VIEW(id)
+  );
+
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.PLAYERS.MUTATE(Number(id))
+  );
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch player data
+  // Populate form when data is fetched
   useEffect(() => {
-    if (id) {
-      fetchPlayer();
-    }
-  }, [id]);
+    if (playerData) {
+      setName(playerData.name);
+      setPosition(playerData.position);
+      setJerseyNumber(playerData.jerseyNumber.toString());
+      setImageUrl(playerData.imageUrl || '');
+      setImagePreview(playerData.imageUrl || '');
+      setBio(playerData.bio || '');
 
-  const fetchPlayer = async () => {
-    try {
-      setIsLoading(true);
-      const response = await api.get(API_ROUTES.PLAYERS.VIEW(id as string));
-      
-      if (response && response.data) {
-        const playerData: Player = response.data;
-        setName(playerData.name);
-        setPosition(playerData.position);
-        setJerseyNumber(playerData.jerseyNumber.toString());
-        setImageUrl(playerData.imageUrl || '');
-        setImagePreview(playerData.imageUrl || '');
-        setBio(playerData.bio || '');
-        
-        // Format date for input field
-        if (playerData.dateOfBirth) {
-          const date = new Date(playerData.dateOfBirth);
-          const formattedDate = date.toISOString().split('T')[0];
-          setDateOfBirth(formattedDate);
-        } else {
-          setDateOfBirth('');
-        }
-        
-        setNationality(playerData.nationality || '');
+      if (playerData.dateOfBirth) {
+        const date = new Date(playerData.dateOfBirth);
+        const formattedDate = date.toISOString().split('T')[0];
+        setDateOfBirth(formattedDate);
       } else {
-        setErrors({ general: 'Failed to load player data' });
+        setDateOfBirth('');
       }
-    } catch (error: any) {
-      console.error('Error fetching player:', error);
-      setErrors({ 
-        general: error.response?.data?.message || 'Failed to load player data. Please try again.' 
-      });
-    } finally {
-      setIsLoading(false);
+
+      setNationality(playerData.nationality || '');
     }
-  };
+  }, [playerData]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -140,10 +123,10 @@ export default function EditPlayer() {
       }, 200);
 
       const uploadedUrl = await uploadFile(selectedFile, 'image');
-      
+
       clearInterval(progressInterval);
       setUploadProgress(100);
-      
+
       return uploadedUrl;
     } catch (error) {
       console.error('Upload error:', error);
@@ -186,17 +169,15 @@ export default function EditPlayer() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
       let finalImageUrl = imageUrl;
-      
+
       // Upload new image if selected
       if (selectedFile) {
         finalImageUrl = await handleUpload();
       }
 
-      const response = await api.put(API_ROUTES.PLAYERS.MUTATE(Number(id)), {
+      const result = await put({
         name,
         position,
         jerseyNumber: parseInt(jerseyNumber),
@@ -206,7 +187,7 @@ export default function EditPlayer() {
         nationality: nationality || null,
       });
 
-      if (response) {
+      if (result) {
         router.push('/sports-admin/players');
         router.refresh();
       } else {
@@ -216,8 +197,6 @@ export default function EditPlayer() {
     } catch (error) {
       console.error('Error updating player:', error);
       setErrors(prev => ({ ...prev, submit: 'Failed to update player. Please try again.' }));
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -254,7 +233,7 @@ export default function EditPlayer() {
             <label className="block text-sm font-medium text-sky-700 mb-2">
               Player Photo
             </label>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 items-start">
               {/* Image Preview */}
               <div className="flex-shrink-0">
@@ -277,12 +256,12 @@ export default function EditPlayer() {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Upload Progress */}
                 {isUploading && (
                   <div className="mt-2">
                     <div className="w-full bg-sky-200 rounded-full h-2">
-                      <div 
+                      <div
                         className="bg-sky-600 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
@@ -303,7 +282,7 @@ export default function EditPlayer() {
                   accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                   className="hidden"
                 />
-                
+
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -313,7 +292,7 @@ export default function EditPlayer() {
                   >
                     Change Image
                   </button>
-                  
+
                   {(imagePreview || imageUrl) && (
                     <button
                       type="button"
@@ -325,13 +304,13 @@ export default function EditPlayer() {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="text-xs text-sky-600">
                   <p>• Supported formats: JPEG, PNG, WebP, GIF</p>
                   <p>• Maximum file size: 5MB</p>
                   <p>• Recommended: Square aspect ratio, 500x500px or larger</p>
                 </div>
-                
+
                 {errors.image && (
                   <p className="text-sm text-red-600">{errors.image}</p>
                 )}
@@ -353,9 +332,8 @@ export default function EditPlayer() {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.name ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter player name"
               />
               {errors.name && (
@@ -374,9 +352,8 @@ export default function EditPlayer() {
                 id="position"
                 value={position}
                 onChange={(e) => setPosition(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.position ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.position ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               >
                 <option value="">Select position</option>
                 <option value="Goalkeeper">Goalkeeper</option>
@@ -405,9 +382,8 @@ export default function EditPlayer() {
                 onChange={(e) => setJerseyNumber(e.target.value)}
                 min="1"
                 max="99"
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.jerseyNumber ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.jerseyNumber ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter jersey number"
               />
               {errors.jerseyNumber && (
@@ -450,7 +426,7 @@ export default function EditPlayer() {
               className="mt-1 block w-full rounded-md border border-sky-300 p-2 text-sm sm:text-base shadow-sm focus:border-sky-500 focus:ring-sky-500"
             />
           </div>
-          
+
           <div>
             <label
               htmlFor="bio"

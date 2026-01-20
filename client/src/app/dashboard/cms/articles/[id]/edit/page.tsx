@@ -17,7 +17,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { ArticleStatus } from '@/features/articles/types';
-import api from '@/shared/lib/axios';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
 
 const CustomEditor = dynamic(() => import('@/features/articles/components/Editor'), {
@@ -44,13 +44,14 @@ export default function EditArticlePage() {
   const { id } = useParams();
   const router = useRouter();
 
-  const [article, setArticle] = useState<Article | null>(null);
+  const { data: article, loading, error: fetchError, refetch } = useGet<Article>(
+    `/articles/${id}`
+  );
+  const { put, isPending: updating } = usePut(`/articles/${id}`);
+
   const [title, setTitle] = useState('');
   const [editorContent, setEditorContent] = useState('');
   const [status, setStatus] = useState<ArticleStatus>(ArticleStatus.DRAFT);
-  const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
-  const [error, setError] = useState('');
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
@@ -62,9 +63,17 @@ export default function EditArticlePage() {
     ArticleStatus.DRAFT
   );
 
+  // Initialize form when article loads
   useEffect(() => {
-    if (id) fetchArticle();
-  }, [id]);
+    if (article) {
+      setTitle(article.title);
+      setEditorContent(article.content);
+      setStatus(article.status);
+      setOriginalTitle(article.title);
+      setOriginalContent(article.content);
+      setOriginalStatus(article.status);
+    }
+  }, [article]);
 
   // Track changes
   useEffect(() => {
@@ -80,30 +89,6 @@ export default function EditArticlePage() {
     originalContent,
     originalStatus,
   ]);
-
-  const fetchArticle = async () => {
-    try {
-      setError('');
-      setLoading(true);
-      const res = await api.get(`/articles/${id}`);
-      const fetchedArticle = res.data;
-
-      setArticle(fetchedArticle);
-      setTitle(fetchedArticle.title);
-      setEditorContent(fetchedArticle.content);
-      setStatus(fetchedArticle.status);
-
-      // Store original values
-      setOriginalTitle(fetchedArticle.title);
-      setOriginalContent(fetchedArticle.content);
-      setOriginalStatus(fetchedArticle.status);
-    } catch (err: any) {
-      console.error('Error fetching article:', err);
-      setError(err.response?.data?.message || 'Failed to load article.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Validation function
   const validateForm = (): ValidationErrors => {
@@ -139,20 +124,13 @@ export default function EditArticlePage() {
       return;
     }
 
-    setUpdating(true);
     try {
-      const res = await api.put(
-        `/articles/${id}`,
-        {
-          ...article,
-          title: title.trim(),
-          content: editorContent.trim(),
-          status,
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      await put({
+        ...article,
+        title: title.trim(),
+        content: editorContent.trim(),
+        status,
+      });
 
       // Update original values to reflect the saved state
       setOriginalTitle(title);
@@ -173,8 +151,6 @@ export default function EditArticlePage() {
         err.response?.data?.message ||
         'Error updating article. Please try again.';
       setErrors({ general: errorMessage });
-    } finally {
-      setUpdating(false);
     }
   };
 
@@ -225,7 +201,7 @@ export default function EditArticlePage() {
   }
 
   // Error state
-  if (error) {
+  if (fetchError) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -235,10 +211,10 @@ export default function EditArticlePage() {
               <h2 className="text-xl font-semibold text-gray-900 mb-2">
                 Error Loading Article
               </h2>
-              <p className="text-gray-600 mb-6">{error}</p>
+              <p className="text-gray-600 mb-6">{String(fetchError)}</p>
               <div className="space-x-4">
                 <button
-                  onClick={fetchArticle}
+                  onClick={() => refetch()}
                   className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-200 inline-flex items-center gap-2"
                 >
                   <RefreshCw className="w-4 h-4" />
@@ -355,11 +331,10 @@ export default function EditArticlePage() {
                     }
                   }}
                   placeholder="Enter article title..."
-                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.title
+                  className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.title
                       ? 'border-red-300 bg-red-50'
                       : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                    }`}
                   maxLength={200}
                 />
                 <div className="absolute right-3 top-3 text-xs text-gray-400">
@@ -398,9 +373,8 @@ export default function EditArticlePage() {
                     </span>
                   </div>
                   <ChevronDown
-                    className={`w-4 h-4 text-gray-400 transform transition-transform duration-200 ${
-                      showStatusDropdown ? 'rotate-180' : ''
-                    }`}
+                    className={`w-4 h-4 text-gray-400 transform transition-transform duration-200 ${showStatusDropdown ? 'rotate-180' : ''
+                      }`}
                   />
                 </button>
 
@@ -422,11 +396,10 @@ export default function EditArticlePage() {
                             setStatus(option.value);
                             setShowStatusDropdown(false);
                           }}
-                          className={`w-full px-4 py-3 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors duration-150 flex items-start gap-3 ${
-                            status === option.value
+                          className={`w-full px-4 py-3 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none transition-colors duration-150 flex items-start gap-3 ${status === option.value
                               ? 'bg-sky-50 border-r-2 border-sky-500'
                               : ''
-                          }`}
+                            }`}
                         >
                           <IconComponent
                             className={`w-5 h-5 ${option.color} flex-shrink-0 mt-0.5`}
@@ -456,11 +429,10 @@ export default function EditArticlePage() {
                 Article Content <span className="text-red-500">*</span>
               </label>
               <div
-                className={`border rounded-xl overflow-hidden transition-all duration-200 ${
-                  errors.content
+                className={`border rounded-xl overflow-hidden transition-all duration-200 ${errors.content
                     ? 'border-red-300 bg-red-50'
                     : 'border-gray-300 hover:border-gray-400 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500'
-                }`}
+                  }`}
               >
                 <CustomEditor
                   value={editorContent}
@@ -495,11 +467,10 @@ export default function EditArticlePage() {
                 type="button"
                 disabled={updating || !hasChanges}
                 onClick={handleUpdate}
-                className={`flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 ${
-                  status === ArticleStatus.PUBLISHED
+                className={`flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 flex items-center justify-center gap-2 ${status === ArticleStatus.PUBLISHED
                     ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 focus:ring-green-500'
                     : 'bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 focus:ring-amber-500'
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
                 whileHover={{ scale: updating || !hasChanges ? 1 : 1.02 }}
                 whileTap={{ scale: updating || !hasChanges ? 1 : 0.98 }}
               >

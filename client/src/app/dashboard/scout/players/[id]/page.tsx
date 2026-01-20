@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 
 
 export default function ScoutPlayerDetail() {
-  const {data:players} = useGet('')
+  const { data: players } = useGet('')
   const { id } = useParams();
   const player = players.find(p => p.id === id) || players[0];
   const [isGenerating, setIsGenerating] = useState(false);
@@ -47,7 +47,7 @@ export default function ScoutPlayerDetail() {
               <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
                 REQUEST FULL DOSSIER
               </button>
-              <button 
+              <button
                 onClick={handleGenerateReport}
                 disabled={isGenerating}
                 className="sky-button flex items-center space-x-3 text-[10px] tracking-widest disabled:opacity-50"
@@ -82,7 +82,7 @@ export default function ScoutPlayerDetail() {
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
-                  { label: 'Match Fitness', value: '94%', trend: '+2%' },
+                  { label: 'Fixture Fitness', value: '94%', trend: '+2%' },
                   { label: 'Passing Accuracy', value: '82%', trend: '-1%' },
                   { label: 'Top Speed', value: '33.2 km/h', trend: '+0.4' },
                   { label: 'Tackles Won', value: '68%', trend: '+5%' }
@@ -129,8 +129,8 @@ export default function ScoutPlayerDetail() {
             <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white sticky top-32 relative">
               <img src={player.imageUrl} className="w-full h-full object-cover" alt={player.name} />
               <div className="absolute inset-x-0 bottom-0 p-10 bg-gradient-to-t from-black via-black/40 to-transparent">
-                 <h3 className="text-2xl text-white font-black mb-2 uppercase tracking-tight">{player.name}</h3>
-                 <p className="text-[#87CEEB] text-xs font-black uppercase tracking-widest">{player.position} | #{player.jerseyNumber}</p>
+                <h3 className="text-2xl text-white font-black mb-2 uppercase tracking-tight">{player.name}</h3>
+                <p className="text-[#87CEEB] text-xs font-black uppercase tracking-widest">{player.position} | #{player.jerseyNumber}</p>
               </div>
             </div>
           </aside>

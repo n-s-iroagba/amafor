@@ -27,7 +27,6 @@
     ],
     "types": [
       "node",
-      "web-vitals",
       "jest"
     ],
     "target": "ES2017",

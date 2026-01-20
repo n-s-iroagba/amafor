@@ -3,7 +3,7 @@ import { AdvertiserAttributes } from "../../../models/Advertiser";
 
 export const developmentAdvertisers: AdvertiserAttributes[] = [
   {
-    // Matches the advertiserId used in developmentAdCampaigns
+    // Fixturees the advertiserId used in developmentAdCampaigns
     id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
     companyName: 'TopMedia Agency',
     contactPerson: 'Chinedu Obi',

@@ -2,7 +2,7 @@ import { FindOptions, Op } from 'sequelize';
 import { Fixture, FixtureAttributes, FixtureCreationAttributes, FixtureStatus, ArchiveStatus } from '@models/Fixture';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
-import  logger  from '@utils/logger';
+import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
 
 export interface FixtureFilterOptions {
@@ -24,13 +24,13 @@ export class FixtureRepository extends BaseRepository<Fixture> {
   async createWithAudit(data: FixtureCreationAttributes, auditData: any): Promise<Fixture> {
     return tracer.startActiveSpan('repository.Fixture.createWithAudit', async (span) => {
       const transaction = await Fixture.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('homeTeam', data.homeTeam);
         span.setAttribute('awayTeam', data.awayTeam);
-        
+
         const fixture = await this.create(data, { transaction });
-        
+
         // Create audit log
         await this.auditLogRepository.create({
           userId: auditData.userId,
@@ -54,7 +54,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         return fixture;
       } catch (error) {
         await transaction.rollback();
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error creating fixture with audit', { error, data });
         throw error;
@@ -67,17 +67,17 @@ export class FixtureRepository extends BaseRepository<Fixture> {
   async updateWithAudit(id: string, data: Partial<FixtureAttributes>, auditData: any): Promise<Fixture | null> {
     return tracer.startActiveSpan('repository.Fixture.updateWithAudit', async (span) => {
       const transaction = await Fixture.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('id', id);
-        
+
         const fixture = await this.findById(id, { transaction });
         if (!fixture) {
           throw new Error('Fixture not found');
         }
 
         const oldValue = fixture.toJSON();
-        
+
         // Update fixture
         await fixture.update(
           {
@@ -86,9 +86,9 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           },
           { transaction }
         );
-        
+
         // Get changes
-        const changes = (Object.keys(data)as Array<keyof FixtureAttributes>)
+        const changes = (Object.keys(data) as Array<keyof FixtureAttributes>)
           .filter(key => fixture.get(key) !== oldValue[key])
           .map(key => ({
             field: key,
@@ -117,7 +117,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         return fixture;
       } catch (error) {
         await transaction.rollback();
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture with audit: ${id}`, { error, data });
         throw error;
@@ -133,16 +133,16 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('filters', JSON.stringify(filters));
 
         const where: any = {};
-        
+
         // Apply filters
         if (filters.status) {
           where.status = filters.status;
         }
-        
+
         if (filters.competition) {
           where.competition = filters.competition;
         }
-        
+
         if (filters.dateFrom || filters.dateTo) {
           where.matchDate = {};
           if (filters.dateFrom) {
@@ -152,7 +152,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
             where.matchDate[Op.lte] = filters.dateTo;
           }
         }
-        
+
         if (filters.search) {
           where[Op.or] = [
             { homeTeam: { [Op.like]: `%${filters.search}%` } },
@@ -180,7 +180,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           };
         }
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding fixtures with filters', { error, filters });
         throw error;
@@ -194,7 +194,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
     return tracer.startActiveSpan('repository.Fixture.findUpcoming', async (span) => {
       try {
         span.setAttribute('limit', limit);
-        
+
         const fixtures = await this.findAll({
           where: {
             status: FixtureStatus.SCHEDULED,
@@ -207,7 +207,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('count', fixtures.length);
         return fixtures;
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding upcoming fixtures', { error, limit });
         throw error;
@@ -221,7 +221,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
     return tracer.startActiveSpan('repository.Fixture.findRecentResults', async (span) => {
       try {
         span.setAttribute('limit', limit);
-        
+
         const fixtures = await this.findAll({
           where: {
             status: FixtureStatus.COMPLETED
@@ -233,7 +233,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('count', fixtures.length);
         return fixtures;
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding recent results', { error, limit });
         throw error;
@@ -248,7 +248,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
       try {
         span.setAttribute('id', id);
         span.setAttribute('isHome', isHome);
-        
+
         const fixture = await this.findById(id);
         if (!fixture) {
           throw new Error('Fixture not found');
@@ -263,7 +263,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture lineup: ${id}`, { error, lineupData, isHome });
         throw error;
@@ -279,7 +279,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('id', id);
         span.setAttribute('homeScore', homeScore);
         span.setAttribute('awayScore', awayScore);
-        
+
         const updateData: Partial<FixtureAttributes> = {
           homeScore,
           awayScore,
@@ -288,7 +288,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture score: ${id}`, { error, homeScore, awayScore });
         throw error;
@@ -298,13 +298,13 @@ export class FixtureRepository extends BaseRepository<Fixture> {
     });
   }
 
-  async updateArchiveStatus(id: string, archiveStatus: ArchiveStatus, auditData: any,availableAt?: Date): Promise<Fixture | null> {
+  async updateArchiveStatus(id: string, archiveStatus: ArchiveStatus, auditData: any, availableAt?: Date): Promise<Fixture | null> {
     return tracer.startActiveSpan('repository.Fixture.updateArchiveStatus', async (span) => {
       try {
         span.setAttribute('id', id);
         span.setAttribute('archiveStatus', archiveStatus);
         if (availableAt) span.setAttribute('availableAt', availableAt.toISOString());
-        
+
         const updateData: Partial<FixtureAttributes> = {
           archiveStatus,
           ...(availableAt && { availableAt })
@@ -312,7 +312,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         return await this.updateWithAudit(id, updateData, auditData);
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error(`Error updating fixture archive status: ${id}`, { error, archiveStatus, availableAt });
         throw error;
@@ -322,8 +322,8 @@ export class FixtureRepository extends BaseRepository<Fixture> {
     });
   }
 
-  async findMatchArchives(filters: FixtureFilterOptions = {}, pagination?: { page: number; limit: number }): Promise<{ data: Fixture[]; total: number; page: number; totalPages: number }> {
-    return tracer.startActiveSpan('repository.Fixture.findMatchArchives', async (span) => {
+  async findFixtureArchives(filters: FixtureFilterOptions = {}, pagination?: { page: number; limit: number }): Promise<{ data: Fixture[]; total: number; page: number; totalPages: number }> {
+    return tracer.startActiveSpan('repository.Fixture.findFixtureArchives', async (span) => {
       try {
         span.setAttribute('filters', JSON.stringify(filters));
 
@@ -331,12 +331,12 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           archiveStatus: ArchiveStatus.AVAILABLE,
           status: FixtureStatus.COMPLETED
         };
-        
+
         // Apply filters
         if (filters.competition) {
           where.competition = filters.competition;
         }
-        
+
         if (filters.dateFrom || filters.dateTo) {
           where.matchDate = {};
           if (filters.dateFrom) {
@@ -365,7 +365,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           };
         }
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding match archives', { error, filters });
         throw error;
@@ -385,21 +385,21 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
         // This is a simplified implementation
         // In production, you would have a proper league table model or complex query
-        
+
         const where: any = {
           status: FixtureStatus.COMPLETED
         };
-        
+
         if (competition) {
           where.competition = competition;
         }
-        
+
         // Filter by season if provided (format: YYYY-YYYY)
         if (season) {
           const [startYear, endYear] = season.split('-').map(Number);
           const startDate = new Date(startYear, 6, 1); // July 1st of start year
           const endDate = new Date(endYear, 5, 30); // June 30th of end year
-          
+
           where.matchDate = {
             [Op.between]: [startDate, endDate]
           };
@@ -416,7 +416,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('teams', leagueTable.teams?.length || 0);
         return leagueTable;
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting league table', { error, season, competition });
         throw error;
@@ -431,7 +431,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
 
     fixtures.forEach(fixture => {
       const { homeTeam, awayTeam, homeScore, awayScore } = fixture;
-      
+
       // Initialize teams if not exists
       if (!teams[homeTeam]) {
         teams[homeTeam] = this.initializeTeamStats(homeTeam);
@@ -578,7 +578,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
           byCompetition: byCompetitionMap
         };
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error getting fixture dashboard stats', { error });
         throw error;
@@ -609,7 +609,7 @@ export class FixtureRepository extends BaseRepository<Fixture> {
         span.setAttribute('processed', fixtures.length);
         logger.info(`Processed ${fixtures.length} fixture archives`);
       } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error processing fixture archives', { error });
         throw error;

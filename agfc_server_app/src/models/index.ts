@@ -18,12 +18,12 @@ import ThirdPartyArticle from './ThirdPartyArticle';
 import AcademyStaff from './AcademyStaff';
 import Coach from './Coach';
 
-// Match & Team
+// Fixture & Team
 import Fixture from './Fixture';
 import FixtureStatistics from './FixtureStatistics'; // Added
 import Goal from './Goal';
 import Lineup from './Lineup';
-import MatchImage from './MatchImage';
+import FixtureImage from './FixtureImage';
 
 import LeagueStatistics from './LeagueStatistics';
 import Player from './Player';
@@ -47,7 +47,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Goal.belongsTo(Fixture, {
     foreignKey: 'fixtureId',
     as: 'goalFixture',
@@ -61,7 +61,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Lineup.belongsTo(Fixture, {
     foreignKey: 'fixtureId',
     as: 'fixture',
@@ -69,14 +69,14 @@ export async function setupAssociations(): Promise<void> {
     onUpdate: 'CASCADE'
   });
 
-  Fixture.hasMany(MatchImage, {
+  Fixture.hasMany(FixtureImage, {
     foreignKey: 'fixtureId',
     as: 'images',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
-  MatchImage.belongsTo(Fixture, {
+
+  FixtureImage.belongsTo(Fixture, {
     foreignKey: 'fixtureId',
     as: 'imageFixture',
     onDelete: 'CASCADE',
@@ -107,14 +107,14 @@ export async function setupAssociations(): Promise<void> {
     onUpdate: 'CASCADE'
   });
 
-  // Relation to Article (Match Report)
+  // Relation to Article (Fixture Report)
   Article.hasOne(Fixture, {
     foreignKey: 'matchReportArticleId',
     as: 'matchReportArticle',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Fixture.belongsTo(Article, {
     foreignKey: 'matchReportArticleId',
     as: 'matchReportArticle',
@@ -129,14 +129,14 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   League.hasMany(LeagueStatistics, {
     foreignKey: 'leagueId',
     as: 'teamStatistics',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   LeagueStatistics.belongsTo(League, {
     foreignKey: 'leagueId',
     as: 'league',
@@ -166,7 +166,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Lineup.belongsTo(Player, {
     foreignKey: 'playerId',
     as: 'player',
@@ -210,7 +210,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   PatronSubscription.belongsTo(Patron, {
     foreignKey: 'patronId',
     as: 'patron',
@@ -224,7 +224,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Payment.belongsTo(PatronSubscription, {
     foreignKey: 'subscriptionId',
     as: 'subscription',
@@ -239,7 +239,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   AdCampaign.belongsTo(Advertiser, {
     foreignKey: 'advertiserId',
     as: 'advertiser',
@@ -253,7 +253,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   AdCreative.belongsTo(AdCampaign, {
     foreignKey: 'campaignId',
     as: 'campaign',
@@ -267,7 +267,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Payment.belongsTo(AdCampaign, {
     foreignKey: 'adCampaignId',
     as: 'adCampaign',
@@ -281,7 +281,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   AdCreative.belongsTo(AdZones, {
     foreignKey: 'zoneId',
     as: 'zone',
@@ -296,7 +296,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   Article.belongsTo(User, {
     foreignKey: 'authorId',
     as: 'author',
@@ -310,7 +310,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   AuditLog.belongsTo(User, {
     foreignKey: 'userId',
     as: 'user',
@@ -324,7 +324,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   SystemNotification.belongsTo(User, {
     foreignKey: 'userId',
     as: 'user',
@@ -368,7 +368,7 @@ export async function setupAssociations(): Promise<void> {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
-  
+
   ThirdPartyArticle.belongsTo(RssFeedSource, {
     foreignKey: 'sourceId',
     as: 'source',
@@ -403,9 +403,9 @@ export interface LeagueAssociations {
 export const syncDatabase = async (force: boolean = false) => {
   try {
     await setupAssociations()
-    
+
     await sequelize.sync({ force });
-     
+
     console.log('✅ Database synchronized successfully');
   } catch (error) {
     console.error('❌ Database synchronization failed:', error);

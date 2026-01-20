@@ -17,7 +17,7 @@
 
 📄 non-functional-requirements.json # Performance budgets (LCP < 2.5s) and SEO rules.
 
-📄 domain-glossary.json # Project terminology (e.g., "Fixture" vs "Match").
+📄 domain-glossary.json # Project terminology (e.g., "Fixture" vs "Fixture").
 
 📄 compliance-constraints.json # ISO/GDPR rules (e.g., "Cookie banner requirements").
 
@@ -107,7 +107,7 @@
 
 📄 data-transformation-layer.json # Adapters to format API data for UI.
 
-📄 websocket-events.json # Real-time event definitions (Match updates).
+📄 websocket-events.json # Real-time event definitions (Fixture updates).
 
 📂 mock-fixtures/ (The Fake Data)
 

@@ -1,6 +1,6 @@
-import { MatchImageAttributes } from '@models/MatchImage';
+import { FixtureImageAttributes } from '@models/FixtureImage';
 
-export const productionMatchImages: MatchImageAttributes[] = [
-  // Add essential production data for MatchImage here
+export const productionFixtureImages: FixtureImageAttributes[] = [
+  // Add essential production data for FixtureImage here
   // Only include critical data needed for production
 ];

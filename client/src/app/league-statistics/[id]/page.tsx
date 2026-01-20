@@ -7,7 +7,7 @@ import {
   Trophy,
   TrendingUp,
   Target,
- 
+
   ChevronLeft,
   ChevronRight,
   Download,
@@ -16,20 +16,21 @@ import {
   Loader2,
   AlertCircle,
   Calendar,
- 
+
   Shield,
   Star,
-  
+
   BarChart,
   Users as UsersIcon,
   Clock,
   Activity
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
-import { League} from '@/features/league/types';
+import { League } from '@/features/league/types';
 import { LeagueTableProps } from '@/features/league-statistics/types';
 
 interface LeagueDetails extends League {
+  logo?: string;
   table: LeagueTableProps[];
   statistics: {
     topScorer: { name: string; team: string; goals: number };
@@ -44,6 +45,7 @@ interface LeagueDetails extends League {
     homeScore: number;
     awayScore: number;
     date: string;
+    matchDate?: string;
   }>;
 }
 
@@ -51,17 +53,17 @@ export default function LeagueTablePage() {
   const params = useParams();
   const router = useRouter();
   const leagueId = params.id as string;
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<string>('position');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
   // Fetch league details with table
-  const { 
-    data: league, 
-    loading, 
-    error 
+  const {
+    data: league,
+    loading,
+    error
   } = useGet<LeagueDetails>(`/api/leagues/${leagueId}/table`, {
     params: {
       include: 'table,statistics,recentFixtures'
@@ -75,7 +77,7 @@ export default function LeagueTablePage() {
 
   const sortedTable = [...filteredTable].sort((a, b) => {
     let comparison = 0;
-    
+
     switch (sortBy) {
       case 'position':
         comparison = a.position - b.position;
@@ -107,7 +109,7 @@ export default function LeagueTablePage() {
       default:
         comparison = a.position - b.position;
     }
-    
+
     return sortDirection === 'asc' ? comparison : -comparison;
   });
 
@@ -127,11 +129,10 @@ export default function LeagueTablePage() {
     return forms.map((result, index) => (
       <span
         key={index}
-        className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-medium ${
-          result === 'W' ? 'bg-green-100 text-green-800' :
+        className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-medium ${result === 'W' ? 'bg-green-100 text-green-800' :
           result === 'D' ? 'bg-yellow-100 text-yellow-800' :
-          'bg-red-100 text-red-800'
-        }`}
+            'bg-red-100 text-red-800'
+          }`}
       >
         {result}
       </span>
@@ -176,7 +177,7 @@ export default function LeagueTablePage() {
             <ChevronLeft className="h-5 w-5" />
             Back to Leagues
           </button>
-          
+
           <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-red-800 mb-2">
@@ -238,7 +239,7 @@ export default function LeagueTablePage() {
                     <UsersIcon className="h-5 w-5" />
                     <span>{league.table.length} Teams</span>
                   </div>
-              
+
                 </div>
               </div>
             </div>
@@ -405,7 +406,7 @@ export default function LeagueTablePage() {
             <table className="w-full">
               <thead className="bg-slate-50">
                 <tr className="border-b border-slate-200">
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('position')}
                   >
@@ -416,7 +417,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('team')}
                   >
@@ -428,7 +429,7 @@ export default function LeagueTablePage() {
                     </div>
                   </th>
                   <th className="text-left py-4 px-6 text-sm font-semibold text-slate-700">P</th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('won')}
                   >
@@ -439,7 +440,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('draw')}
                   >
@@ -450,7 +451,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('lost')}
                   >
@@ -461,7 +462,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('goalsFor')}
                   >
@@ -472,7 +473,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('goalsAgainst')}
                   >
@@ -483,7 +484,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('goalDifference')}
                   >
@@ -494,7 +495,7 @@ export default function LeagueTablePage() {
                       )}
                     </div>
                   </th>
-                  <th 
+                  <th
                     className="text-left py-4 px-6 text-sm font-semibold text-slate-700 cursor-pointer hover:bg-slate-100"
                     onClick={() => handleSort('points')}
                   >
@@ -510,11 +511,10 @@ export default function LeagueTablePage() {
               </thead>
               <tbody>
                 {sortedTable.map((team) => (
-                  <tr 
+                  <tr
                     key={team.team}
-                    className={`border-b border-slate-100 hover:bg-slate-50 ${
-                      team.team === 'Amafor Gladiators' ? 'bg-blue-50' : ''
-                    }`}
+                    className={`border-b border-slate-100 hover:bg-slate-50 ${team.team === 'Amafor Gladiators' ? 'bg-blue-50' : ''
+                      }`}
                   >
                     <td className="py-4 px-6">
                       <div className={`inline-flex items-center justify-center w-10 h-10 rounded-full border-2 font-bold ${getPositionColor(team.position)}`}>
@@ -536,13 +536,12 @@ export default function LeagueTablePage() {
                     <td className="py-4 px-6 font-medium text-slate-800">{team.goalsFor}</td>
                     <td className="py-4 px-6 text-slate-700">{team.goalsAgainst}</td>
                     <td className="py-4 px-6">
-                      <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${
-                        team.goalDifference > 0 
-                          ? 'bg-green-100 text-green-800'
-                          : team.goalDifference < 0
+                      <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${team.goalDifference > 0
+                        ? 'bg-green-100 text-green-800'
+                        : team.goalDifference < 0
                           ? 'bg-red-100 text-red-800'
                           : 'bg-yellow-100 text-yellow-800'
-                      }`}>
+                        }`}>
                         {team.goalDifference > 0 ? '+' : ''}{team.goalDifference}
                       </span>
                     </td>
@@ -577,7 +576,7 @@ export default function LeagueTablePage() {
                       {fixture.homeScore} - {fixture.awayScore}
                     </div>
                     <div className="text-sm text-slate-500">
-                      {new Date(fixture.date).toLocaleDateString()}
+                      {new Date(fixture.matchDate).toLocaleDateString()}
                     </div>
                   </div>
                   <div className="flex-1 text-left">

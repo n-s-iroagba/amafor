@@ -1,11 +1,11 @@
 // app/goals/[id]/page.tsx
 'use client';
 
-import { useState} from 'react';
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
-import { useGet} from '@/shared/hooks/useApiQuery';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
 interface Goal {
   id: number;
@@ -29,7 +29,7 @@ export default function GoalDetail() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const {data:goal ,loading:isLoading} = useGet<any>(API_ROUTES.GOALS.VIEW(id))
+  const { data: goal, loading: isLoading } = useGet<any>(API_ROUTES.GOALS.VIEW(id))
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -149,7 +149,7 @@ export default function GoalDetail() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-sky-700">
-                    Match
+                    Fixture
                   </label>
                   <p className="mt-1 text-sm text-sky-900">
                     {goal.fixture.homeTeam} vs {goal.fixture.awayTeam}
@@ -161,7 +161,7 @@ export default function GoalDetail() {
                     Date
                   </label>
                   <p className="mt-1 text-sm text-sky-900">
-                    {new Date(goal.fixture.date).toLocaleDateString()}
+                    {new Date(goal.fixture.matchDate).toLocaleDateString()}
                   </p>
                 </div>
 

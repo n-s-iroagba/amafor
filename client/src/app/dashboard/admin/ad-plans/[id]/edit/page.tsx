@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
-import api from '@/shared/lib/axios';
 
 interface AdPlan {
   id: number;
@@ -20,7 +19,6 @@ interface AdPlan {
 export default function EditAdPlan() {
   const router = useRouter();
   const params = useParams();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const planId = params.id as string;
 
   const {
@@ -28,6 +26,10 @@ export default function EditAdPlan() {
     loading,
     error,
   } = useGet<AdPlan>(API_ROUTES.ADS.PLANS.DETAIL(planId));
+
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.ADS.PLANS.UPDATE(planId)
+  );
 
   const [formData, setFormData] = useState({
     name: '',
@@ -97,14 +99,12 @@ export default function EditAdPlan() {
       price: parseFloat(formData.price),
     };
 
-    setIsSubmitting(true);
     try {
-      await api.put(API_ROUTES.ADS.PLANS.UPDATE(planId), submissionData);
+      await put(submissionData);
       router.push('/admin/ad-plans');
     } catch (error) {
       console.error('Error updating ad plan:', error);
       alert('Error occurred');
-      setIsSubmitting(false);
     }
   };
 
@@ -170,9 +170,8 @@ export default function EditAdPlan() {
                 id="name"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${
-                  errors.name ? 'border-red-500' : 'border-sky-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${errors.name ? 'border-red-500' : 'border-sky-300'
+                  }`}
                 placeholder="Enter plan name"
               />
               {errors.name && (
@@ -214,9 +213,8 @@ export default function EditAdPlan() {
                   onChange={(e) => handleChange('price', e.target.value)}
                   min="0"
                   step="0.01"
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${
-                    errors.price ? 'border-red-500' : 'border-sky-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${errors.price ? 'border-red-500' : 'border-sky-300'
+                    }`}
                   placeholder="0.00"
                 />
                 {errors.price && (
@@ -239,9 +237,8 @@ export default function EditAdPlan() {
                     handleChange('maxImpressions', e.target.value)
                   }
                   min="1"
-                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${
-                    errors.maxImpressions ? 'border-red-500' : 'border-sky-300'
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${errors.maxImpressions ? 'border-red-500' : 'border-sky-300'
+                    }`}
                   placeholder="Enter maximum impressions"
                 />
                 {errors.maxImpressions && (
@@ -267,9 +264,8 @@ export default function EditAdPlan() {
                 id="zone"
                 value={formData.zone}
                 onChange={(e) => handleChange('zone', e.target.value)}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${
-                  errors.zone ? 'border-red-500' : 'border-sky-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${errors.zone ? 'border-red-500' : 'border-sky-300'
+                  }`}
               >
                 <option value="top_banner">Top Banner</option>
                 <option value="footer_banner">Footer Banner</option>
@@ -278,8 +274,8 @@ export default function EditAdPlan() {
                 <p className="mt-1 text-sm text-red-600">{errors.zone}</p>
               )}
               <p className="mt-1 text-xs text-sky-600">
-                {formData.zone === 'top_banner' 
-                  ? 'Top banner appears at the top of the page' 
+                {formData.zone === 'top_banner'
+                  ? 'Top banner appears at the top of the page'
                   : 'Footer banner appears at the bottom of the page'
                 }
               </p>

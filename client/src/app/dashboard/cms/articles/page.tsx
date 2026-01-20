@@ -15,35 +15,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
-import { cleanText } from '@/shared/utils';
-
- interface Article {
-  id: number;
-  title: string;
-  content: string;
-  summary?: string;
-  slug: string;
-  status: ArticleStatus;
-  readingTime?: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
- enum ArticleStatus {
-  Draft = 'draft',
-  Published = 'published',
-}
-
- interface ArticleCreationDto {
-  title: string;
-  content: string;
-  status: ArticleStatus;
-}
-
-type ArticleResponse = {
-  data: Article[];
-  totalPages: number;
-};
+import { cleanText, formatDate } from '@/shared/utils';
+import { Article, ArticleStatus, PaginatedData } from '@/shared/types';
 
 type TabType = ArticleStatus | 'all';
 
@@ -57,9 +30,9 @@ const ArticleList: React.FC = () => {
       ? '/articles/amafor'
       : activeTab === ArticleStatus.Draft
         ? `${API_ROUTES.ARTICLES.UN_PUBLISHED}/amafor`
-        :`${API_ROUTES.ARTICLES.PUBLISHED}/amafor`; // Fixed: should be PUBLISHED for published articles
+        : `${API_ROUTES.ARTICLES.PUBLISHED}/amafor`; // Fixed: should be PUBLISHED for published articles
 
-  const { data, loading, error } = useGet<ArticleResponse>(url);
+  const { data, loading, error } = useGet<PaginatedData<Article>>(url);
   const articles = data?.data;
   const totalPages = data?.totalPages;
 
@@ -202,10 +175,9 @@ const ArticleList: React.FC = () => {
                 className={`
                   relative inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base
                   transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50
-                  ${
-                    isActive
-                      ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:border-sky-300 hover:bg-sky-50 shadow-sm hover:shadow-md'
+                  ${isActive
+                    ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:border-sky-300 hover:bg-sky-50 shadow-sm hover:shadow-md'
                   }
                 `}
                 whileHover={{ y: -2, scale: 1.02 }}
@@ -299,11 +271,10 @@ const ArticleList: React.FC = () => {
             >
               {/* Status badge */}
               <div
-                className={`absolute top-3 sm:top-4 right-3 sm:right-4 z-10 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold shadow-md flex items-center gap-1 ${
-                  article.status === ArticleStatus.Published
-                    ? 'bg-gradient-to-r from-green-500 to-green-600'
-                    : 'bg-gradient-to-r from-amber-500 to-amber-600'
-                }`}
+                className={`absolute top-3 sm:top-4 right-3 sm:right-4 z-10 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold shadow-md flex items-center gap-1 ${article.status === ArticleStatus.Published
+                  ? 'bg-gradient-to-r from-green-500 to-green-600'
+                  : 'bg-gradient-to-r from-amber-500 to-amber-600'
+                  }`}
               >
                 {article.status === ArticleStatus.Published ? (
                   <>
@@ -349,8 +320,8 @@ const ArticleList: React.FC = () => {
               )}
 
               <p className="text-gray-700 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-3 flex-grow leading-relaxed">
-                   {cleanText(article.summary ? article.summary : article.content, true)}
-                   </p>
+                {cleanText(article.summary ? article.summary : article.content, true)}
+              </p>
 
               <div className="pt-3 sm:pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2 mt-auto">
                 <div className="flex items-center gap-2 text-xs text-gray-500 order-2 sm:order-1">
@@ -394,11 +365,10 @@ const ArticleList: React.FC = () => {
                 <motion.button
                   key={pageNum}
                   onClick={() => setPage(pageNum)}
-                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50 relative overflow-hidden text-sm sm:text-base min-w-[40px] ${
-                    page === pageNum
-                      ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
+                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50 relative overflow-hidden text-sm sm:text-base min-w-[40px] ${page === pageNum
+                    ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
                   aria-current={page === pageNum ? 'page' : undefined}
                   aria-label={`Go to page ${pageNum}`}
                   whileHover={{ y: -2 }}

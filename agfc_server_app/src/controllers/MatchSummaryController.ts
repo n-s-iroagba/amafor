@@ -1,52 +1,52 @@
 import { Request, Response, NextFunction } from 'express';
-import { MatchSummaryService } from '../services/MatchSummaryService';
+import { FixtureSummaryService } from '../services/FixtureSummaryService';
 
-export class MatchSummaryController {
-  private matchSummaryService: MatchSummaryService;
+export class FixtureSummaryController {
+  private matchSummaryService: FixtureSummaryService;
 
   constructor() {
-    this.matchSummaryService = new MatchSummaryService();
+    this.matchSummaryService = new FixtureSummaryService();
   }
 
-  createMatchSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  createFixtureSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const summary = await this.matchSummaryService.createMatchSummary(req.body);
+      const summary = await this.matchSummaryService.createFixtureSummary(req.body);
       res.status(201).json(summary);
     } catch (error) {
       next(error);
     }
   };
 
-  getMatchSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getFixtureSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const summary = await this.matchSummaryService.getMatchSummaryById(parseInt(req.params.id));
+      const summary = await this.matchSummaryService.getFixtureSummaryById(parseInt(req.params.id));
       res.status(200).json(summary);
     } catch (error) {
       next(error);
     }
   };
 
-  getMatchSummaryByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  getFixtureSummaryByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const summary = await this.matchSummaryService.getMatchSummaryByFixture(parseInt(req.params.fixtureId));
+      const summary = await this.matchSummaryService.getFixtureSummaryByFixture(parseInt(req.params.fixtureId));
       res.status(200).json(summary);
     } catch (error) {
       next(error);
     }
   };
 
-  updateMatchSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  updateFixtureSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const summary = await this.matchSummaryService.updateMatchSummary(parseInt(req.params.id), req.body);
+      const summary = await this.matchSummaryService.updateFixtureSummary(parseInt(req.params.id), req.body);
       res.status(200).json(summary);
     } catch (error) {
       next(error);
     }
   };
 
-  deleteMatchSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  deleteFixtureSummary = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      await this.matchSummaryService.deleteMatchSummary(parseInt(req.params.id));
+      await this.matchSummaryService.deleteFixtureSummary(parseInt(req.params.id));
       res.status(204).send();
     } catch (error) {
       next(error);

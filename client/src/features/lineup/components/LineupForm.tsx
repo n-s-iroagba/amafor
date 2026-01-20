@@ -21,7 +21,7 @@ interface Player {
 
 interface Lineup {
   id: number;
-  fixtureId: number;
+  fixtureId: number | string;
   player: Player;
   position: string;
   isStarter: boolean;
@@ -37,7 +37,7 @@ interface LineupFormData {
 
 interface LineupFormsProps {
   activeForm: 'bulk' | 'edit';
-  fixtureId: number;
+  fixtureId: number | string;
   player?: Lineup;
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -60,7 +60,7 @@ const LineupForms = ({
 
   // API data
   const { data: players, loading: playersLoading } = useGet<Player[]>(API_ROUTES.PLAYERS.LIST);
-  const{data:fixture,loading,error}= useGet<Fixture>(API_ROUTES.FIXTURES.VIEW(fixtureId))
+  const { data: fixture, loading, error } = useGet<Fixture>(API_ROUTES.FIXTURES.VIEW(fixtureId))
   const { data: preexistingLineup, refetch: refetchLineup } = useGet<Lineup[]>(
     API_ROUTES.LINEUP.BY_FIXTURE(fixtureId)
   );
@@ -93,7 +93,7 @@ const LineupForms = ({
       </div>
     );
   }
-    if (loading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -101,7 +101,7 @@ const LineupForms = ({
     );
   }
 
-    if (!fixture) {
+  if (!fixture) {
     return (
       <div className="flex justify-center items-center py-12">
         No fixture
@@ -111,11 +111,11 @@ const LineupForms = ({
   // Helper function to get available players for bulk create
   const getAvailablePlayersForBulk = (currentIndex: number) => {
     if (!players) return [];
-    
+
     const selectedPlayerIds = bulkLineups
       .map((lineup, index) => (index !== currentIndex ? lineup.playerId : null))
       .filter((id) => id !== null) as number[];
-    
+
     return players.filter(
       (player) => !selectedPlayerIds.includes(player.id)
     );
@@ -124,11 +124,11 @@ const LineupForms = ({
   // Helper function to get available players for edit
   const getAvailablePlayersForEdit = (currentIndex: number) => {
     if (!players) return [];
-    
+
     const selectedPlayerIds = editLineups
       .map((lineup, index) => (index !== currentIndex ? lineup.player.id : null))
       .filter((id) => id !== null) as number[];
-    
+
     return players.filter(
       (player) => !selectedPlayerIds.includes(player.id)
     );
@@ -192,7 +192,7 @@ const LineupForms = ({
   // Validation
   const validateBulkForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     const validLineups = bulkLineups.filter(
       (lineup) => lineup.playerId && lineup.position
     );
@@ -214,7 +214,7 @@ const LineupForms = ({
 
   const validateEditForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     const invalidLineups = editLineups.filter(
       (lineup) => !lineup.player?.id || !lineup.position
     );
@@ -255,19 +255,19 @@ const LineupForms = ({
       );
 
       await Promise.all(createPromises);
-      
+
       if (onSuccess) {
         onSuccess();
       }
-      
+
       // Reset form
       setBulkLineups([{ playerId: null, position: '', isStarter: true }]);
       setErrors({});
-      
+
     } catch (error: any) {
       console.error('Error creating lineups:', error);
-      setErrors({ 
-        general: error.response?.data?.message || 'Failed to create lineups. Please try again.' 
+      setErrors({
+        general: error.response?.data?.message || 'Failed to create lineups. Please try again.'
       });
     } finally {
       setIsSubmitting(false);
@@ -290,7 +290,7 @@ const LineupForms = ({
         } else {
           // Create new lineup
           return api.post(API_ROUTES.LINEUP.CREATE, {
-            fixtureId:fixtureId,
+            fixtureId: fixtureId,
             playerId: lineup.player.id,
             position: lineup.position,
             isStarter: lineup.isStarter,
@@ -299,17 +299,17 @@ const LineupForms = ({
       });
 
       await Promise.all(updatePromises);
-      
+
       if (onSuccess) {
         onSuccess();
       }
-      
+
       setErrors({});
-      
+
     } catch (error: any) {
       console.error('Error updating lineups:', error);
-      setErrors({ 
-        general: error.response?.data?.message || 'Failed to update lineups. Please try again.' 
+      setErrors({
+        general: error.response?.data?.message || 'Failed to update lineups. Please try again.'
       });
     } finally {
       setIsSubmitting(false);
@@ -329,8 +329,8 @@ const LineupForms = ({
             {activeForm === 'bulk' ? 'Add Players to Lineup' : 'Edit Lineup'}
           </h2>
           <p className="text-gray-600 mt-1">
-            {activeForm === 'bulk' 
-              ? 'Add multiple players to the lineup at once' 
+            {activeForm === 'bulk'
+              ? 'Add multiple players to the lineup at once'
               : 'Manage existing lineup positions and players'}
           </p>
         </div>

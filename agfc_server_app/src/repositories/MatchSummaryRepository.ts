@@ -1,18 +1,20 @@
 import { BaseRepository } from './BaseRepository';
-import MatchSummary from '../models/MatchSummary';
+import FixtureSummary from '../models/FixtureSummary';
 import Fixture from '../models/Fixture';
 
-export class MatchSummaryRepository extends BaseRepository<MatchSummary> {
+export class FixtureSummaryRepository extends BaseRepository<FixtureSummary> {
   constructor() {
-    super(MatchSummary);
+    super(FixtureSummary);
   }
 
-  async findByFixture(fixtureId: string): Promise<MatchSummary | null> {
-    return this.findOne({where:{ fixtureId },include:[
-      {
-        model:Fixture,
-        as:'fixture'
-      }
-    ]});
+  async findByFixture(fixtureId: string): Promise<FixtureSummary | null> {
+    return this.findOne({
+      where: { fixtureId }, include: [
+        {
+          model: Fixture,
+          as: 'fixture'
+        }
+      ]
+    });
   }
 }

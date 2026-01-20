@@ -7,17 +7,17 @@ import Image from 'next/image';
 
 import { API_ROUTES } from '@/config/routes';
 
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
 import { uploadFile } from '@/shared/utils';
 
 
-interface MatchImageCreationAttributes {
+interface FixtureImageCreationAttributes {
   fixtureId: number;
   imageUrl: string;
   caption?: string;
 }
 
-export default function BulkUploadMatchImages() {
+export default function BulkUploadFixtureImages() {
   const router = useRouter();
   const params = useParams();
   const fixtureId = params.fixtureId as string;
@@ -25,8 +25,12 @@ export default function BulkUploadMatchImages() {
   const [files, setFiles] = useState<File[]>([]);
   const [captions, setCaptions] = useState<{ [key: string]: string }>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
+
+  const { post, isPending: isSubmitting } = usePost(
+    API_ROUTES.MATCH_GALLERY.CREATE(fixtureId)
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -93,7 +97,7 @@ export default function BulkUploadMatchImages() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
+    setIsUploading(true);
 
     try {
       // Upload all images first
@@ -101,9 +105,9 @@ export default function BulkUploadMatchImages() {
         try {
           const imageUrl = await uploadFile(file, 'image');
           setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
-          
+
           // Create match image payload
-          const matchImageData: MatchImageCreationAttributes = {
+          const matchImageData: FixtureImageCreationAttributes = {
             fixtureId: parseInt(fixtureId),
             imageUrl: imageUrl,
             caption: captions[file.name]?.trim() || undefined
@@ -120,23 +124,16 @@ export default function BulkUploadMatchImages() {
       const matchImagesData = await Promise.all(uploadPromises);
 
       // Send bulk create request with proper payload
-      const response = await api.post(API_ROUTES.MATCH_GALLERY.CREATE(fixtureId), {
-        images: matchImagesData
-      });
+      await post({ images: matchImagesData });
 
-      if (response.status === 201) {
-        router.push(`/sports-admin/fixtures/${fixtureId}`);
-      } else {
-        console.error('Failed to create match images');
-        setErrors({ submit: 'Failed to create match images. Please try again.' });
-      }
+      router.push(`/sports-admin/fixtures/${fixtureId}`);
     } catch (error: any) {
       console.error('Error uploading images:', error);
-      setErrors({ 
-        submit: error.response?.data?.message || 'Failed to upload images. Please try again.' 
+      setErrors({
+        submit: error.response?.data?.message || 'Failed to upload images. Please try again.'
       });
     } finally {
-      setIsSubmitting(false);
+      setIsUploading(false);
     }
   };
 
@@ -145,7 +142,7 @@ export default function BulkUploadMatchImages() {
       <div className="max-w-4xl mx-auto bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden p-4 sm:p-6">
         <div className="mb-4 sm:mb-6 border-b border-sky-100 pb-4">
           <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
-            Bulk Upload Match Images
+            Bulk Upload Fixture Images
           </h2>
           <p className="text-sky-600 mt-1 sm:mt-2 text-sm sm:text-base">
             Upload multiple images for fixture #{fixtureId}
@@ -166,9 +163,8 @@ export default function BulkUploadMatchImages() {
               multiple
               accept="image/*"
               onChange={handleFileChange}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.files ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.files ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
             />
             {errors.files && (
               <p className="mt-1 text-sm text-red-600">{errors.files}</p>
@@ -183,7 +179,7 @@ export default function BulkUploadMatchImages() {
               <h3 className="text-lg font-medium text-sky-800">
                 Selected Images ({files.length})
               </h3>
-              
+
               {/* Upload Progress */}
               {isSubmitting && (
                 <div className="bg-sky-50 border border-sky-200 rounded-lg p-4">
@@ -197,7 +193,7 @@ export default function BulkUploadMatchImages() {
                           {file.name}
                         </span>
                         <div className="w-24 bg-sky-200 rounded-full h-2">
-                          <div 
+                          <div
                             className="bg-sky-600 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${uploadProgress[file.name] || 0}%` }}
                           />

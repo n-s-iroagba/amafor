@@ -3,10 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { League } from '@/features/league/types';
-import api from '@/shared/lib/axios';
 
 
 export default function EditLeague() {
@@ -18,10 +17,13 @@ export default function EditLeague() {
   const [season, setSeason] = useState('');
   const [isFriendly, setIsFriendly] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { data: league, loading: leaguesLoading } = useGet<League>(
     `${API_ROUTES.LEAGUES.VIEW(id as string)}`
+  );
+
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.LEAGUES.MUTATE(Number(id))
   );
 
   // Set form state when league data is fetched
@@ -48,20 +50,16 @@ export default function EditLeague() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
-      await api.put(API_ROUTES.LEAGUES.MUTATE(Number(id)), {
+      await put({
         name,
         season,
         isFriendly,
       });
-      
+
       router.push('/sports-admin/leagues');
     } catch (error) {
       console.error('Error updating league:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -118,9 +116,8 @@ export default function EditLeague() {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.name ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter league name"
             />
             {errors.name && (
@@ -140,9 +137,8 @@ export default function EditLeague() {
               id="season"
               value={season}
               onChange={(e) => setSeason(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.season ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.season ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="e.g., 2023/2024"
             />
             {errors.season && (

@@ -1,5 +1,5 @@
 // services/PaymentService.ts
-import { v4 as uuidv4 } from 'uuid';
+
 import { PaymentRepository, IPaymentRepository } from '@repositories/PaymentRepository';
 import {
   Payment,
@@ -10,8 +10,8 @@ import {
   PaymentProvider,
   Currency,
 } from '@models/Payment';
-import { AdCampaign } from '@models/AdCampaign';
-import { Donation } from '@models/Donation';
+import { AdCampaign, CampaignStatus } from '@models/AdCampaign';
+
 import { User } from '@models/User';
 import logger from '@utils/logger';
 import { getPaystackService, InitializePaymentData } from './PaymentGatewayService';
@@ -31,7 +31,7 @@ export interface CreateAdvertisementPaymentData {
 
 export interface CreateDonationPaymentData {
   userId: string;
-  donationId: string;
+  subscriptionId?: string;
   amount: number;
   currency?: Currency;
   customerEmail: string;
@@ -94,15 +94,17 @@ export class PaymentService {
         type: PaymentType.ADVERTISEMENT,
         provider: PaymentProvider.PAYSTACK,
         adCampaignId: data.adCampaignId,
+        subscriptionId: null,
+        providerReference: null,
         customerEmail: data.customerEmail,
         customerName: data.customerName,
         customerPhone: data.customerPhone,
+        ipAddress: data.ipAddress ?? null,
+        userAgent: data.userAgent ?? null,
         metadata: {
           ...data.metadata,
           adCampaignName: adCampaign.name,
-    
         },
- 
       };
 
       const payment = await this.repository.create(paymentData);
@@ -146,12 +148,6 @@ export class PaymentService {
 
   async createDonationPayment(data: CreateDonationPaymentData): Promise<PaymentInitiationResult> {
     try {
-      // Validate donation exists
-      const donation = await Donation.findByPk(data.donationId);
-      if (!donation) {
-        throw new AppError('Donation not found', 404);
-      }
-
       // Validate user exists
       const user = await User.findByPk(data.userId);
       if (!user) {
@@ -167,17 +163,17 @@ export class PaymentService {
         status: PaymentStatus.PENDING,
         type: PaymentType.DONATION,
         provider: PaymentProvider.PAYSTACK,
-        donationId: data.donationId,
+        adCampaignId: null,
+        subscriptionId: data.subscriptionId ?? null,
+        providerReference: null,
         customerEmail: data.customerEmail,
         customerName: data.customerName,
-        customerPhone: data.customerPhone,
+        customerPhone: data.customerPhone ?? null,
         metadata: {
           ...data.metadata,
-          donationPurpose: donation.purpose,
-          donationType: donation.type,
         },
-        ipAddress: data.ipAddress,
-        userAgent: data.userAgent,
+        ipAddress: data.ipAddress ?? null,
+        userAgent: data.userAgent ?? null,
       };
 
       const payment = await this.repository.create(paymentData);
@@ -191,7 +187,6 @@ export class PaymentService {
         metadata: {
           paymentId: payment.id,
           userId: data.userId,
-          donationId: data.donationId,
         },
         callback_url: `${process.env.APP_URL}/payments/verify/${payment.reference}`,
       };
@@ -408,16 +403,12 @@ export class PaymentService {
         // Activate ad campaign
         const adCampaign = await AdCampaign.findByPk(payment.adCampaignId);
         if (adCampaign) {
-          await adCampaign.update({ status: 'active' });
+          await adCampaign.update({ status: CampaignStatus.ACTIVE });
           logger.info('Ad campaign activated', { adCampaignId: payment.adCampaignId });
         }
-      } else if (payment.type === PaymentType.DONATION && payment.donationId) {
-        // Update donation status
-        const donation = await Donation.findByPk(payment.donationId);
-        if (donation) {
-          await donation.update({ status: 'completed' });
-          logger.info('Donation completed', { donationId: payment.donationId });
-        }
+      } else if (payment.type === PaymentType.DONATION) {
+        // Log donation payment completion
+        logger.info('Donation payment completed', { paymentId: payment.id });
       }
     } catch (error: any) {
       logger.error('Failed to handle post-payment actions', {
@@ -463,7 +454,7 @@ export class PaymentService {
       const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
       const revenue = await this.repository.getTotalRevenue(startDate, endDate);
-      
+
       months.push({
         month: date.toLocaleString('default', { month: 'short', year: 'numeric' }),
         revenue: this.paystackService.convertFromKobo(revenue),
@@ -477,23 +468,23 @@ export class PaymentService {
     // This is a simplified version - in production, you'd use a proper SQL query
     const allPayments = await this.repository.findAll({
       where: { status: PaymentStatus.SUCCESSFUL },
-      include: [{ model: User, as: 'user', attributes: ['id', 'email'] }],
     });
 
     const customerMap = new Map<string, { userId: string; email: string; totalSpent: number }>();
 
-    allPayments.forEach(payment => {
+    for (const payment of allPayments) {
       const userId = payment.userId;
-      if (payment.user) {
+      const user = await User.findByPk(userId);
+      if (user) {
         const current = customerMap.get(userId) || {
           userId,
-          email: payment.user.email,
+          email: user.email,
           totalSpent: 0,
         };
         current.totalSpent += this.paystackService.convertFromKobo(payment.amount);
         customerMap.set(userId, current);
       }
-    });
+    }
 
     return Array.from(customerMap.values())
       .sort((a, b) => b.totalSpent - a.totalSpent)
@@ -507,4 +498,4 @@ class AppError extends Error {
     super(message);
     this.name = 'AppError';
   }
-}:
+}

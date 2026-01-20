@@ -39,13 +39,13 @@ export default function LeagueStatsDetail() {
   } = useGet<ClubLeagueStats>(
     id ? API_ROUTES.LEAGUE_STATS.VIEW(id as string) : null
   );
- 
+
 
   const calculateGoalDifference = (goalsFor: number, goalsAgainst: number) => {
     return goalsFor - goalsAgainst;
   };
 
-  const calculateMatchesPlayed = (
+  const calculateFixtureesPlayed = (
     wins: number,
     draws: number,
     losses: number
@@ -53,9 +53,9 @@ export default function LeagueStatsDetail() {
     return wins + draws + losses;
   };
 
-  const calculateWinPercentage = (wins: number, totalMatches: number) => {
-    if (totalMatches === 0) return 0;
-    return Math.round((wins / totalMatches) * 100);
+  const calculateWinPercentage = (wins: number, totalFixturees: number) => {
+    if (totalFixturees === 0) return 0;
+    return Math.round((wins / totalFixturees) * 100);
   };
 
   if (loading) {
@@ -74,7 +74,7 @@ export default function LeagueStatsDetail() {
     );
   }
 
-  const totalMatches = calculateMatchesPlayed(
+  const totalFixturees = calculateFixtureesPlayed(
     stats.wins,
     stats.draws,
     stats.losses
@@ -83,7 +83,7 @@ export default function LeagueStatsDetail() {
     stats.goalsFor,
     stats.goalsAgainst
   );
-  const winPercentage = calculateWinPercentage(stats.wins, totalMatches);
+  const winPercentage = calculateWinPercentage(stats.wins, totalFixturees);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 py-4 sm:py-8 px-3 sm:px-4">
@@ -106,7 +106,7 @@ export default function LeagueStatsDetail() {
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
-            Back to league 
+            Back to league
           </Link>
         </div>
 
@@ -203,7 +203,7 @@ export default function LeagueStatsDetail() {
 
               <div>
                 <h4 className="text-md font-medium text-sky-800 mb-4">
-                  Match Record
+                  Fixture Record
                 </h4>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -226,10 +226,10 @@ export default function LeagueStatsDetail() {
                   </div>
                   <div className="flex justify-between items-center border-t border-sky-200 pt-2">
                     <span className="text-sm font-medium text-sky-800">
-                      Total Matches
+                      Total Fixturees
                     </span>
                     <span className="text-sm font-bold text-sky-900">
-                      {totalMatches}
+                      {totalFixturees}
                     </span>
                   </div>
                 </div>

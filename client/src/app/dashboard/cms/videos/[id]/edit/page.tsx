@@ -21,7 +21,7 @@ import {
   X,
   RefreshCw,
 } from 'lucide-react';
-import api from '@/shared/lib/axios';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 
@@ -47,56 +47,38 @@ export default function EditVideo() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [duration, setDuration] = useState('');
-  
+
   // File states
   const [selectedVideo, setSelectedVideo] = useState<File | null>(null);
   const [selectedThumbnail, setSelectedThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>('');
-  
+
   // UI states
-  const [video, setVideo] = useState<Video | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState('');
 
+  const { data: videoData, loading: isLoading, error: fetchError } = useGet<{ data: Video }>(
+    API_ROUTES.VIDEOS.VIEW(id as string)
+  );
+  const video = videoData?.data;
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.VIDEOS.MUTATE(Number(id))
+  );
+
   const videoInputRef = useRef<HTMLInputElement>(null);
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch video data
+  // Initialize form when video data loads
   useEffect(() => {
-    if (id) {
-      fetchVideo();
+    if (video) {
+      setTitle(video.title);
+      setExcerpt(video.excerpt);
+      setDuration(video.duration?.toString() || '');
+      setThumbnailPreview(video.thumbnail);
     }
-  }, [id]);
-
-  const fetchVideo = async () => {
-    try {
-      setIsLoading(true);
-      const response = await api.get(API_ROUTES.VIDEOS.VIEW(id as string));
-      console.log(response)
-      
-      if (response && response.data) {
-        const videoData: Video = response.data.data;
-        setVideo(videoData);
-        setTitle(videoData.title);
-        setExcerpt(videoData.excerpt);
-        setDuration(videoData.duration?.toString() || '');
-        setThumbnailPreview(videoData.thumbnail);
-      } else {
-        setErrors({ general: 'Failed to load video data' });
-      }
-    } catch (error: any) {
-      console.error('Error fetching video:', error);
-      setErrors({ 
-        general: error.response?.data?.message || 'Failed to load video data. Please try again.' 
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [video]);
 
   const handleVideoSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -181,10 +163,10 @@ export default function EditVideo() {
       }, 200);
 
       const uploadedUrl = await uploadFile(file, type);
-      
+
       clearInterval(progressInterval);
       setUploadProgress(100);
-      
+
       return uploadedUrl;
     } catch (error) {
       console.error('Upload error:', error);
@@ -224,8 +206,6 @@ export default function EditVideo() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
       let videoUrl = video?.videoUrl;
       let thumbnailUrl = video?.thumbnail;
@@ -240,7 +220,7 @@ export default function EditVideo() {
       }
 
       // Update video record
-      const response = await api.put(API_ROUTES.VIDEOS.MUTATE(Number(id)), {
+      await put({
         title: title.trim(),
         excerpt: excerpt.trim(),
         videoUrl,
@@ -248,29 +228,21 @@ export default function EditVideo() {
         duration: duration ? parseInt(duration) : null,
       });
 
-      if (response && response.data) {
-        setSuccess('Video updated successfully!');
-        // Refresh the video data
-        fetchVideo();
-        // Clear selected files
-        setSelectedVideo(null);
-        setSelectedThumbnail(null);
-        if (videoInputRef.current) videoInputRef.current.value = '';
-        if (thumbnailInputRef.current) thumbnailInputRef.current.value = '';
-        
-        setTimeout(() => {
-          router.push('/sports-admin/videos');
-        }, 1500);
-      } else {
-        setErrors({ general: 'Failed to update video. Please try again.' });
-      }
+      setSuccess('Video updated successfully!');
+      // Clear selected files
+      setSelectedVideo(null);
+      setSelectedThumbnail(null);
+      if (videoInputRef.current) videoInputRef.current.value = '';
+      if (thumbnailInputRef.current) thumbnailInputRef.current.value = '';
+
+      setTimeout(() => {
+        router.push('/sports-admin/videos');
+      }, 1500);
     } catch (error: any) {
       console.error('Error updating video:', error);
-      setErrors({ 
-        general: error.response?.data?.message || 'Failed to update video. Please try again.' 
+      setErrors({
+        general: error.response?.data?.message || 'Failed to update video. Please try again.'
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -393,9 +365,8 @@ export default function EditVideo() {
                     setTitle(e.target.value);
                     if (errors.title) setErrors(prev => ({ ...prev, title: '' }));
                   }}
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.title ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.title ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Enter a descriptive title for your video"
                   maxLength={200}
                 />
@@ -426,9 +397,8 @@ export default function EditVideo() {
                     if (errors.excerpt) setErrors(prev => ({ ...prev, excerpt: '' }));
                   }}
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.excerpt ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.excerpt ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Describe what your video is about..."
                   maxLength={500}
                 />
@@ -461,9 +431,8 @@ export default function EditVideo() {
                   }}
                   min="1"
                   max="1440"
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.duration ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.duration ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Enter video duration in minutes (optional)"
                 />
                 {errors.duration && (
@@ -478,137 +447,52 @@ export default function EditVideo() {
                   </p>
                 )}
               </div>
-               <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
-            >
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Video className="w-5 h-5 text-sky-600" />
-                Update Video File
-              </h2>
-              
-              <input
-                type="file"
-                ref={videoInputRef}
-                onChange={handleVideoSelect}
-                accept="video/mp4,video/webm,video/ogg,video/quicktime"
-                className="hidden"
-              />
-              
-              {!selectedVideo ? (
-                <button
-                  type="button"
-                  onClick={() => videoInputRef.current?.click()}
-                  disabled={isUploading}
-                  className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-                    errors.video 
-                      ? 'border-red-300 bg-red-50 text-red-700' 
-                      : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
-                  } disabled:opacity-50`}
-                >
-                  <Video className="w-8 h-8 mx-auto mb-2 opacity-60" />
-                  <p className="font-medium text-sm mb-1">Choose New Video</p>
-                  <p className="text-xs opacity-75">MP4, WebM, OGG, MOV</p>
-                  <p className="text-xs mt-1">Max 500MB</p>
-                </button>
-              ) : (
-                <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Video className="w-4 h-4 text-sky-600" />
-                      <span className="font-medium text-sm text-gray-900 truncate">
-                        {selectedVideo.name}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={removeVideo}
-                      disabled={isUploading}
-                      className="text-gray-400 hover:text-red-500 transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-600">
-                    {formatFileSize(selectedVideo.size)}
-                  </p>
-                </div>
-              )}
-              
-              {errors.video && (
-                <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.video}
-                </p>
-              )}
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+              >
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <Video className="w-5 h-5 text-sky-600" />
+                  Update Video File
+                </h2>
 
-            {/* Thumbnail Upload */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
-            >
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-sky-600" />
-                Update Thumbnail
-              </h2>
-              
-              <input
-                type="file"
-                ref={thumbnailInputRef}
-                onChange={handleThumbnailSelect}
-                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-                className="hidden"
-              />
-              
-              {/* Current Thumbnail */}
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 mb-2">Current Thumbnail:</p>
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
-                  <Image
-                    width={50}
-                    height={50}
-                    unoptimized
-                    src={video.thumbnail}
-                    alt="Current thumbnail"
-                    className="w-full h-20 object-cover"
-                  />
-                </div>
-              </div>
-              
-              {!selectedThumbnail ? (
-                <button
-                  type="button"
-                  onClick={() => thumbnailInputRef.current?.click()}
-                  disabled={isUploading}
-                  className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-                    errors.thumbnail 
-                      ? 'border-red-300 bg-red-50 text-red-700' 
-                      : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
-                  } disabled:opacity-50`}
-                >
-                  <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-60" />
-                  <p className="font-medium text-sm mb-1">Choose New Thumbnail</p>
-                  <p className="text-xs opacity-75">JPEG, PNG, WebP, GIF</p>
-                  <p className="text-xs mt-1">Max 10MB</p>
-                </button>
-              ) : (
-                <div className="space-y-4">
-                  <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-3">
+                <input
+                  type="file"
+                  ref={videoInputRef}
+                  onChange={handleVideoSelect}
+                  accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                  className="hidden"
+                />
+
+                {!selectedVideo ? (
+                  <button
+                    type="button"
+                    onClick={() => videoInputRef.current?.click()}
+                    disabled={isUploading}
+                    className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.video
+                        ? 'border-red-300 bg-red-50 text-red-700'
+                        : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                      } disabled:opacity-50`}
+                  >
+                    <Video className="w-8 h-8 mx-auto mb-2 opacity-60" />
+                    <p className="font-medium text-sm mb-1">Choose New Video</p>
+                    <p className="text-xs opacity-75">MP4, WebM, OGG, MOV</p>
+                    <p className="text-xs mt-1">Max 500MB</p>
+                  </button>
+                ) : (
+                  <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <ImageIcon className="w-4 h-4 text-sky-600" />
+                        <Video className="w-4 h-4 text-sky-600" />
                         <span className="font-medium text-sm text-gray-900 truncate">
-                          {selectedThumbnail.name}
+                          {selectedVideo.name}
                         </span>
                       </div>
                       <button
                         type="button"
-                        onClick={removeThumbnail}
+                        onClick={removeVideo}
                         disabled={isUploading}
                         className="text-gray-400 hover:text-red-500 transition-colors"
                       >
@@ -616,58 +500,141 @@ export default function EditVideo() {
                       </button>
                     </div>
                     <p className="text-xs text-gray-600">
-                      {formatFileSize(selectedThumbnail.size)}
+                      {formatFileSize(selectedVideo.size)}
                     </p>
                   </div>
-                  
-                  {/* New Thumbnail Preview */}
-                  <div>
-                    <p className="text-sm text-gray-600 mb-2">New Thumbnail Preview:</p>
-                    <div className="border border-gray-200 rounded-lg overflow-hidden">
-                      <Image
-                          width={50}
-                    height={50}
-                    unoptimized
-                        src={thumbnailPreview}
-                        alt="New thumbnail preview"
-                        className="w-full h-20 object-cover"
-                      />
-                    </div>
+                )}
+
+                {errors.video && (
+                  <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.video}
+                  </p>
+                )}
+              </motion.div>
+
+              {/* Thumbnail Upload */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+              >
+                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                  <ImageIcon className="w-5 h-5 text-sky-600" />
+                  Update Thumbnail
+                </h2>
+
+                <input
+                  type="file"
+                  ref={thumbnailInputRef}
+                  onChange={handleThumbnailSelect}
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                  className="hidden"
+                />
+
+                {/* Current Thumbnail */}
+                <div className="mb-4">
+                  <p className="text-sm text-gray-600 mb-2">Current Thumbnail:</p>
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <Image
+                      width={50}
+                      height={50}
+                      unoptimized
+                      src={video.thumbnail}
+                      alt="Current thumbnail"
+                      className="w-full h-20 object-cover"
+                    />
                   </div>
                 </div>
-              )}
-              
-              {errors.thumbnail && (
-                <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
-                  <AlertCircle className="w-4 h-4" />
-                  {errors.thumbnail}
-                </p>
-              )}
-            </motion.div>
 
-            {/* Video Information */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-sky-50 border border-sky-200 rounded-xl p-6"
-            >
-              <h3 className="text-sm font-semibold text-sky-800 mb-3">Video Information</h3>
-              <div className="space-y-2 text-sm text-sky-700">
-                <div className="flex justify-between">
-                  <span>Created:</span>
-                  <span>{new Date(video?.createdAt).toLocaleDateString()}</span>
+                {!selectedThumbnail ? (
+                  <button
+                    type="button"
+                    onClick={() => thumbnailInputRef.current?.click()}
+                    disabled={isUploading}
+                    className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.thumbnail
+                        ? 'border-red-300 bg-red-50 text-red-700'
+                        : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                      } disabled:opacity-50`}
+                  >
+                    <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-60" />
+                    <p className="font-medium text-sm mb-1">Choose New Thumbnail</p>
+                    <p className="text-xs opacity-75">JPEG, PNG, WebP, GIF</p>
+                    <p className="text-xs mt-1">Max 10MB</p>
+                  </button>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="border-2 border-sky-200 bg-sky-50 rounded-xl p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <ImageIcon className="w-4 h-4 text-sky-600" />
+                          <span className="font-medium text-sm text-gray-900 truncate">
+                            {selectedThumbnail.name}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={removeThumbnail}
+                          disabled={isUploading}
+                          className="text-gray-400 hover:text-red-500 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <p className="text-xs text-gray-600">
+                        {formatFileSize(selectedThumbnail.size)}
+                      </p>
+                    </div>
+
+                    {/* New Thumbnail Preview */}
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">New Thumbnail Preview:</p>
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <Image
+                          width={50}
+                          height={50}
+                          unoptimized
+                          src={thumbnailPreview}
+                          alt="New thumbnail preview"
+                          className="w-full h-20 object-cover"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {errors.thumbnail && (
+                  <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.thumbnail}
+                  </p>
+                )}
+              </motion.div>
+
+              {/* Video Information */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="bg-sky-50 border border-sky-200 rounded-xl p-6"
+              >
+                <h3 className="text-sm font-semibold text-sky-800 mb-3">Video Information</h3>
+                <div className="space-y-2 text-sm text-sky-700">
+                  <div className="flex justify-between">
+                    <span>Created:</span>
+                    <span>{new Date(video?.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Last Updated:</span>
+                    <span>{new Date(video.updatedAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Duration:</span>
+                    <span>{formatDuration(video.duration)}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span>Last Updated:</span>
-                  <span>{new Date(video.updatedAt).toLocaleDateString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Duration:</span>
-                  <span>{formatDuration(video.duration)}</span>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
 
               {/* Submit Button */}
               <motion.button
@@ -705,7 +672,7 @@ export default function EditVideo() {
                   </h3>
                   <div className="space-y-2">
                     <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div 
+                      <div
                         className="bg-sky-600 h-3 rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       ></div>
@@ -732,7 +699,7 @@ export default function EditVideo() {
                 <Video className="w-5 h-5 text-sky-600" />
                 Current Video
               </h2>
-              
+
               <div className="space-y-3">
                 <div className="aspect-w-16 aspect-h-9 bg-gray-100 rounded-lg overflow-hidden">
                   <video
@@ -751,7 +718,7 @@ export default function EditVideo() {
             </motion.div>
 
             {/* Video File Upload */}
-           
+
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 
 
 // Changed params to optional to resolve TS error in index.tsx
-export default function MatchAnalysisPlayer({ params }: { params?: { id: string } }) {
+export default function FixtureAnalysisPlayer({ params }: { params?: { id: string } }) {
   const urlParams = useParams();
   const matchId = params?.id || urlParams.id;
   const [isPlaying, setIsPlaying] = useState(false);
@@ -21,7 +21,7 @@ export default function MatchAnalysisPlayer({ params }: { params?: { id: string 
   return (
     <div className="min-h-screen bg-[#1a2e2e] text-white">
       <div className="max-w-[1800px] mx-auto p-4 lg:p-8 flex flex-col h-screen">
-        
+
         <header className="flex items-center justify-between mb-8 flex-none">
           <div className="flex items-center space-x-6">
             <Link href="/dashboard/scout/matches" className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-all">
@@ -52,7 +52,7 @@ export default function MatchAnalysisPlayer({ params }: { params?: { id: string 
                   {isPlaying ? <Pause className="w-10 h-10" /> : <Play className="w-10 h-10 ml-2" />}
                 </button>
               </div>
-              
+
               <div className="absolute bottom-0 inset-x-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
                 <div className="flex items-center space-x-6 mb-4">
                   <span className="font-mono text-2xl font-black text-[#87CEEB]">{currentTime}</span>
@@ -106,7 +106,7 @@ export default function MatchAnalysisPlayer({ params }: { params?: { id: string 
               <h3 className="text-sm font-black uppercase tracking-widest mb-6 flex items-center">
                 <MessageSquare className="w-4 h-4 mr-3 text-blue-400" /> Analyst Notes
               </h3>
-              <textarea 
+              <textarea
                 placeholder="Enter tactical observations..."
                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-xs font-bold outline-none focus:border-[#87CEEB] h-32 resize-none"
               />

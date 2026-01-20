@@ -3,11 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { X, ImageIcon, Upload } from 'lucide-react';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 import Image from 'next/image';
-import api from '@/shared/lib/axios';
 import { uploadFile } from '@/shared/utils';
 
 
@@ -29,6 +28,10 @@ export default function EditCoach() {
     API_ROUTES.COACHES.VIEW(id)
   );
 
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.COACHES.MUTATE(id)
+  );
+
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [bio, setBio] = useState('');
@@ -37,7 +40,6 @@ export default function EditCoach() {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -91,27 +93,19 @@ export default function EditCoach() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setIsSubmitting(true);
 
     try {
-      await api.put(
-        API_ROUTES.COACHES.MUTATE(id as string),
-        {
-          name,
-          role,
-          bio: bio || null,
-          imageUrl,
-        },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      await put({
+        name,
+        role,
+        bio: bio || null,
+        imageUrl,
+      });
 
       router.push('/sports-admin/coach');
     } catch (error) {
       console.error('Error updating coach:', error);
     } finally {
-      setIsSubmitting(false);
       setUploadProgress(0);
     }
   };
@@ -140,9 +134,8 @@ export default function EditCoach() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 ${
-                  errors.name ? 'border-red-500' : 'border-sky-300'
-                }`}
+                className={`mt-1 block w-full rounded-md border p-2 ${errors.name ? 'border-red-500' : 'border-sky-300'
+                  }`}
               />
               {errors.name && (
                 <p className="text-sm text-red-600">{errors.name}</p>
@@ -157,9 +150,8 @@ export default function EditCoach() {
                 type="text"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 ${
-                  errors.role ? 'border-red-500' : 'border-sky-300'
-                }`}
+                className={`mt-1 block w-full rounded-md border p-2 ${errors.role ? 'border-red-500' : 'border-sky-300'
+                  }`}
               />
               {errors.role && (
                 <p className="text-sm text-red-600">{errors.role}</p>
@@ -187,13 +179,12 @@ export default function EditCoach() {
             </label>
             <div
               onClick={() => imageInputRef.current?.click()}
-              className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer ${
-                imageFile
+              className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer ${imageFile
                   ? 'border-green-300 bg-green-50'
                   : errors.imageUrl
                     ? 'border-red-300 bg-red-50'
                     : 'border-sky-300 bg-sky-50 hover:border-sky-400'
-              }`}
+                }`}
             >
               <input
                 ref={imageInputRef}
@@ -206,13 +197,13 @@ export default function EditCoach() {
               {imageUrl ? (
                 <div className="relative">
                   <Image
-                               width={50}
-                               height={50}
-                               src={imageUrl}
-                               alt={name}
-                               className="w-full h-40 object-cover rounded-lg mb-4"
-                               unoptimized={true}
-                             />
+                    width={50}
+                    height={50}
+                    src={imageUrl}
+                    alt={name}
+                    className="w-full h-40 object-cover rounded-lg mb-4"
+                    unoptimized={true}
+                  />
                   <button
                     type="button"
                     onClick={(e) => {

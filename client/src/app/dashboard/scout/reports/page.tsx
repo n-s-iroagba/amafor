@@ -7,7 +7,7 @@ export default function ScoutReportsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [reports, setReports] = useState([
     { id: 'R-9921', player: 'Kelechi Amadi', date: 'May 19, 2024', type: 'Full Dossier', size: '4.2 MB' },
-    { id: 'R-9844', player: 'Chinedu Okafor', date: 'May 15, 2024', type: 'Match Summary', size: '1.1 MB' },
+    { id: 'R-9844', player: 'Chinedu Okafor', date: 'May 15, 2024', type: 'Fixture Summary', size: '1.1 MB' },
   ]);
 
   const handleDelete = (id: string) => {
@@ -36,11 +36,11 @@ export default function ScoutReportsPage() {
             <input type="text" placeholder="Search by player name or report ID..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-1 focus:ring-[#87CEEB] text-sm" />
           </div>
           <div className="flex items-center space-x-3">
-             <Filter className="w-4 h-4 text-gray-400" />
-             <select className="bg-gray-50 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none">
-                <option>Most Recent</option>
-                <option>By Player</option>
-             </select>
+            <Filter className="w-4 h-4 text-gray-400" />
+            <select className="bg-gray-50 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none">
+              <option>Most Recent</option>
+              <option>By Player</option>
+            </select>
           </div>
         </div>
 
@@ -62,34 +62,34 @@ export default function ScoutReportsPage() {
               </div>
 
               <div className="flex items-center space-x-12">
-                 <div className="text-right hidden md:block">
-                   <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Generated</div>
-                   <div className="text-xs font-bold text-[#2F4F4F]">{report.date}</div>
-                 </div>
-                 <div className="flex space-x-2">
-                    <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all">
-                      <Eye className="w-5 h-5" />
-                    </button>
-                    <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all">
-                      <Download className="w-5 h-5" />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(report.id)}
-                      disabled={!!isDeleting}
-                      className="p-4 bg-gray-50 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all disabled:opacity-30"
-                    >
-                      {isDeleting === report.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
-                    </button>
-                 </div>
+                <div className="text-right hidden md:block">
+                  <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Generated</div>
+                  <div className="text-xs font-bold text-[#2F4F4F]">{report.date}</div>
+                </div>
+                <div className="flex space-x-2">
+                  <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all">
+                    <Eye className="w-5 h-5" />
+                  </button>
+                  <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all">
+                    <Download className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(report.id)}
+                    disabled={!!isDeleting}
+                    className="p-4 bg-gray-50 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all disabled:opacity-30"
+                  >
+                    {isDeleting === report.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
+                  </button>
+                </div>
               </div>
             </div>
           ))}
 
           {reports.length === 0 && (
             <div className="py-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-gray-100">
-               <AlertCircle className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-               <h3 className="text-gray-300 font-black uppercase tracking-widest">No documents found in vault</h3>
-               <button onClick={() => window.location.reload()} className="mt-6 text-[#87CEEB] text-[10px] font-black uppercase tracking-widest hover:underline">Re-fetch Records</button>
+              <AlertCircle className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+              <h3 className="text-gray-300 font-black uppercase tracking-widest">No documents found in vault</h3>
+              <button onClick={() => window.location.reload()} className="mt-6 text-[#87CEEB] text-[10px] font-black uppercase tracking-widest hover:underline">Re-fetch Records</button>
             </div>
           )}
         </div>

@@ -1,16 +1,33 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { ShieldAlert, ArrowLeft, Send, MessageSquare, AlertCircle, Link } from 'lucide-react';
 
 
-  import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
+
 export default function CreateDisputePage() {
   const navigate = useRouter();
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
+  const [campaign, setCampaign] = useState('Summer Kit Launch');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { post, isPending } = usePost(API_ROUTES.ADVERTISER.DISPUTES.CREATE);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate.push('/dashboard/advertiser/disputes');
+    try {
+      await post({
+        subject,
+        description,
+        campaign,
+      });
+      navigate.push('/dashboard/advertiser/disputes');
+    } catch (error) {
+      console.error('Failed to create dispute:', error);
+    }
   };
 
   return (
@@ -30,31 +47,53 @@ export default function CreateDisputePage() {
 
         <form onSubmit={handleSubmit} className="bg-white rounded-[3rem] p-12 shadow-sm border border-gray-100 space-y-8">
           <div className="space-y-2">
-             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Campaign</label>
-             <select required className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold">
-                <option>Summer Kit Launch</option>
-                <option>Academy Scholarship Drive</option>
-             </select>
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Campaign</label>
+            <select
+              required
+              value={campaign}
+              onChange={(e) => setCampaign(e.target.value)}
+              className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold"
+            >
+              <option>Summer Kit Launch</option>
+              <option>Academy Scholarship Drive</option>
+            </select>
           </div>
           <div className="space-y-2">
-             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Dispute Subject</label>
-             <input type="text" required placeholder="e.g. Impression count mismatch" className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold" />
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Dispute Subject</label>
+            <input
+              type="text"
+              required
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="e.g. Impression count mismatch"
+              className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold"
+            />
           </div>
           <div className="space-y-2">
-             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Detailed Description</label>
-             <textarea required placeholder="Provide evidence or context for the discrepancy..." className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold h-32 resize-none" />
+            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Detailed Description</label>
+            <textarea
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Provide evidence or context for the discrepancy..."
+              className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold h-32 resize-none"
+            />
           </div>
 
           <div className="bg-amber-50 p-6 rounded-2xl border border-amber-100 flex items-start space-x-4">
-             <AlertCircle className="w-6 h-6 text-amber-600 flex-none" />
-             <p className="text-[10px] text-amber-800 font-bold uppercase leading-relaxed">
-               All disputes are manually reviewed by the Commercial Lead. Expect a technical response within 24-48 business hours.
-             </p>
+            <AlertCircle className="w-6 h-6 text-amber-600 flex-none" />
+            <p className="text-[10px] text-amber-800 font-bold uppercase leading-relaxed">
+              All disputes are manually reviewed by the Commercial Lead. Expect a technical response within 24-48 business hours.
+            </p>
           </div>
 
-          <button type="submit" className="w-full sky-button py-5 uppercase tracking-[0.2em] flex items-center justify-center">
-             <span>FILE FORMAL DISPUTE</span>
-             <Send className="w-5 h-5 ml-3" />
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full sky-button py-5 uppercase tracking-[0.2em] flex items-center justify-center disabled:opacity-50"
+          >
+            <span>{isPending ? 'FILING...' : 'FILE FORMAL DISPUTE'}</span>
+            <Send className="w-5 h-5 ml-3" />
           </button>
         </form>
       </div>

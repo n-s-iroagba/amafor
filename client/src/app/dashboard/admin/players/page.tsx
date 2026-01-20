@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import { API_ROUTES } from '@/config/routes';
 import Image from 'next/image';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 interface Player {
   id: number;
@@ -23,13 +23,26 @@ interface Player {
 
 export default function PlayersList() {
   const router = useRouter();
-  const {data:players, loading:isLoading} = useGet<Player[]>(API_ROUTES.PLAYERS.LIST)
- const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
+  const { data: players, loading: isLoading, refetch } = useGet<Player[]>(API_ROUTES.PLAYERS.LIST);
+  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
+  const { delete: deletePlayer, isPending: deleteLoading } = useDelete(
+    API_ROUTES.PLAYERS.MUTATE
+  );
 
-
-  
-
+  const handleDelete = async (id: number) => {
+    setDeletingId(id);
+    try {
+      await deletePlayer(id);
+      await refetch();
+    } catch (err) {
+      console.error('Error deleting player:', err);
+    } finally {
+      setDeletingId(null);
+      setDeleteConfirm(null);
+    }
+  };
 
 
   const getPositionColor = (position: string) => {
@@ -277,7 +290,6 @@ export default function PlayersList() {
                             </svg>
                           </button>
                         </div>
-{/* 
                         {deleteConfirm === player.id && (
                           <div className="fixed sm:absolute inset-0 sm:inset-auto sm:mt-2 sm:right-4 sm:left-4 bg-white p-4 rounded-md shadow-lg border border-red-200 z-50 sm:z-10 m-4 sm:m-0">
                             <p className="text-sm text-sky-800 mb-2">
@@ -287,20 +299,20 @@ export default function PlayersList() {
                               <button
                                 onClick={() => setDeleteConfirm(null)}
                                 className="px-3 py-1 text-sm bg-sky-100 text-sky-700 rounded hover:bg-sky-200 transition-colors"
+                                disabled={deletingId === player.id}
                               >
                                 Cancel
                               </button>
                               <button
-                                onClick={() => {handleDelete()
-                                  window.location.reload()
-                                }}
-                                className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
+                                onClick={() => handleDelete(player.id)}
+                                disabled={deletingId === player.id || deleteLoading}
+                                className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors disabled:opacity-50"
                               >
-                                Delete
+                                {deletingId === player.id ? 'Deleting...' : 'Delete'}
                               </button>
                             </div>
                           </div>
-                        )} */}
+                        )}
                       </td>
                     </tr>
                   ))}

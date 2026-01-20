@@ -16,7 +16,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
 import { usePost } from '@/shared/hooks/useApiQuery';
-import { AuthUser} from '@/shared/types';
+import { AuthUser } from '@/shared/types';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
 
 
@@ -43,17 +43,17 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
   const [successUser, setSuccessUser] = useState<AuthUser | null>(null);
-  
+
   const router = useRouter();
   const { setUser } = useAuthContext();
 
   // Use the usePost hook for login
-  const { 
-    post: loginPost, 
-    isPending: loginLoading, 
-    error: loginError, 
+  const {
+    post: loginPost,
+    isPending: loginLoading,
+    error: loginError,
     reset: resetLoginState,
-    data: loginData 
+    data: loginData
   } = usePost<LoginRequestDto, any>(API_ROUTES.AUTH.LOGIN, {
     onSuccess: (data) => {
       if (data && 'user' in data) {
@@ -74,11 +74,11 @@ export default function LoginPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginRequest((prev) => ({ ...prev, [name]: value }));
-    
+
     if (validationErrors[name as keyof ValidationErrors]) {
       setValidationErrors((prev) => ({ ...prev, [name]: undefined }));
     }
-    
+
     if (loginError) {
       resetLoginState();
     }
@@ -137,8 +137,8 @@ export default function LoginPage() {
           {loginSuccess ? 'Welcome Back!' : 'Sign In'}
         </h1>
         <p className="text-slate-600 text-center mb-8">
-          {loginSuccess 
-            ? `Welcome, ${successUser?.firstName || 'User'}!` 
+          {loginSuccess
+            ? `Welcome, ${successUser?.firstName || 'User'}!`
             : 'Enter your credentials to continue'}
         </p>
 
@@ -168,7 +168,7 @@ export default function LoginPage() {
                 Redirecting you to your dashboard...
               </p>
             </div>
-            
+
             <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600">
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
@@ -177,7 +177,7 @@ export default function LoginPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Role: {successUser?.role}</span>
+                  <span>Role: {successUser?.userType}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Loader2 className="w-4 h-4 text-blue-500 mt-0.5 animate-spin flex-shrink-0" />
@@ -203,9 +203,8 @@ export default function LoginPage() {
                     name="email"
                     value={loginRequest.email}
                     onChange={handleChange}
-                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${
-                      validationErrors.email ? 'border-red-300' : 'border-slate-200'
-                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${validationErrors.email ? 'border-red-300' : 'border-slate-200'
+                      } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
                     placeholder="you@example.com"
                     disabled={loginLoading}
                   />
@@ -231,9 +230,8 @@ export default function LoginPage() {
                     name="password"
                     value={loginRequest.password}
                     onChange={handleChange}
-                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${
-                      validationErrors.password ? 'border-red-300' : 'border-slate-200'
-                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${validationErrors.password ? 'border-red-300' : 'border-slate-200'
+                      } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
                     placeholder="Enter your password"
                     disabled={loginLoading}
                   />
@@ -284,7 +282,7 @@ export default function LoginPage() {
                 <Lock className="w-5 h-5" />
                 Forgot Password?
               </button>
-              
+
               <button
                 onClick={handleSignUp}
                 className="w-full py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-xl hover:from-sky-700 hover:to-blue-700 transition-all flex items-center justify-center gap-2 font-medium text-sm shadow-sm hover:shadow"

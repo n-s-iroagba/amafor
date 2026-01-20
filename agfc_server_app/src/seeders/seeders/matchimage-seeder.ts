@@ -1,19 +1,19 @@
 ;
 import logger from '../../utils/logger';
-import { developmentMatchImages } from '../data/development/matchimages';
-import { productionMatchImages } from '../data/production/matchimages';
-import { testMatchImages } from '../data/testing/matchimages';
-import MatchImage, { MatchImageAttributes } from '@models/MatchImage';
+import { developmentFixtureImages } from '../data/development/matchimages';
+import { productionFixtureImages } from '../data/production/matchimages';
+import { testFixtureImages } from '../data/testing/matchimages';
+import FixtureImage, { FixtureImageAttributes } from '@models/FixtureImage';
 import { BaseSeeder } from './base-seeder';
 
-export class MatchImageSeeder extends BaseSeeder<MatchImage> {
+export class FixtureImageSeeder extends BaseSeeder<FixtureImage> {
   constructor() {
-    super(MatchImage, 'matchimage');
+    super(FixtureImage, 'matchimage');
   }
 
-  async getData(environment: string): Promise<MatchImageAttributes[]> {
+  async getData(environment: string): Promise<FixtureImageAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();
@@ -25,27 +25,27 @@ export class MatchImageSeeder extends BaseSeeder<MatchImage> {
     }
   }
 
-  private async getProductionData(): Promise<MatchImageAttributes[]> {
+  private async getProductionData(): Promise<FixtureImageAttributes[]> {
     try {
-      return productionMatchImages || [];
+      return productionFixtureImages || [];
     } catch (error) {
       logger.warn(`No production data found for ${this.name}, returning empty array`);
       return [];
     }
   }
 
-  private getTestData(): MatchImageAttributes[] {
+  private getTestData(): FixtureImageAttributes[] {
     try {
-      return testMatchImages || [];
+      return testFixtureImages || [];
     } catch (error) {
       logger.warn(`No test data found for ${this.name}, returning empty array`);
       return [];
     }
   }
 
-  private getDevelopmentData(): MatchImageAttributes[] {
+  private getDevelopmentData(): FixtureImageAttributes[] {
     try {
-      return developmentMatchImages || [];
+      return developmentFixtureImages || [];
     } catch (error) {
       logger.warn(`No development data found for ${this.name}, returning empty array`);
       return [];

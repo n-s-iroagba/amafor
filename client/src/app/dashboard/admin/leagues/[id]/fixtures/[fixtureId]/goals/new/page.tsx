@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
 import { Player } from '@/features/player/types';
-import { useGet } from '@/shared/hooks/useApiQuery';
-import api from '@/shared/lib/axios';
+import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 
 
 interface Fixture {
@@ -45,7 +44,8 @@ export default function NewGoal() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { post, isPending: isSubmitting } = usePost(`/goals/${fixtureId}`);
 
   const {
     data: amaforPlayers,
@@ -111,10 +111,8 @@ export default function NewGoal() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
-      const response:any = await api.post(`/goals/${fixtureId}`, {
+      const response: any = await post({
         fixtureId: fixtureId,
         scorer: formState.scorer,
         minute: parseInt(formState.minute),
@@ -127,11 +125,9 @@ export default function NewGoal() {
       });
 
       // ✅ now router is actually used
-      router.push(`/sports-admin/goals/details/${response.data.id}`);
+      router.push(`/sports-admin/goals/details/${response.id}`);
     } catch (error) {
       console.error('Error creating goal:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -215,9 +211,8 @@ export default function NewGoal() {
                 onChange={(e) =>
                   updateFormState({ selectedPlayerId: e.target.value })
                 }
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.scorer ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.scorer ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               >
                 <option value="">Select a player...</option>
                 {amaforPlayers?.map((player) => (
@@ -234,9 +229,8 @@ export default function NewGoal() {
                 onChange={(e) =>
                   updateFormState({ otherScorer: e.target.value })
                 }
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.scorer ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.scorer ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter scorer name"
               />
             )}
@@ -260,9 +254,8 @@ export default function NewGoal() {
               onChange={(e) => updateFormState({ minute: e.target.value })}
               min="1"
               max="120"
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.minute ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.minute ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter minute of goal"
             />
             {errors.minute && (

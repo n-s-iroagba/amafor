@@ -1,7 +1,8 @@
 import { UserRepository } from '../repositories';
 import { AuditService } from './AuditService';
-import { User, UserAttributes } from '../models';
+
 import { structuredLogger, tracer } from '../utils';
+import User, { UserAttributes } from '@models/User';
 
 export class UserService {
   private userRepository: UserRepository;
@@ -33,11 +34,11 @@ export class UserService {
         // Remove sensitive fields
         delete (data as any).passwordHash;
         delete (data as any).roles;
-        
+
         const [affectedCount, updatedUsers] = await this.userRepository.update(userId, data);
-        
+
         if (affectedCount === 0) throw new Error('User not found or no changes made');
-        
+
         const updatedUser = updatedUsers[0];
 
         // Audit the update via AuditService (writes to DB and Logger)
@@ -69,12 +70,12 @@ export class UserService {
     return tracer.startActiveSpan('service.UserService.verifyUser', async (span) => {
       try {
         const [_, updatedUsers] = await this.userRepository.update(targetUserId, { status });
-        
+
         if (!updatedUsers || updatedUsers.length === 0) throw new Error('User not found');
 
         await this.auditService.logAction({
           userId: adminId,
-          userEmail: 'admin', 
+          userEmail: 'admin',
           userType: 'admin',
           action: 'UPDATE',
           entityType: 'USER',

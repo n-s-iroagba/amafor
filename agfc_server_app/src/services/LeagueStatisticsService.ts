@@ -1,14 +1,13 @@
-import { 
-  LeagueStatisticsAttributes, 
-  LeagueStatisticsCreationAttributes 
+import {
+  LeagueStatisticsAttributes,
+  LeagueStatisticsCreationAttributes
 } from '../models/LeagueStatistics';
-import { 
-  LeagueStatisticsRepository, 
-  ILeagueStatisticsRepository 
-} from '../repositories/leagueStatistics.repository';
-import { AppError } from '../utils/AppError';
+
 import { v4 as uuidv4 } from 'uuid';
 import { Sequelize } from 'sequelize';
+import { LeagueStatisticsRepository } from '@repositories/LeagueStatisticsRepository';
+import { AppError } from '@utils/errors';
+import { PaginatedData } from 'src/types';
 
 export interface CreateLeagueStatisticsData extends Omit<LeagueStatisticsCreationAttributes, 'id'> {
   leagueId: string;
@@ -17,7 +16,7 @@ export interface CreateLeagueStatisticsData extends Omit<LeagueStatisticsCreatio
   goalsAgainst?: number;
 }
 
-export interface UpdateLeagueStatisticsData extends Partial<Omit<LeagueStatisticsAttributes, 'id' | 'leagueId'>> {}
+export interface UpdateLeagueStatisticsData extends Partial<Omit<LeagueStatisticsAttributes, 'id' | 'leagueId'>> { }
 
 export class LeagueStatisticsService {
   private repository: ILeagueStatisticsRepository;
@@ -49,8 +48,8 @@ export class LeagueStatisticsService {
       awayGoalsAgainst: 0,
       cleanSheets: 0,
       failedToScore: 0,
-      avgGoalsPerMatch: 0,
-      avgGoalsConcededPerMatch: 0,
+      avgGoalsPerFixture: 0,
+      avgGoalsConcededPerFixture: 0,
     };
 
     return await this.repository.create(statisticsData);
@@ -73,23 +72,21 @@ export class LeagueStatisticsService {
       sortOrder?: 'ASC' | 'DESC';
       includeLeague?: boolean;
     } = {}
-  ): Promise<{ 
-    statistics: LeagueStatisticsAttributes[]; 
-    total: number; 
-    page: number; 
-    totalPages: number 
-  }> {
+  ): Promise<PaginatedData<LeagueStatisticsAttributes>> {
     const { rows: statistics, count: total } = await this.repository.findAll(leagueId, options);
-    
+
     const page = options.page || 1;
     const limit = options.limit || 20;
     const totalPages = Math.ceil(total / limit);
 
     return {
-      statistics,
+      data: statistics,
       total,
       page,
+      limit,
       totalPages,
+      hasNext: page < totalPages,
+      hasPrev: page > 1,
     };
   }
 
@@ -114,22 +111,22 @@ export class LeagueStatisticsService {
     }
   }
 
-  async updateMatchResult(
-    leagueId: string, 
-    homeTeam: string, 
-    awayTeam: string, 
-    homeGoals: number, 
+  async updateFixtureResult(
+    leagueId: string,
+    homeTeam: string,
+    awayTeam: string,
+    homeGoals: number,
     awayGoals: number
   ): Promise<void> {
     const homeResult = homeGoals > awayGoals ? 'W' : homeGoals === awayGoals ? 'D' : 'L';
     const awayResult = homeGoals < awayGoals ? 'W' : homeGoals === awayGoals ? 'D' : 'L';
 
-    const homeUpdate = this.calculateMatchUpdate(homeTeam, homeGoals, awayGoals, true, homeResult);
-    const awayUpdate = this.calculateMatchUpdate(awayTeam, awayGoals, homeGoals, false, awayResult);
+    const homeUpdate = this.calculateFixtureUpdate(homeTeam, homeGoals, awayGoals, true, homeResult);
+    const awayUpdate = this.calculateFixtureUpdate(awayTeam, awayGoals, homeGoals, false, awayResult);
 
     await Promise.all([
-      this.applyMatchUpdate(leagueId, homeTeam, homeUpdate),
-      this.applyMatchUpdate(leagueId, awayTeam, awayUpdate),
+      this.applyFixtureUpdate(leagueId, homeTeam, homeUpdate),
+      this.applyFixtureUpdate(leagueId, awayTeam, awayUpdate),
     ]);
   }
 
@@ -159,8 +156,8 @@ export class LeagueStatisticsService {
 
   async getLeagueSummary(leagueId: string): Promise<{
     totalGoals: number;
-    averageGoalsPerMatch: number;
-    totalMatches: number;
+    averageGoalsPerFixture: number;
+    totalFixturees: number;
     totalTeams: number;
     highestScoringTeam: string;
     bestDefenseTeam: string;
@@ -169,7 +166,7 @@ export class LeagueStatisticsService {
     return await this.repository.getLeagueSummary(leagueId);
   }
 
-  private calculateMatchUpdate(
+  private calculateFixtureUpdate(
     team: string,
     goalsFor: number,
     goalsAgainst: number,
@@ -181,7 +178,7 @@ export class LeagueStatisticsService {
       goalsAgainst: Sequelize.literal(`goalsAgainst + ${goalsAgainst}`),
       matchesPlayed: Sequelize.literal('matchesPlayed + 1'),
       goalDifference: Sequelize.literal(`goalDifference + ${goalsFor - goalsAgainst}`),
-      lastMatchDate: new Date(),
+      lastFixtureDate: new Date(),
     };
 
     // Update wins/draws/losses
@@ -224,7 +221,7 @@ export class LeagueStatisticsService {
     return update;
   }
 
-  private async applyMatchUpdate(
+  private async applyFixtureUpdate(
     leagueId: string,
     team: string,
     update: any

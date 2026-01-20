@@ -24,17 +24,17 @@ export default function NotFound() {
               404 - Page Not Found
             </span>
           </div>
-          
+
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
             OOPS! <span className="text-sky-600">PAGE OUT OF PLAY</span>
           </h1>
-          
+
           <p className="text-gray-600 text-lg mb-8 max-w-lg mx-auto leading-relaxed">
-            The page you're looking for has either been moved, removed, or never existed. 
+            The page you're looking for has either been moved, removed, or never existed.
             It might have been substituted or is currently under maintenance.
           </p>
 
-          {/* Match Info Style Box */}
+          {/* Fixture Info Style Box */}
           <div className="bg-white border-2 border-sky-100 rounded-xl p-6 max-w-md mx-auto shadow-sm mb-10">
             <div className="flex items-center justify-between mb-4">
               <div className="text-left">
@@ -67,7 +67,7 @@ export default function NotFound() {
             <span>RETURN TO HOMEPAGE</span>
             <ArrowLeft className="w-5 h-5 transform rotate-180 group-hover:translate-x-1 transition-transform" />
           </Link>
-          
+
           <Link
             href="/news"
             className="bg-white border-2 border-sky-500 text-sky-600 hover:bg-sky-50 px-8 py-4 rounded-lg font-bold text-lg transition-all duration-300 shadow-sm hover:shadow flex items-center gap-3 min-w-[240px] justify-center"

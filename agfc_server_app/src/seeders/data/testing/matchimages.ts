@@ -1,6 +1,6 @@
-import { MatchImageAttributes } from '@models/MatchImage';
+import { FixtureImageAttributes } from '@models/FixtureImage';
 
-export const testMatchImages: MatchImageAttributes[] = [
-  // Add minimal test data for MatchImage here
+export const testFixtureImages: FixtureImageAttributes[] = [
+  // Add minimal test data for FixtureImage here
   // Keep it minimal for fast tests
 ];

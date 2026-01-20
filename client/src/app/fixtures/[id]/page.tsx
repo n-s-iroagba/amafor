@@ -3,17 +3,17 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { 
-  Calendar, 
-  MapPin, 
-  Trophy, 
-  Users, 
+import {
+  Calendar,
+  MapPin,
+  Trophy,
+  Users,
   ChevronLeft,
   Download,
   Share2,
   Eye,
   Home,
- 
+
   Clock,
   Target,
 
@@ -21,7 +21,7 @@ import {
   Loader2,
   AlertCircle,
   User,
-  
+
   Activity,
   GlobeIcon,
 
@@ -29,7 +29,6 @@ import {
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { FixtureWithLeague, FixtureStatus } from '@/features/fixture/types';
 import { Lineup } from '@/features/lineup/types';
-import { PositionCategory, PlayerPosition } from '@/features/player/types';
 
 
 interface FixtureDetails extends FixtureWithLeague {
@@ -50,32 +49,32 @@ export default function FixtureDetailsPage() {
   const params = useParams();
   const router = useRouter();
   const fixtureId = params.id as string;
-  
+
   const [activeTab, setActiveTab] = useState<'overview' | 'lineup' | 'stats' | 'timeline'>('overview');
   const [selectedTeam, setSelectedTeam] = useState<'home' | 'away'>('home');
 
   // Fetch fixture details with lineups and stats
-  const { 
-    data: fixture, 
-    loading, 
-    error 
+  const {
+    data: fixture,
+    loading,
+    error
   } = useGet<FixtureDetails>(`/api/fixtures/${fixtureId}`, {
-    params: { 
-      include: 'league,lineups.player,lineups.player.stats,stats' 
+    params: {
+      include: 'league,lineups.player,lineups.player.stats,stats'
     }
   });
 
   // Group lineups by position category
-  const homeLineup = fixture?.lineups?.filter(l => 
+  const homeLineup = fixture?.lineups?.filter(l =>
     l.player && (selectedTeam === 'home' ? true : false)
   ) || [];
-  
-  const awayLineup = fixture?.lineups?.filter(l => 
+
+  const awayLineup = fixture?.lineups?.filter(l =>
     l.player && (selectedTeam === 'away' ? true : false)
   ) || [];
 
   const groupedLineup = (lineup: Lineup[]) => {
-    const groups: Record<PositionCategory, Lineup[]> = {
+    const groups: Record<string, Lineup[]> = {
       'GOALKEEPER': [],
       'DEFENDER': [],
       'MIDFIELDER': [],
@@ -84,7 +83,10 @@ export default function FixtureDetailsPage() {
 
     lineup.forEach(l => {
       if (l.player?.positionCategory) {
-        groups[l.player.positionCategory].push(l);
+        const category = l.player.positionCategory.toUpperCase();
+        if (groups[category]) {
+          groups[category].push(l);
+        }
       }
     });
 
@@ -115,11 +117,11 @@ export default function FixtureDetailsPage() {
     });
   };
 
-  const getPositionColor = (position: PlayerPosition) => {
-    if (position.includes('GOALKEEPER')) return 'bg-blue-100 text-blue-800';
-    if (position.includes('DEFENDER')) return 'bg-green-100 text-green-800';
-    if (position.includes('MIDFIELDER')) return 'bg-yellow-100 text-yellow-800';
-    if (position.includes('FORWARD')) return 'bg-red-100 text-red-800';
+  const getPositionColor = (position: string) => {
+    if (position.includes('GOALKEEPER') || position.includes('GK')) return 'bg-blue-100 text-blue-800';
+    if (position.includes('DEFENDER') || position.includes('DF')) return 'bg-green-100 text-green-800';
+    if (position.includes('MIDFIELDER') || position.includes('MF')) return 'bg-yellow-100 text-yellow-800';
+    if (position.includes('FORWARD') || position.includes('FW')) return 'bg-red-100 text-red-800';
     return 'bg-gray-100 text-gray-800';
   };
 
@@ -158,7 +160,7 @@ export default function FixtureDetailsPage() {
             <div>
               <h4 className="font-semibold text-slate-800">{player.name}</h4>
               <div className="flex items-center gap-2 mt-1">
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPositionColor(player.position)}`}>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPositionColor(player.position as string)}`}>
                   {player.position.replace('_', ' ')}
                 </span>
                 {player.jerseyNumber && (
@@ -188,10 +190,9 @@ export default function FixtureDetailsPage() {
             <div className="flex items-center gap-1 text-slate-600">
               <Activity className="h-3 w-3" />
               <span>Status:</span>
-              <span className={`font-medium ${
-                player.status === 'ACTIVE' ? 'text-green-600' : 
+              <span className={`font-medium ${player.status === 'ACTIVE' ? 'text-green-600' :
                 player.status === 'INJURED' ? 'text-red-600' : 'text-yellow-600'
-              }`}>
+                }`}>
                 {player.status}
               </span>
             </div>
@@ -233,7 +234,7 @@ export default function FixtureDetailsPage() {
             <ChevronLeft className="h-5 w-5" />
             Back to Fixtures
           </button>
-          
+
           <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-red-800 mb-2">
@@ -294,7 +295,7 @@ export default function FixtureDetailsPage() {
               <div className="flex flex-wrap items-center gap-4 text-slate-300">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
-                  <span>{formatDate(fixture.date)}</span>
+                  <span>{formatDate(String(fixture.matchDate))}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-5 w-5" />
@@ -303,7 +304,7 @@ export default function FixtureDetailsPage() {
               </div>
             </div>
 
-            {/* Match Score */}
+            {/* Fixture Score */}
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 min-w-[300px]">
               <div className="flex items-center justify-between mb-6">
                 <div className="text-center">
@@ -355,11 +356,10 @@ export default function FixtureDetailsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-6 py-4 border-b-2 font-medium transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-blue-600 text-blue-700 bg-blue-50'
-                      : 'border-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-50'
-                  }`}
+                  className={`flex items-center gap-2 px-6 py-4 border-b-2 font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
+                    ? 'border-blue-600 text-blue-700 bg-blue-50'
+                    : 'border-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   {tab.label}
@@ -372,16 +372,16 @@ export default function FixtureDetailsPage() {
           <div className="p-6">
             {activeTab === 'overview' && (
               <div className="space-y-6">
-                {/* Match Summary */}
+                {/* Fixture Summary */}
                 <div>
-                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Match Summary</h3>
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Fixture Summary</h3>
                   <div className="bg-slate-50 rounded-lg p-6">
                     <p className="text-slate-700">
                       {fixture.status === FixtureStatus.SCHEDULED
                         ? `Upcoming match between ${fixture.homeTeam} and ${fixture.awayTeam} at ${fixture.venue}.`
-                        : `Match played on ${formatDate(fixture.date)} at ${fixture.venue}. ` +
-                          `${fixture.homeTeam} ${fixture.status === FixtureStatus.WON ? 'won' : fixture.status === FixtureStatus.LOST ? 'lost' : 'drew'} ` +
-                          `with a score of ${fixture.homeScore || 0}-${fixture.awayScore || 0}.`
+                        : `Fixture played on ${formatDate(String(fixture.matchDate))} at ${fixture.venue}. ` +
+                        `${fixture.homeTeam} ${fixture.status === FixtureStatus.WON ? 'won' : fixture.status === FixtureStatus.LOST ? 'lost' : 'drew'} ` +
+                        `with a score of ${fixture.homeScore || 0}-${fixture.awayScore || 0}.`
                       }
                     </p>
                   </div>
@@ -426,21 +426,19 @@ export default function FixtureDetailsPage() {
                 <div className="flex items-center gap-4 mb-6">
                   <button
                     onClick={() => setSelectedTeam('home')}
-                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                      selectedTeam === 'home'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${selectedTeam === 'home'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
                   >
                     {fixture.homeTeam} Lineup
                   </button>
                   <button
                     onClick={() => setSelectedTeam('away')}
-                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                      selectedTeam === 'away'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${selectedTeam === 'away'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
                   >
                     {fixture.awayTeam} Lineup
                   </button>
@@ -452,11 +450,11 @@ export default function FixtureDetailsPage() {
                     <h3 className="text-lg font-semibold text-slate-800 mb-4">
                       {selectedTeam === 'home' ? fixture.homeTeam : fixture.awayTeam} Squad
                     </h3>
-                    
+
                     <div className="space-y-6">
                       {Object.entries(groupedLineup(selectedTeam === 'home' ? homeLineup : awayLineup)).map(([positionCategory, players]) => {
                         if (players.length === 0) return null;
-                        
+
                         return (
                           <div key={positionCategory}>
                             <h4 className="text-md font-medium text-slate-700 mb-3 capitalize">
@@ -484,8 +482,8 @@ export default function FixtureDetailsPage() {
 
             {activeTab === 'stats' && (
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-800 mb-4">Match Statistics</h3>
-                
+                <h3 className="text-xl font-semibold text-slate-800 mb-4">Fixture Statistics</h3>
+
                 {fixture.stats ? (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Home Team Stats */}
@@ -545,7 +543,7 @@ export default function FixtureDetailsPage() {
                 ) : (
                   <div className="text-center py-12">
                     <BarChart3 className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-500">Match statistics are not available.</p>
+                    <p className="text-slate-500">Fixture statistics are not available.</p>
                   </div>
                 )}
               </div>
@@ -554,9 +552,9 @@ export default function FixtureDetailsPage() {
             {activeTab === 'timeline' && (
               <div className="text-center py-12">
                 <Clock className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-700 mb-2">Match Timeline</h3>
+                <h3 className="text-xl font-semibold text-slate-700 mb-2">Fixture Timeline</h3>
                 <p className="text-slate-500">
-                  Match timeline and events will be displayed here.
+                  Fixture timeline and events will be displayed here.
                 </p>
               </div>
             )}
@@ -566,7 +564,7 @@ export default function FixtureDetailsPage() {
         {/* Actions */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-        
+
             <button
               onClick={() => router.push(`/gallery/${fixture.id}`)}
               className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"

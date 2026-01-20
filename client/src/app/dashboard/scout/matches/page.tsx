@@ -5,7 +5,7 @@ import { Play, Clock, ArrowLeft, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 
-export default function MatchArchivesLibrary() {
+export default function FixtureArchivesLibrary() {
   const archives = [
 
   ];
@@ -18,8 +18,8 @@ export default function MatchArchivesLibrary() {
         </Link>
 
         <header className="mb-12">
-          <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight">Match Video Archive</h1>
-          <p className="text-gray-500 text-sm">Exclusive full-match coverage for professional scouting analysis.</p>
+          <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight">Fixture Video Archive</h1>
+          <p className="text-gray-500 text-sm">Exclusive full-fixture coverage for professional scouting analysis.</p>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -77,7 +77,7 @@ export default function MatchArchivesLibrary() {
           <div className="relative z-10 max-w-2xl">
             <h2 className="text-3xl mb-4 font-black tracking-tight uppercase">ISO 27001 Audited Media</h2>
             <p className="text-gray-400 mb-8 leading-relaxed">
-              All match archives are verified for data integrity. Access is restricted to professional scouts and club officials. Automated logging is active for all playback sessions.
+              All fixture archives are verified for data integrity. Access is restricted to professional scouts and club officials. Automated logging is active for all playback sessions.
             </p>
             <div className="flex space-x-4">
               <div className="flex items-center space-x-2 text-[10px] font-black tracking-widest text-[#87CEEB]">

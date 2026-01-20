@@ -26,7 +26,7 @@
 |--------|---------|---------|------------|
 | Player | `/players/{id}-{slug}` | `/players/15-john-doe` | `id: integer, slug: string` |
 | Article | `/news/{slug}` | `/news/derby-highlights-2026` | `slug: string, date in slug` |
-| Match | `/fixtures/{id}` | `/fixtures/2026-01-15-vs-rangers` | `id: date-opponent format` |
+| Fixture | `/fixtures/{id}` | `/fixtures/2026-01-15-vs-rangers` | `id: date-opponent format` |
 | Video | `/videos/{id}` | `/videos/derby-highlights-jan-2026` | `id: descriptive-slug` |
 | Campaign | `/advertiser/campaigns/{uuid}` | `/advertiser/campaigns/abc123-def456` | `uuid: v4 format` |
 
@@ -68,10 +68,10 @@ function generateArticleSlug(article) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   return `/news/${year}/${month}/${titleSlug}`;
 }
-3.3 Match URLs
+3.3 Fixture URLs
 javascript
 function generateFixtureSlug(fixture) {
-  const date = new Date(fixture.date);
+  const date = new Date(cfixture.matchDate);
   const dateStr = date.toISOString().split('T')[0];
   const opponentSlug = fixture.opponent.toLowerCase()
     .replace(/[^a-z0-9\s]/g, '')

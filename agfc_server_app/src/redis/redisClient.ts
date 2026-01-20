@@ -3,12 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const redis = process.env.NODE_ENV === 'production' ? new Redis('redis://default:VtJZwPmgkwiz9nio7ZovyMgpDx8Was4V@redis-14870.c293.eu-central-1-1.ec2.cloud.redislabs.com:14870') : new Redis(
-  {
-    host: 'localhost',
-    port: 6379,
-  }
-);
+const redis = new Redis(process.env.REDIS_URL as string);
 
 
 redis.on('connect', () => {

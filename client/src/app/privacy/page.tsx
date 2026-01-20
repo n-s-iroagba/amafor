@@ -9,7 +9,7 @@ export default function PrivacyPage() {
         <Link href="/" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-12 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back Home
         </Link>
-        
+
         <header className="mb-16">
           <div className="bg-[#2F4F4F] w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-xl">
             <EyeOff className="w-8 h-8 text-[#87CEEB]" />
@@ -25,7 +25,7 @@ export default function PrivacyPage() {
             </h2>
             <p className="mb-4">We categorize data into three distinct tiers per our ISO 27001 framework:</p>
             <ul className="space-y-3 list-disc pl-5 font-bold text-xs uppercase text-[#2F4F4F]/70">
-              <li><span className="text-[#2F4F4F] font-black">Public:</span> Match results, public news, squad lists.</li>
+              <li><span className="text-[#2F4F4F] font-black">Public:</span> Fixture results, public news, squad lists.</li>
               <li><span className="text-[#2F4F4F] font-black">Confidential:</span> Fan profile details, email addresses, transaction history.</li>
               <li><span className="text-[#2F4F4F] font-black">Restricted:</span> Player biological data, physiological metrics, scout evaluation reports.</li>
             </ul>

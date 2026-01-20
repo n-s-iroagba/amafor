@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 import { API_ROUTES } from '@/config/routes';
-import api from '@/shared/lib/axios';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
-interface MatchSummary {
+interface FixtureSummary {
   id: number;
   fixtureId: number;
   summary: string;
@@ -21,42 +21,28 @@ interface Fixture {
   status: string;
 }
 
-export default function EditMatchSummary() {
+export default function EditFixtureSummary() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const summaryId = params.summaryId as string;
 
   const [fixtureId, setFixtureId] = useState('');
   const [summary, setSummary] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const { data: summaryData, loading: isLoading } = useGet<FixtureSummary>(
+    API_ROUTES.MATCH_SUMMARY.VIEW(summaryId)
+  );
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.MATCH_SUMMARY.MUTATE(summaryId)
+  );
 
   useEffect(() => {
-    if (id) {
-      Promise.all([ fetchMatchSummary()]);
+    if (summaryData) {
+      setFixtureId(summaryData.fixtureId.toString());
+      setSummary(summaryData.summary);
     }
-  }, [id]);
-
-
-
-  const fetchMatchSummary = async () => {
-    try {
-      const response = await api.get<MatchSummary>(API_ROUTES.MATCH_SUMMARY.VIEW(id));
-      console.log(response.data)
-      if (response) {
-        const data = response.data;
-        setFixtureId(data.fixtureId.toString());
-        setSummary(data.summary);
-      } else {
-        console.error('Failed to fetch match summary');
-      }
-    } catch (error) {
-      console.error('Error fetching match summary:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [summaryData]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -75,24 +61,15 @@ export default function EditMatchSummary() {
 
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
-
     try {
-      const response = await api.put(
-        API_ROUTES.MATCH_SUMMARY.MUTATE(id as string),
-        {
-          fixtureId: parseInt(fixtureId),
-          summary: summary.trim(),
-        }
-      );
+      await put({
+        fixtureId: parseInt(fixtureId),
+        summary: summary.trim(),
+      });
 
-      router.push(`/sports-admin/match-summary/details/${id}`);
-
-      console.error('Failed to update match summary');
+      router.push(`/sports-admin/match-summary/details/${summaryId}`);
     } catch (error) {
       console.error('Error updating match summary:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -109,7 +86,7 @@ export default function EditMatchSummary() {
       <div className="max-w-2xl mx-auto bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden p-4 sm:p-6">
         <div className="mb-4 sm:mb-6 border-b border-sky-100 pb-4">
           <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
-            Edit Match Summary
+            Edit Fixture Summary
           </h2>
           <p className="text-sky-600 mt-1 sm:mt-2 text-sm sm:text-base">
             Update the match summary
@@ -117,7 +94,7 @@ export default function EditMatchSummary() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-      
+
 
           <div>
             <label
@@ -131,9 +108,8 @@ export default function EditMatchSummary() {
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               rows={8}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.summary ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.summary ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter match summary..."
             />
             {errors.summary && (

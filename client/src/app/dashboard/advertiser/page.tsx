@@ -83,17 +83,16 @@ export default function AdvertiserDashboard() {
                         </td>
                         <td className="px-8 py-6">
                           <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mb-2">
-                            <div 
-                              className="bg-[#87CEEB] h-full" 
-                              style={{ width: `${(parseInt(c.delivered.replace(',','')) / parseInt(c.target.replace(',',''))) * 100}%` }}
+                            <div
+                              className="bg-[#87CEEB] h-full"
+                              style={{ width: `${(parseInt(c.delivered.replace(',', '')) / parseInt(c.target.replace(',', ''))) * 100}%` }}
                             />
                           </div>
                           <div className="text-[10px] text-gray-400 font-bold uppercase">{c.delivered} / {c.target} Views</div>
                         </td>
                         <td className="px-8 py-6">
-                          <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                            c.status === 'active' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
-                          }`}>
+                          <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${c.status === 'active' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                            }`}>
                             {c.status}
                           </span>
                         </td>
@@ -138,7 +137,7 @@ export default function AdvertiserDashboard() {
               <div className="space-y-6 relative z-10">
                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
                   <h4 className="text-[10px] font-black text-[#87CEEB] mb-2 uppercase tracking-widest">Video Engagement</h4>
-                  <p className="text-xs text-gray-400 leading-relaxed">Mid-article video ads have 3x higher CTR when placed in "Match Report" tags.</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">Mid-article video ads have 3x higher CTR when placed in "Fixture Report" tags.</p>
                 </div>
               </div>
               <button className="w-full mt-8 py-4 bg-[#87CEEB] text-[#2F4F4F] rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all">

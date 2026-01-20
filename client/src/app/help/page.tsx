@@ -42,12 +42,12 @@ export default function HelpContact() {
       answer: 'Visit our Academy section for information about our youth development program. You can contact us via WhatsApp or email for trial dates and enrollment details.'
     },
     {
-      question: 'Where can I buy match tickets?',
-      answer: 'Match tickets can be purchased through our official ticketing partners. Check individual fixture pages for ticket availability and pricing.'
+      question: 'Where can I buy fixture tickets?',
+      answer: 'Fixture tickets can be purchased through our official ticketing partners. Check individual fixture pages for ticket availability and pricing.'
     },
     {
       question: 'How do I stay updated with club news?',
-      answer: 'Follow us on social media (Facebook, Twitter, Instagram, YouTube) and check our News section regularly for the latest updates, match reports, and announcements.'
+      answer: 'Follow us on social media (Facebook, Twitter, Instagram, YouTube) and check our News section regularly for the latest updates, fixture reports, and announcements.'
     },
     {
       question: 'Can I volunteer with the club?',
@@ -62,7 +62,7 @@ export default function HelpContact() {
   return (
     <>
       <Header />
-      
+
       <main className="py-16 bg-slate-50 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">

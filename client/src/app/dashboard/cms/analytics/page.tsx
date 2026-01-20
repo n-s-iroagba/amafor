@@ -75,7 +75,7 @@ export default function CMSAnalyticsPage() {
               <h3 className="text-sm font-black uppercase tracking-widest mb-8 text-[#87CEEB]">Top Performing Tags</h3>
               <div className="space-y-4">
                 {[
-                  { tag: 'Match Reports', share: '42%', color: 'bg-blue-500' },
+                  { tag: 'Fixture Reports', share: '42%', color: 'bg-blue-500' },
                   { tag: 'Player Spotlight', share: '28%', color: 'bg-purple-500' },
                   { tag: 'Academy News', share: '18%', color: 'bg-green-500' },
                   { tag: 'Club Updates', share: '12%', color: 'bg-amber-500' },

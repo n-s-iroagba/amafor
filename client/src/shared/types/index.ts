@@ -1,45 +1,9 @@
-export interface ApiResponse<T>{
-    data:T
-    success:boolean
-    result?:number
-    message?:string
-}
-export enum UserRole {
-  FAN = 'fan',
-  SCOUT = 'scout',
-  ADVERTISER = 'advertiser',
-  PATRON = 'patron',
-  DONOR = 'donor',
-  MEDIA_MANAGER = 'media_manager',
-  SPORTS_ADMIN = 'sports_admin',
-  DATA_STEWARD = 'data_steward',
-  COMMERCIAL_MANAGER = 'commercial_manager',
-  IT_SECURITY = 'it_security',
-  SUPER_ADMIN = 'super_admin'
-}
-
-export enum UserStatus {
-  ACTIVE = 'active',
-  PENDING_VERIFICATION = 'pending_verification',
-  SUSPENDED = 'suspended'
-}
-
-export interface AuthUser{
-  id: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl?: string;
-  role: UserRole;
-  status: UserStatus;
-  emailVerified: boolean;
-}
-
-export interface PaginatedData<T>{ data: T[]; total: number; page: number; totalPages: number }
-
-export enum RSSFeedCategory{
-  FOOTBALL='football'
-}
-export enum RssFeedSourceCategory {
-  SPORTS = 'sports',
-  GENERAL = 'general',
-}
+export * from './common';
+export * from './auth';
+export * from './article';
+export * from './league';
+export * from './academy';
+export * from './fixture';
+export * from './player';
+export * from './rssFeed';
+export * from './lineup';

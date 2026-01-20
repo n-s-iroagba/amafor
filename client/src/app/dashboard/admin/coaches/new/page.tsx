@@ -3,7 +3,8 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageIcon, Upload, X } from 'lucide-react';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
@@ -16,9 +17,9 @@ export default function NewCoach() {
   const [imageUrl, setImageUrl] = useState<string>('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.COACHES.CREATE);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const validateForm = () => {
@@ -63,21 +64,16 @@ export default function NewCoach() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setIsSubmitting(true);
 
     try {
-      const response = await api.post(
-        '/coaches',
-        {
-          name,
-          role,
-          bio: bio || null,
-          imageUrl,
-        },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      const result = await post({
+        name,
+        role,
+        bio: bio || null,
+        imageUrl,
+      });
 
-      if (response) {
+      if (result) {
         router.push('/sports-admin/coach');
       } else {
         console.error('Failed to create coach');
@@ -85,7 +81,6 @@ export default function NewCoach() {
     } catch (error) {
       console.error('Error creating coach:', error);
     } finally {
-      setIsSubmitting(false);
       setUploadProgress(0);
     }
   };
@@ -117,9 +112,8 @@ export default function NewCoach() {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.name ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -138,9 +132,8 @@ export default function NewCoach() {
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                  errors.role ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.role ? 'border-red-500' : 'border-sky-300'
+                  } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               />
               {errors.role && (
                 <p className="mt-1 text-sm text-red-600">{errors.role}</p>
@@ -172,13 +165,12 @@ export default function NewCoach() {
             </label>
             <div
               onClick={() => imageInputRef.current?.click()}
-              className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-                imageFile
+              className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile
                   ? 'border-green-300 bg-green-50'
                   : errors.imageUrl
                     ? 'border-red-300 bg-red-50'
                     : 'border-sky-300 bg-sky-50 hover:border-sky-400'
-              }`}
+                }`}
             >
               <input
                 ref={imageInputRef}

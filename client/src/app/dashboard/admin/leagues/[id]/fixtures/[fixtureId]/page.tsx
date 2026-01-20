@@ -32,14 +32,14 @@ interface Fixture {
     id: number;
     summary: string;
   };
-images?: MatchImage[];
+  images?: FixtureImage[];
   lineup: Lineup[];
 }
-interface Goal{
-  isPenalty:boolean
+interface Goal {
+  isPenalty: boolean
 }
 
-interface MatchImage {
+interface FixtureImage {
   id: number;
   imageUrl: string;
   caption?: string;
@@ -147,18 +147,18 @@ export default function FixtureDetail() {
     },
     {
       key: 'summary',
-      label: 'Match Summary',
-       alwaysShow: true
+      label: 'Fixture Summary',
+      alwaysShow: true
     },
     {
       key: 'gallery',
       label: `Gallery (${fixture.images?.length || 0})`,
-       alwaysShow: true
+      alwaysShow: true
     }
   ];
 
   // Filter tabs based on conditions
-  const visibleTabs = tabs.filter(tab => 
+  const visibleTabs = tabs.filter(tab =>
     tab.alwaysShow
   );
 
@@ -188,12 +188,12 @@ export default function FixtureDetail() {
           </Link>
         </div>
 
-        {/* Match card */}
+        {/* Fixture card */}
         <div className="bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden mb-6">
           <div className="p-4 sm:p-6 border-b border-sky-200 flex justify-between items-start">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
-                Match Details
+                Fixture Details
               </h2>
               <div className="flex items-center mt-2 space-x-2 flex-wrap">
                 <span
@@ -211,7 +211,7 @@ export default function FixtureDetail() {
                 )}
               </div>
             </div>
-            
+
             {/* Action Buttons */}
             <div className="flex gap-2">
               <Link
@@ -223,7 +223,7 @@ export default function FixtureDetail() {
                 </svg>
                 Edit
               </Link>
-              
+
               {showDeleteConfirm ? (
                 <div className="flex gap-2">
                   <button
@@ -284,7 +284,7 @@ export default function FixtureDetail() {
                 </div>
               )}
               <div className="text-sm text-sky-600 mt-1">
-                {new Date(fixture.date).toLocaleString()}
+                {new Date(fixture.matchDate).toLocaleString()}
               </div>
             </div>
             <div className="flex items-center gap-4 flex-1 justify-end">
@@ -311,17 +311,16 @@ export default function FixtureDetail() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key as any)}
-                className={`py-4 px-6 text-sm font-medium border-b-2 whitespace-nowrap ${
-                  activeTab === tab.key
-                    ? 'border-sky-500 text-sky-600'
-                    : 'border-transparent text-sky-500 hover:text-sky-600 hover:border-sky-300'
-                }`}
+                className={`py-4 px-6 text-sm font-medium border-b-2 whitespace-nowrap ${activeTab === tab.key
+                  ? 'border-sky-500 text-sky-600'
+                  : 'border-transparent text-sky-500 hover:text-sky-600 hover:border-sky-300'
+                  }`}
               >
                 {tab.label}
               </button>
             ))}
           </div>
-{/* 
+          {/* 
           <div className="p-4 sm:p-6">
             {activeTab === 'overview' && (
               <div>
@@ -338,13 +337,13 @@ export default function FixtureDetail() {
             
             {activeTab === 'summary' && (
              (
-                <AdminMatchSummary fixtureId={fixture.id} />
+                <AdminFixtureSummary fixtureId={fixture.id} />
               )
             )}
  
             {activeTab === 'gallery' && (
            (
-                <MatchImagesList fixtureId={fixture.id} />
+                <FixtureImagesList fixtureId={fixture.id} />
               ) 
             )}
           </div> */}

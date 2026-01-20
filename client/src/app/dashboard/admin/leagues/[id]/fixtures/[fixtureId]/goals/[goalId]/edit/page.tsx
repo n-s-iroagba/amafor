@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import api from '@/shared/lib/axios';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 
 interface Goal {
@@ -18,55 +19,40 @@ interface Fixture {
   homeTeam: string;
   awayTeam: string;
   date: string;
+  matchDate?: string; // Alias for date
 }
 
 export default function EditGoal() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const goalId = params.goalId as string;
+  const fixtureId = params.fixtureId as string;
 
-  const [fixtures, setFixtures] = useState<Fixture[]>([]);
-  const [fixtureId, setFixtureId] = useState('');
+  const { data: goal, loading: goalLoading } = useGet<Goal>(`/goals/${goalId}`);
+  const { data: fixtures, loading: fixturesLoading } = useGet<Fixture[]>('/fixtures');
+  const { put, isPending: isSubmitting } = usePut(`/goals/${goalId}`);
+
+  const [selectedFixtureId, setSelectedFixtureId] = useState('');
   const [scorer, setScorer] = useState('');
   const [minute, setMinute] = useState('');
   const [isPenalty, setIsPenalty] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const isLoading = goalLoading || fixturesLoading;
 
   useEffect(() => {
-    if (id) {
-      Promise.all([fetchFixtures(), fetchGoal()]);
+    if (goal) {
+      setSelectedFixtureId(goal.fixtureId.toString());
+      setScorer(goal.scorer);
+      setMinute(goal.minute.toString());
+      setIsPenalty(goal.isPenalty);
     }
-  }, [id]);
-
-  const fetchFixtures = async () => {
-    try {
-      const { data } = await api.get<Fixture[]>('/fixtures');
-      setFixtures(data);
-    } catch (error) {
-      console.error('Error fetching fixtures:', error);
-    }
-  };
-
-  const fetchGoal = async () => {
-    try {
-      const { data } = await api.get<Goal>(`/goals/${id}`);
-      setFixtureId(data.fixtureId.toString());
-      setScorer(data.scorer);
-      setMinute(data.minute.toString());
-      setIsPenalty(data.isPenalty);
-    } catch (error) {
-      console.error('Error fetching goal:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [goal]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!fixtureId) newErrors.fixtureId = 'Fixture is required';
+    if (!selectedFixtureId) newErrors.fixtureId = 'Fixture is required';
     if (!scorer.trim()) newErrors.scorer = 'Scorer is required';
     if (!minute.trim()) newErrors.minute = 'Minute is required';
     else if (parseInt(minute) < 1 || parseInt(minute) > 120)
@@ -80,21 +66,18 @@ export default function EditGoal() {
     e.preventDefault();
 
     if (!validateForm()) return;
-    setIsSubmitting(true);
 
     try {
-      await api.put(`/goals/${id}`, {
-        fixtureId: parseInt(fixtureId),
+      await put({
+        fixtureId: parseInt(selectedFixtureId),
         scorer,
         minute: parseInt(minute),
         isPenalty,
       });
 
-      router.push('/goals'); // ✅ redirect after success
+      router.push('/goals');
     } catch (error) {
       console.error('Error updating goal:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -128,17 +111,16 @@ export default function EditGoal() {
             </label>
             <select
               id="fixtureId"
-              value={fixtureId}
-              onChange={(e) => setFixtureId(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.fixtureId ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              value={selectedFixtureId}
+              onChange={(e) => setSelectedFixtureId(e.target.value)}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.fixtureId ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
             >
               <option value="">Select a fixture</option>
-              {fixtures.map((fixture) => (
+              {fixtures?.map((fixture) => (
                 <option key={fixture.id} value={fixture.id}>
                   {fixture.homeTeam} vs {fixture.awayTeam} -{' '}
-                  {new Date(fixture.date).toLocaleDateString()}
+                  {new Date(fixture.date || fixture.matchDate || '').toLocaleDateString()}
                 </option>
               ))}
             </select>
@@ -159,9 +141,8 @@ export default function EditGoal() {
               id="scorer"
               value={scorer}
               onChange={(e) => setScorer(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.scorer ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.scorer ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter scorer name"
             />
             {errors.scorer && (
@@ -183,9 +164,8 @@ export default function EditGoal() {
               onChange={(e) => setMinute(e.target.value)}
               min="1"
               max="120"
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${
-                errors.minute ? 'border-red-500' : 'border-sky-300'
-              } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.minute ? 'border-red-500' : 'border-sky-300'
+                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter minute of goal"
             />
             {errors.minute && (

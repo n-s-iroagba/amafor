@@ -16,35 +16,35 @@ import { Article } from '@/features/articles/types'
 import { Fixture } from '@/features/fixture/types'
 
 export default function SearchResults() {
-   const {data:players} = useGet<Player[]>('')
-     const {data:newsArticles} = useGet<Article[]>('')
-       const {data:fixtures} = useGet<Fixture[]>('')
+  const { data: players } = useGet<Player[]>('')
+  const { data: newsArticles } = useGet<Article[]>('')
+  const { data: fixtures } = useGet<Fixture[]>('')
 
   const [activeTab, setActiveTab] = useState<'all' | 'players' | 'articles' | 'matches'>('all')
 
   // Search logic
-  const query =''
-  const searchPlayers = players||[].filter(p => 
+  const query = ''
+  const searchPlayers = players || [].filter(p =>
     p.name.toLowerCase().includes(query.toLowerCase()) ||
     p.position.toLowerCase().includes(query.toLowerCase())
   )
 
-  const searchArticles = newsArticles||[].filter(a =>
+  const searchArticles = newsArticles || [].filter(a =>
     a.title.toLowerCase().includes(query.toLowerCase()) ||
-    a.excerpt.toLowerCase().includes(query.toLowerCase()) 
+    a.excerpt.toLowerCase().includes(query.toLowerCase())
   )
 
-  const searchMatches = fixtures||[].filter(f =>
+  const searchFixturees = fixtures || [].filter(f =>
     f.homeTeam.toLowerCase().includes(query.toLowerCase()) ||
-    f.awayTeam.toLowerCase().includes(query.toLowerCase()) 
+    f.awayTeam.toLowerCase().includes(query.toLowerCase())
   )
 
-  const totalResults = searchPlayers.length + searchArticles.length + searchMatches.length
+  const totalResults = searchPlayers.length + searchArticles.length + searchFixturees.length
 
   return (
     <>
       <Header />
-      
+
       <main className="py-16 bg-white min-h-screen">
         <div className="container mx-auto px-4">
           <div className="mb-8">
@@ -76,22 +76,20 @@ export default function SearchResults() {
               <div className="flex gap-2 mb-8 overflow-x-auto border-b border-slate-200">
                 <button
                   onClick={() => setActiveTab('all')}
-                  className={`px-6 py-3 transition-colors whitespace-nowrap font-semibold ${
-                    activeTab === 'all'
-                      ? 'border-b-2 border-sky-600 text-sky-600'
-                      : 'text-slate-600 hover:text-sky-500'
-                  }`}
+                  className={`px-6 py-3 transition-colors whitespace-nowrap font-semibold ${activeTab === 'all'
+                    ? 'border-b-2 border-sky-600 text-sky-600'
+                    : 'text-slate-600 hover:text-sky-500'
+                    }`}
                 >
                   All ({totalResults})
                 </button>
                 {searchPlayers.length > 0 && (
                   <button
                     onClick={() => setActiveTab('players')}
-                    className={`px-6 py-3 transition-colors whitespace-nowrap flex items-center gap-2 font-semibold ${
-                      activeTab === 'players'
-                        ? 'border-b-2 border-sky-600 text-sky-600'
-                        : 'text-slate-600 hover:text-sky-500'
-                    }`}
+                    className={`px-6 py-3 transition-colors whitespace-nowrap flex items-center gap-2 font-semibold ${activeTab === 'players'
+                      ? 'border-b-2 border-sky-600 text-sky-600'
+                      : 'text-slate-600 hover:text-sky-500'
+                      }`}
                   >
                     <User className="w-4 h-4" />
                     Players ({searchPlayers.length})
@@ -100,27 +98,25 @@ export default function SearchResults() {
                 {searchArticles.length > 0 && (
                   <button
                     onClick={() => setActiveTab('articles')}
-                    className={`px-6 py-3 transition-colors whitespace-nowrap flex items-center gap-2 font-semibold ${
-                      activeTab === 'articles'
-                        ? 'border-b-2 border-sky-600 text-sky-600'
-                        : 'text-slate-600 hover:text-sky-500'
-                    }`}
+                    className={`px-6 py-3 transition-colors whitespace-nowrap flex items-center gap-2 font-semibold ${activeTab === 'articles'
+                      ? 'border-b-2 border-sky-600 text-sky-600'
+                      : 'text-slate-600 hover:text-sky-500'
+                      }`}
                   >
                     <FileText className="w-4 h-4" />
                     Articles ({searchArticles.length})
                   </button>
                 )}
-                {searchMatches.length > 0 && (
+                {searchFixturees.length > 0 && (
                   <button
                     onClick={() => setActiveTab('matches')}
-                    className={`px-6 py-3 transition-colors whitespace-nowrap flex items-center gap-2 font-semibold ${
-                      activeTab === 'matches'
-                        ? 'border-b-2 border-sky-600 text-sky-600'
-                        : 'text-slate-600 hover:text-sky-500'
-                    }`}
+                    className={`px-6 py-3 transition-colors whitespace-nowrap flex items-center gap-2 font-semibold ${activeTab === 'matches'
+                      ? 'border-b-2 border-sky-600 text-sky-600'
+                      : 'text-slate-600 hover:text-sky-500'
+                      }`}
                   >
                     <Trophy className="w-4 h-4" />
-                    Matches ({searchMatches.length})
+                    Fixturees ({searchFixturees.length})
                   </button>
                 )}
               </div>
@@ -186,14 +182,14 @@ export default function SearchResults() {
                   </div>
                 )}
 
-                {/* Matches */}
-                {(activeTab === 'all' || activeTab === 'matches') && searchMatches.length > 0 && (
+                {/* Fixturees */}
+                {(activeTab === 'all' || activeTab === 'matches') && searchFixturees.length > 0 && (
                   <div>
                     {activeTab === 'all' && (
-                      <h2 className="text-2xl font-heading text-sky-500 mb-6">Matches</h2>
+                      <h2 className="text-2xl font-heading text-sky-500 mb-6">Fixturees</h2>
                     )}
                     {/* <div className="grid md:grid-cols-2 gap-6">
-                      {searchMatches.map(match => (
+                      {searchFixturees.map(match => (
                         <Link
                           key={match.id}
                           href={`/fixtures/${match.id}`}

@@ -11,7 +11,7 @@ import { Header } from '@/shared/components/Header';
 import { CookieConsent } from '@/features/home/components/CookieConsent';
 import { Footer } from '@/shared/components/Footer';
 import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget';
-import MatchGallerySection from '@/features/fixture/components/MatchGallerySection';
+import FixtureGallerySection from '@/features/fixture/components/FixtureGallerySection';
 import FeaturedNews from '@/features/home/components/FeaturedNews';
 
 export default function Homepage() {
@@ -19,14 +19,14 @@ export default function Homepage() {
     <>
       <Header />
       <HeroSection />
-      
+
       <NextFixtureSection />
       <AcademyScoutingSection />
       <TrialistsSection />
-      <MatchGallerySection />
+      <FixtureGallerySection />
       <LatestNewsSection />
       <VideoSection />
-      <FeaturedNews/>
+      <FeaturedNews />
       <SupportSection />
       <Footer />
       <CookieConsent />

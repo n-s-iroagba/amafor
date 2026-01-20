@@ -1,6 +1,6 @@
-import { AcademyRepository } from '../repositories'; // Assuming Generic Repository
+
 import { AuditService } from './AuditService';
-import { Application, NewsItem } from '../models'; // Assuming models exist
+
 import { structuredLogger, tracer } from '../utils';
 
 export class AcademyService {
@@ -12,18 +12,7 @@ export class AcademyService {
     this.auditService = new AuditService();
   }
 
-  public async getNews(filters: any): Promise<NewsItem[]> {
-    return tracer.startActiveSpan('service.AcademyService.getNews', async (span) => {
-      try {
-        return await this.academyRepository.findNews(filters);
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        throw error;
-      } finally {
-        span.end();
-      }
-    });
-  }
+
 
   public async submitApplication(data: any): Promise<Application> {
     return tracer.startActiveSpan('service.AcademyService.submitApplication', async (span) => {

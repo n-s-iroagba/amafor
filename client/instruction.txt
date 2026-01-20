@@ -1,0 +1,58 @@
+﻿Screen Inventory Template (UX/Product Design)
+Screen Identification:
+* Screen ID - Unique reference (e.g., S-001, HOME-01)
+* Screen Name - Descriptive title (e.g., "Login Screen", "Product Listing Page")
+* Screen Type - Landing, Form, List, Detail, Modal, Error, Success, etc.
+User Journey Context:
+
+
+* User Role/Persona - Who uses this screenFunctional Elements:
+* Primary Action - Main CTA or goal (e.g., "Submit order", "Create account")
+* Secondary Actions - Other available actions (Cancel, Back, Skip)
+* Input Fields - What data users provide
+* Content Displayed - Key information shown to users
+* Validation/Rules - Business logic, field requirements
+
+
+Additional Information:
+* Dependencies - Other screens or features needed first
+* Edge Cases - Error states, empty states, loading states
+
+
+
+
+
+
+Data Steward (Primary)
+	Head of Football Operations
+	Accuracy of player/league stats; primary data entry; creates and verifies all player profiles.
+	Data Steward (Backup)
+	Assistant Coach or Team Manager
+	Secondary data entry for fixtures/results; updates match results if Sports Administrator unavailable.
+	Commercial Manager
+	Business Development
+	Advertiser account verification, relationship management, ad policy enforcement, dispute resolution, checks complaints@ email daily.
+	Sports Administrator
+	To be assigned
+	Management of match lineups and timely update of fixtures/results (30-minute SLA).
+	Academy Head
+	To be assigned (Interim appointed by Project Sponsor before launch)
+	Oversees trialist process, defines assessment criteria, final decision on trialist acceptance. Primary administrator for Academy Staff permissions.
+	Academy Staff
+	Coaches, Scouts, Administrators
+	Use system to review trialist applications, log assessments, manage trial sessions, track academy player development.
+	End Users (Fans)
+	Local & Diaspora Supporters
+	Consumers of public content.
+	End Users (Scouts)
+	International Talent Scouts
+	Consumers of verified/professional content in "Pro View" portal.
+	End Users (Advertisers)
+	Local/International Businesses
+	Campaign creators and managers.
+	Content Managers
+	Media & Communications Team
+	CMS users for publishing articles and videos; responds to WhatsApp widget queries during business hours.
+	End Users (Trialist Guardians)
+	Parents/Guardians of prospective players
+	Submit trial applications and receive multi-channel communication.

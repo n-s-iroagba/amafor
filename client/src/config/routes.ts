@@ -62,8 +62,8 @@ export const API_ROUTES = {
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',
     REFRESH_ACCESS_TOKEN: '/auth/refresh-token',
-    ADMIN_SIGNUP:'/auth/signup/admin',
-    SPORTS_ADMIN:'/auth/signup/sports-admin'
+    ADMIN_SIGNUP: '/auth/signup/admin',
+    SPORTS_ADMIN: '/auth/signup/sports-admin'
   },
   AD: {
     DISPLAY: (indentifier: string) => `/ads/public/${indentifier}`,
@@ -90,7 +90,7 @@ export const API_ROUTES = {
     },
     SUBSCRIPTIONS: {
       LIST: '/ads/subscriptions',
-       ADVERTISER_LIST: '/ads/advertiser/subscriptions',
+      ADVERTISER_LIST: '/ads/advertiser/subscriptions',
       CREATE: '/ads/subscriptions',
       DETAIL: (id: string | number) => `/ads/subscriptions/${id}`,
       UPDATE: (id: string | number) => `/ads/subscriptions/${id}`,
@@ -112,7 +112,7 @@ export const API_ROUTES = {
         `/ads/impressions/${adCreativeId}`,
     },
   },
-    PAYMENT: {
+  PAYMENT: {
     LIST: '/payments',
     ADVERTISER_PAYMENTS: (id: number | string) => `payments/${id}`,
     INITIALIZE_GATEWAY: '/payments/initialize',
@@ -121,15 +121,15 @@ export const API_ROUTES = {
 
   ARTICLES: {
     CREATE: `/articles`,
-    HOME_PAGE :'/articles/homepage',
+    HOME_PAGE: '/articles/homepage',
     VIEW: (id: string) => `/articles/${id}`,
     MUTATE: (id: number | null) => `/articles/${id}`,
     LIST: '/articles',
     PUBLISHED: '/articles/published',
     UN_PUBLISHED: '/articles/unpublished',
-    TAG:(tag:string)=> `/articles/tag/${tag}`,
+    TAG: (tag: string) => `/articles/tag/${tag}`,
     SEARCH: '/articles/search',
-    POPULAR_TAGS:'/articles/popular-tags'
+    POPULAR_TAGS: '/articles/popular-tags'
   },
   FEEDS: {
     CREATE: `/feeds`,
@@ -145,12 +145,19 @@ export const API_ROUTES = {
     VIEW: (id: string) => `/coaches/${id}`,
   },
 
+  STAFF: {
+    CREATE: `/academy-staff`,
+    MUTATE: (id: string | number) => `/academy-staff/${id}`,
+    LIST: `/academy-staff`,
+    VIEW: (id: string) => `/academy-staff/${id}`,
+  },
+
   LEAGUES: {
     CREATE: `/leagues`,
     MUTATE: (id: number | null) => `/leagues/${id}`,
     LIST: `/leagues/all-leagues`,
-
     VIEW: (id: string) => `/leagues/${id}`,
+    STATISTICS: (id: string) => `/leagues/${id}/statistics`,
   },
 
   GOALS: {
@@ -224,5 +231,42 @@ export const API_ROUTES = {
     VIEW: (id: string | number) => `/lineups/${id}`, // GET single lineup player
     UPDATE: (id: string | number) => `/lineups/${id}`, // PUT update player
     DELETE: (id: string | number) => `/lineups/${id}`, // DELETE player
+  },
+
+  TRIALISTS: {
+    LIST: '/trialists',
+    CREATE: '/trialists',
+    VIEW: (id: string | number) => `/trialists/${id}`,
+    UPDATE: (id: string | number) => `/trialists/${id}`,
+    DELETE: (id: string | number) => `/trialists/${id}`,
+    UPDATE_STATUS: (id: string | number) => `/trialists/${id}/status`,
+    SEARCH: '/trialists/search',
+    STATS: '/trialists/stats',
+  },
+
+  ACADEMY: {
+    NEWS: '/academy/news',
+    REGISTER: '/academy/register',
+    APPLICATIONS: '/academy/applications',
+    UPDATE_APPLICATION: (id: string | number) => `/academy/applications/${id}`,
+    STAFF: {
+      LIST: '/academy-staff',
+      CREATE: '/academy-staff',
+      VIEW: (id: string | number) => `/academy-staff/${id}`,
+      UPDATE: (id: string | number) => `/academy-staff/${id}`,
+      DELETE: (id: string | number) => `/academy-staff/${id}`,
+    },
+  },
+  ADVERTISER: {
+    CAMPAIGNS: {
+      CREATE: '/advertiser/campaigns',
+      LIST: '/advertiser/campaigns',
+      VIEW: (id: string | number) => `/advertiser/campaigns/${id}`,
+    },
+    DISPUTES: {
+      CREATE: '/advertiser/disputes',
+      LIST: '/advertiser/disputes',
+      VIEW: (id: string | number) => `/advertiser/disputes/${id}`,
+    },
   },
 };

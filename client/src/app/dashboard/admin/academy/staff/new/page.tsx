@@ -3,7 +3,8 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Upload, X, ImageIcon, Award, Briefcase } from 'lucide-react';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
@@ -22,8 +23,9 @@ export default function NewStaff() {
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.ACADEMY.STAFF.CREATE);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,11 +40,11 @@ export default function NewStaff() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.name.trim()) newErrors.name = 'Name is required';
     if (!formData.role.trim()) newErrors.role = 'Role is required';
     if (!formData.category) newErrors.category = 'Category is required';
-    
+
     // Validate qualifications are non-empty strings
     const validQualifications = formData.qualifications.filter(q => q.trim() !== '');
     if (validQualifications.length === 0) {
@@ -87,7 +89,7 @@ export default function NewStaff() {
     const updatedQualifications = [...formData.qualifications];
     updatedQualifications[index] = value;
     setFormData(prev => ({ ...prev, qualifications: updatedQualifications }));
-    
+
     if (errors.qualifications && value.trim() !== '') {
       setErrors(prev => ({ ...prev, qualifications: '' }));
     }
@@ -108,19 +110,14 @@ export default function NewStaff() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setIsSubmitting(true);
 
     try {
-      const response = await api.post(
-        '/academy-staff',
-        {
-          ...formData,
-          qualifications: formData.qualifications.filter(q => q.trim() !== ''),
-          yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
-          initials: formData.initials || null,
-        },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      const response = await post({
+        ...formData,
+        qualifications: formData.qualifications.filter(q => q.trim() !== ''),
+        yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
+        initials: formData.initials || null,
+      });
 
       if (response) {
         router.push('/sports-admin/staff');
@@ -129,7 +126,6 @@ export default function NewStaff() {
       console.error('Error creating staff:', error);
       setErrors({ submit: 'Failed to create staff member. Please try again.' });
     } finally {
-      setIsSubmitting(false);
       setUploadProgress(0);
     }
   };
@@ -278,7 +274,7 @@ export default function NewStaff() {
                 + Add another
               </button>
             </div>
-            
+
             <div className="space-y-3">
               {formData.qualifications.map((qualification, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -315,13 +311,12 @@ export default function NewStaff() {
             <div>
               <div
                 onClick={() => imageInputRef.current?.click()}
-                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-                  imageFile
+                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile
                     ? 'border-green-300 bg-green-50'
                     : errors.imageUrl
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
-                }`}
+                      ? 'border-red-300 bg-red-50'
+                      : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
+                  }`}
               >
                 <input
                   ref={imageInputRef}

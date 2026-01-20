@@ -31,13 +31,14 @@ export default function TeamSquad() {
     error: playersError,
   } = useGet<Player[]>(API_ROUTES.PLAYERS.LIST);
 
-  const calculateAge = (birthDate: Date) => {
+  const calculateAge = (birthDate: Date | string) => {
     const today = new Date();
-    const age = today.getFullYear() - new Date(birthDate).getFullYear();
-    const monthDiff = today.getMonth() -new Date(birthDate).getMonth();
+    const dob = new Date(birthDate);
+    const age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
     if (
       monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() <new Date(birthDate).getDate())
+      (monthDiff === 0 && today.getDate() < dob.getDate())
     ) {
       return age - 1;
     }
@@ -251,21 +252,19 @@ export default function TeamSquad() {
               <div className="flex w-full">
                 <button
                   onClick={() => setSelectedTab('players')}
-                  className={`flex-1 py-3 px-6 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base ${
-                    selectedTab === 'players'
+                  className={`flex-1 py-3 px-6 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base ${selectedTab === 'players'
                       ? 'bg-sky-600 text-white shadow-md'
                       : 'text-sky-600 hover:bg-sky-50'
-                  }`}
+                    }`}
                 >
                   Players ({playersData.length})
                 </button>
                 <button
                   onClick={() => setSelectedTab('coaches')}
-                  className={`flex-1 py-3 px-6 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base ${
-                    selectedTab === 'coaches'
+                  className={`flex-1 py-3 px-6 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base ${selectedTab === 'coaches'
                       ? 'bg-sky-600 text-white shadow-md'
                       : 'text-sky-600 hover:bg-sky-50'
-                  }`}
+                    }`}
                 >
                   Coaches ({coachesData.length})
                 </button>
@@ -277,17 +276,17 @@ export default function TeamSquad() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 w-full">
             {playersData.length && selectedTab === 'players'
               ? playersData?.map((player) => (
-                  <PlayerCard key={player.id} player={player} />
-                ))
+                <PlayerCard key={player.id} player={player} />
+              ))
               : coachesData.length &&
-                coachesData?.map((coach) => (
-                  <CoachCard key={coach.id} coach={coach} />
-                ))}
+              coachesData?.map((coach) => (
+                <CoachCard key={coach.id} coach={coach} />
+              ))}
           </div>
 
           {/* Empty state */}
           {(selectedTab === 'players' && playersData.length === 0) ||
-          (selectedTab === 'coaches' && coachesData.length === 0) ? (
+            (selectedTab === 'coaches' && coachesData.length === 0) ? (
             <div className="text-center py-12">
               <div className="text-sky-400 mb-4">
                 <svg
@@ -347,15 +346,15 @@ export default function TeamSquad() {
               <div className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-sky-600 mb-2">
                   {playersData.length > 0 &&
-                  playersData.filter((p) => p.dateOfBirth).length > 0
+                    playersData.filter((p) => p.dateOfBirth).length > 0
                     ? Math.round(
-                        playersData.reduce((acc, player) => {
-                          if (player.dateOfBirth) {
-                            return acc + calculateAge(player.dateOfBirth);
-                          }
-                          return acc;
-                        }, 0) / playersData.filter((p) => p.dateOfBirth).length
-                      )
+                      playersData.reduce((acc, player) => {
+                        if (player.dateOfBirth) {
+                          return acc + calculateAge(player.dateOfBirth);
+                        }
+                        return acc;
+                      }, 0) / playersData.filter((p) => p.dateOfBirth).length
+                    )
                     : 0}
                 </div>
                 <div className="text-sm sm:text-base text-sky-500 font-medium">

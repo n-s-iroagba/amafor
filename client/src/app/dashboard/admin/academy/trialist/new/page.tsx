@@ -3,9 +3,9 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Upload, X, Calendar as CalendarIcon } from 'lucide-react';
-import api from '@/shared/lib/axios';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
-
 
 export default function NewTrialist() {
   const router = useRouter();
@@ -29,9 +29,10 @@ export default function NewTrialist() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState<string>('');
+
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.TRIALISTS.CREATE);
 
   const videoInputRef = useRef<HTMLInputElement>(null);
   const cvInputRef = useRef<HTMLInputElement>(null);
@@ -44,14 +45,14 @@ export default function NewTrialist() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
     if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
     if (!formData.email.trim()) newErrors.email = 'Email is required';
     if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
     if (!formData.dob) newErrors.dob = 'Date of birth is required';
     if (!formData.position) newErrors.position = 'Position is required';
-    
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
@@ -70,11 +71,11 @@ export default function NewTrialist() {
   const handleFileUpload = async (file: File, type: 'video' | 'cv') => {
     setUploading(type);
     setUploadProgress(10);
-    
+
     try {
-      const url = await uploadFile(file,'image');
+      const url = await uploadFile(file, 'image');
       setUploadProgress(100);
-      
+
       if (type === 'video') {
         setFormData(prev => ({ ...prev, videoUrl: url }));
         setVideoFile(file);
@@ -82,12 +83,12 @@ export default function NewTrialist() {
         setFormData(prev => ({ ...prev, cvUrl: url }));
         setCvFile(file);
       }
-      
+
       setErrors(prev => ({ ...prev, [type === 'video' ? 'videoUrl' : 'cvUrl']: '' }));
     } catch (error) {
-      setErrors(prev => ({ 
-        ...prev, 
-        [type === 'video' ? 'videoUrl' : 'cvUrl']: 'Failed to upload file' 
+      setErrors(prev => ({
+        ...prev,
+        [type === 'video' ? 'videoUrl' : 'cvUrl']: 'Failed to upload file'
       }));
     } finally {
       setUploadProgress(0);
@@ -98,19 +99,14 @@ export default function NewTrialist() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-    setIsSubmitting(true);
 
     try {
-      const response = await api.post(
-        '/trialists',
-        {
-          ...formData,
-          dob: new Date(formData.dob).toISOString(),
-          height: formData.height ? parseInt(formData.height) : null,
-          weight: formData.weight ? parseInt(formData.weight) : null,
-        },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      const response = await post({
+        ...formData,
+        dob: new Date(formData.dob).toISOString(),
+        height: formData.height ? parseInt(formData.height) : null,
+        weight: formData.weight ? parseInt(formData.weight) : null,
+      });
 
       if (response) {
         router.push('/sports-admin/trialist');
@@ -118,8 +114,6 @@ export default function NewTrialist() {
     } catch (error) {
       console.error('Error creating trialist:', error);
       setErrors({ submit: 'Failed to create trialist. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -302,7 +296,7 @@ export default function NewTrialist() {
           {/* Attachments */}
           <div className="bg-emerald-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-emerald-800 mb-4">Attachments</h3>
-            
+
             {/* Video Upload */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-emerald-700 mb-2">
@@ -423,7 +417,7 @@ export default function NewTrialist() {
           {/* Additional Information */}
           <div className="bg-emerald-50 p-4 rounded-lg">
             <h3 className="text-lg font-semibold text-emerald-800 mb-4">Additional Information</h3>
-            
+
             <div className="mb-4">
               <label className="block text-sm font-medium text-emerald-700 mb-2">
                 Status

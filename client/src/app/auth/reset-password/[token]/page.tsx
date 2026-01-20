@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { 
-  UserCircle, 
-  Lock, 
+import {
+  UserCircle,
+  Lock,
   RefreshCw,
   AlertCircle,
   CheckCircle
@@ -11,7 +11,7 @@ import {
 import { API_ROUTES } from '@/config/routes';
 import { usePost } from '@/shared/hooks/useApiQuery';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
-import { AuthUser, UserRole } from '@/shared/types';
+import { AuthUser, UserType } from '@/shared/types';
 
 
 interface FormState {
@@ -23,7 +23,7 @@ export default function ResetPasswordPage() {
   const router = useRouter();
   const params = useParams();
   const urlToken = params.token as string;
-  
+
   const [isMounted, setIsMounted] = useState(false);
   const [form, setForm] = useState<FormState>({
     password: '',
@@ -31,13 +31,13 @@ export default function ResetPasswordPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>('');
-  
+
   const { setUser } = useAuthContext();
 
-  const { 
-    post: resetPasswordPost, 
-    isPending: resetLoading, 
-    error: resetError 
+  const {
+    post: resetPasswordPost,
+    isPending: resetLoading,
+    error: resetError
   } = usePost<any, any>(API_ROUTES.AUTH.RESET_PASSWORD);
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export default function ResetPasswordPage() {
 
         // Navigate based on UserRole
         setTimeout(() => {
-             router.push('/dashboard')
+          router.push('/dashboard')
         }, 2000);
       } else if (response && 'verificationToken' in response) {
         router.push(`/auth/verify-email/${response.verificationToken}`);
@@ -146,11 +146,10 @@ export default function ResetPasswordPage() {
                   value={form[name as keyof FormState]}
                   onChange={handleChange}
                   required
-                  className={`w-full p-3 rounded-xl border-2 ${
-                    error?.toLowerCase().includes(name)
+                  className={`w-full p-3 rounded-xl border-2 ${error?.toLowerCase().includes(name)
                       ? 'border-red-300'
                       : 'border-slate-100'
-                  } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
+                    } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
                 />
               </div>
             ))}

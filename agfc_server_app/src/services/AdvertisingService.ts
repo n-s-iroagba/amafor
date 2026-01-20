@@ -1,5 +1,6 @@
+import AdCampaign, { AdCampaignCreationAttributes } from '@models/AdCampaign';
 import { AdCampaignRepository } from '../repositories';
-import { AdCampaign, AdCampaignCreationAttributes } from '../models';
+
 import { structuredLogger, tracer } from '../utils';
 import { Op } from 'sequelize';
 
@@ -15,7 +16,7 @@ export class AdvertisingService {
       try {
         // Calculate cost based on duration/impressions (Business Logic)
         // For MVP, we assume amount is passed or calculated elsewhere before service call
-        
+
         const campaign = await this.adRepository.create({
           ...data,
           advertiserId,
@@ -24,11 +25,11 @@ export class AdvertisingService {
           currentClicks: 0
         });
 
-        structuredLogger.business('AD_CAMPAIGN_CREATED', data.budget || 0, advertiserId, { 
-          campaignId: campaign.id, 
-          zone: data.zone 
+        structuredLogger.business('AD_CAMPAIGN_CREATED', data.budget || 0, advertiserId, {
+          campaignId: campaign.id,
+          zone: data.id
         });
-        
+
         return campaign;
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
@@ -66,14 +67,14 @@ export class AdvertisingService {
         // Find all active campaigns for this zone where current impressions < max impressions
         // This requires a custom repository method or complex query
         const campaigns = await this.adRepository.findActiveForZone(zone);
-        
+
         if (!campaigns.length) return null;
 
         // Simple Random Selection (Weighted logic can be added later)
         const selected = campaigns[Math.floor(Math.random() * campaigns.length)];
-        
+
         // Async: Track impression immediately or queue it
-        this.trackImpression(selected.id).catch(err => 
+        this.trackImpression(selected.id).catch(err =>
           structuredLogger.error('Failed to track impression', { error: err.message, campaignId: selected.id })
         );
 

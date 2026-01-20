@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/shared/hooks/useApiQuery';
-import api from '@/shared/lib/axios';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { Calendar, MapPin, Users, Upload, X, Loader2, ArrowLeft, Image as ImageIcon, Trophy, Clock, Ban, Play, Calendar as CalendarIcon } from 'lucide-react';
 import Image from 'next/image';
+import api from '@/shared/lib/axios';
 
- enum FixtureStatus {
+enum FixtureStatus {
   WON = 'won',
   LOST = 'lost',
   DRAW = 'draw',
@@ -21,6 +21,7 @@ interface Fixture {
   id: number;
   leagueId: number;
   date: string;
+  matchDate?: string; // Alias for date
   homeTeam: string;
   awayTeam: string;
   homeTeamLogo: string;
@@ -62,37 +63,37 @@ interface FormErrors {
 const statusConfig = {
   [FixtureStatus.SCHEDULED]: {
     label: 'Scheduled',
-    description: 'Match is planned for future',
+    description: 'Fixture is planned for future',
     icon: CalendarIcon,
     color: 'text-blue-600 bg-blue-50 border-blue-200'
   },
   [FixtureStatus.PLAYING]: {
     label: 'Playing',
-    description: 'Match is currently in progress',
+    description: 'Fixture is currently in progress',
     icon: Play,
     color: 'text-orange-600 bg-orange-50 border-orange-200'
   },
   [FixtureStatus.WON]: {
     label: 'Won',
-    description: 'Match completed - Our team won',
+    description: 'Fixture completed - Our team won',
     icon: Trophy,
     color: 'text-green-600 bg-green-50 border-green-200'
   },
   [FixtureStatus.LOST]: {
     label: 'Lost',
-    description: 'Match completed - Our team lost',
+    description: 'Fixture completed - Our team lost',
     icon: Trophy,
     color: 'text-red-600 bg-red-50 border-red-200'
   },
   [FixtureStatus.DRAW]: {
     label: 'Draw',
-    description: 'Match completed - It was a draw',
+    description: 'Fixture completed - It was a draw',
     icon: Trophy,
     color: 'text-yellow-600 bg-yellow-50 border-yellow-200'
   },
   [FixtureStatus.CANCELLED]: {
     label: 'Cancelled',
-    description: 'Match has been cancelled',
+    description: 'Fixture has been cancelled',
     icon: Ban,
     color: 'text-gray-600 bg-gray-50 border-gray-200'
   }
@@ -101,7 +102,7 @@ const statusConfig = {
 export default function EditFixture() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const id = params.fixtureId as string;
 
   const [formData, setFormData] = useState<FormData>({
     leagueId: '',
@@ -115,7 +116,7 @@ export default function EditFixture() {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<{
     home: string | null;
     away: string | null;
@@ -128,13 +129,17 @@ export default function EditFixture() {
     `${API_ROUTES.LEAGUES.LIST}/all`
   );
 
+  const { put, isPending: isSubmitting } = usePut(
+    API_ROUTES.FIXTURES.UPDATE(id)
+  );
+
   const isLoading = fixtureLoading || leaguesLoading;
 
   useEffect(() => {
     if (fixture) {
       setFormData({
         leagueId: fixture.leagueId.toString(),
-        date: new Date(fixture.date).toISOString().slice(0, 16),
+        date: new Date(fixture.date || fixture.matchDate || '').toISOString().slice(0, 16),
         homeTeam: fixture.homeTeam,
         awayTeam: fixture.awayTeam,
         homeTeamLogo: null,
@@ -142,7 +147,7 @@ export default function EditFixture() {
         venue: fixture.venue,
         status: fixture.status
       });
-      
+
       // Set preview URLs from existing images
       setPreviewUrls({
         home: fixture.homeTeamLogo,
@@ -193,7 +198,7 @@ export default function EditFixture() {
     const newErrors: FormErrors = {};
 
     if (!formData.leagueId) newErrors.leagueId = 'Please select a league';
-    if (!formData.date) newErrors.date = 'Match date and time is required';
+    if (!formData.date) newErrors.date = 'Fixture date and time is required';
     if (!formData.homeTeam.trim()) newErrors.homeTeam = 'Home team name is required';
     if (!formData.awayTeam.trim()) newErrors.awayTeam = 'Away team name is required';
     if (!formData.venue.trim()) newErrors.venue = 'Venue is required';
@@ -239,7 +244,7 @@ export default function EditFixture() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    setIsSubmitting(true);
+    setIsUploading(true);
     setErrors(prev => ({ ...prev, submit: undefined }));
 
     try {
@@ -249,7 +254,7 @@ export default function EditFixture() {
         formData.awayTeamLogo ? uploadImage(formData.awayTeamLogo) : Promise.resolve(fixture?.awayTeamLogo)
       ]);
 
-      await api.put(API_ROUTES.FIXTURES.UPDATE(id), {
+      await put({
         leagueId: parseInt(formData.leagueId),
         date: formData.date,
         homeTeam: formData.homeTeam.trim(),
@@ -264,12 +269,12 @@ export default function EditFixture() {
       router.refresh(); // Refresh to show updated data
     } catch (error: any) {
       console.error('Error updating fixture:', error);
-      setErrors(prev => ({ 
-        ...prev, 
-        submit: error.response?.data?.message || 'Failed to update fixture. Please try again.' 
+      setErrors(prev => ({
+        ...prev,
+        submit: error.response?.data?.message || 'Failed to update fixture. Please try again.'
       }));
     } finally {
-      setIsSubmitting(false);
+      setIsUploading(false);
     }
   };
 
@@ -346,9 +351,8 @@ export default function EditFixture() {
               <select
                 value={formData.leagueId}
                 onChange={(e) => handleInputChange('leagueId', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${
-                  errors.leagueId ? 'border-red-300' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.leagueId ? 'border-red-300' : 'border-gray-300'
+                  }`}
               >
                 <option value="">Select a league</option>
                 {leagues?.map((league) => (
@@ -366,15 +370,14 @@ export default function EditFixture() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Calendar className="w-4 h-4 inline mr-2" />
-                Match Date & Time *
+                Fixture Date & Time *
               </label>
               <input
                 type="datetime-local"
                 value={formData.date}
                 onChange={(e) => handleInputChange('date', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${
-                  errors.date ? 'border-red-300' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.date ? 'border-red-300' : 'border-gray-300'
+                  }`}
               />
               {errors.date && (
                 <p className="mt-1 text-sm text-red-600">{errors.date}</p>
@@ -393,9 +396,8 @@ export default function EditFixture() {
                   value={formData.homeTeam}
                   onChange={(e) => handleInputChange('homeTeam', e.target.value)}
                   placeholder="Enter home team name"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${
-                    errors.homeTeam ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.homeTeam ? 'border-red-300' : 'border-gray-300'
+                    }`}
                 />
                 {errors.homeTeam && (
                   <p className="mt-1 text-sm text-red-600">{errors.homeTeam}</p>
@@ -458,9 +460,8 @@ export default function EditFixture() {
                   value={formData.awayTeam}
                   onChange={(e) => handleInputChange('awayTeam', e.target.value)}
                   placeholder="Enter away team name"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${
-                    errors.awayTeam ? 'border-red-300' : 'border-gray-300'
-                  }`}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.awayTeam ? 'border-red-300' : 'border-gray-300'
+                    }`}
                 />
                 {errors.awayTeam && (
                   <p className="mt-1 text-sm text-red-600">{errors.awayTeam}</p>
@@ -525,9 +526,8 @@ export default function EditFixture() {
                 value={formData.venue}
                 onChange={(e) => handleInputChange('venue', e.target.value)}
                 placeholder="Enter match venue"
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${
-                  errors.venue ? 'border-red-300' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.venue ? 'border-red-300' : 'border-gray-300'
+                  }`}
               />
               {errors.venue && (
                 <p className="mt-1 text-sm text-red-600">{errors.venue}</p>
@@ -538,9 +538,9 @@ export default function EditFixture() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Users className="w-4 h-4 inline mr-2" />
-                Match Status
+                Fixture Status
               </label>
-              
+
               {/* Status Preview */}
               <div className={`mb-3 p-3 rounded-lg border ${currentStatusConfig.color} flex items-center gap-3`}>
                 <currentStatusConfig.icon className="w-5 h-5" />
@@ -564,24 +564,24 @@ export default function EditFixture() {
                   );
                 })}
               </select>
-              
+
               {/* Status Help Text */}
               <div className="mt-2 text-sm text-gray-500">
                 {formData.status === FixtureStatus.SCHEDULED && (
-                  <p>✓ Match will appear in upcoming fixtures</p>
+                  <p>✓ Fixture will appear in upcoming fixtures</p>
                 )}
                 {formData.status === FixtureStatus.PLAYING && (
-                  <p>✓ Match will appear as live/in progress</p>
+                  <p>✓ Fixture will appear as live/in progress</p>
                 )}
                 {[
-                  FixtureStatus.WON, 
-                  FixtureStatus.LOST, 
+                  FixtureStatus.WON,
+                  FixtureStatus.LOST,
                   FixtureStatus.DRAW
                 ].includes(formData.status) && (
-                  <p>✓ Match will appear in completed fixtures with result</p>
-                )}
+                    <p>✓ Fixture will appear in completed fixtures with result</p>
+                  )}
                 {formData.status === FixtureStatus.CANCELLED && (
-                  <p>✓ Match will be marked as cancelled</p>
+                  <p>✓ Fixture will be marked as cancelled</p>
                 )}
               </div>
             </div>
