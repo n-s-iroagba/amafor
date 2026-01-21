@@ -32,12 +32,11 @@ export default function AdminDashboard() {
         </div>
         <nav className="flex-1 py-8 px-4 space-y-1 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => (
-            <Link 
+            <Link
               key={item.path}
-              href={item.path} 
-              className={`flex items-center space-x-3 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
-                pathname === item.path ? 'bg-[#87CEEB] text-[#2F4F4F]' : 'text-white/50 hover:text-white hover:bg-white/5'
-              }`}
+              href={item.path}
+              className={`flex items-center space-x-3 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${pathname === item.path ? 'bg-[#87CEEB] text-[#2F4F4F]' : 'text-white/50 hover:text-white hover:bg-white/5'
+                }`}
             >
               {item.icon} <span>{item.name}</span>
             </Link>
@@ -54,11 +53,16 @@ export default function AdminDashboard() {
             <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-2">Central Infrastructure Console</div>
             <h1 className="text-4xl text-[#2F4F4F]">Arena Operations</h1>
           </div>
-          <div className="bg-[#2F4F4F] text-white px-6 py-3 rounded-2xl flex items-center space-x-3 shadow-lg">
-            <Activity className="w-4 h-4 text-green-500" />
-            <span className="text-[10px] font-black uppercase tracking-widest">System Optimal</span>
-          </div>
+          <Activity className="w-4 h-4 text-green-500" />
+          <span className="text-[10px] font-black uppercase tracking-widest">System Optimal</span>
+
         </header>
+
+        {/* BRD Requiremen=t: DEV-16 Audit Trail */}
+        <div className="mb-8 flex items-center gap-2 text-xs text-slate-500 bg-slate-100 p-2 rounded-lg w-fit">
+          <FileSearch className="w-3 h-3" />
+          <span>All admin actions are immutably logged per ISO 27001:2022 (BR-SEC-03).</span>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-12">
@@ -127,6 +131,6 @@ export default function AdminDashboard() {
           </aside>
         </div>
       </main>
-    </div>
+    </div >
   );
 }

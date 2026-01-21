@@ -21,6 +21,12 @@ export default function AdvertiserCampaignsPage() {
           <div>
             <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight font-black">MY CAMPAIGNS</h1>
             <p className="text-gray-500 text-sm">Manage your commercial presence across the Gladiators ecosystem.</p>
+
+            {/* BRD Requirement: DEV-08 Ad View Definition */}
+            <div className="mt-4 flex items-center text-[10px] text-gray-400 bg-gray-100 px-3 py-1.5 rounded-lg w-fit">
+              <span className="font-bold mr-1">NOTE:</span>
+              Views are verified per BR-AD-07: ≥50% visible, ≥1 second duration, unique user/24h.
+            </div>
           </div>
           <Link href="/dashboard/advertiser/campaigns/new" className="sky-button flex items-center space-x-3 py-4">
             <PlusCircle className="w-5 h-5" />
@@ -80,10 +86,9 @@ export default function AdvertiserCampaignsPage() {
                     </div>
                   </td>
                   <td className="px-10 py-8">
-                    <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${
-                      c.status === 'active' ? 'bg-green-100 text-green-600' : 
-                      c.status === 'paused' ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-500'
-                    }`}>
+                    <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${c.status === 'active' ? 'bg-green-100 text-green-600' :
+                        c.status === 'paused' ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-500'
+                      }`}>
                       {c.status}
                     </span>
                   </td>

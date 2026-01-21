@@ -167,16 +167,31 @@ export default function CreateCampaignPage() {
                   <div className="bg-[#2F4F4F] p-10 rounded-[2.5rem] text-white">
                     <h4 className="text-xs font-black text-[#87CEEB] uppercase tracking-widest mb-6">Payment Method</h4>
                     <div className="space-y-4">
-                      <button className="w-full p-6 rounded-2xl border-2 border-[#87CEEB] bg-[#87CEEB]/10 flex items-center justify-between">
+                      {/* Online Payment */}
+                      <button className="w-full p-6 rounded-2xl border-2 border-transparent bg-[#87CEEB]/10 hover:border-[#87CEEB] flex items-center justify-between transition-all group">
                         <div className="flex items-center">
                           <CreditCard className="w-5 h-5 mr-4 text-[#87CEEB]" />
-                          <span className="text-sm font-bold">Paystack (Card/Transfer)</span>
+                          <div className="text-left">
+                            <span className="block text-sm font-bold">Paystack (Card/Transfer)</span>
+                            <span className="text-[10px] text-gray-400 group-hover:text-gray-300">Instant Activation</span>
+                          </div>
                         </div>
-                        <Check className="w-5 h-5 text-[#87CEEB]" />
+                      </button>
+
+                      {/* BRD Requirement: DEV-07 Offline Payment */}
+                      <button className="w-full p-6 rounded-2xl border-2 border-transparent bg-white/5 hover:border-[#87CEEB] flex items-center justify-between transition-all group">
+                        <div className="flex items-center">
+                          <Upload className="w-5 h-5 mr-4 text-gray-400 group-hover:text-[#87CEEB]" />
+                          <div className="text-left">
+                            <span className="block text-sm font-bold">Offline / Bank Transfer</span>
+                            <span className="text-[10px] text-gray-400">Upload Receipt • Manual Verification</span>
+                          </div>
+                        </div>
                       </button>
                     </div>
                     <p className="text-[10px] text-gray-400 mt-8 leading-relaxed">
-                      Campaign will be submitted for manual review after successful payment. Approval usually occurs within <span className="text-white">2 business days</span>.
+                      <strong>Note:</strong> Offline payments require manual verification by Commercial Manager and Finance Officer (Dual Approval).
+                      Activation typically takes 24-48 business hours.
                     </p>
                   </div>
                 </div>

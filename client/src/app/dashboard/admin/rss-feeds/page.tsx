@@ -160,6 +160,18 @@ export default function RssFeedList() {
           </Link>
         </motion.div>
 
+        {/* BRD Requirement: DEV-15 RSS Feeds Documentation */}
+        <div className="mb-8 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r shadow-sm flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+          <div>
+            <h4 className="text-sm font-bold text-yellow-800">Feature Status: Pending Full Approval</h4>
+            <p className="text-sm text-yellow-700 mt-1">
+              External RSS integration is currently limited to <strong>5 sources</strong> per BR-CMS-04.
+              Full aggregation requires Legal + Compliance sign-off on copyright adherence.
+            </p>
+          </div>
+        </div>
+
         {/* Filters */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}

@@ -3,7 +3,7 @@
 import { Header } from '@/shared/components/Header'
 import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
-import { Eye, Database, Video, FileText, Shield, ArrowRight, ChevronRight } from 'lucide-react'
+import { Eye, Database, Video, Shield, ArrowRight, ChevronRight } from 'lucide-react'
 
 export default function ProViewAccess() {
   return (
@@ -59,16 +59,7 @@ export default function ProViewAccess() {
                 </p>
               </div>
 
-              <div className="bg-slate-50 border border-slate-200 p-8 rounded-lg shadow-card">
-                <div className="w-14 h-14 bg-sky-100 rounded-lg flex items-center justify-center mb-6">
-                  <FileText className="w-7 h-7 text-sky-700" />
-                </div>
-                <h3 className="text-xl font-heading text-sky-500 mb-3">Data Export Tools</h3>
-                <p className="text-slate-600 leading-relaxed">
-                  Export player data to CSV for offline analysis and integration with
-                  your scouting management systems.
-                </p>
-              </div>
+              {/* Data Export Tools Removed per BRD DEV-03 */}
 
               <div className="bg-slate-50 border border-slate-200 p-8 rounded-lg shadow-card">
                 <div className="w-14 h-14 bg-sky-100 rounded-lg flex items-center justify-center mb-6">

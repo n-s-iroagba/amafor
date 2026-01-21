@@ -56,6 +56,10 @@ export default function HelpContact() {
     {
       question: 'How can I report a technical issue?',
       answer: 'Please use the contact form below or email support@amaforgladiatorsfc.com with details about the issue you\'re experiencing.'
+    },
+    {
+      question: 'What are the Service Level Agreements (SLAs)?',
+      answer: 'Our technical support team adheres to strict SLAs defined in BR-SYS-04: 99.9% uptime target and <4 hour response time for critical issues. See our SLA policy documentation for details.'
     }
   ]
 

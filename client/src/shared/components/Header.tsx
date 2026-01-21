@@ -54,7 +54,7 @@ export function Header() {
     handleMobileMenuToggle,
     handleLogoClick,
     handleLoginClick,
-    
+
   } = useHeaderLogic(pathname);
 
   // If error state, render error UI
@@ -63,7 +63,7 @@ export function Header() {
   }
 
   return (
-    <header 
+    <header
       className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
       data-testid={HEADER_TEST_IDS.ROOT}
       role="banner"
@@ -80,7 +80,7 @@ export function Header() {
             aria-label="Amafor Gladiators FC Home"
           >
             <div className="relative w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0">
-             <Logo/>
+              <Logo />
             </div>
             <div className="hidden sm:block">
               <div className="text-gray-900 font-black text-lg leading-tight tracking-tight">
@@ -93,7 +93,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav 
+          <nav
             className="hidden lg:flex items-center gap-1"
             data-testid={HEADER_TEST_IDS.NAVIGATION_DESKTOP}
             aria-label="Main navigation"
@@ -162,11 +162,10 @@ function DesktopNavItem({ item, pathname, isLoading, onNavigate }: DesktopNavIte
         e.preventDefault();
         onNavigate(item.href, item.name);
       }}
-      className={`px-4 py-2 text-sm font-semibold rounded-md transition-all ${
-        isActive
-          ? 'text-sky-600 bg-sky-50 border-b-2 border-sky-500'
-          : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
-      } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`px-4 py-2 text-sm font-semibold rounded-md transition-all ${isActive
+        ? 'text-sky-600 bg-sky-50 border-b-2 border-sky-500'
+        : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+        } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       data-testid={HEADER_TEST_IDS.NAV_ITEM(item.name)}
       aria-current={isActive ? 'page' : undefined}
       role="menuitem"
@@ -203,11 +202,10 @@ function MobileNavItem({ item, pathname, isLoading, onNavigate }: MobileNavItemP
         e.preventDefault();
         onNavigate(item.href, item.name);
       }}
-      className={`px-4 py-3 text-base font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 ${
-        isActive
-          ? 'text-sky-600 bg-sky-50 border-l-4 border-sky-500'
-          : 'text-gray-700 hover:bg-gray-50 hover:pl-5'
-      } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`px-4 py-3 text-base font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 ${isActive
+        ? 'text-sky-600 bg-sky-50 border-l-4 border-sky-500'
+        : 'text-gray-700 hover:bg-gray-50 hover:pl-5'
+        } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
       data-testid={HEADER_TEST_IDS.NAV_ITEM(`${item.name}-mobile`)}
       aria-current={isActive ? 'page' : undefined}
       role="menuitem"
@@ -233,8 +231,8 @@ interface LoginButtonProps {
 }
 
 function LoginButton({ source, onClick }: LoginButtonProps) {
-  const testId = source === 'desktop' 
-    ? HEADER_TEST_IDS.LOGIN_BUTTON_DESKTOP 
+  const testId = source === 'desktop'
+    ? HEADER_TEST_IDS.LOGIN_BUTTON_DESKTOP
     : HEADER_TEST_IDS.LOGIN_BUTTON_MOBILE;
 
   const className = source === 'desktop'
@@ -306,7 +304,7 @@ function MobileMenuPanel({ isOpen, pathname, isLoading, onNavigate, onLogin }: M
       role="region"
       aria-label="Mobile navigation menu"
     >
-      <nav 
+      <nav
         className="flex flex-col gap-1"
         data-testid={HEADER_TEST_IDS.NAVIGATION_MOBILE}
         aria-label="Mobile navigation"
@@ -320,7 +318,7 @@ function MobileMenuPanel({ isOpen, pathname, isLoading, onNavigate, onLogin }: M
             onNavigate={onNavigate}
           />
         ))}
-        
+
         <div className="mt-4 px-4">
           <LoginButton source="mobile" onClick={onLogin} />
         </div>
@@ -334,7 +332,7 @@ function MobileMenuPanel({ isOpen, pathname, isLoading, onNavigate, onLogin }: M
  */
 function LoadingOverlay() {
   return (
-    <div 
+    <div
       className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center"
       role="status"
       aria-label="Loading"

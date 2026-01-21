@@ -26,4 +26,5 @@ export interface AuthUser {
     userType: UserType;
     status: UserStatus;
     emailVerified: boolean;
+    isApproved?: boolean; // Manual approval required for scouts/advertisers
 }

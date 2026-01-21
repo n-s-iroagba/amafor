@@ -26,7 +26,7 @@ export interface Trialist {
     previousClub?: string;
     videoUrl?: string;
     cvUrl?: string;
-    status: 'PENDING' | 'REVIEWED' | 'INVITED' | 'REJECTED';
+    status: 'PENDING' | 'REVIEWED' | 'INVITED' | 'ATTENDED' | 'NO_SHOW' | 'ACCEPTED' | 'REJECTED';
     notes?: string;
     createdAt?: string | Date;
     updatedAt?: string | Date;
