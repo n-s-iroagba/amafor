@@ -7,15 +7,15 @@ import {
   getFixtureImageSchema,
   deleteFixtureImageSchema,
   getFixtureImagesByFixtureSchema,
-} from '../validations/matchImage.schema';
+} from '../validations/fixtureImage.schema';
 
 const router = Router();
-const matchImageController = new FixtureImageController();
+const fixtureImageController = new FixtureImageController();
 
-router.post('/:fixtureId', matchImageController.createFixtureImage);
-router.get('/fixture/:fixtureId', validate(getFixtureImagesByFixtureSchema), matchImageController.getFixtureImagesByFixture);
-router.get('/:id', validate(getFixtureImageSchema), matchImageController.getFixtureImage);
-router.put('/:id', validate(updateFixtureImageSchema), matchImageController.updateFixtureImage);
-router.delete('/:id', validate(deleteFixtureImageSchema), matchImageController.deleteFixtureImage);
+router.post('/:fixtureId', fixtureImageController.createFixtureImage);
+router.get('/fixture/:fixtureId', validate(getFixtureImagesByFixtureSchema), fixtureImageController.getFixtureImagesByFixture);
+router.get('/:id', validate(getFixtureImageSchema), fixtureImageController.getFixtureImage);
+router.put('/:id', validate(updateFixtureImageSchema), fixtureImageController.updateFixtureImage);
+router.delete('/:id', validate(deleteFixtureImageSchema), fixtureImageController.deleteFixtureImage);
 
 export default router;

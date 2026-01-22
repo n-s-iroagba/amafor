@@ -145,6 +145,15 @@ export class PatronSubscriptionRepository extends BaseRepository<PatronSubscript
     });
   }
 
+  async sumCompletedAmounts(): Promise<number> {
+    const result = await this.model.sum('amount', {
+      where: {
+        status: { [Op.or]: [SubscriptionStatus.ACTIVE, SubscriptionStatus.EXPIRED] } // Count active and expired subscriptions
+      }
+    });
+    return result || 0;
+  }
+
   async cancelSubscription(id: string, auditData: any): Promise<PatronSubscription | null> {
     return tracer.startActiveSpan('repository.PatronSubscription.cancelSubscription', async (span) => {
       try {

@@ -1,0 +1,511 @@
+﻿BUSINESS REQUIREMENTS DOCUMENT (BRD)
+Project: Amafor Gladiators Digital Ecosystem
+Document Version: 1.1
+Date: December 26, 2025
+Author: Nnamdi Solomon Iroagba
+Compliance Framework: ISO 27001:2022, NDPR 2019
+Status: For Final Review & Sign-Off by Assigned Stakeholders
+________________
+
+
+1.0 REVISION HISTORY
+Version
+	Date
+	Author
+	Changes Made
+	1.0
+	26/12/2025
+	Nnamdi Solomon Iroagba
+	Initial Draft
+	
+
+2.0 EXECUTIVE SUMMARY
+The Amafor Gladiators Football Club seeks to establish a scalable digital ecosystem to serve three primary, interconnected business functions:
+1. Talent Export Platform: To position the club as a professional academy by providing international scouts with a verified, data-rich environment for player identification and structured trialist management.
+2. Fan Engagement & Entertainment Hub: To build a loyal local and global fanbase through a comprehensive media destination for news, match content, and real-time competition tracking.
+3. Monetization Engine: To create sustainable revenue streams through self-service advertising, fan donations, and a patronage program.
+This platform is designed to maximize engagement, establish the club as a credible entity in the global football community, and generate direct revenue.
+________________
+
+
+3.0 PROJECT OBJECTIVES & SUCCESS METRICS
+Objective
+	Success Metric (KPI)
+	Target / Definition
+	Maximize Fan Engagement
+	Number of article page views (aggregate and per-item)
+	Baseline: First 60-day rolling period from launch. Target 20% month-over-month growth from baseline.
+	Build Monetizable Traffic
+	Number of Daily Unique Visitors
+	Establish baseline 60 days post-launch and target 10% month-over-month growth.
+	Establish Professional Trust
+	Number of approved, verified, and active scout accounts in "Pro View" tier
+	Secure 50 approved scout accounts in Year 1.
+	Facilitate Financial Support
+	Number of successful donation transactions
+	Track baseline and aim for 10% month-over-month growth.
+	Generate Advertising Revenue
+	1. Number of active advertiser accounts.
+2. Monthly advertising revenue.
+	Secure 20 active advertiser accounts. Active = has made a payment in last 90 days. Revenue target TBD post-baseline.
+	Achieve Advertising Efficiency
+	Ad view delivery accuracy rate
+	Maintain 99.9% accuracy between purchased and delivered unique views.
+	Expand Academy Pipeline
+	Number of completed trialist applications
+	Establish baseline of 100 applications in first year post-launch.
+	Improve Academy Operations
+	Average time from trialist application to first contact
+	Target: 72 business hours or less for 90% of applications.
+	
+
+SLA Definition: All SLAs are calculated in business days (Monday–Friday, excluding Nigerian 
+federal public holidays), during business hours (9 AM–5 PM WAT). Saturday work is optional and not counted in SLA calculations.
+________________
+
+
+4.0 SCOPE
+4.1 In-Scope
+1. Development of a responsive public website (amaforgladiatorsfc.com) with a CMS for club-curated articles, match images, and videos.
+2. Development of a secure portal for scouts ("Pro View").
+3. Implementation of dynamic data modules for Fixtures, Goals and League Tables (updated manually via CMS).
+4. Integration of third-party video hosting (YouTube/Vimeo via URL embed) and social sharing (WhatsApp).
+5. Implementation of page view tracking analytics for all videos and articles (internal dashboards only).
+6. Implementation of a self-service advertising platform with per-view pricing, pre-payment for view bundles, NGN and USD integration.
+7. Implementation of a supporter donation program with recurring/lifetime commitment subscriptions.
+8. Implementation of match lineup and goal management and display on fixture pages.
+9. Implementation of supporter recognition display (name and portrait/logo) on the website homepage.
+10. The platform must be secure and restrict sensitive operations to authorized staff
+11. Implementation of a public Academy Trialist application system with file uploads.
+12. Implementation of a secure Academy Staff portal for trialist/player lifecycle management.
+13. Integration with WhatsApp Business and SMS for multi-channel communications.
+14. Automated multi-channel notification system for trialist status updates.
+15. The Business must ensure user data privacy and comply with NDPR requirements.
+16. The system must provide reliable donation and advertising capabilities for local and international users
+17. Implementation of offline-first CMS capabilities for intermittent connectivity.
+18. Implementation of offline payment option for advertisers with manual verification and dual approval.
+19. Implementation of enhanced minor data protection with parental consent verification.
+4.2 Out-of-Scope
+1. Development of native mobile applications (iOS/Android).
+2. Real-time match streaming (live broadcasting).
+3. E-commerce or online merchandise store.
+4. Advanced data analytics or business intelligence dashboards beyond basic view counts and campaign metrics.
+5. Programmatic/ad network integration (initial phase is direct sales only).
+6. Advanced ad targeting beyond placement on the Home Page or pages with specific tags.
+7. Ad creative design services for advertisers.
+8. Advanced player performance analytics or tracking wearables integration.
+9. Custom CRM system beyond defined trialist/player records.
+10. WhatsApp Business API during initial 90-day approval period (interim WhatsApp Web solution will be used).
+11. Fan comments on articles.
+12. Site search functionality.
+13. User location targeting for ads.
+14. Internal messaging between academy staff.
+15. Article saving functionality for fans.
+16. Downloading of match videos by scouts (streaming only).
+________________
+
+
+5.0 STAKEHOLDERS & ROLES
+Role
+	Name/Department
+	Responsibility
+	Project Sponsor
+	Dr. Nekezieh F. Ekeh
+	Final approval, budget authority.
+	Product Manager
+	Nnamdi Solomon Iroagba
+	Primary business requirement owner, prioritization, final testing.
+	IT/Security Lead & System Admin
+	Nnamdi Solomon Iroagba
+	Compliance with ISO 27001 controls, system health, user role management, audit log oversight, password resets, system training.
+	Data Steward (Primary)
+	Head of Football Operations
+	Accuracy of player/league stats; primary data entry; creates and verifies all player profiles.
+	Data Steward (Backup)
+	Assistant Coach or Team Manager
+	Secondary data entry for fixtures/results; updates match results if Sports Administrator unavailable.
+	Commercial Manager
+	Business Development
+	Advertiser account verification, relationship management, ad policy enforcement, dispute resolution, checks complaints@ email daily.
+	Sports Administrator
+	To be assigned
+	Management of match lineups and timely update of fixtures/results (30-minute SLA).
+	Academy Head
+	To be assigned (Interim appointed by Project Sponsor before launch)
+	Oversees trialist process, defines assessment criteria, final decision on trialist acceptance. Primary administrator for Academy Staff permissions.
+	Academy Staff
+	Coaches, Scouts, Administrators
+	Use system to review trialist applications, log assessments, manage trial sessions, track academy player development.
+	End Users (Fans)
+	Local & Diaspora Supporters
+	Consumers of public content.
+	End Users (Scouts)
+	International Talent Scouts
+	Consumers of verified/professional content in "Pro View" portal.
+	End Users (Advertisers)
+	Local/International Businesses
+	Campaign creators and managers.
+	Content Managers
+	Media & Communications Team
+	CMS users for publishing articles and videos; responds to WhatsApp widget queries during business hours.
+	End Users (Trialist Guardians)
+	Parents/Guardians of prospective players
+	Submit trial applications and receive multi-channel communication.
+	Legal Counsel
+	To be assigned
+	Review of compliance with NDPR, dispute resolution processes.
+	Finance Officer
+	To be assigned
+	Manual verification of offline payments, financial reconciliation, monitors daily reconciliation alerts.
+	
+
+6.0 FUNCTIONAL BUSINESS REQUIREMENTS
+6.1 Talent Promotion (Scout & Academy Focus)
+Reg. ID
+	Priority
+	Description
+	BR-TP-01
+	High
+	The system shall provide verified, structured player profiles that may be accessed by authorized Scouts via Pro View.
+
+
+	BR-TP-02
+	High
+	The system shall offer a secure Pro View portal for approved Scouts and authorized internal users, providing access to:
+* Verified player profiles
+* Fixture footage and related performance information
+Access to Pro View shall require manual approval by an Admin.
+
+
+	BR-TP-03
+	Medium
+	The system shall allow authorized staff to generate branded PDF summaries of player profiles for offline distribution.
+	BR-TP-04
+	Medium
+	Scout applications shall be manually approved/denied within 2 business days of submission. The Commercial Manager approves based on provided information. The IT/Security Lead activates/deactivates accounts upon request.
+	BR-TP-05
+	High
+	The media team must upload full match archives to the club's official YouTube channel within 25 minutes of match conclusion. An automated system shall embed new match videos in the Pro View portal, enabling system availability within 30 minutes total.
+	BR-TP-06
+	High
+	The system shall provide a public "Academy Trials" application form. Minimum required fields: Prospect's Full Name, Date of Birth, Primary Position, Contact Information (Prospect's & Guardian's Phone Numbers, Email Addresses), Guardian's Full Name, Previous Club, Medical Conditions. The form must include separate mandatory opt-in consent checkboxes for receiving official club communications via Email and SMS/WhatsApp.
+	BR-TP-07
+	High
+	The trialist application form shall allow for file uploads: a) Video Highlights (max 100MB), b) Supporting Documents (each max 1MB): Birth Certificate, Passport Photo, Previous Team Release Form.
+	BR-TP-08
+	Medium
+	Authorized Academy Staff shall manage the lifecycle of a Trialist record via a secure dashboard, updating status (Applied → Invited → Attended → No-Show → Accepted/Rejected). All status changes must be logged. Staff can add timestamped internal notes visible only to other Academy Staff.
+	BR-TP-09
+	Medium
+	Upon changing a Trialist's status to "Accepted," the system shall prompt the Academy Head or designated staff to promote the Trialist record to a full, public Player Profile. The Academy Head must call the guardian within 24 hours of acceptance.
+	BR-TP-10
+	Low
+	The system shall send automated, multi-channel notifications to the guardian's email address and phone number upon key trialist status changes. Notifications shall follow channel priority: WhatsApp → Email → SMS.B
+	BR-TP-11        
+	High 
+	The homepage shall display a ‘scout pro-view card’ with a Call-To-Action button.
+	BR-TP-12
+	Medium
+	The system shall support match-level scouting analysis as a business capability, allowing Scouts to:
+* Review matches for talent identification purposes
+* Associate observations with players and fixtures
+This requirement defines what the business enables, not how analysis is performed or presented.
+
+
+	BR-TP-13   
+	Medium 
+	The system shall support the creation and management of Scouting Reports as structured records used for:
+* Internal talent evaluation
+* Decision-making by club technical staff
+	BR-TP-14
+	Medium 
+	All video and media content made available to Scouts within the Pro View portal shall be:
+* Stream-only
+* Accessible for viewing and evaluation purposes only
+
+
+	6.2 Fan Engagement & Content
+Reg. ID
+	Priority
+	Description
+	BR-CE-01
+	High
+	The system shall include a CMS for non-technical staff to publish articles and embed video highlights by pasting a YouTube/Vimeo URL. Staff can draft articles offline.
+	BR-CE-02
+	High
+	The system shall display an automatically updated League Table and Statistics (Top Scorers, Assists). Data is manually entered by Sports Administrator; table recalculates automatically upon result entry.
+	BR-CE-03
+	High
+	The system shall display a dynamic "Fixtures & Results" calendar. Fixture results must be updated within 30 minutes of match conclusion by the Sports Administrator.
+	BR-CE-04
+	Medium
+	All public content shall be shareable via one-click integration with WhatsApp.
+	BR-CE-05
+	High
+	The system shall automatically track and display the view count for each published video and article in internal dashboards.
+	BR-CE-06
+	Low
+	The system shall allow the Product Owner or designated admin to manage the predefined list of content tags via the CMS admin panel.
+	BR-CE-07
+	Medium
+	Authorized sports administrators shall manage match starting lineups. Lineups shall be viewable on public fixture pages.
+	BR-CE-08
+	Medium
+	The homepage shall display the 3 latest articles with a view more button.
+	BR-CE-09  
+	Medium
+	The homepage shall display 3 latest public videos with a view more button.
+	BR-CE-10
+	Low
+	The homepage shall display 5 featured news from rss feed source.
+	BR-CE-11
+	Low
+	The homepage shall display a button that navigates to club articles.
+	6.3 Academy Operations (Structural Focus)
+Reg. ID
+	Priority
+	Description
+	BR-AO-01
+	Medium
+	The system shall host public pages detailing the Academy's "Philosophy" and "Curriculum."
+	BR-AO-02
+	Medium
+	The system shall provide a secure page for financial donations, offering fixed amounts plus a custom amount option. Payment via integrated Paystack. Upon successful donation, the system shall send an automated email receipt.
+	BR-AO-03
+	Low
+	The public website shall include a prominent "Contact Us" widget that initiates a chat via WhatsApp.
+	BR-AO-04                      
+	High
+	The homepage shall display a ‘join academy card’ with a Call-To-Action button.
+	6.4 Advertising & Monetization Platform
+Reg. ID
+	Priority
+	Description
+	BR-AD-01
+	High
+	The system shall allow businesses to create a registered "Advertiser" account, requiring business verification by club staff. The Commercial Manager manually reviews and approves.
+	BR-AD-02
+	High
+	The system shall provide a self-service dashboard where verified advertisers can: (a) Upload ad creatives, (b) Select available ad positions, (c) Set total unique view count targets, and (d) Schedule campaigns.
+	BR-AD-03
+	High
+	The system shall calculate total campaign cost based on selected position's per-view rate multiplied by advertiser's target unique view count. Process payments via Paystack for NGN and Stripe for USD.
+	BR-AD-04
+	Medium
+	The system shall display active advertisements in designated placement zones on the public website according to campaign schedule and targeting rules.
+	BR-AD-05
+	Medium
+	The system shall provide advertisers with a real-time campaign performance dashboard showing: (a) Total purchased views, (b) Delivered views, (c) Remaining views, (d) Contracted cost per view, (e) Effective cost per view.
+	BR-AD-06
+	Medium
+	The system shall automatically pause ad delivery when the purchased unique view count is reached, and notify advertisers via email.
+	BR-AD-07
+	High
+	A 'view' is counted when ≥50% of the ad creative loads in the user's browser and is visible in viewport for a continuous duration of at least 1 second, counted once per unique user per 24-hour period per ad campaign.
+	BR-AD-08
+	High
+	Advertiser campaign dashboards shall display view delivery data with ≤5 minute latency from actual occurrence.
+	BR-AD-09
+	Medium
+	Ad campaigns from verified advertiser accounts may be published immediately without pre-approval of creative content. The Commercial Manager reserves the right to review and remove any live ad found to violate club policy.
+	BR-AD-10
+	Medium
+	If payment gateway is unavailable, the system shall prevent all new ad campaign purchases and display maintenance messages.
+	BR-AD-11
+	High
+	Commercial Manager sets and can change per-view rate for each ad zone. All registered advertisers must be notified via email 30 days prior to rate changes.
+	BR-AD-12
+	Medium
+	Campaign performance data shall be retained and accessible to advertisers for 1 year from campaign end date.
+	BR-AD-13
+	Medium
+	Official dispute resolution process for advertisers: Complaints must be emailed to support@amaforgladiatorsfc.com. Commercial Manager must provide acknowledgement and commitment to investigate within 2 business days.
+	BR-AD-14
+	High
+	Primary transaction currency is Naira (NGN) for local users. International transactions may be processed in USD via Stripe. The system shall display approximate Naira equivalents using CBN exchange rates.
+	BR-AD-15
+	Medium
+	Advertisers shall have an 'Offline Payment' option where they can upload proof of bank transfer/POS receipt. Campaign activates upon manual verification by Commercial Manager with dual approval (Commercial Manager + Finance Officer).
+	BR-AD-16
+	Medium
+	All disputes shall be governed by Nigerian law and subject to jurisdiction of Nigerian courts.
+	BR-AD-17
+	Low
+	Mid-Article Banner insertion rule: Insert ad after first 100 words of article body. If the article <100 words, show the ad at the end of the content.
+	6.5 Patronage Program
+Reg. ID
+	Priority
+	Description
+	BR-PP-01
+	High
+	The system shall allow fans to sign up for recurring (Monthly/Yearly) or one-time Lifetime patronage commitments via Paystack subscriptions.
+	BR-PP-02
+	Medium
+	The system shall support patron tiers with configurable donation amounts and commitment periods.
+	BR-PP-03
+	Medium
+	The system shall display patron recognition on the website homepage with a button to view all patrons.
+	BR-PP-04
+	Low
+	The system shall display a dedicated public "Patrons" page listing all active patrons, grouped by tier.
+	BR-PP-05
+	High
+	Upon successful donation, the system shall send an automated email containing formal receipt.
+	BR-PP-06
+	Medium
+	The donation form shall include an opt-in checkbox: "Display my name on the public Supporter Wall."
+	BR-PP-07
+	Medium
+	The system shall display a ‘Support Us’ button on the homepage.
+	6.6 Academy Development & Operations
+Reg. ID
+	Priority
+	Description
+	BR-ADV-01
+	High
+	The system shall implement distinct "Academy Staff" user roles with dedicated portal. Permission matrix includes: Academy Head, Head Coach, Assistant Coach, Scout, Administrator.
+	BR-ADV-02
+	High
+	Academy Staff portal shall provide dashboard to: 1. View, filter, search all Trialist records. 2. Manage trialist status and add internal notes. 3. View all "Academy Player" profiles. 4. Upload and associate private video clips or assessment documents.
+	BR-ADV-03
+	Medium
+	Academy Staff shall be able to log and view training/match attendance for Academy Players via calendar interface.
+	BR-ADV-04
+	Low
+	The system shall allow Academy Staff to schedule "Trial Days" in calendar and assign invited trialists to specific sessions.
+	BR-ADV-05
+	Medium
+	The system shall integrate with WhatsApp Business API (with WhatsApp Web interim solution) and Termii SMS gateway for multi-channel communications.
+	BR-ADV-06
+	Medium
+	Academy Staff dashboard shall include "Communications Hub" showing all trialists requiring follow-up.
+	6.7 Data Subject Rights & NDPR Compliance
+Reg. ID
+	Priority
+	Description
+	BR-DSR-01
+	High
+	The system shall provide data subject request portal where users can request deletion of their personal data. Valid requests shall be processed within 30 days.
+	BR-DSR-02
+	High
+	All trialist records for applicants under 18 shall be tagged as 'Minor Data' with enhanced protection and mandatory parental consent digital signature.
+	7.0 ASSUMPTIONS, DEPENDENCIES & CONSTRAINTS
+Item
+	Type
+	Description
+	A1
+	Assumption
+	Club's media team will have minimum of one dedicated person to manage CMS content.
+	A2
+	Assumption
+	Reliable internet connection is available at club for staff to update site.
+	A3
+	Assumption
+	Club staff member (Commercial Manager) will be responsible for verifying and approving new advertiser accounts and scout applications.
+	A4
+	Assumption
+	Academy Head will allocate time to manage staff permissions and oversee trialist workflow.
+	A5
+	Assumption
+	Parents/guardians have access to WhatsApp and are comfortable with digital form submission.
+	A6
+	Assumption
+	Club has or will obtain necessary Nigerian regulatory approvals (NDPR registration, etc.).
+	A7
+	Assumption
+	WhatsApp Business API approval will be obtained within 90 days of application.
+	A8
+	Assumption
+	Local payment gateway integration (Paystack) will be available for Naira transactions.
+	A9
+	Assumption
+	CMS and data entry interfaces shall be fully functional on smartphones using 3G/4G connections with intermittent connectivity.
+	A10
+	Assumption
+	SMS/WhatsApp messaging budget is ₦50,000/month.
+	D1
+	Dependency
+	League data (fixtures, results, tables) will be provided in consistent format for manual entry by Sports Administrator.
+	D2
+	Dependency
+	Payment integration for donations, advertising, and patronage is dependent on partnership and API access with Paystack and Stripe.
+	D3
+	Dependency
+	Video view counts from embedded third-party platforms may have latency and may not match internal article view counts precisely.
+	D4
+	Dependency
+	Multi-channel communications depend on integration with WhatsApp Business API and Termii SMS gateway.
+	D5
+	Dependency
+	File uploads depend on Cloudinary API integration.
+	C1
+	Constraint
+	Initial development budget is capped.
+	C2
+	Constraint
+	Solutions must operate primarily in English.
+	C3
+	Constraint
+	Ad view tracking must distinguish between unique user views and prevent inflation.
+	C4
+	Constraint
+	Ad creative specifications are fixed per position and cannot be customized by advertisers.
+	C5
+	Constraint
+	Trialist video uploads limited to 100MB.
+	C6
+	Constraint
+	WhatsApp template approval by Meta may take 24-72 hours.
+	C7
+	Constraint
+	Scout-accessible video content is restricted to online streaming only. Any form of download, screen capture facilitation, or offline storage is prohibited by business policy.
+	
+
+8.0 TRACEABILITY MATRIX
+
+
+9.0 GLOSSARY
+Term
+	Definition
+	Business Day
+	Monday-Friday, excluding Nigerian federal public holidays, 9 AM - 5 PM WAT.
+	View (Ad)
+	When ≥50% of an ad creative is in the viewport for ≥1 continuous second, per unique user per 24-hour period per campaign.
+	Unique Visitor
+	A user identified by a 24-hour persistent first-party cookie.
+	Player Profile
+	Represents any player under contract with Amafor Gladiators FC.
+	Academy Player
+	A sub-category of Player Profile for individuals in the youth academy system, promoted from the trialist system.
+	Trialist
+	An applicant to the academy who has not yet been accepted.
+	Active Advertiser
+	An advertiser account that has made at least one payment in the last 90 days.
+	Verified Player Profile
+	A Player Profile where all mandatory fields are populated and marked as reviewed/accurate by the Data Steward.
+	Pro View
+	A secure portal providing access to full match archives and enhanced player data.
+	Ad Zone
+	A predefined placement for advertisements. Three zones: Homepage Top, Sidebar, Mid-Article.
+	
+
+
+
+APPROVALS
+This document is hereby approved for execution.
+Role
+	Name
+	Signature
+	Date
+	Project Sponsor
+	Dr. Nekezieh F. Ekeh
+	_________________________
+	//____
+	Product Manager
+	Nnamdi Solomon Iroagba
+	_________________________
+	//____
+	IT/Security Lead
+	Nnamdi Solomon Iroagba
+	_________________________
+	//____

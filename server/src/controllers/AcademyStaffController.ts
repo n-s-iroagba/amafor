@@ -1,8 +1,7 @@
+import { AcademyStaffService, CreateStaffDTO, StaffFilters, UpdateStaffDTO } from '@services/AcademyStaffService';
+import logger from '@utils/logger';
+import tracer from '@utils/tracer';
 import { Request, Response, NextFunction } from 'express';
-import { AcademyStaffService, CreateStaffDTO, UpdateStaffDTO, StaffFilters } from '@/services/AcademyStaffService';
-import { logger } from '@/utils/logger';
-import { tracer } from '@/utils/tracer';
-import { validationResult } from 'express-validator';
 
 export class AcademyStaffController {
   private staffService: AcademyStaffService;
@@ -11,20 +10,17 @@ export class AcademyStaffController {
     this.staffService = new AcademyStaffService();
   }
 
+  /**
+   * Add academy staff
+   * @api POST /academy-staff
+   * @apiName API-STAFF-001
+   * @apiGroup Academy Staff
+   * @srsRequirement REQ-ACA-05
+   */
   async createStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
     return tracer.startActiveSpan('controller.AcademyStaffController.createStaff', async (span) => {
       try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          span.setStatus({ code: 2, message: 'Validation failed' });
-          res.status(400).json({
-            success: false,
-            errorCode: 'VALIDATION_ERROR',
-            message: 'Validation failed',
-            errors: errors.array()
-          });
-          return;
-        }
+        // Validation handled by middleware
 
         const data: CreateStaffDTO = req.body;
         const userId = (req as any).user?.id || 'system';
@@ -60,6 +56,13 @@ export class AcademyStaffController {
     });
   }
 
+  /**
+   * Get staff details
+   * @api GET /academy-staff/:id
+   * @apiName API-STAFF-003
+   * @apiGroup Academy Staff
+   * @srsRequirement REQ-ACA-05
+   */
   async getStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
     return tracer.startActiveSpan('controller.AcademyStaffController.getStaff', async (span) => {
       try {
@@ -101,6 +104,13 @@ export class AcademyStaffController {
     });
   }
 
+  /**
+   * List academy staff
+   * @api GET /academy-staff
+   * @apiName API-STAFF-002
+   * @apiGroup Academy Staff
+   * @srsRequirement REQ-ACA-05
+   */
   async getAllStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
     return tracer.startActiveSpan('controller.AcademyStaffController.getAllStaff', async (span) => {
       try {
@@ -154,6 +164,13 @@ export class AcademyStaffController {
     });
   }
 
+  /**
+   * Update staff
+   * @api PUT /academy-staff/:id
+   * @apiName API-STAFF-004
+   * @apiGroup Academy Staff
+   * @srsRequirement REQ-ACA-05
+   */
   async updateStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
     return tracer.startActiveSpan('controller.AcademyStaffController.updateStaff', async (span) => {
       try {
@@ -161,17 +178,7 @@ export class AcademyStaffController {
         const data: UpdateStaffDTO = req.body;
         const userId = (req as any).user?.id || 'system';
 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          span.setStatus({ code: 2, message: 'Validation failed' });
-          res.status(400).json({
-            success: false,
-            errorCode: 'VALIDATION_ERROR',
-            message: 'Validation failed',
-            errors: errors.array()
-          });
-          return;
-        }
+        // Validation handled by middleware
 
         span.setAttributes({
           staffId: id,
@@ -207,6 +214,13 @@ export class AcademyStaffController {
     });
   }
 
+  /**
+   * Remove staff
+   * @api DELETE /academy-staff/:id
+   * @apiName API-STAFF-005
+   * @apiGroup Academy Staff
+   * @srsRequirement REQ-ACA-05
+   */
   async deleteStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
     return tracer.startActiveSpan('controller.AcademyStaffController.deleteStaff', async (span) => {
       try {
@@ -241,157 +255,5 @@ export class AcademyStaffController {
     });
   }
 
-  async getStaffStats(req: Request, res: Response, next: NextFunction): Promise<void> {
-    return tracer.startActiveSpan('controller.AcademyStaffController.getStaffStats', async (span) => {
-      try {
-        const stats = await this.staffService.getStaffStats();
 
-        res.status(200).json({
-          success: true,
-          data: stats
-        });
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        logger.error('CONTROLLER_STAFF_STATS_ERROR', { error: error.message });
-
-        res.status(500).json({
-          success: false,
-          errorCode: 'STAFF_STATS_ERROR',
-          message: 'Failed to fetch staff statistics'
-        });
-      } finally {
-        span.end();
-      }
-    });
-  }
-
-  async searchStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
-    return tracer.startActiveSpan('controller.AcademyStaffController.searchStaff', async (span) => {
-      try {
-        const { name } = req.query;
-
-        if (!name || typeof name !== 'string') {
-          span.setStatus({ code: 2, message: 'Invalid search term' });
-          res.status(400).json({
-            success: false,
-            errorCode: 'INVALID_SEARCH',
-            message: 'Search term is required'
-          });
-          return;
-        }
-
-        span.setAttribute('searchTerm', name);
-
-        const staff = await this.staffService.searchStaffByName(name);
-
-        res.status(200).json({
-          success: true,
-          data: staff,
-          count: staff.length
-        });
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        logger.error('CONTROLLER_STAFF_SEARCH_ERROR', {
-          error: error.message,
-          query: req.query
-        });
-
-        res.status(500).json({
-          success: false,
-          errorCode: 'STAFF_SEARCH_ERROR',
-          message: 'Failed to search staff'
-        });
-      } finally {
-        span.end();
-      }
-    });
-  }
-
-  async getStaffByCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
-    return tracer.startActiveSpan('controller.AcademyStaffController.getStaffByCategory', async (span) => {
-      try {
-        const { category } = req.params;
-        const validCategories = ['coaching', 'medical', 'administrative', 'technical', 'scouting'];
-
-        if (!validCategories.includes(category)) {
-          span.setStatus({ code: 2, message: 'Invalid category' });
-          res.status(400).json({
-            success: false,
-            errorCode: 'INVALID_CATEGORY',
-            message: `Invalid category. Must be one of: ${validCategories.join(', ')}`
-          });
-          return;
-        }
-
-        span.setAttribute('category', category);
-
-        const staff = await this.staffService.getStaffByCategory(category);
-
-        res.status(200).json({
-          success: true,
-          data: staff,
-          count: staff.length
-        });
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        logger.error('CONTROLLER_STAFF_CATEGORY_ERROR', {
-          error: error.message,
-          category: req.params.category
-        });
-
-        res.status(500).json({
-          success: false,
-          errorCode: 'STAFF_CATEGORY_ERROR',
-          message: 'Failed to fetch staff by category'
-        });
-      } finally {
-        span.end();
-      }
-    });
-  }
-
-  async bulkImportStaff(req: Request, res: Response, next: NextFunction): Promise<void> {
-    return tracer.startActiveSpan('controller.AcademyStaffController.bulkImportStaff', async (span) => {
-      try {
-        const staffData = req.body;
-        const userId = (req as any).user?.id || 'system';
-
-        if (!Array.isArray(staffData) || staffData.length === 0) {
-          span.setStatus({ code: 2, message: 'Invalid import data' });
-          res.status(400).json({
-            success: false,
-            errorCode: 'INVALID_IMPORT_DATA',
-            message: 'Import data must be a non-empty array'
-          });
-          return;
-        }
-
-        span.setAttribute('importCount', staffData.length);
-
-        const importedStaff = await this.staffService.bulkImportStaff(staffData, userId);
-
-        res.status(201).json({
-          success: true,
-          data: importedStaff,
-          message: `${importedStaff.length} staff members imported successfully`
-        });
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        logger.error('CONTROLLER_STAFF_BULK_IMPORT_ERROR', {
-          error: error.message,
-          importCount: req.body?.length || 0
-        });
-
-        const statusCode = error.message.includes('Invalid data') ? 400 : 500;
-
-        res.status(statusCode).json({
-          success: false,
-          errorCode: 'STAFF_BULK_IMPORT_ERROR',
-          message: error.message || 'Failed to import staff members'
-        });
-      } finally {
-        span.end();
-      }
-    });
-  }
 }

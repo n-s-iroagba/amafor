@@ -1,6 +1,6 @@
 // EmailService.ts - Unified Email Service with best practices
 import nodemailer, { Transporter } from 'nodemailer'
-import path from 'path'
+
 
 import logger from '../utils/logger'
 import User from '../models/User'

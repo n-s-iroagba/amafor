@@ -1,6 +1,7 @@
 import { PlayerRepository } from '../repositories/PlayerRepository';
 import { AuditService } from './AuditService';
 import Player, { PlayerCreationAttributes } from '../models/Player';
+import { AuditAction, EntityType } from '../models/AuditLog';
 import logger from '../utils/logger';
 
 export class PlayerService {
@@ -20,13 +21,14 @@ export class PlayerService {
         userId: creatorId,
         userEmail: 'system',
         userType: 'admin',
-        action: 'CREATE',
-        entityType: 'PLAYER',
+        action: AuditAction.CREATE,
+        entityType: EntityType.PLAYER,
         entityId: player.id,
         entityName: player.name,
         changes: [],
         ipAddress: '0.0.0.0',
-        metadata: { position: player.position }
+        metadata: { position: player.position },
+        timestamp: new Date()
       });
 
       logger.info('Player created', { playerId: player.id, position: player.position });
@@ -71,13 +73,14 @@ export class PlayerService {
         userId: adminId,
         userEmail: 'admin',
         userType: 'admin',
-        action: 'UPDATE',
-        entityType: 'PLAYER',
+        action: AuditAction.UPDATE,
+        entityType: EntityType.PLAYER,
         entityId: playerId,
         entityName: 'Stats Update',
         changes: Object.keys(statsData).map(k => ({ field: k, newValue: statsData[k] })),
         ipAddress: '0.0.0.0',
-        metadata: { type: 'performance_update' }
+        metadata: { type: 'performance_update' },
+        timestamp: new Date()
       });
 
       return updatedPlayers[0];

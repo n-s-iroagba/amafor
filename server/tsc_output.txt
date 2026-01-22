@@ -13,7 +13,7 @@ src/controllers/AcademyStaffController.ts(310,98): error TS7006: Parameter 'span
 src/controllers/AcademyStaffController.ts(353,95): error TS7006: Parameter 'span' implicitly has an 'any' type.
 src/controllers/AdZoneController.ts(78,29): error TS2339: Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
 src/controllers/DonationController.ts(2,10): error TS2305: Module '"../services"' has no exported member 'DonationService'.
-src/controllers/FeedsController.ts(4,42): error TS2307: Cannot find module '../services/ThirdPartyArticleService' or its corresponding type declarations.
+src/controllers/FeedsController.ts(4,42): error TS2307: Cannot find module '../services/FeaturedNewsService' or its corresponding type declarations.
 src/controllers/FeedsController.ts(6,46): error TS2307: Cannot find module '../validations/rssFeed.schema' or its corresponding type declarations.
 src/controllers/GoalController.ts(22,55): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
 src/controllers/GoalController.ts(31,44): error TS2339: Property 'getGoalsByFixture' does not exist on type 'GoalService'.
@@ -49,7 +49,7 @@ src/controllers/TrialistController.ts(3,30): error TS2307: Cannot find module '.
 src/controllers/TrialistController.ts(4,26): error TS2307: Cannot find module '../utils/AppError' or its corresponding type declarations.
 src/controllers/TrialistController.ts(5,24): error TS2307: Cannot find module '../middleware/uploadMiddleware' or its corresponding type declarations.
 src/jobs/RssFeedCronJob.ts(1,37): error TS2307: Cannot find module 'node-cron' or its corresponding type declarations.
-src/jobs/ThirdPartyArticle.ts(3,31): error TS2307: Cannot find module './RssFeedSource' or its corresponding type declarations.
+src/jobs/FeaturedNews.ts(3,31): error TS2307: Cannot find module './RssFeedSource' or its corresponding type declarations.
 src/middleware/validate.ts(2,34): error TS2503: Cannot find namespace 'z'.
 src/middleware/validate.ts(3,3): error TS2304: Cannot find name 'asyncHandler'.
 src/middleware/validate.ts(3,58): error TS2552: Cannot find name 'NextFunction'. Did you mean 'Function'?
@@ -126,8 +126,8 @@ src/routes/goalRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/
 src/routes/goalRoutes.ts(11,8): error TS2307: Cannot find module '../validations/goal.schema' or its corresponding type declarations.
 src/routes/lineupRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
 src/routes/lineupRoutes.ts(11,8): error TS2307: Cannot find module '../validations/lineup.schema' or its corresponding type declarations.
-src/routes/matchImageRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
-src/routes/matchImageRoutes.ts(10,8): error TS2307: Cannot find module '../validations/matchImage.schema' or its corresponding type declarations.
+src/routes/fixtureImageRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/fixtureImageRoutes.ts(10,8): error TS2307: Cannot find module '../validations/fixtureImage.schema' or its corresponding type declarations.
 src/routes/matchSummaryRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
 src/routes/matchSummaryRoutes.ts(10,8): error TS2307: Cannot find module '../validations/matchSummary.schema' or its corresponding type declarations.
 src/routes/patronageRoutes.ts(3,32): error TS2307: Cannot find module '../middlewares' or its corresponding type declarations.
@@ -268,9 +268,9 @@ src/services/PlayerService.ts(118,27): error TS2551: Property 'stats' does not e
 src/services/PlayerService.ts(119,30): error TS2339: Property 'physicalAttributes' does not exist on type 'Player'.
 src/services/ReceiptService.ts(2,39): error TS2307: Cannot find module '../models/AdSubscriptionPayment' or its corresponding type declarations.
 src/services/RssFeedFetcherService.ts(2,20): error TS2307: Cannot find module 'rss-parser' or its corresponding type declarations.
-src/services/RssFeedFetcherService.ts(8,45): error TS2307: Cannot find module '../repositories/ThirdPartyArticleRepository' or its corresponding type declarations.
-src/services/RssFeedFetcherService.ts(110,5): error TS2561: Object literal may only specify known properties, but 'rss_feed_source_id' does not exist in type 'ThirdPartyArticleCreationAttributes'. Did you mean to write 'rssFeedSourceId'?
-src/services/RssFeedFetcherService.ts(119,20): error TS2339: Property 'article_url' does not exist on type 'ThirdPartyArticleCreationAttributes'.
+src/services/RssFeedFetcherService.ts(8,45): error TS2307: Cannot find module '../repositories/FeaturedNewsRepository' or its corresponding type declarations.
+src/services/RssFeedFetcherService.ts(110,5): error TS2561: Object literal may only specify known properties, but 'rss_feed_source_id' does not exist in type 'FeaturedNewsCreationAttributes'. Did you mean to write 'rssFeedSourceId'?
+src/services/RssFeedFetcherService.ts(119,20): error TS2339: Property 'article_url' does not exist on type 'FeaturedNewsCreationAttributes'.
 src/services/RssFeedSourceService.ts(2,10): error TS2724: '"../repositories/RssFeedSourceRepository"' has no exported member named 'RssFeedSourceRepository'. Did you mean 'RssFeedRepository'?
 src/services/TokenService.ts(14,8): error TS2307: Cannot find module '../types/token.types' or its corresponding type declarations.
 src/services/TokenService.ts(15,10): error TS2305: Module '"../utils/errors"' has no exported member 'UnauthorizedError'.

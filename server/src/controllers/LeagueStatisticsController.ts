@@ -1,6 +1,7 @@
+import { CreateLeagueStatisticsData, LeagueStatisticsService, UpdateLeagueStatisticsData } from '@services/LeagueStatisticsService';
+import { AppError } from '@utils/errors';
 import { Request, Response, NextFunction } from 'express';
-import { LeagueStatisticsService, CreateLeagueStatisticsData, UpdateLeagueStatisticsData } from '../services/leagueStatistics.service';
-import { AppError } from '../utils/AppError';
+
 
 export class LeagueStatisticsController {
   private leagueStatisticsService: LeagueStatisticsService;
@@ -9,7 +10,13 @@ export class LeagueStatisticsController {
     this.leagueStatisticsService = leagueStatisticsService || new LeagueStatisticsService();
   }
 
-  // Create league statistics
+  /**
+   * Create league statistics
+   * @api POST /club-league-stats
+   * @apiName API-LEAGUE-001
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-ADM-02
+   */
   async createStatistics(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId, team, goalsFor = 0, goalsAgainst = 0 } = req.body;
@@ -33,7 +40,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get all statistics for a league
+  /**
+   * Get all statistics for a league
+   * @api GET /club-league-stats/league/:leagueId
+   * @apiName API-LEAGUE-002
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getAllStatistics(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -71,7 +84,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get league standings
+  /**
+   * Get league standings
+   * @api GET /club-league-stats/league/:leagueId/standings
+   * @apiName API-LEAGUE-003
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getLeagueStandings(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -88,7 +107,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get single statistics
+  /**
+   * Get statistics by ID
+   * @api GET /club-league-stats/:id
+   * @apiName API-LEAGUE-004
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getStatisticsById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
@@ -104,7 +129,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get team statistics
+  /**
+   * Get team statistics
+   * @api GET /club-league-stats/league/:leagueId/team/:team
+   * @apiName API-LEAGUE-005
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getTeamStatistics(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId, team } = req.params;
@@ -121,7 +152,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Update statistics
+  /**
+   * Update statistics
+   * @api PUT /club-league-stats/:id
+   * @apiName API-LEAGUE-006
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-ADM-02
+   */
   async updateStatistics(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
@@ -140,7 +177,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Delete statistics
+  /**
+   * Delete statistics
+   * @api DELETE /club-league-stats/:id
+   * @apiName API-LEAGUE-007
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-ADM-02
+   */
   async deleteStatistics(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
@@ -155,7 +198,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Update match result
+  /**
+   * Update match result
+   * @api POST /club-league-stats/league/:leagueId/match
+   * @apiName API-LEAGUE-008
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-01, REQ-ADM-03
+   */
   async updateFixtureResult(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -182,7 +231,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get top scorers
+  /**
+   * Get top scorers
+   * @api GET /club-league-stats/league/:leagueId/top-scorers
+   * @apiName API-LEAGUE-009
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getTopScorers(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -203,7 +258,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get top defenses
+  /**
+   * Get top defenses
+   * @api GET /club-league-stats/league/:leagueId/top-defenses
+   * @apiName API-LEAGUE-010
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getTopDefenses(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -224,7 +285,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get form table
+  /**
+   * Get form table
+   * @api GET /club-league-stats/league/:leagueId/form
+   * @apiName API-LEAGUE-011
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getFormTable(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -241,7 +308,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get home/away stats
+  /**
+   * Get home/away statistics
+   * @api GET /club-league-stats/league/:leagueId/home-away
+   * @apiName API-LEAGUE-012
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getHomeAwayStats(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;
@@ -258,7 +331,13 @@ export class LeagueStatisticsController {
     }
   }
 
-  // Get league summary
+  /**
+   * Get league summary
+   * @api GET /club-league-stats/league/:leagueId/summary
+   * @apiName API-LEAGUE-013
+   * @apiGroup League Statistics
+   * @srsRequirement REQ-PUB-06
+   */
   async getLeagueSummary(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { leagueId } = req.params;

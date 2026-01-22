@@ -19,13 +19,6 @@ class VideoService {
     return result;
   }
 
-  async getVideoById(id: string) {
-    const video = await this.videoRepository.findById(id);
-    if (!video) {
-      throw new NotFoundError(`Video with ID ${id} not found`);
-    }
-    return video;
-  }
 
   async createVideo(videoData: any) {
     if (!videoData.title || !videoData.excerpt || !videoData.thumbnail || !videoData.videoUrl) {
@@ -59,42 +52,7 @@ class VideoService {
     return deleted;
   }
 
-  async searchVideos(query: string) {
-    const videos = await this.videoRepository.findAll({
-      where: {
-        [Op.or]: [
-          { title: { [Op.iLike]: `%${query}%` } },
-          { excerpt: { [Op.iLike]: `%${query}%` } },
-        ],
-      },
-      order: [['createdAt', 'DESC']],
-    });
-    return videos;
-  }
 
-  async getVideosByDuration(minDuration?: number, maxDuration?: number) {
-    const whereClause: any = {};
-
-    if (minDuration) {
-      whereClause.duration = {
-        ...whereClause.duration,
-        [Op.gte]: minDuration,
-      };
-    }
-
-    if (maxDuration) {
-      whereClause.duration = {
-        ...whereClause.duration,
-        [Op.lte]: maxDuration,
-      };
-    }
-
-    const videos = await this.videoRepository.findAll({
-      where: whereClause,
-      order: [['createdAt', 'DESC']],
-    });
-    return videos;
-  }
 }
 
 export default VideoService;

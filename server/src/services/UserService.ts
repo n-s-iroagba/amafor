@@ -3,6 +3,7 @@ import { AuditService } from './AuditService';
 
 import { structuredLogger, tracer } from '../utils';
 import User, { UserAttributes } from '@models/User';
+import { AuditAction, EntityType } from '@models/AuditLog';
 
 export class UserService {
   private userRepository: UserRepository;
@@ -46,13 +47,14 @@ export class UserService {
           userId,
           userEmail: updatedUser.email,
           userType: updatedUser.userType || 'user',
-          action: 'UPDATE',
-          entityType: 'USER',
+          action: AuditAction.UPDATE,
+          entityType: EntityType.USER,
           entityId: userId,
           entityName: `${updatedUser.firstName} ${updatedUser.lastName}`,
           changes: Object.keys(data).map(key => ({ field: key, newValue: (data as any)[key] })),
           metadata: {},
-          ipAddress: '0.0.0.0'
+          ipAddress: '0.0.0.0',
+          timestamp: new Date()
         });
 
         return updatedUser;
@@ -77,13 +79,14 @@ export class UserService {
           userId: adminId,
           userEmail: 'admin',
           userType: 'admin',
-          action: 'UPDATE',
-          entityType: 'USER',
+          action: AuditAction.UPDATE,
+          entityType: EntityType.USER,
           entityId: targetUserId,
           entityName: 'Verification Status',
           changes: [{ field: 'status', newValue: status }],
           metadata: { adminId },
-          ipAddress: '0.0.0.0'
+          ipAddress: '0.0.0.0',
+          timestamp: new Date()
         });
 
         structuredLogger.business('USER_VERIFICATION', 0, adminId, { targetUserId, status });

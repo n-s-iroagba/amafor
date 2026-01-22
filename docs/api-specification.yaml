@@ -1,0 +1,1672 @@
+openapi: 3.0.3
+info:
+  title: Amafor Gladiators Digital Ecosystem API
+  description: |
+    Complete REST API specification with full traceability to SRS requirements.
+    Each endpoint includes custom extension `x-srs-req` for requirement mapping.
+  version: 1.0.0
+  contact:
+    name: Engineering Team
+    email: dev@amaforgladiatorsfc.com
+
+servers:
+  - url: http://localhost:8000/api
+    description: Development server
+  - url: https://api.amaforgladiatorsfc.com/api
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization
+  - name: Users
+    description: User profile management
+  - name: Players
+    description: Player profiles and statistics
+  - name: Trialists
+    description: Academy trial applications
+  - name: Articles
+    description: News articles and content
+  - name: League Statistics
+    description: League standings and statistics
+  - name: Goals
+    description: Fixture goal recording
+  - name: Lineups
+    description: Fixture lineup management
+  - name: Fixture Gallery
+    description: Fixture photos and galleries
+  - name: Fixture Summary
+    description: Fixture summaries and reports
+  - name: Videos
+    description: Video content management
+  - name: RSS Feeds
+    description: RSS feed aggregation
+  - name: Patronage
+    description: Patron subscriptions and donations
+  - name: Payments
+    description: Payment processing
+  - name: Academy Staff
+    description: Academy staff management
+  - name: Academy
+    description: Academy information
+  - name: System
+    description: System configuration and administration
+  - name: Health
+    description: Health checks and monitoring
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+
+paths:
+  # Authentication
+  /auth/register:
+    post:
+      tags: [Authentication]
+      summary: User registration
+      operationId: API-AUTH-001
+      x-srs-req: REQ-AUTH-01
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Validation error
+
+  /auth/login:
+    post:
+      tags: [Authentication]
+      summary: User login
+      operationId: API-AUTH-002
+      x-srs-req: REQ-AUTH-02
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+
+  /auth/logout:
+    post:
+      tags: [Authentication]
+      summary: User logout
+      operationId: API-AUTH-003
+      x-srs-req: REQ-AUTH-02
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+
+  /auth/forgot-password:
+    post:
+      tags: [Authentication]
+      summary: Request password reset
+      operationId: API-AUTH-004
+      x-srs-req: REQ-AUTH-03
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: Reset email sent
+
+  /auth/reset-password:
+    post:
+      tags: [Authentication]
+      summary: Reset password with token
+      operationId: API-AUTH-005
+      x-srs-req: REQ-AUTH-03
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, password]
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Password reset successful
+
+  # Users
+  /users/profile:
+    get:
+      tags: [Users]
+      summary: Get current user profile
+      operationId: API-USER-001
+      x-srs-req: REQ-AUTH-02
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile
+    patch:
+      tags: [Users]
+      summary: Update user profile
+      operationId: API-USER-002
+      x-srs-req: REQ-AUTH-02
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Profile updated
+
+  /users/{userId}/verify:
+    patch:
+      tags: [Users]
+      summary: Verify user account (Admin only)
+      operationId: API-USER-003
+      x-srs-req: [REQ-ADM-06, REQ-ADM-11]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User verified
+
+  # Players
+  /players:
+    get:
+      tags: [Players]
+      summary: List all players (public)
+      operationId: API-PLAYER-001
+      x-srs-req: [REQ-PUB-05, REQ-SCT-02]
+      responses:
+        '200':
+          description: List of players
+    post:
+      tags: [Players]
+      summary: Create player
+      operationId: API-PLAYER-003
+      x-srs-req: REQ-ADM-04
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Player created
+
+  /players/{id}:
+    get:
+      tags: [Players]
+      summary: Get player profile
+      operationId: API-PLAYER-002
+      x-srs-req: [REQ-PUB-05, REQ-SCT-02]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Player profile
+
+  /players/{id}/stats:
+    patch:
+      tags: [Players]
+      summary: Update player stats
+      operationId: API-PLAYER-004
+      x-srs-req: REQ-ADM-04
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stats updated
+
+  /players/{id}/report:
+    get:
+      tags: [Players]
+      summary: Generate scout report
+      operationId: API-PLAYER-005
+      x-srs-req: REQ-SCT-04
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Scout report
+
+  # Trialists
+  /trialists:
+    post:
+      tags: [Trialists]
+      summary: Submit trial application
+      operationId: API-TRIALIST-001
+      x-srs-req: [REQ-ACA-01, REQ-ACA-02]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Application submitted
+    get:
+      tags: [Trialists]
+      summary: Get all trialists (with filters)
+      operationId: API-TRIALIST-002
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of trialists
+
+  /trialists/{id}:
+    get:
+      tags: [Trialists]
+      summary: Get trialist by ID
+      operationId: API-TRIALIST-003
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Trialist details
+    put:
+      tags: [Trialists]
+      summary: Update trialist
+      operationId: API-TRIALIST-004
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Trialist updated
+    delete:
+      tags: [Trialists]
+      summary: Delete trialist
+      operationId: API-TRIALIST-005
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Trialist deleted
+
+  /trialists/{id}/status:
+    patch:
+      tags: [Trialists]
+      summary: Update trialist status
+      operationId: API-TRIALIST-006
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [Applied, Invited, Attended, Accepted, Rejected]
+      responses:
+        '200':
+          description: Status updated
+
+  /trialists/search:
+    get:
+      tags: [Trialists]
+      summary: Search trialists
+      operationId: API-TRIALIST-007
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+
+  /trialists/stats:
+    get:
+      tags: [Trialists]
+      summary: Get trialist statistics
+      operationId: API-TRIALIST-008
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Statistics
+
+  # Articles
+  /articles/homepage:
+    get:
+      tags: [Articles]
+      summary: Get homepage articles
+      operationId: API-ARTICLE-001
+      x-srs-req: REQ-PUB-03
+      responses:
+        '200':
+          description: Homepage articles
+
+  /articles/published:
+    get:
+      tags: [Articles]
+      summary: Get all published articles
+      operationId: API-ARTICLE-002
+      x-srs-req: [REQ-PUB-03, REQ-CMS-01]
+      responses:
+        '200':
+          description: Published articles
+
+  /articles/tag/{tag}:
+    get:
+      tags: [Articles]
+      summary: Get articles by tag
+      operationId: API-ARTICLE-003
+      x-srs-req: REQ-PUB-03
+      parameters:
+        - name: tag
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Articles by tag
+
+  /articles/search:
+    get:
+      tags: [Articles]
+      summary: Search articles
+      operationId: API-ARTICLE-004
+      x-srs-req: REQ-PUB-03
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search results
+
+  /articles/popular-tags:
+    get:
+      tags: [Articles]
+      summary: Get popular tags
+      operationId: API-ARTICLE-005
+      x-srs-req: REQ-PUB-03
+      responses:
+        '200':
+          description: Popular tags
+
+  /articles/{id}:
+    get:
+      tags: [Articles]
+      summary: Get article by ID
+      operationId: API-ARTICLE-006
+      x-srs-req: [REQ-PUB-03, REQ-CMS-01]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Article details
+
+  # League Statistics
+  /club-league-stats:
+    post:
+      tags: [League Statistics]
+      summary: Create league statistics
+      operationId: API-LEAGUE-001
+      x-srs-req: REQ-ADM-02
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Statistics created
+
+  /club-league-stats/league/{leagueId}:
+    get:
+      tags: [League Statistics]
+      summary: Get all statistics for league
+      operationId: API-LEAGUE-002
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: League statistics
+
+  /club-league-stats/league/{leagueId}/standings:
+    get:
+      tags: [League Statistics]
+      summary: Get league standings
+      operationId: API-LEAGUE-003
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: League standings
+
+  /club-league-stats/{id}:
+    get:
+      tags: [League Statistics]
+      summary: Get statistics by ID
+      operationId: API-LEAGUE-004
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistics
+    put:
+      tags: [League Statistics]
+      summary: Update statistics
+      operationId: API-LEAGUE-006
+      x-srs-req: REQ-ADM-02
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistics updated
+    delete:
+      tags: [League Statistics]
+      summary: Delete statistics
+      operationId: API-LEAGUE-007
+      x-srs-req: REQ-ADM-02
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Statistics deleted
+
+  /club-league-stats/league/{leagueId}/team/{team}:
+    get:
+      tags: [League Statistics]
+      summary: Get team statistics
+      operationId: API-LEAGUE-005
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: team
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Team statistics
+
+  /club-league-stats/league/{leagueId}/match:
+    post:
+      tags: [League Statistics]
+      summary: Update match result
+      operationId: API-LEAGUE-008
+      x-srs-req: [REQ-PUB-01, REQ-ADM-03]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fixture result updated
+
+  /club-league-stats/league/{leagueId}/top-scorers:
+    get:
+      tags: [League Statistics]
+      summary: Get top scorers
+      operationId: API-LEAGUE-009
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Top scorers
+
+  /club-league-stats/league/{leagueId}/top-defenses:
+    get:
+      tags: [League Statistics]
+      summary: Get top defenses
+      operationId: API-LEAGUE-010
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Top defenses
+
+  /club-league-stats/league/{leagueId}/form:
+    get:
+      tags: [League Statistics]
+      summary: Get form table
+      operationId: API-LEAGUE-011
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Form table
+
+  /club-league-stats/league/{leagueId}/home-away:
+    get:
+      tags: [League Statistics]
+      summary: Get home/away stats
+      operationId: API-LEAGUE-012
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Home/away statistics
+
+  /club-league-stats/league/{leagueId}/summary:
+    get:
+      tags: [League Statistics]
+      summary: Get league summary
+      operationId: API-LEAGUE-013
+      x-srs-req: REQ-PUB-06
+      parameters:
+        - name: leagueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: League summary
+
+  # Goals
+  /goals:
+    post:
+      tags: [Goals]
+      summary: Record goal
+      operationId: API-GOAL-001
+      x-srs-req: [REQ-PUB-02, REQ-ADM-03]
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Goal recorded
+
+  /goals/fixture/{fixtureId}:
+    get:
+      tags: [Goals]
+      summary: Get goals for fixture
+      operationId: API-GOAL-002
+      x-srs-req: REQ-PUB-02
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fixture goals
+
+  /goals/{id}:
+    put:
+      tags: [Goals]
+      summary: Update goal
+      operationId: API-GOAL-003
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Goal updated
+    delete:
+      tags: [Goals]
+      summary: Delete goal
+      operationId: API-GOAL-004
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Goal deleted
+
+  # Lineups
+  /lineups:
+    post:
+      tags: [Lineups]
+      summary: Create match lineup
+      operationId: API-LINEUP-001
+      x-srs-req: [REQ-PUB-02, REQ-ADM-03]
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Lineup created
+
+  /lineups/fixture/{fixtureId}:
+    get:
+      tags: [Lineups]
+      summary: Get lineup for fixture
+      operationId: API-LINEUP-002
+      x-srs-req: REQ-PUB-02
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fixture lineup
+
+  /lineups/{id}:
+    put:
+      tags: [Lineups]
+      summary: Update lineup
+      operationId: API-LINEUP-003
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lineup updated
+    delete:
+      tags: [Lineups]
+      summary: Delete lineup
+      operationId: API-LINEUP-004
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Lineup deleted
+
+  # Fixture Gallery
+  /match-gallery:
+    post:
+      tags: [Fixture Gallery]
+      summary: Upload match image
+      operationId: API-GALLERY-001
+      x-srs-req: [REQ-PUB-07, REQ-ADM-03]
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Image uploaded
+
+  /match-gallery/fixture/{fixtureId}:
+    get:
+      tags: [Fixture Gallery]
+      summary: Get images for fixture
+      operationId: API-GALLERY-002
+      x-srs-req: REQ-PUB-07
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fixture images
+
+  /match-gallery/{id}:
+    delete:
+      tags: [Fixture Gallery]
+      summary: Delete image
+      operationId: API-GALLERY-003
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Image deleted
+
+  # Fixture Summary
+  /match-summary:
+    post:
+      tags: [Fixture Summary]
+      summary: Create match summary
+      operationId: API-SUMMARY-001
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Summary created
+
+  /match-summary/fixture/{fixtureId}:
+    get:
+      tags: [Fixture Summary]
+      summary: Get summary for fixture
+      operationId: API-SUMMARY-002
+      x-srs-req: REQ-PUB-01
+      parameters:
+        - name: fixtureId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fixture summary
+
+  /match-summary/{id}:
+    put:
+      tags: [Fixture Summary]
+      summary: Update summary
+      operationId: API-SUMMARY-003
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Summary updated
+    delete:
+      tags: [Fixture Summary]
+      summary: Delete summary
+      operationId: API-SUMMARY-004
+      x-srs-req: REQ-ADM-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Summary deleted
+
+  # Videos
+  /videos:
+    post:
+      tags: [Videos]
+      summary: Upload video
+      operationId: API-VIDEO-001
+      x-srs-req: [REQ-CMS-03, REQ-SCT-05]
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Video uploaded
+    get:
+      tags: [Videos]
+      summary: List videos
+      operationId: API-VIDEO-002
+      x-srs-req: [REQ-CMS-03, REQ-SCT-05]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Video list
+
+  /videos/{id}:
+    get:
+      tags: [Videos]
+      summary: Get video by ID
+      operationId: API-VIDEO-003
+      x-srs-req: [REQ-CMS-03, REQ-SCT-05]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Video details
+    put:
+      tags: [Videos]
+      summary: Update video metadata
+      operationId: API-VIDEO-004
+      x-srs-req: REQ-CMS-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Video updated
+    delete:
+      tags: [Videos]
+      summary: Delete video
+      operationId: API-VIDEO-005
+      x-srs-req: REQ-CMS-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Video deleted
+
+  # RSS Feeds
+  /feeds:
+    post:
+      tags: [RSS Feeds]
+      summary: Add RSS feed source
+      operationId: API-FEED-001
+      x-srs-req: [REQ-PUB-04, REQ-ADM-07]
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Feed added
+    get:
+      tags: [RSS Feeds]
+      summary: List feed sources
+      operationId: API-FEED-002
+      x-srs-req: REQ-ADM-07
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Feed list
+
+  /feeds/articles:
+    get:
+      tags: [RSS Feeds]
+      summary: Get aggregated feed articles
+      operationId: API-FEED-003
+      x-srs-req: REQ-PUB-04
+      responses:
+        '200':
+          description: Aggregated articles
+
+  /feeds/{id}:
+    put:
+      tags: [RSS Feeds]
+      summary: Update feed source
+      operationId: API-FEED-004
+      x-srs-req: REQ-ADM-07
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Feed updated
+    delete:
+      tags: [RSS Feeds]
+      summary: Delete feed source
+      operationId: API-FEED-005
+      x-srs-req: REQ-ADM-07
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Feed deleted
+
+  # Patronage
+  /patrons/subscribe:
+    post:
+      tags: [Patronage]
+      summary: Create patron subscription
+      operationId: API-PATRON-001
+      x-srs-req: REQ-SUP-02
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Subscription created
+
+  /patrons:
+    get:
+      tags: [Patronage]
+      summary: List all patrons
+      operationId: API-PATRON-002
+      x-srs-req: [REQ-SUP-03, REQ-ADM-10]
+      responses:
+        '200':
+          description: Patron list
+
+  /patrons/{id}:
+    get:
+      tags: [Patronage]
+      summary: Get patron details
+      operationId: API-PATRON-003
+      x-srs-req: REQ-ADM-10
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Patron details
+    delete:
+      tags: [Patronage]
+      summary: Cancel subscription
+      operationId: API-PATRON-005
+      x-srs-req: REQ-ADM-10
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Subscription cancelled
+
+  /patrons/{id}/status:
+    patch:
+      tags: [Patronage]
+      summary: Update patron status
+      operationId: API-PATRON-004
+      x-srs-req: REQ-ADM-10
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status updated
+
+  # Payments
+  /payments/advertiser:
+    get:
+      tags: [Payments]
+      summary: Get payments by advertiser
+      operationId: API-PAYMENT-001
+      x-srs-req: REQ-ADV-05
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Advertiser payments
+
+  /payments:
+    get:
+      tags: [Payments]
+      summary: Get all payments
+      operationId: API-PAYMENT-002
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: All payments
+
+  /payments/initialize:
+    post:
+      tags: [Payments]
+      summary: Initialize payment
+      operationId: API-PAYMENT-003
+      x-srs-req: [REQ-SUP-01, REQ-SUP-02, REQ-ADV-04]
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Payment initialized
+
+  /payments/verify/{reference}:
+    post:
+      tags: [Payments]
+      summary: Verify transaction
+      operationId: API-PAYMENT-004
+      x-srs-req: [REQ-SUP-01, REQ-SUP-02, REQ-ADV-04]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: reference
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction verified
+
+  /payments/webhook:
+    post:
+      tags: [Payments]
+      summary: Payment gateway webhook
+      operationId: API-PAYMENT-005
+      x-srs-req: REQ-ADV-04
+      responses:
+        '200':
+          description: Webhook processed
+
+  /payments/advertisement:
+    post:
+      tags: [Payments]
+      summary: Initiate advertisement payment
+      operationId: API-PAYMENT-006
+      x-srs-req: REQ-ADV-04
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Advertisement payment initiated
+
+  /payments/donation:
+    post:
+      tags: [Payments]
+      summary: Initiate donation payment
+      operationId: API-PAYMENT-007
+      x-srs-req: REQ-SUP-01
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Donation payment initiated
+
+  /payments/{id}:
+    get:
+      tags: [Payments]
+      summary: Get payment details
+      operationId: API-PAYMENT-008
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment details
+
+  /payments/user:
+    get:
+      tags: [Payments]
+      summary: Get user payments
+      operationId: API-PAYMENT-009
+      x-srs-req: REQ-SUP-03
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: User payment history
+
+  /payments/stats:
+    get:
+      tags: [Payments]
+      summary: Get payment statistics
+      operationId: API-PAYMENT-010
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Payment statistics
+
+  /payments/{id}/refund:
+    post:
+      tags: [Payments]
+      summary: Refund payment
+      operationId: API-PAYMENT-011
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment refunded
+
+  # Academy Staff
+  /academy-staff:
+    post:
+      tags: [Academy Staff]
+      summary: Add academy staff
+      operationId: API-STAFF-001
+      x-srs-req: REQ-ACA-05
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Staff added
+    get:
+      tags: [Academy Staff]
+      summary: List academy staff
+      operationId: API-STAFF-002
+      x-srs-req: REQ-ACA-05
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Staff list
+
+  /academy-staff/{id}:
+    get:
+      tags: [Academy Staff]
+      summary: Get staff details
+      operationId: API-STAFF-003
+      x-srs-req: REQ-ACA-05
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Staff details
+    put:
+      tags: [Academy Staff]
+      summary: Update staff
+      operationId: API-STAFF-004
+      x-srs-req: REQ-ACA-05
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Staff updated
+    delete:
+      tags: [Academy Staff]
+      summary: Remove staff
+      operationId: API-STAFF-005
+      x-srs-req: REQ-ACA-05
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Staff removed
+
+  # Academy
+  /academy/info:
+    get:
+      tags: [Academy]
+      summary: Get academy information
+      operationId: API-ACADEMY-001
+      x-srs-req: REQ-ACA-01
+      responses:
+        '200':
+          description: Academy information
+
+  /academy/stats:
+    get:
+      tags: [Academy]
+      summary: Get academy stats
+      operationId: API-ACADEMY-002
+      x-srs-req: REQ-ACA-03
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Academy statistics
+
+  # Advertisements
+  /ads/campaigns:
+    post:
+      tags: [Advertisements]
+      summary: Create ad campaign
+      operationId: API-AD-001
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Campaign created
+    get:
+      tags: [Advertisements]
+      summary: Get all campaigns (with filters)
+      operationId: API-AD-009
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of campaigns
+
+  /ads/campaigns/{id}:
+    put:
+      tags: [Advertisements]
+      summary: Update ad campaign
+      operationId: API-AD-004
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Campaign updated
+    delete:
+      tags: [Advertisements]
+      summary: Delete ad campaign
+      operationId: API-AD-005
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Campaign deleted
+
+  /ads/campaigns/active:
+    get:
+      tags: [Advertisements]
+      summary: Get active campaigns
+      operationId: API-AD-006
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Active campaigns
+
+  /ads/campaigns/pending:
+    get:
+      tags: [Advertisements]
+      summary: Get pending campaigns
+      operationId: API-AD-007
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Pending campaigns
+
+  /ads/campaigns/expired:
+    get:
+      tags: [Advertisements]
+      summary: Get expired campaigns
+      operationId: API-AD-008
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Expired campaigns
+
+  /ads/serve/{zone}:
+    get:
+      tags: [Advertisements]
+      summary: Serve ad for zone
+      operationId: API-AD-002
+      x-srs-req: REQ-ADV-07
+      parameters:
+        - name: zone
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ad served
+        '204':
+          description: No ad available
+
+  /ads/track/{id}:
+    get:
+      tags: [Advertisements]
+      summary: Track ad click
+      operationId: API-AD-003
+      x-srs-req: REQ-ADV-07
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Click tracked
+
+  # System
+  /system/config:
+    get:
+      tags: [System]
+      summary: Get system configuration
+      operationId: API-SYSTEM-001
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: System configuration
+    patch:
+      tags: [System]
+      summary: Update system config
+      operationId: API-SYSTEM-002
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Configuration updated
+
+  /system/audit:
+    get:
+      tags: [System]
+      summary: Get audit logs
+      operationId: API-SYSTEM-003
+      x-srs-req: REQ-ADM-08
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Audit logs
+
+  /system/backups:
+    get:
+      tags: [System]
+      summary: List backups
+      operationId: API-SYSTEM-004
+      x-srs-req: REQ-ADM-01
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Backup list
+
+  # Health
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: API-HEALTH-001
+      x-srs-req: REQ-ADM-09
+      responses:
+        '200':
+          description: Service healthy
+
+  /health/db:
+    get:
+      tags: [Health]
+      summary: Database health
+      operationId: API-HEALTH-002
+      x-srs-req: REQ-ADM-09
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Database healthy
+
+  /health/redis:
+    get:
+      tags: [Health]
+      summary: Redis health
+      operationId: API-HEALTH-003
+      x-srs-req: REQ-ADM-09
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Redis healthy

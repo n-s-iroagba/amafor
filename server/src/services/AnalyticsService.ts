@@ -1,6 +1,6 @@
 import { 
   UserRepository, 
-  DonationRepository, 
+  PatronSubscriptionRepository, 
   AdCampaignRepository, 
   ArticleRepository,
   PlayerRepository
@@ -9,14 +9,14 @@ import { structuredLogger, tracer } from '../utils';
 
 export class AnalyticsService {
   private userRepo: UserRepository;
-  private donationRepo: DonationRepository;
+  private patronSubRepo: PatronSubscriptionRepository;
   private adRepo: AdCampaignRepository;
   private articleRepo: ArticleRepository;
   private playerRepo: PlayerRepository;
 
   constructor() {
     this.userRepo = new UserRepository();
-    this.donationRepo = new DonationRepository();
+    this.patronSubRepo = new PatronSubscriptionRepository();
     this.adRepo = new AdCampaignRepository();
     this.articleRepo = new ArticleRepository();
     this.playerRepo = new PlayerRepository();
@@ -62,7 +62,7 @@ export class AnalyticsService {
 
   private async calculateTotalRevenue(): Promise<number> {
     // Sum Donations + Ad Spend (simplified)
-    const donations = await this.donationRepo.sumCompletedAmounts();
+    const donations = await this.patronSubRepo.sumCompletedAmounts();
     // Assuming Ad Campaigns have a 'budget' or 'spend' field
     const adRevenue = await this.adRepo.sumActiveBudgets(); 
     

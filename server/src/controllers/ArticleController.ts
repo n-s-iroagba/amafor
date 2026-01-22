@@ -1,6 +1,6 @@
 // src/controllers/ArticleController.ts
 import { Request, Response } from 'express';
-import articleService, { ArticleService} from '@services/ArticleService';
+import articleService, { ArticleService } from '@services/ArticleService';
 import { ArticleStatus, ArticleTag } from '@models/Article';
 import { ApiResponse } from '@utils/apiResponse';
 import { z } from 'zod';
@@ -32,23 +32,29 @@ export class ArticleController {
     this.articleService = articleService;
   }
 
-  // Get homepage articles
+  /**
+   * Get homepage articles
+   * @api GET /articles/homepage
+   * @apiName API-ARTICLE-001
+   * @apiGroup Articles
+   * @srsRequirement REQ-PUB-03
+   */
   async fetchHomepageArticles(req: Request, res: Response): Promise<void> {
     return tracer.startActiveSpan('controller.Article.fetchHomepageArticles', async (span) => {
       try {
         const homepageArticles = await this.articleService.fetchHomepageArticles();
-        
+
         ApiResponse.success(res, {
           message: 'Homepage articles fetched successfully',
           data: homepageArticles
         });
-        
+
         span.setStatus({ code: 1 }); // OK
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error fetching homepage articles', { error });
-        
+
         ApiResponse.error(res, {
           message: 'Failed to fetch homepage articles',
           statusCode: 500
@@ -59,7 +65,13 @@ export class ArticleController {
     });
   }
 
-  // Get all published articles
+  /**
+   * Get all published articles
+   * @api GET /articles/published
+   * @apiName API-ARTICLE-002
+   * @apiGroup Articles
+   * @srsRequirement REQ-PUB-03, REQ-CMS-01
+   */
   async fetchAllPublishedArticles(req: Request, res: Response): Promise<void> {
     return tracer.startActiveSpan('controller.Article.fetchAllPublishedArticles', async (span) => {
       try {
@@ -74,8 +86,8 @@ export class ArticleController {
 
         const filterOptions = {
           ...filters,
-          tag:filters.tag as ArticleTag,
-          status:filters.status as ArticleStatus,
+          tag: filters.tag as ArticleTag,
+          status: filters.status as ArticleStatus,
           dateFrom,
           dateTo
         };
@@ -110,7 +122,7 @@ export class ArticleController {
           const errorMessage = error instanceof Error ? error.message : 'Unknown error';
           span.setStatus({ code: 2, message: errorMessage });
           logger.error('Error fetching published articles', { error });
-          
+
           ApiResponse.error(res, {
             message: 'Failed to fetch published articles',
             statusCode: 500
@@ -122,7 +134,13 @@ export class ArticleController {
     });
   }
 
-  // Get single article
+  /**
+   * Get article by ID
+   * @api GET /articles/:id
+   * @apiName API-ARTICLE-006
+   * @apiGroup Articles
+   * @srsRequirement REQ-PUB-03, REQ-CMS-01
+   */
   async getArticleById(req: Request, res: Response): Promise<void> {
     return tracer.startActiveSpan('controller.Article.getArticleById', async (span) => {
       try {
@@ -159,7 +177,7 @@ export class ArticleController {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error fetching article by ID', { error, id: req.params.id });
-        
+
         ApiResponse.error(res, {
           message: 'Failed to fetch article',
           statusCode: 500
@@ -170,7 +188,13 @@ export class ArticleController {
     });
   }
 
-  // Get articles by tag
+  /**
+   * Get articles by tag
+   * @api GET /articles/tag/:tag
+   * @apiName API-ARTICLE-003
+   * @apiGroup Articles
+   * @srsRequirement REQ-PUB-03
+   */
   async getArticlesByTag(req: Request, res: Response): Promise<void> {
     return tracer.startActiveSpan('controller.Article.getArticlesByTag', async (span) => {
       try {
@@ -197,7 +221,7 @@ export class ArticleController {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error fetching articles by tag', { error, tag: req.params.tag });
-        
+
         ApiResponse.error(res, {
           message: 'Failed to fetch articles by tag',
           statusCode: 500
@@ -208,7 +232,13 @@ export class ArticleController {
     });
   }
 
-  // Search articles
+  /**
+   * Search articles
+   * @api GET /articles/search
+   * @apiName API-ARTICLE-004
+   * @apiGroup Articles
+   * @srsRequirement REQ-PUB-03
+   */
   async searchArticles(req: Request, res: Response): Promise<void> {
     return tracer.startActiveSpan('controller.Article.searchArticles', async (span) => {
       try {
@@ -244,7 +274,7 @@ export class ArticleController {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error searching articles', { error, query: req.query.q });
-        
+
         ApiResponse.error(res, {
           message: 'Failed to search articles',
           statusCode: 500
@@ -260,7 +290,7 @@ export class ArticleController {
     return tracer.startActiveSpan('controller.Article.invalidateCache', async (span) => {
       try {
         const { articleId } = req.query;
-        
+
         await this.articleService.invalidateArticleCache(articleId as string);
 
         ApiResponse.success(res, {
@@ -273,7 +303,7 @@ export class ArticleController {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error invalidating article cache', { error });
-        
+
         ApiResponse.error(res, {
           message: 'Failed to invalidate cache',
           statusCode: 500
@@ -284,7 +314,13 @@ export class ArticleController {
     });
   }
 
-  // Get popular tags
+  /**
+   * Get popular tags
+   * @api GET /articles/popular-tags
+   * @apiName API-ARTICLE-005
+   * @apiGroup Articles
+   * @srsRequirement REQ-PUB-03
+   */
   async getPopularTags(req: Request, res: Response): Promise<void> {
     return tracer.startActiveSpan('controller.Article.getPopularTags', async (span) => {
       try {
@@ -308,7 +344,7 @@ export class ArticleController {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error fetching popular tags', { error });
-        
+
         ApiResponse.error(res, {
           message: 'Failed to fetch popular tags',
           statusCode: 500

@@ -107,13 +107,13 @@ export default function BulkUploadFixtureImages() {
           setUploadProgress(prev => ({ ...prev, [file.name]: 100 }));
 
           // Create match image payload
-          const matchImageData: FixtureImageCreationAttributes = {
+          const fixtureImageData: FixtureImageCreationAttributes = {
             fixtureId: parseInt(fixtureId),
             imageUrl: imageUrl,
             caption: captions[file.name]?.trim() || undefined
           };
 
-          return matchImageData;
+          return fixtureImageData;
         } catch (error) {
           console.error(`Failed to upload ${file.name}:`, error);
           throw error;
@@ -121,10 +121,10 @@ export default function BulkUploadFixtureImages() {
       });
 
       // Wait for all uploads to complete
-      const matchImagesData = await Promise.all(uploadPromises);
+      const fixtureImagesData = await Promise.all(uploadPromises);
 
       // Send bulk create request with proper payload
-      await post({ images: matchImagesData });
+      await post({ images: fixtureImagesData });
 
       router.push(`/sports-admin/fixtures/${fixtureId}`);
     } catch (error: any) {

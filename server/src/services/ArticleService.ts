@@ -232,51 +232,51 @@ export class ArticleService {
       logger.warn(`Redis cache write error for key ${key}`, { error });
     }
   }
-}
+
 
   private generatePublishedCacheKey(
-  page: number,
-  limit: number,
-  filters: ArticleFilterOptions,
-  sort: ArticleSortOptions
-): string {
-  const filterStr = Object.entries(filters)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, value]) => `${key}:${value}`)
-    .join('|');
+    page: number,
+    limit: number,
+    filters: ArticleFilterOptions,
+    sort: ArticleSortOptions
+  ): string {
+    const filterStr = Object.entries(filters)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, value]) => `${key}:${value}`)
+      .join('|');
 
-  const sortStr = `${sort.sortBy || 'publishedAt'}:${sort.sortOrder || 'desc'}`;
+    const sortStr = `${sort.sortBy || 'publishedAt'}:${sort.sortOrder || 'desc'}`;
 
-  return `${this.PUBLISHED_CACHE_PREFIX}page:${page}:limit:${limit}:filters:${filterStr}:sort:${sortStr}`;
-}
-
-  private async invalidateHomepageCache(): Promise < void> {
-  try {
-    await redisClient.del(this.HOMEPAGE_CACHE_KEY);
-  } catch(error) {
-    logger.warn('Error invalidating homepage cache', { error });
+    return `${this.PUBLISHED_CACHE_PREFIX}page:${page}:limit:${limit}:filters:${filterStr}:sort:${sortStr}`;
   }
-}
+
+  private async invalidateHomepageCache(): Promise<void> {
+    try {
+      await redisClient.del(this.HOMEPAGE_CACHE_KEY);
+    } catch (error) {
+      logger.warn('Error invalidating homepage cache', { error });
+    }
+  }
 
   // Warm up cache (can be called on server startup)
-  async warmCache(): Promise < void> {
-  try {
-    logger.info('Warming up article cache...');
+  async warmCache(): Promise<void> {
+    try {
+      logger.info('Warming up article cache...');
 
-    // Cache homepage articles
-    await this.fetchHomepageArticles();
+      // Cache homepage articles
+      await this.fetchHomepageArticles();
 
-    // Cache first 3 pages of published articles
-    const promises = [];
-    for(let page = 1; page <= 3; page++) {
-  promises.push(this.fetchAllPublishedArticles(page, 10));
-}
+      // Cache first 3 pages of published articles
+      const promises = [];
+      for (let page = 1; page <= 3; page++) {
+        promises.push(this.fetchAllPublishedArticles(page, 10));
+      }
 
-await Promise.all(promises);
-logger.info('Article cache warmed up successfully');
+      await Promise.all(promises);
+      logger.info('Article cache warmed up successfully');
     } catch (error) {
-  logger.error('Error warming up article cache', { error });
-}
+      logger.error('Error warming up article cache', { error });
+    }
   }
 }
 

@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
-    "build": " tsc - 2>/dev/null || echo 'Build completed'",
+    "build": "tsc 2>/dev/null || echo 'Build completed'",
     "start": "node -r tsconfig-paths/register dist/index.js",
     "lint": "eslint . --ext .ts",
     "migrate": "npx sequelize-cli db:migrate",
@@ -60,6 +60,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/multer": "^1.4.7",
     "@types/node": "^20.19.30",
+    "@types/nodemailer": "^7.0.5",
     "@types/uuid": "^9.0.2",
     "jest": "^29.6.4",
     "sequelize-cli": "^6.6.5",

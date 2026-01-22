@@ -19,7 +19,7 @@ import { PlayerSeeder } from "./player-seeder"; // Depends on User (createdById)
 import { PatronSubscriptionSeeder } from "./patronsubscription-seeder"; // Depends on Patron
 import { AdCampaignSeeder } from "./adcampaign-seeder"; // Depends on Advertiser
 import { FixtureSeeder } from "./fixture-seeder"; // Depends on League & User
-import { ThirdPartyArticleSeeder } from "./third-party-article-seeder"; // Depends on RssFeedSource
+import { FeaturedNewsSeeder } from "./third-party-article-seeder"; // Depends on RssFeedSource
 import { SystemNotificationSeeder } from "./systemnotification-seeder"; // Depends on User
 import { AuditLogSeeder } from "./auditlog-seeder"; // Depends on User
 import { ArticleSeeder } from "./article-seeder"; // Depends on User
@@ -68,7 +68,7 @@ export const initializeSeeders = (): SeedRunner => {
   runner.register('fixtures', new FixtureSeeder(), ['leagues', 'users']);
 
   // Content requiring external sources or authors
-  runner.register('thirdPartyArticles', new ThirdPartyArticleSeeder(), ['rssFeedSources']);
+  runner.register('featuredNewss', new FeaturedNewsSeeder(), ['rssFeedSources']);
   runner.register('articles', new ArticleSeeder(), ['users']);
 
   // System logs and notifications require Users
@@ -82,7 +82,7 @@ export const initializeSeeders = (): SeedRunner => {
   // Fixture details depend on Fixtures (and Players for lineups)
   runner.register('goals', new GoalSeeder(), ['fixtures']);
   runner.register('lineups', new LineupSeeder(), ['fixtures', 'players']);
-  runner.register('matchImages', new FixtureImageSeeder(), ['fixtures']);
+  runner.register('fixtureImages', new FixtureImageSeeder(), ['fixtures']);
 
   runner.register('fixtureStatistics', new FixtureStatisticsSeeder(), ['fixtures']);
 

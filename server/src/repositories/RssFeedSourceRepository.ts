@@ -21,7 +21,7 @@ export interface RssFeedSortOptions {
   sortOrder?: 'asc' | 'desc';
 }
 
-export class RssFeedRepository extends BaseRepository<RssFeedSource> {
+export class RssFeedSourceRepository extends BaseRepository<RssFeedSource> {
   private auditLogRepository: AuditLogRepository;
 
   constructor() {

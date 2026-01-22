@@ -16,8 +16,7 @@ import {
 import { API_ROUTES } from '@/config/routes';
 
 import Image from 'next/image';
-import api from '@/shared/lib/axios';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 interface Patron {
   id: number;
@@ -34,21 +33,26 @@ export default function PatronListPage() {
     API_ROUTES.PATRONS.LIST
   );
   const [searchTerm, setSearchTerm] = useState('');
-  const [deleteLoading, setDeleteLoading] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(
     null
   );
+
+  const { delete: deletePatron, isPending: deleteLoading } = useDelete(
+    API_ROUTES.PATRONS.DELETE
+  );
+
   const patrons = data?.data || [];
   const handleDelete = async (id: number) => {
-    setDeleteLoading(id);
+    setDeletingId(id);
     try {
-      await api.delete(API_ROUTES.PATRONS.DELETE(id));
-      await refetch(); // Refresh the list after deletion
+      await deletePatron(id);
+      await refetch();
     } catch (error) {
       console.error('Delete error:', error);
       alert('Error deleting patron. Please try again.');
     } finally {
-      setDeleteLoading(null);
+      setDeletingId(null);
       setShowDeleteConfirm(null);
     }
   };
@@ -256,10 +260,10 @@ export default function PatronListPage() {
                       </span>
                       <button
                         onClick={() => handleDelete(patron.id)}
-                        disabled={deleteLoading === patron.id}
+                        disabled={deletingId === patron.id}
                         className="text-red-700 hover:text-red-800 disabled:opacity-50"
                       >
-                        {deleteLoading === patron.id ? (
+                        {deletingId === patron.id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
                           'Yes'
@@ -275,16 +279,16 @@ export default function PatronListPage() {
                   ) : (
                     <button
                       onClick={() => confirmDelete(patron.id)}
-                      disabled={deleteLoading === patron.id}
+                      disabled={deletingId === patron.id}
                       className="flex items-center gap-1 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
                     >
-                      {deleteLoading === patron.id ? (
+                      {deletingId === patron.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
                       ) : (
                         <Trash2 className="w-4 h-4" />
                       )}
                       <span className="hidden sm:inline">
-                        {deleteLoading === patron.id ? 'Deleting...' : 'Delete'}
+                        {deletingId === patron.id ? 'Deleting...' : 'Delete'}
                       </span>
                     </button>
                   )}

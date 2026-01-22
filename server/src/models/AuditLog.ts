@@ -9,7 +9,8 @@ export enum AuditAction {
   LOGOUT = 'logout',
   PAYMENT = 'payment',
   VIEW = 'view',
-  ACCESS = 'access'
+  ACCESS = 'access',
+  BULK_IMPORT = 'bulk_import'
 }
 
 export enum EntityType {
@@ -20,7 +21,8 @@ export enum EntityType {
   CAMPAIGN = 'campaign',
   DONATION = 'donation',
   PATRON = 'patron',
-  SYSTEM = 'system'
+  SYSTEM = 'system',
+  STAFF = 'staff'
 }
 
 export interface AuditLogAttributes {
@@ -43,7 +45,7 @@ export interface AuditLogAttributes {
   updatedAt: Date;
 }
 
-export interface AuditLogCreationAttributes extends Optional<AuditLogAttributes, 'id' | 'createdAt' | 'updatedAt' | 'changes' | 'metadata'> {}
+export interface AuditLogCreationAttributes extends Optional<AuditLogAttributes, 'id' | 'createdAt' | 'updatedAt' | 'changes' | 'metadata'> { }
 
 export class AuditLog extends Model<AuditLogAttributes, AuditLogCreationAttributes> implements AuditLogAttributes {
   public id!: string;
@@ -66,98 +68,98 @@ export class AuditLog extends Model<AuditLogAttributes, AuditLogCreationAttribut
 
   // Associations
 
-  }
+}
 
 
-    AuditLog.init(
-      {
-        id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
-          primaryKey: true
-        },
-        timestamp: {
-          type: DataTypes.DATE,
-          allowNull: false,
-          defaultValue: DataTypes.NOW
-        },
-        userId: {
-          type: DataTypes.UUID,
-          allowNull: false
-        },
-        userEmail: {
-          type: DataTypes.STRING(255),
-          allowNull: false,
-          validate: {
-            isEmail: true
-          }
-        },
-        userType: {
-          type: DataTypes.STRING(50),
-          allowNull: false
-        },
-        action: {
-          type: DataTypes.ENUM(...Object.values(AuditAction)),
-          allowNull: false
-        },
-        entityType: {
-          type: DataTypes.ENUM(...Object.values(EntityType)),
-          allowNull: false
-        },
-        entityId: {
-          type: DataTypes.STRING(100),
-          allowNull: false
-        },
-        entityName: {
-          type: DataTypes.STRING(200),
-          allowNull: true
-        },
-        oldValue: {
-          type: DataTypes.JSON,
-          allowNull: true
-        },
-        newValue: {
-          type: DataTypes.JSON,
-          allowNull: true
-        },
-        ipAddress: {
-          type: DataTypes.STRING(45),
-          allowNull: true
-        },
-        userAgent: {
-          type: DataTypes.TEXT,
-          allowNull: true
-        },
-        changes: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: []
-        },
-        metadata: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        } ,createdAt: {
-          type:DataTypes.DATE
-        },
-        updatedAt: {
-          type:DataTypes.DATE
-        }
-      },
-      {
-        sequelize,
-        tableName: 'audit_logs',
-        timestamps: true,
-        indexes: [
-          { fields: ['timestamp'] },
-          { fields: ['userId'] },
-          { fields: ['entityType', 'entityId'] },
-          { fields: ['action'] },
-          { fields: ['userType'] },
-          { fields: ['createdAt'] }
-        ]
+AuditLog.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    timestamp: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+    userEmail: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      validate: {
+        isEmail: true
       }
-    );
+    },
+    userType: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
+    action: {
+      type: DataTypes.ENUM(...Object.values(AuditAction)),
+      allowNull: false
+    },
+    entityType: {
+      type: DataTypes.ENUM(...Object.values(EntityType)),
+      allowNull: false
+    },
+    entityId: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    entityName: {
+      type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    oldValue: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
+    newValue: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
+    ipAddress: {
+      type: DataTypes.STRING(45),
+      allowNull: true
+    },
+    userAgent: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    changes: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: []
+    },
+    metadata: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    }, createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
+  },
+  {
+    sequelize,
+    tableName: 'audit_logs',
+    timestamps: true,
+    indexes: [
+      { fields: ['timestamp'] },
+      { fields: ['userId'] },
+      { fields: ['entityType', 'entityId'] },
+      { fields: ['action'] },
+      { fields: ['userType'] },
+      { fields: ['createdAt'] }
+    ]
+  }
+);
 
 
 

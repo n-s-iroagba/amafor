@@ -95,7 +95,7 @@ export class PaystackService {
   async initializePayment(data: InitializePaymentData): Promise<PaymentResponse> {
     try {
       const reference = data.reference || `PAY-${Date.now()}-${uuidv4().substr(0, 8)}`;
-      
+
       const payload = {
         email: data.email,
         amount: data.amount,
@@ -181,7 +181,7 @@ export class PaystackService {
   async initiateTransfer(data: TransferData) {
     try {
       const reference = data.reference || `TRF-${Date.now()}-${uuidv4().substr(0, 8)}`;
-      
+
       const payload = {
         source: data.source,
         amount: data.amount,
@@ -212,7 +212,7 @@ export class PaystackService {
         .createHmac('sha512', this.secretKey)
         .update(JSON.stringify(payload))
         .digest('hex');
-      
+
       return hash === signature;
     } catch (error) {
       logger.error('Failed to verify webhook signature', { error });
@@ -281,3 +281,5 @@ export function getPaystackService(): PaystackService {
   }
   return paystackInstance;
 }
+
+export default getPaystackService;

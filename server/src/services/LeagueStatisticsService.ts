@@ -9,7 +9,7 @@ import { LeagueStatisticsRepository } from '@repositories/LeagueStatisticsReposi
 import { AppError } from '@utils/errors';
 import { PaginatedData } from 'src/types';
 
-export interface CreateLeagueStatisticsData extends Omit<LeagueStatisticsCreationAttributes, 'id'> {
+export interface CreateLeagueStatisticsData {
   leagueId: string;
   team: string;
   goalsFor?: number;
@@ -19,9 +19,9 @@ export interface CreateLeagueStatisticsData extends Omit<LeagueStatisticsCreatio
 export interface UpdateLeagueStatisticsData extends Partial<Omit<LeagueStatisticsAttributes, 'id' | 'leagueId'>> { }
 
 export class LeagueStatisticsService {
-  private repository: ILeagueStatisticsRepository;
+  private repository: LeagueStatisticsRepository;
 
-  constructor(repository?: ILeagueStatisticsRepository) {
+  constructor(repository?: LeagueStatisticsRepository) {
     this.repository = repository || new LeagueStatisticsRepository();
   }
 
@@ -73,7 +73,7 @@ export class LeagueStatisticsService {
       includeLeague?: boolean;
     } = {}
   ): Promise<PaginatedData<LeagueStatisticsAttributes>> {
-    const { rows: statistics, count: total } = await this.repository.findAll(leagueId, options);
+    const { rows: statistics, count: total } = await this.repository.findAllByLeague(leagueId, options);
 
     const page = options.page || 1;
     const limit = options.limit || 20;

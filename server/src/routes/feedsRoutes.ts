@@ -1,11 +1,11 @@
 // routes/feeds.routes.ts
 import { Router } from 'express';
 import { FeedsController } from '../controllers/FeedsController';
-import { validate } from '../middleware/validation';
-import { 
-  RssFeedSourceSchema, 
-  FeedSourceIdParamSchema 
-} from '../validations/rssFeed.schema';
+// import { validate } from '../middleware/validation';
+// import {
+//   RssFeedSourceSchema,
+//   FeedSourceIdParamSchema
+// } from '../validations/rssFeed.schema';
 // import { authenticateToken, authorizeRoles } from '../middleware/auth';
 
 
@@ -26,7 +26,7 @@ router.get(
 );
 
 router.post(
-  '/', 
+  '/',
   // authenticateToken, 
   // authorizeRoles(['general-admin', 'sports-admin']), 
   // validate(RssFeedSourceSchema),
@@ -34,7 +34,7 @@ router.post(
 );
 
 router.get(
-  '/:id', 
+  '/:id',
   // authenticateToken, 
   // authorizeRoles(['general-admin', 'sports-admin']), 
   // validate(FeedSourceIdParamSchema),
@@ -42,7 +42,7 @@ router.get(
 );
 
 router.put(
-  '/:id', 
+  '/:id',
   // authenticateToken, 
   // authorizeRoles(['general-admin', 'sports-admin']), 
   // validate(FeedSourceIdParamSchema),
@@ -51,7 +51,7 @@ router.put(
 );
 
 router.delete(
-  '/:id', 
+  '/:id',
   // authenticateToken, 
   // authorizeRoles(['general-admin', 'sports-admin']), 
   // validate(FeedSourceIdParamSchema),

@@ -20,7 +20,7 @@ export class RssFeedSource extends Model<
   InferAttributes<RssFeedSource>,
   InferCreationAttributes<RssFeedSource>
 > {
-  declare id: CreationOptional<number>;
+  declare id: CreationOptional<string>;
   declare name: string;
   declare feedUrl: string;
   declare category: RssFeedSourceCategory;
@@ -33,10 +33,11 @@ export type RssFeedSourceAttributes = InferAttributes<RssFeedSource>;
 export type RssFeedSourceCreationAttributes = InferCreationAttributes<RssFeedSource>;
 
 RssFeedSource.init(
+  
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+     id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     name: {

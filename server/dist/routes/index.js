@@ -1,0 +1,51 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+// Import all route modules
+const articleRoutes_1 = __importDefault(require("./articleRoutes"));
+const adCreativeRoutes_1 = __importDefault(require("./adCreativeRoutes"));
+const advertisementRoutes_1 = __importDefault(require("./advertisementRoutes"));
+const videoRoutes_1 = __importDefault(require("./videoRoutes"));
+const authRoutes_1 = __importDefault(require("./authRoutes"));
+const academyRoutes_1 = __importDefault(require("./academyRoutes"));
+const academyStaffRoutes_1 = __importDefault(require("./academyStaffRoutes"));
+const clubLeagueRoutes_1 = __importDefault(require("./clubLeagueRoutes"));
+const feedsRoutes_1 = __importDefault(require("./feedsRoutes"));
+const goalRoutes_1 = __importDefault(require("./goalRoutes"));
+const healthRoutes_1 = __importDefault(require("./healthRoutes"));
+const lineupRoutes_1 = __importDefault(require("./lineupRoutes"));
+const fixtureImageRoutes_1 = __importDefault(require("./fixtureImageRoutes"));
+const matchSummaryRoutes_1 = __importDefault(require("./matchSummaryRoutes"));
+const patronageRoutes_1 = __importDefault(require("./patronageRoutes"));
+const paymentRoutes_1 = __importDefault(require("./paymentRoutes"));
+const playerRoutes_1 = __importDefault(require("./playerRoutes"));
+const systemRoutes_1 = __importDefault(require("./systemRoutes"));
+const trialistRoutes_1 = __importDefault(require("./trialistRoutes"));
+const userRoutes_1 = __importDefault(require("./userRoutes"));
+const router = (0, express_1.Router)();
+// Wire all routes
+router.use('/articles', articleRoutes_1.default);
+router.use('/ad-creatives', adCreativeRoutes_1.default);
+router.use('/ads', advertisementRoutes_1.default);
+router.use('/videos', videoRoutes_1.default);
+router.use('/auth', authRoutes_1.default);
+router.use('/academy', academyRoutes_1.default);
+router.use('/academy-staff', academyStaffRoutes_1.default);
+router.use('/club-league-stats', clubLeagueRoutes_1.default);
+router.use('/feeds', feedsRoutes_1.default);
+router.use('/goals', goalRoutes_1.default);
+router.use('/health', healthRoutes_1.default);
+router.use('/lineups', lineupRoutes_1.default);
+router.use('/match-gallery', fixtureImageRoutes_1.default);
+router.use('/match-summary', matchSummaryRoutes_1.default);
+router.use('/patrons', patronageRoutes_1.default);
+router.use('/payments', paymentRoutes_1.default);
+router.use('/players', playerRoutes_1.default);
+router.use('/system', systemRoutes_1.default);
+router.use('/trialists', trialistRoutes_1.default);
+router.use('/users', userRoutes_1.default);
+exports.default = router;
+//# sourceMappingURL=index.js.map

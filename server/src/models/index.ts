@@ -1,7 +1,7 @@
 // models/associations.ts
 
 import sequelize from '../config/database';
-import { Model } from 'sequelize';
+
 
 // Base Entities
 import User from './User';
@@ -14,7 +14,7 @@ import Trialist from './Trialist'; // Added
 
 // Content & Staff
 import Article from './Article';
-import ThirdPartyArticle from './ThirdPartyArticle';
+import FeaturedNews from './FeaturedNews';
 import AcademyStaff from './AcademyStaff';
 import Coach from './Coach';
 
@@ -362,14 +362,14 @@ export async function setupAssociations(): Promise<void> {
   });
 
   // ==================== CONTENT ASSOCIATIONS ====================
-  RssFeedSource.hasMany(ThirdPartyArticle, {
+  RssFeedSource.hasMany(FeaturedNews, {
     foreignKey: 'sourceId',
     as: 'articles',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
 
-  ThirdPartyArticle.belongsTo(RssFeedSource, {
+  FeaturedNews.belongsTo(RssFeedSource, {
     foreignKey: 'sourceId',
     as: 'source',
     onDelete: 'CASCADE',

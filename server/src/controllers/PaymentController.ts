@@ -1,7 +1,7 @@
 // controllers/PaymentController.ts
 import { Request, Response } from 'express';
 import { PaymentService } from '@services/PaymentService';
-import { CreateAdvertisementPaymentData, CreateDonationPaymentData } from '@services/PaymentService';
+import { CreateAdvertisementPaymentData, CreatePatronSubscriptionPaymentData } from '@services/PaymentService';
 import logger from '@utils/logger';
 
 export class PaymentController {
@@ -11,6 +11,13 @@ export class PaymentController {
     this.paymentService = new PaymentService();
   }
 
+  /**
+   * Initiate advertisement payment
+   * @api POST /payments/advertisement
+   * @apiName API-PAYMENT-006
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADV-04
+   */
   async initiateAdvertisementPayment(req: Request, res: Response) {
     try {
       const data: CreateAdvertisementPaymentData = {
@@ -38,7 +45,7 @@ export class PaymentController {
         error: error.message,
         userId: req.user.id,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to initiate payment',
@@ -46,11 +53,18 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Initiate donation payment
+   * @api POST /payments/donation
+   * @apiName API-PAYMENT-007
+   * @apiGroup Payments
+   * @srsRequirement REQ-SUP-01
+   */
   async initiateDonationPayment(req: Request, res: Response) {
     try {
-      const data: CreateDonationPaymentData = {
+      const data: CreatePatronSubscriptionPaymentData = {
         userId: req.user.id,
-        donationId: req.body.donationId,
+        subscriptionId: req.body.subscriptionId,
         amount: parseFloat(req.body.amount),
         currency: req.body.currency,
         customerEmail: req.body.email || req.user.email,
@@ -73,7 +87,7 @@ export class PaymentController {
         error: error.message,
         userId: req.user.id,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to initiate donation payment',
@@ -81,6 +95,13 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Verify payment
+   * @api POST /payments/verify/:reference
+   * @apiName API-PAYMENT-004
+   * @apiGroup Payments
+   * @srsRequirement REQ-SUP-01, REQ-SUP-02, REQ-ADV-04
+   */
   async verifyPayment(req: Request, res: Response) {
     try {
       const { reference } = req.params;
@@ -96,7 +117,7 @@ export class PaymentController {
         error: error.message,
         reference: req.params.reference,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to verify payment',
@@ -104,10 +125,17 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Handle payment webhook
+   * @api POST /payments/webhook
+   * @apiName API-PAYMENT-005
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADV-04
+   */
   async handleWebhook(req: Request, res: Response) {
     try {
       const signature = req.headers['x-paystack-signature'] as string;
-      
+
       await this.paymentService.handleWebhook(req.body, signature);
 
       res.status(200).json({ success: true, message: 'Webhook processed' });
@@ -115,7 +143,7 @@ export class PaymentController {
       logger.error('Failed to process webhook', {
         error: error.message,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to process webhook',
@@ -123,6 +151,13 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Get payment details
+   * @api GET /payments/:id
+   * @apiName API-PAYMENT-008
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADM-01
+   */
   async getPaymentDetails(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -137,7 +172,7 @@ export class PaymentController {
         error: error.message,
         paymentId: req.params.id,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to get payment details',
@@ -145,6 +180,13 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Get user payments
+   * @api GET /payments/user
+   * @apiName API-PAYMENT-009
+   * @apiGroup Payments
+   * @srsRequirement REQ-SUP-03
+   */
   async getUserPayments(req: Request, res: Response) {
     try {
       const { page = 1, limit = 20 } = req.query;
@@ -165,7 +207,7 @@ export class PaymentController {
         error: error.message,
         userId: req.user.id,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to get user payments',
@@ -173,6 +215,13 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Get payment statistics
+   * @api GET /payments/stats
+   * @apiName API-PAYMENT-010
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADM-01
+   */
   async getPaymentStats(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
@@ -194,6 +243,13 @@ export class PaymentController {
     }
   }
 
+  /**
+   * Refund payment
+   * @api POST /payments/:id/refund
+   * @apiName API-PAYMENT-011
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADM-01
+   */
   async refundPayment(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -209,10 +265,74 @@ export class PaymentController {
         error: error.message,
         paymentId: req.params.id,
       });
-      
+
       res.status(error.statusCode || 500).json({
         success: false,
         message: error.message || 'Failed to refund payment',
+      });
+    }
+  }
+
+  /**
+   * Get advertiser payments
+   * @api GET /payments/advertiser
+   * @apiName API-PAYMENT-001
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADV-05
+   */
+  async getAdvertiserPayments(req: Request, res: Response) {
+    try {
+      const advertiserId = (req as any).user.id;
+      const payments = await this.paymentService.getPaymentsByAdvertiser(advertiserId);
+
+      res.status(200).json({
+        success: true,
+        message: 'Advertiser payments retrieved successfully',
+        data: payments,
+      });
+    } catch (error: any) {
+      logger.error('Failed to retrieve advertiser payments', {
+        error: error.message,
+        advertiserId: (req as any).user.id,
+      });
+
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || 'Failed to retrieve advertiser payments',
+      });
+    }
+  }
+
+  /**
+   * Get all payments (admin)
+   * @api GET /payments
+   * @apiName API-PAYMENT-002
+   * @apiGroup Payments
+   * @srsRequirement REQ-ADM-01
+   */
+  async getAllPayments(req: Request, res: Response) {
+    try {
+      const { page = 1, limit = 20, status, type } = req.query;
+      const payments = await this.paymentService.getAllPayments({
+        page: Number(page),
+        limit: Number(limit),
+        status: status as string,
+        type: type as string,
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'All payments retrieved successfully',
+        data: payments,
+      });
+    } catch (error: any) {
+      logger.error('Failed to retrieve all payments', {
+        error: error.message,
+      });
+
+      res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || 'Failed to retrieve all payments',
       });
     }
   }

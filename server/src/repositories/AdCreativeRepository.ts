@@ -17,14 +17,14 @@ export interface IAdCreativeRepository {
   count(options?: any): Promise<number>;
   paginate(page: number, limit: number, options?: any): Promise<any>;
   exists(id: string): Promise<boolean>;
-  
+
   // AdCreative-specific methods
   findByCampaignId(campaignId: string): Promise<AdCreative[]>;
   findByZoneId(zoneId: string): Promise<AdCreative[]>;
   findByType(type: 'image' | 'video'): Promise<AdCreative[]>;
   findByFormat(format: string): Promise<AdCreative[]>;
   findActiveCreatives(zoneId?: string): Promise<AdCreative[]>;
-  
+
   // Analytics and statistics
   getCreativeStats(campaignId?: string): Promise<{
     total: number;
@@ -33,19 +33,19 @@ export interface IAdCreativeRepository {
     totalViews: number;
     averageViews: number;
   }>;
-  
+
   getTopPerformers(limit?: number): Promise<AdCreative[]>;
   getCreativesByCampaign(campaignId: string): Promise<AdCreative[]>;
-  
+
   // Business logic
   incrementViews(id: string, count?: number): Promise<void>;
   resetViews(id: string): Promise<void>;
   updateCreativeUrl(id: string, url: string): Promise<void>;
-  
+
   // Bulk operations
   bulkUpdateCampaignCreatives(campaignId: string, updates: Partial<AdCreativeAttributes>): Promise<number>;
   deleteByCampaignId(campaignId: string): Promise<number>;
-  
+
   // Search and filtering
   searchCreatives(query: string): Promise<AdCreative[]>;
   filterByDimensions(minWidth?: number, minHeight?: number): Promise<AdCreative[]>;
@@ -54,7 +54,7 @@ export interface IAdCreativeRepository {
 
 
 export class AdCreativeRepository extends BaseRepository<AdCreative> implements IAdCreativeRepository {
-  private adZoneRepository:AdZoneRepository
+  private adZoneRepository: AdZoneRepository
   constructor() {
     super(AdCreative);
     this.adZoneRepository = new AdZoneRepository()
@@ -189,7 +189,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
       by: count,
       where: { id }
     });
-    
+
     // Also increment total views if needed
     await this.model.increment('views', {
       by: count,
@@ -242,14 +242,14 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
   // 🔍 Filter by dimensions (assuming dimensions is JSON with width/height)
   async filterByDimensions(minWidth?: number, minHeight?: number): Promise<AdCreative[]> {
     const where: any = {};
-    
+
     if (minWidth) {
       where.dimensions = {
         ...where.dimensions,
         width: { [Op.gte]: minWidth }
       };
     }
-    
+
     if (minHeight) {
       where.dimensions = {
         ...where.dimensions,
@@ -281,7 +281,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
     this.validateCreativeType(data.type, data.format);
 
     // Generate dimensions from format if not provided
-  
+
 
     return await super.create(data);
   }

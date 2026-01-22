@@ -1,0 +1,64 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserController = void 0;
+const services_1 = require("../services");
+class UserController {
+    constructor() {
+        /**
+         * Get current user profile
+         * @api GET /users/profile
+         * @apiName API-USER-001
+         * @apiGroup Users
+         * @srsRequirement REQ-AUTH-02
+         */
+        this.getProfile = async (req, res, next) => {
+            try {
+                const userId = req.user.id;
+                const user = await this.userService.getUserProfile(userId);
+                res.status(200).json({ success: true, data: user });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
+         * Update user profile
+         * @api PATCH /users/profile
+         * @apiName API-USER-002
+         * @apiGroup Users
+         * @srsRequirement REQ-AUTH-02
+         */
+        this.updateProfile = async (req, res, next) => {
+            try {
+                const userId = req.user.id;
+                const updatedUser = await this.userService.updateUserProfile(userId, req.body);
+                res.status(200).json({ success: true, data: updatedUser });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
+         * Verify user account (Admin only)
+         * @api PATCH /users/:userId/verify
+         * @apiName API-USER-003
+         * @apiGroup Users
+         * @srsRequirement REQ-ADM-06, REQ-ADM-11
+         */
+        this.verifyUser = async (req, res, next) => {
+            try {
+                const adminId = req.user.id;
+                const { userId } = req.params;
+                const { status } = req.body; // 'APPROVED' | 'REJECTED'
+                const user = await this.userService.verifyUser(adminId, userId, status);
+                res.status(200).json({ success: true, data: user });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        this.userService = new services_1.UserService();
+    }
+}
+exports.UserController = UserController;
+//# sourceMappingURL=UserController.js.map

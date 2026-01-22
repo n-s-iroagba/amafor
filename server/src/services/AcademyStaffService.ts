@@ -4,6 +4,7 @@ import logger from "@utils/logger";
 import tracer from "@utils/tracer";
 import { AuditService } from "./AuditService";
 import { Op } from "sequelize";
+import { AuditAction, EntityType } from "@models/AuditLog";
 
 export interface CreateStaffDTO {
   name: string;
@@ -75,9 +76,10 @@ export class AcademyStaffService {
         // Audit log
         await this.auditService.logAction({
           userId,
+          userEmail: 'admin',
           userType: 'admin',
-          action: 'CREATE',
-          entityType: 'STAFF',
+          action: AuditAction.CREATE,
+          entityType: EntityType.STAFF,
           entityId: staff.id,
           entityName: staff.name,
           changes: Object.keys(data).map(field => ({
@@ -85,7 +87,8 @@ export class AcademyStaffService {
             newValue: (data as any)[field]
           })),
           ipAddress: '0.0.0.0',
-          metadata: { role: data.role, category: data.category }
+          metadata: { role: data.role, category: data.category },
+          timestamp: new Date()
         });
 
         logger.info('STAFF_CREATED', {
@@ -234,14 +237,16 @@ export class AcademyStaffService {
         if (changes.length > 0) {
           await this.auditService.logAction({
             userId,
+            userEmail: 'admin',
             userType: 'admin',
-            action: 'UPDATE',
-            entityType: 'STAFF',
+            action: AuditAction.UPDATE,
+            entityType: EntityType.STAFF,
             entityId: id,
             entityName: existingStaff.name,
             changes,
             ipAddress: '0.0.0.0',
-            metadata: { updateFields: Object.keys(data) }
+            metadata: { updateFields: Object.keys(data) },
+            timestamp: new Date()
           });
         }
 
@@ -289,9 +294,10 @@ export class AcademyStaffService {
         // Audit log
         await this.auditService.logAction({
           userId,
+          userEmail: 'admin',
           userType: 'admin',
-          action: 'DELETE',
-          entityType: 'STAFF',
+          action: AuditAction.DELETE,
+          entityType: EntityType.STAFF,
           entityId: id,
           entityName: staff.name,
           changes: [],
@@ -300,7 +306,8 @@ export class AcademyStaffService {
             role: staff.role,
             category: staff.category,
             experience: staff.yearsOfExperience
-          }
+          },
+          timestamp: new Date()
         });
 
         logger.info('STAFF_DELETED', {
@@ -430,9 +437,10 @@ export class AcademyStaffService {
         // Audit log for bulk import
         await this.auditService.logAction({
           userId,
+          userEmail: 'admin',
           userType: 'admin',
-          action: 'BULK_IMPORT',
-          entityType: 'STAFF',
+          action: AuditAction.BULK_IMPORT,
+          entityType: EntityType.STAFF,
           entityId: 'bulk_import',
           entityName: `${importedStaff.length} staff members`,
           changes: [],
@@ -440,7 +448,8 @@ export class AcademyStaffService {
           metadata: {
             count: importedStaff.length,
             categories: [...new Set(staffData.map(s => s.category))].filter(Boolean)
-          }
+          },
+          timestamp: new Date()
         });
 
         logger.info('STAFF_BULK_IMPORTED', {

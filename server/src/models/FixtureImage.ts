@@ -1,0 +1,62 @@
+import { DataTypes, Model, Optional } from 'sequelize';
+import sequelize from '../config/database';
+
+export interface FixtureImageAttributes {
+  id: string;
+  fixtureId: string;
+  imageUrl: string;
+  caption?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface FixtureImageCreationAttributes extends Optional<FixtureImageAttributes, 'id' | 'createdAt' | 'updatedAt'> { }
+
+class FixtureImage extends Model<FixtureImageAttributes, FixtureImageCreationAttributes> implements FixtureImageAttributes {
+  public id!: string;
+  public fixtureId!: string;
+  public imageUrl!: string;
+  public caption?: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+FixtureImage.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    fixtureId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'fixtures',
+        key: 'id',
+      },
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    caption: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    sequelize,
+    tableName: 'match_images',
+  }
+);
+
+export default FixtureImage;

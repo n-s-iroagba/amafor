@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PlayerService } from '../services'; 
+import { PlayerService } from '../services';
 import { structuredLogger } from '../utils';
 
 export class PlayerController {
@@ -9,11 +9,18 @@ export class PlayerController {
     this.playerService = new PlayerService();
   }
 
+  /**
+   * Create a new player
+   * @api POST /players
+   * @apiName API-PLAYER-003
+   * @apiGroup Players
+   * @srsRequirement REQ-ADM-04
+   */
   public createPlayer = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const creatorId = (req as any).user.id; 
+      const creatorId = (req as any).user.id;
       const player = await this.playerService.createPlayer(req.body, creatorId);
-      
+
       res.status(201).json({
         success: true,
         data: player
@@ -23,11 +30,18 @@ export class PlayerController {
     }
   };
 
+  /**
+   * Get player profile by ID
+   * @api GET /players/:id
+   * @apiName API-PLAYER-002
+   * @apiGroup Players
+   * @srsRequirement REQ-PUB-05, REQ-SCT-02
+   */
   public getPlayerProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
       const viewerId = (req as any).user?.id;
-      
+
       const player = await this.playerService.getPlayerProfile(id, viewerId);
 
       if (!player) throw new Error('Player not found');
@@ -41,6 +55,13 @@ export class PlayerController {
     }
   };
 
+  /**
+   * List all players (public)
+   * @api GET /players
+   * @apiName API-PLAYER-001
+   * @apiGroup Players
+   * @srsRequirement REQ-PUB-05, REQ-SCT-02
+   */
   public listPlayers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const players = await this.playerService.listPlayers(req.query);
@@ -55,6 +76,13 @@ export class PlayerController {
     }
   };
 
+  /**
+   * Update player statistics
+   * @api PATCH /players/:id/stats
+   * @apiName API-PLAYER-004
+   * @apiGroup Players
+   * @srsRequirement REQ-ADM-04
+   */
   public updateStats = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -71,6 +99,13 @@ export class PlayerController {
     }
   };
 
+  /**
+   * Generate scout report for a player
+   * @api GET /players/:id/report
+   * @apiName API-PLAYER-005
+   * @apiGroup Players
+   * @srsRequirement REQ-SCT-04
+   */
   public generateScoutReport = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

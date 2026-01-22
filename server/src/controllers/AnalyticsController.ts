@@ -8,10 +8,17 @@ export class AnalyticsController {
     this.analyticsService = new AnalyticsService();
   }
 
+  /**
+   * Get admin dashboard analytics
+   * @api GET /analytics/dashboard
+   * @apiName API-ANALYTICS-001
+   * @apiGroup Analytics
+   * @srsRequirement REQ-ANALYTICS-01
+   */
   public getAdminDashboard = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const stats = await this.analyticsService.getAdminDashboardSummary();
-      
+
       res.status(200).json({
         success: true,
         data: stats

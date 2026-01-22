@@ -1,73 +1,81 @@
-import PatronSubscription from '@models/PatronSubscription';
-import { PatronSubscriptionRepository, UserRepository } from '../repositories';
-
-import { structuredLogger, tracer } from '../utils';
+import { PatronSubscriptionRepository, PatronFilterOptions } from '../repositories/PatronSubscriptionRepository';
+import { PatronSubscription, PatronSubscriptionAttributes, PatronTier, SubscriptionStatus } from '../models/PatronSubscription';
+import { AppError, NotFoundError } from '../utils/errors';
+import { structuredLogger } from '../utils';
 
 export class PatronageService {
-  private patronRepo: PatronSubscriptionRepository;
-  private userRepo: UserRepository;
+    private repository: PatronSubscriptionRepository;
 
-  constructor() {
-    this.patronRepo = new PatronSubscriptionRepository();
-    this.userRepo = new UserRepository();
-  }
+    constructor() {
+        this.repository = new PatronSubscriptionRepository();
+    }
 
-  public async subscribeUser(userId: string, tier: 'GOLD' | 'SILVER' | 'BRONZE', amount: number): Promise<PatronSubscription> {
-    return tracer.startActiveSpan('service.PatronageService.subscribeUser', async (span) => {
-      try {
-        // 1. Check if user exists
-        const user = await this.userRepo.findById(userId);
-        if (!user) throw new Error('User not found');
+    async subscribeUser(userId: string, tier: PatronTier, amount: number): Promise<PatronSubscription> {
+        // Audit data for creation
+        const auditData = {
+            patronId: userId,
+            userEmail: 'system', // Should be fetched from context if available
+            userType: 'user',
+            ipAddress: '0.0.0.0', // Should be passed from controller
+            userAgent: 'unknown'
+        };
 
-        // 2. Deactivate any existing active subscriptions
-        await this.patronRepo.deactivateCurrent(userId);
+        // Calculate frequency based on tier or other logic? 
+        // Assuming monthly for now or passed in. 
+        // The controller only passed tier and amount. 
+        // Ideally the controller should pass full DTO.
+        // For now we default to MONTHLY if not specified.
 
-        // 3. Create new subscription
-        const subscription = await this.patronRepo.create({
-          userId,
-          tier,
-          amount,
-          status: 'ACTIVE',
-          startDate: new Date(),
-          nextBillingDate: new Date(new Date().setMonth(new Date().getMonth() + 1))
-        });
+        return await this.repository.createWithAudit({
+            patronId: userId,
+            tier,
+            amount,
+            frequency: 'MONTHLY' as any, // Defaulting as specific logic isn't in controller
+            status: SubscriptionStatus.ACTIVE,
+            displayName: 'Patron', // Default, should be updated by user profile
+        } as any, auditData);
+    }
 
-        // 4. Update User Role/Badges if necessary
-        await this.userRepo.update(userId, { isPatron: true, patronTier: tier });
+    async listAllPatrons(filters: any): Promise<any> {
+        return await this.repository.findActivePatrons(filters);
+    }
 
-        structuredLogger.business('PATRON_SUBSCRIBED', amount, userId, { tier });
-
-        return subscription;
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        throw error;
-      } finally {
-        span.end();
-      }
-    });
-  }
-
-  public async checkSubscriptionStatus(userId: string): Promise<{ isActive: boolean; tier?: string }> {
-    return tracer.startActiveSpan('service.PatronageService.checkSubscriptionStatus', async (span) => {
-      try {
-        const sub = await this.patronRepo.findActiveByPatronId(userId);
-
-        if (!sub) return { isActive: false };
-
-        // Logic to check if expired
-        const now = new Date();
-        if (sub.nextBillingDate && sub.nextBillingDate < now) {
-          // In a real system, we would trigger a renewal check here or mark as 'PAST_DUE'
-          return { isActive: false, tier: sub.tier };
+    async getPatronById(id: string): Promise<PatronSubscription> {
+        const patron = await this.repository.findById(id);
+        if (!patron) {
+            throw new NotFoundError(`Patron subscription with ID ${id} not found`);
         }
+        return patron;
+    }
 
-        return { isActive: true, tier: sub.tier };
-      } catch (error: any) {
-        span.setStatus({ code: 2, message: error.message });
-        throw error;
-      } finally {
-        span.end();
-      }
-    });
-  }
+    async updatePatronStatus(id: string, status: SubscriptionStatus, adminId: string): Promise<PatronSubscription> {
+        const auditData = {
+            patronId: id, // Target entity
+            userEmail: 'admin',
+            userType: 'admin',
+            ipAddress: '0.0.0.0',
+            userAgent: 'unknown'
+        };
+
+        const updated = await this.repository.updateWithAudit(id, { status }, auditData);
+        if (!updated) {
+            throw new NotFoundError(`Patron subscription with ID ${id} not found`);
+        }
+        return updated;
+    }
+
+    async cancelSubscription(id: string, userId: string): Promise<void> {
+        const auditData = {
+            patronId: userId,
+            userEmail: 'user',
+            userType: 'user',
+            ipAddress: '0.0.0.0',
+            userAgent: 'unknown'
+        };
+        await this.repository.cancelSubscription(id, auditData);
+    }
+
+    async checkSubscriptionStatus(userId: string): Promise<PatronSubscription | null> {
+        return await this.repository.findActiveByPatronId(userId);
+    }
 }

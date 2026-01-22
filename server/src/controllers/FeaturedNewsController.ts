@@ -1,0 +1,1 @@
+//implement the controller and linked to FeaturedNewsService

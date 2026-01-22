@@ -1,19 +1,19 @@
 
 
-// seeders/ThirdPartyArticleSeeder.ts
-import ThirdPartyArticle, { ThirdPartyArticleAttributes } from "@models/ThirdPartyArticle";
+// seeders/FeaturedNewsSeeder.ts
+import FeaturedNews, { FeaturedNewsAttributes } from "@models/FeaturedNews";
 import logger from "../../utils/logger";
-import { developmentThirdPartyArticles } from "../data/development/thirdPartyArticles";
+import { developmentFeaturedNewss } from "../data/development/featuredNewss";
 import { BaseSeeder } from "./base-seeder";
 
-export class ThirdPartyArticleSeeder extends BaseSeeder<ThirdPartyArticle> {
+export class FeaturedNewsSeeder extends BaseSeeder<FeaturedNews> {
   constructor() {
-    super(ThirdPartyArticle, 'third_party_article');
+    super(FeaturedNews, 'third_party_article');
   }
 
-  async getData(environment: string): Promise<ThirdPartyArticleAttributes[]> {
+  async getData(environment: string): Promise<FeaturedNewsAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return [];
@@ -25,9 +25,9 @@ export class ThirdPartyArticleSeeder extends BaseSeeder<ThirdPartyArticle> {
     }
   }
 
-  private getDevelopmentData(): ThirdPartyArticleAttributes[] {
+  private getDevelopmentData(): FeaturedNewsAttributes[] {
     try {
-      return developmentThirdPartyArticles || [];
+      return developmentFeaturedNewss || [];
     } catch (error) {
       logger.warn(`No development data found for ${this.name}, returning empty array`);
       return [];

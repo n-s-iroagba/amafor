@@ -89,26 +89,26 @@ Team Management
 A scheduled football match between two teams within a league, including match details, results, and associated media.
 
 **Context:**  
-Match Management
+Fixture Management
 
 **Synonyms:**  
-- Match
+- Fixture
 - Game
 
 **States/Lifecycle:**  
-- `scheduled` - Match planned but not started
-- `in_progress` - Match currently being played
-- `completed` - Match finished with final score
-- `postponed` - Match rescheduled to later date
-- `cancelled` - Match will not be played
+- `scheduled` - Fixture planned but not started
+- `in_progress` - Fixture currently being played
+- `completed` - Fixture finished with final score
+- `postponed` - Fixture rescheduled to later date
+- `cancelled` - Fixture will not be played
 
 **Archive Status:**  
-- `processing` - Match highlights being prepared
+- `processing` - Fixture highlights being prepared
 - `available` - Highlights ready for viewing
 - `failed` - Highlight processing failed
 
 **Business Rules:**  
-- Match date is required
+- Fixture date is required
 - Home and away teams are required
 - League association is required
 - Results should be updated within 30-minute SLA after completion
@@ -153,7 +153,7 @@ Competition Management
 A scored goal within a fixture, attributed to a player at a specific minute.
 
 **Context:**  
-Match Data
+Fixture Data
 
 **Business Rules:**  
 - Scorer (player) is required
@@ -176,7 +176,7 @@ Match Data
 A player's participation in a specific fixture, including their starting position and substitution details.
 
 **Context:**  
-Match Data
+Fixture Data
 
 **Related Terms:**  
 - [Fixture](#fixture)
@@ -445,8 +445,8 @@ Content Management
 - [RSS Feed Source](#rss-feed-source)
 
 **Code References:**  
-- Entity: [ThirdPartyArticle.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/ThirdPartyArticle.ts)
-- Repository: [ThirdPartyArticleRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/ThirdPartyArticleRepository.ts)
+- Entity: [FeaturedNews.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/FeaturedNews.ts)
+- Repository: [FeaturedNewsRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/FeaturedNewsRepository.ts)
 
 ---
 
@@ -540,7 +540,7 @@ Competition Management
 Detailed match statistics for a specific fixture, including possession, shots, and other metrics.
 
 **Context:**  
-Match Data
+Fixture Data
 
 **Related Terms:**  
 - [Fixture](#fixture)
@@ -568,7 +568,7 @@ Content Management
 
 ### Status
 - **In User Context:** Account verification and access state
-- **In Fixture Context:** Match progress state
+- **In Fixture Context:** Fixture progress state
 - **In Article Context:** Publication state
 - **In Trialist Context:** Application review state
 - **In Campaign Context:** Campaign activity state
@@ -577,7 +577,7 @@ Content Management
 ### Statistics
 - **In League Context:** Team standings and aggregate performance
 - **In Player Context:** Individual performance metrics
-- **In Fixture Context:** Match-specific performance data
+- **In Fixture Context:** Fixture-specific performance data
 
 ---
 

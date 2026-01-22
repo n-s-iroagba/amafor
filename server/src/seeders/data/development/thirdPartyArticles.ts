@@ -1,7 +1,7 @@
 // data/development/third-party-article.ts
-import { ThirdPartyArticleAttributes } from "../../../models/ThirdPartyArticle";
+import { FeaturedNewsAttributes } from "../../../models/FeaturedNews";
 
-export const developmentThirdPartyArticles: ThirdPartyArticleAttributes[] = [
+export const developmentFeaturedNewss: FeaturedNewsAttributes[] = [
   {
     id: 1,
     rssFeedSourceId: 1, // Fixturees 'Goal.com Nigeria' from RssFeedSource seeder

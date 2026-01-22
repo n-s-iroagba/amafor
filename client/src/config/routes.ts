@@ -169,8 +169,9 @@ export const API_ROUTES = {
   PLAYERS: {
     CREATE: `/players`,
     MUTATE: (id: number | null) => `/players/${id}`,
+    DELETE: (id: string | number) => `/players/${id}`,
     LIST: `/players`,
-    VIEW: (id: string) => `/players/${id}`,
+    VIEW: (id: string | number) => `/players/${id}`,
   },
   VIDEOS: {
     CREATE: `/videos`,
@@ -181,8 +182,11 @@ export const API_ROUTES = {
   USERS: {
     CREATE: `/users`,
     MUTATE: (id: number | null) => `/users/${id}`,
+    DELETE: (id: string | number) => `/users/${id}`,
     LIST: `/users`,
-    VIEW: (id: string) => `/users/${id}`,
+    VIEW: (id: string | number) => `/users/${id}`,
+    PENDING_ADVERTISERS: `/users/pending-advertisers`,
+    APPROVE: (id: string | number) => `/users/${id}/approve`,
   },
   MATCH_SUMMARY: {
     CREATE: (fixtureId: string) => `/match-summary/${fixtureId}`,
@@ -262,11 +266,45 @@ export const API_ROUTES = {
       CREATE: '/advertiser/campaigns',
       LIST: '/advertiser/campaigns',
       VIEW: (id: string | number) => `/advertiser/campaigns/${id}`,
+      UPDATE: (id: string | number) => `/advertiser/campaigns/${id}`,
+      DELETE: (id: string | number) => `/advertiser/campaigns/${id}`,
     },
     DISPUTES: {
       CREATE: '/advertiser/disputes',
       LIST: '/advertiser/disputes',
       VIEW: (id: string | number) => `/advertiser/disputes/${id}`,
+      UPDATE: (id: string | number) => `/advertiser/disputes/${id}`,
     },
+  },
+
+  ANALYTICS: {
+    DASHBOARD: '/analytics/dashboard',
+    REVENUE: '/analytics/revenue',
+  },
+
+  AUDIT: {
+    LIST: '/audit-logs',
+    EXPORT: '/audit-logs/export',
+    ENTITY_HISTORY: (entityType: string, entityId: string) =>
+      `/audit-logs/${entityType}/${entityId}`,
+  },
+
+  BACKUPS: {
+    LIST: '/backups',
+    CREATE: '/backups',
+    DOWNLOAD: (id: string | number) => `/backups/${id}/download`,
+    DELETE: (id: string | number) => `/backups/${id}`,
+  },
+
+  NOTIFICATIONS: {
+    LIST: '/notifications',
+    MARK_READ: (id: string | number) => `/notifications/${id}/read`,
+    MARK_ALL_READ: '/notifications/read-all',
+  },
+
+  SCOUT: {
+    REPORTS: '/scout/reports',
+    RECENT_VIEWS: '/scout/recent-views',
+    PLAYER_VIEW: (id: string | number) => `/scout/view/${id}`,
   },
 };

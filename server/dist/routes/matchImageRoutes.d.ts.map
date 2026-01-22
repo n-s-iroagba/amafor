@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "file": "fixtureImageRoutes.d.ts",
+    "sourceRoot": "",
+    "sources": [
+        "../../src/routes/fixtureImageRoutes.ts"
+    ],
+    "names": [],
+    "mappings": "AAWA,QAAA,MAAM,MAAM,4CAAW,CAAC;AASxB,eAAe,MAAM,CAAC"
+}

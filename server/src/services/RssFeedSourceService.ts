@@ -1,4 +1,5 @@
 
+import { RssFeedSourceRepository } from '@repositories/index';
 import { RssFeedSource } from '../models/RssFeedSource';
 
 export class RssFeedSourceService {
@@ -12,34 +13,27 @@ export class RssFeedSourceService {
     return (await this.rssFeedSourceRepository.findAll());
   }
 
-  async getFeedSourceById(id: number): Promise<RssFeedSource | null> {
+  async getFeedSourceById(id: string): Promise<RssFeedSource | null> {
     return await this.rssFeedSourceRepository.findById(id);
   }
 
-  async getFeedSourceByUrl(feedUrl: string): Promise<RssFeedSource | null> {
-    return await this.rssFeedSourceRepository.findByUrl(feedUrl);
-  }
+
 
   async createFeedSource(feedSourceData: Partial<RssFeedSource>): Promise<RssFeedSource> {
     return await this.rssFeedSourceRepository.create(feedSourceData);
   }
 
-  async updateFeedSource(id: number, feedSourceData: Partial<RssFeedSource>): Promise<RssFeedSource | null> {
-    return await this.rssFeedSourceRepository.updateById(id, feedSourceData);
+  async updateFeedSource(id: string, feedSourceData: Partial<RssFeedSource>): Promise<[number,RssFeedSource[]]> {
+    return await this.rssFeedSourceRepository.update(id, feedSourceData);
   }
 
-  async deleteFeedSource(id: number): Promise<boolean> {
-    return await this.rssFeedSourceRepository.deleteById(id);
-  }
-
-  async getFeedsByCategory(category: string): Promise<RssFeedSource[]> {
-    return await this.rssFeedSourceRepository.findByCategory(category);
+  async deleteFeedSource(id: string): Promise<number> {
+    return await this.rssFeedSourceRepository.delete(id);
   }
 
 
-
-  async updateFetchStatus(id: number, status: string): Promise<void> {
-    await this.rssFeedSourceRepository.updateFetchStatus(id, status);
+  async updateFetchStatus(id: string, status: string): Promise<void> {
+    await this.rssFeedSourceRepository.update(id, status);
   }
 
   async getFeedsNeedingUpdate(thresholdMinutes: number = 30): Promise<RssFeedSource[]> {

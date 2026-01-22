@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcrypt'
 
 import logger from '../utils/logger'
-import { CryptoUtil } from '../utils/crpto.util'
+import { CryptoUtil } from '../utils/crypto.util'
 
 export class PasswordService {
   private readonly SALT_ROUNDS = 12
@@ -29,10 +29,10 @@ export class PasswordService {
     }
 
     try {
-      const isFixture = await bcrypt.compare(plainPassword, hashedPassword)
+      const isMatch = await bcrypt.compare(plainPassword, hashedPassword)
 
-      logger.info('Password comparison completed', { isFixture })
-      return isFixture
+      logger.info('Password comparison completed', { isMatch })
+      return isMatch
     } catch (error) {
       logger.error('Password comparison failed', { error })
       throw new Error('Password comparison failed')

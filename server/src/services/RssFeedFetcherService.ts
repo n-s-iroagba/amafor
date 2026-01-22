@@ -3,8 +3,8 @@ import Parser from 'rss-parser';
 import { RssFeedSourceService } from './RssFeedSourceService';
 import { RssFeedSource, RssFeedSourceCategory } from '../models/RssFeedSource';
 import redis from '../redis/redisClient';
-import { ThirdPartyArticle, ThirdPartyArticleCreationAttributes } from '../models/ThirdPartyArticle';
-import { ThirdPartyArticleRepository } from '@repositories/ThirdPartyArticleRepository';
+import { FeaturedNews, FeaturedNewsCreationAttributes } from '../models/FeaturedNews';
+import { FeaturedNewsRepository } from '@repositories/FeaturedNewsRepository';
 
 
 
@@ -17,12 +17,12 @@ type CustomFeed = { [key: string]: any };
 
 export class RssFeedFetcherService {
   private rssFeedSourceService: RssFeedSourceService;
-  private thirdPartyArticleRepository: ThirdPartyArticleRepository;
+  private featuredNewsRepository: FeaturedNewsRepository;
   private parser: Parser<CustomFeed, CustomItem>;
 
   constructor() {
     this.rssFeedSourceService = new RssFeedSourceService();
-    this.thirdPartyArticleRepository = new ThirdPartyArticleRepository();
+    this.featuredNewsRepository = new FeaturedNewsRepository();
     this.parser = new Parser({
       customFields: {
         item: [
@@ -38,8 +38,8 @@ export class RssFeedFetcherService {
 
 
 
-  async fetchFeeds(category: RssFeedSourceCategory, page?: number | string, limit?: number | string): Promise<{ success: number; errors: number, articles: ThirdPartyArticle[] }> {
-    const cacheKey = `articles:${category}:page:${page}:limit:${limit}`
+  async fetchFeeds(page?: number | string, limit?: number | string): Promise<{ success: number; errors: number, articles: FeaturedNews[] }> {
+    const cacheKey = `featured-news:page:${page}:limit:${limit}`
 
     // Check cache
     // const cached = await redis.get(cacheKey);
@@ -47,8 +47,8 @@ export class RssFeedFetcherService {
     //   console.log('Returning cached feeds summary');
     //   return JSON.parse(cached);
     // }
-    let articles: ThirdPartyArticle[] = []
-    const feeds = await this.rssFeedSourceService.getFeedsByCategory(category);
+    let articles: FeaturedNews[] = []
+    const feeds = await this.rssFeedSourceService.getAllFeedSources();
     let successCount = 0;
     let errorCount = 0;
 
@@ -73,7 +73,7 @@ export class RssFeedFetcherService {
   }
 
 
-  async fetchFeed(feed: RssFeedSource): Promise<ThirdPartyArticle[] | void> {
+  async fetchFeed(feed: RssFeedSource): Promise<FeaturedNews[] | void> {
     try {
       console.log(`Fetching feed: ${feed.name}`);
 
@@ -83,7 +83,7 @@ export class RssFeedFetcherService {
         await this.rssFeedSourceService.updateFetchStatus(feed.id, 'EMPTY');
         return;
       }
-      let articles: ThirdPartyArticle[] = []
+      let articles: FeaturedNews[] = []
       let processedCount = 0;
 
       for (const item of parsedFeed.items) {
@@ -105,9 +105,9 @@ export class RssFeedFetcherService {
     }
   }
 
-  private async processFeedItem(feed: RssFeedSource, item: any): Promise<ThirdPartyArticle> {
+  private async processFeedItem(feed: RssFeedSource, item: any): Promise<FeaturedNews> {
     const articleUrl = item.link || '';
-    const articleData: ThirdPartyArticleCreationAttributes = {
+    const articleData: FeaturedNewsCreationAttributes = {
       rssFeedSourceId: feed.id,
       originalId: item.guid || item.id || item.link || Date.now().toString(),
       title: item.title || 'No title',
@@ -119,7 +119,7 @@ export class RssFeedFetcherService {
     if (!articleUrl) {
       throw new Error('Article URL is required');
     }
-    return (await this.thirdPartyArticleRepository.createOrUpdateArticle(articleData)).article;
+    return (await this.featuredNewsRepository.createOrUpdateNews(articleData)).article;
   }
 
 

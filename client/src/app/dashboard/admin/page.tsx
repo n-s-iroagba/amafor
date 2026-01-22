@@ -1,11 +1,31 @@
 'use client';
 import React from 'react';
-import { Shield, Users, CreditCard, Activity, Bell, FileSearch, Settings, ChevronRight, UserCheck, AlertTriangle, TrendingUp, Database, RefreshCw, BarChart2, UserCircle, Calendar, Heart, DollarSign, HardDrive } from 'lucide-react';
+import { Shield, Users, Activity, Bell, FileSearch, Settings, ChevronRight, UserCheck, TrendingUp, BarChart2, UserCircle, Calendar, Heart, DollarSign, HardDrive, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
+
+interface DashboardStats {
+  revenue: {
+    total: number;
+    advertising: number;
+    donations: number;
+    patronage: number;
+  };
+  infrastructure: {
+    uptime: string;
+    securityAudit: string;
+    apiLatency: string;
+  };
+}
 
 export default function AdminDashboard() {
   const pathname = usePathname();
+
+  const { data: stats, loading } = useGet<DashboardStats>(
+    API_ROUTES.ANALYTICS.DASHBOARD
+  );
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard/admin', icon: <Activity className="w-4 h-4" /> },
@@ -13,15 +33,36 @@ export default function AdminDashboard() {
     { name: 'Scout Verification', path: '/dashboard/admin/scouts', icon: <UserCheck className="w-4 h-4" /> },
     { name: 'Advertiser Verification', path: '/dashboard/admin/advertisers', icon: <Shield className="w-4 h-4" /> },
     { name: 'Roster Management', path: '/dashboard/admin/players', icon: <UserCircle className="w-4 h-4" /> },
-    { name: 'Fixtures & Results', path: '/dashboard/admin/fixtures', icon: <Calendar className="w-4 h-4" /> },
+    { name: 'Fixtures & Results', path: '/dashboard/admin/leagues', icon: <Calendar className="w-4 h-4" /> },
     { name: 'Patronage Program', path: '/dashboard/admin/patrons', icon: <Heart className="w-4 h-4" /> },
-    { name: 'Advertising Rates', path: '/dashboard/admin/advertising/rates', icon: <DollarSign className="w-4 h-4" /> },
+    { name: 'Advertising Rates', path: '/dashboard/admin/ad-plans', icon: <DollarSign className="w-4 h-4" /> },
     { name: 'Audit Trails', path: '/dashboard/admin/audit', icon: <FileSearch className="w-4 h-4" /> },
     { name: 'Notifications', path: '/dashboard/admin/notifications', icon: <Bell className="w-4 h-4" /> },
     { name: 'Infra Health', path: '/dashboard/admin/health', icon: <TrendingUp className="w-4 h-4" /> },
     { name: 'Data Backups', path: '/dashboard/admin/backups', icon: <HardDrive className="w-4 h-4" /> },
     { name: 'System Settings', path: '/dashboard/admin/settings', icon: <Settings className="w-4 h-4" /> },
   ];
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0
+    }).format(amount);
+  };
+
+  const revenueData = stats?.revenue || {
+    total: 0,
+    advertising: 0,
+    donations: 0,
+    patronage: 0,
+  };
+
+  const infraData = stats?.infrastructure || {
+    uptime: 'Loading...',
+    securityAudit: 'Loading...',
+    apiLatency: 'Loading...',
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
@@ -53,12 +94,13 @@ export default function AdminDashboard() {
             <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-2">Central Infrastructure Console</div>
             <h1 className="text-4xl text-[#2F4F4F]">Arena Operations</h1>
           </div>
-          <Activity className="w-4 h-4 text-green-500" />
-          <span className="text-[10px] font-black uppercase tracking-widest">System Optimal</span>
-
+          <div className="flex items-center gap-2">
+            <Activity className="w-4 h-4 text-green-500" />
+            <span className="text-[10px] font-black uppercase tracking-widest">System Optimal</span>
+          </div>
         </header>
 
-        {/* BRD Requiremen=t: DEV-16 Audit Trail */}
+        {/* BRD Requirement: DEV-16 Audit Trail */}
         <div className="mb-8 flex items-center gap-2 text-xs text-slate-500 bg-slate-100 p-2 rounded-lg w-fit">
           <FileSearch className="w-3 h-3" />
           <span>All admin actions are immutably logged per ISO 27001:2022 (BR-SEC-03).</span>
@@ -71,28 +113,36 @@ export default function AdminDashboard() {
                 <h2 className="text-sm font-black text-[#2F4F4F] uppercase tracking-widest flex items-center">
                   <BarChart2 className="w-5 h-5 mr-3 text-[#87CEEB]" /> Revenue by Source
                 </h2>
-                <div className="text-3xl font-black text-[#2F4F4F]">₦4,240,500</div>
+                <div className="text-3xl font-black text-[#2F4F4F]">
+                  {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : formatCurrency(revenueData.total)}
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="space-y-2">
                   <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Advertising</div>
-                  <div className="text-xl font-bold text-[#2F4F4F]">₦2,100,200</div>
+                  <div className="text-xl font-bold text-[#2F4F4F]">
+                    {loading ? '...' : formatCurrency(revenueData.advertising)}
+                  </div>
                   <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-blue-500 h-full w-[49%]" />
+                    <div className="bg-blue-500 h-full" style={{ width: revenueData.total ? `${(revenueData.advertising / revenueData.total) * 100}%` : '0%' }} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Donations</div>
-                  <div className="text-xl font-bold text-[#2F4F4F]">₦840,300</div>
+                  <div className="text-xl font-bold text-[#2F4F4F]">
+                    {loading ? '...' : formatCurrency(revenueData.donations)}
+                  </div>
                   <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-green-500 h-full w-[20%]" />
+                    <div className="bg-green-500 h-full" style={{ width: revenueData.total ? `${(revenueData.donations / revenueData.total) * 100}%` : '0%' }} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Patronage</div>
-                  <div className="text-xl font-bold text-[#2F4F4F]">₦1,300,000</div>
+                  <div className="text-xl font-bold text-[#2F4F4F]">
+                    {loading ? '...' : formatCurrency(revenueData.patronage)}
+                  </div>
                   <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-[#87CEEB] h-full w-[31%]" />
+                    <div className="bg-[#87CEEB] h-full" style={{ width: revenueData.total ? `${(revenueData.patronage / revenueData.total) * 100}%` : '0%' }} />
                   </div>
                 </div>
               </div>
@@ -103,15 +153,15 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="space-y-2">
                   <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Platform Uptime</div>
-                  <div className="text-lg font-black text-[#2F4F4F]">99.98%</div>
+                  <div className="text-lg font-black text-[#2F4F4F]">{infraData.uptime}</div>
                 </div>
                 <div className="space-y-2">
                   <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest">Security Audit</div>
-                  <div className="text-lg font-black text-[#2F4F4F]">Passed</div>
+                  <div className="text-lg font-black text-[#2F4F4F]">{infraData.securityAudit}</div>
                 </div>
                 <div className="space-y-2">
                   <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest">API Latency</div>
-                  <div className="text-lg font-black text-[#2F4F4F]">42ms</div>
+                  <div className="text-lg font-black text-[#2F4F4F]">{infraData.apiLatency}</div>
                 </div>
               </div>
             </section>

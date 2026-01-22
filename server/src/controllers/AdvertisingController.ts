@@ -1,0 +1,183 @@
+import { Request, Response, NextFunction } from 'express';
+import { AdvertisingService } from '../services';
+
+export class AdvertisingController {
+  private adService: AdvertisingService;
+
+  constructor() {
+    this.adService = new AdvertisingService();
+  }
+
+  /**
+   * Create ad campaign
+   * @api POST /ads/campaigns
+   * @apiName API-AD-001
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-02
+   */
+  public createCampaign = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const creatorId = (req as any).user.id;
+      const campaign = await this.adService.createCampaign(req.body, creatorId);
+
+      res.status(201).json({ success: true, data: campaign });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Serve ad for zone
+   * @api GET /ads/serve/:zone
+   * @apiName API-AD-002
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-07
+   */
+  public getAdForZone = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { zone } = req.params;
+      const ad = await this.adService.getAdForZone(zone);
+
+      if (!ad) {
+        // 204 No Content is appropriate if no ad is available to serve
+        res.status(204).send();
+        return;
+      }
+
+      res.status(200).json({ success: true, data: ad });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Track ad click
+   * @api GET /ads/track/:id
+   * @apiName API-AD-003
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-07
+   */
+  public trackClick = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      await this.adService.trackClick(id);
+
+      // If a destination URL is provided in query, redirect user there
+      const redirectUrl = req.query.url as string;
+      if (redirectUrl) {
+        res.redirect(redirectUrl);
+      } else {
+        res.status(200).json({ success: true, message: 'Click tracked' });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+  /**
+   * Update ad campaign
+   * @api PUT /ads/campaigns/:id
+   * @apiName API-AD-004
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-02
+   */
+  public updateCampaign = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+      const campaign = await this.adService.updateCampaign(id, updates);
+
+      if (!campaign) {
+        res.status(404).json({ success: false, message: 'Campaign not found' });
+        return;
+      }
+
+      res.status(200).json({ success: true, data: campaign });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Delete ad campaign
+   * @api DELETE /ads/campaigns/:id
+   * @apiName API-AD-005
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-02
+   */
+  public deleteCampaign = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const success = await this.adService.deleteCampaign(id);
+
+      if (!success) {
+        res.status(404).json({ success: false, message: 'Campaign not found' });
+        return;
+      }
+
+      res.status(200).json({ success: true, message: 'Campaign deleted successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Get active campaigns
+   * @api GET /ads/campaigns/active
+   * @apiName API-AD-006
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-02
+   */
+  public getActiveCampaigns = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = (req as any).user;
+      // If advertiser, filter by their ID. If admin, optional filter? 
+      // Assuming for now this endpoint is for the logged-in advertiser to see THEIR active campaigns.
+      // If admin wants all, they might use a different endpoint or query param.
+      // Let's assume generic "get my active campaigns" for advertiser.
+      const advertiserId = user.userType === 'advertiser' ? user.id : undefined;
+
+      const campaigns = await this.adService.getActiveCampaigns(advertiserId);
+      res.status(200).json({ success: true, data: campaigns });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Get pending campaigns
+   * @api GET /ads/campaigns/pending
+   * @apiName API-AD-007
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-02
+   */
+  public getPendingCampaigns = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = (req as any).user;
+      const advertiserId = user.userType === 'advertiser' ? user.id : undefined;
+
+      const campaigns = await this.adService.getPendingCampaigns(advertiserId);
+      res.status(200).json({ success: true, data: campaigns });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Get expired campaigns
+   * @api GET /ads/campaigns/expired
+   * @apiName API-AD-008
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-02
+   */
+  public getExpiredCampaigns = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = (req as any).user;
+      const advertiserId = user.userType === 'advertiser' ? user.id : undefined;
+
+      const campaigns = await this.adService.getExpiredCampaigns(advertiserId);
+      res.status(200).json({ success: true, data: campaigns });
+    } catch (error) {
+      next(error);
+    }
+  };
+}
