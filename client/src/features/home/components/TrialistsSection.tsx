@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Users, ArrowRight } from 'lucide-react'
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 
 interface Trialist {
@@ -19,10 +20,10 @@ interface Trialist {
 
 export default function TrialistsSection() {
   const { data: trialists, loading } = useGet<Trialist[]>(
-    '/api/academy/trialists',
-    { 
+    API_ROUTES.TRIALISTS.LIST,
+    {
       params: { limit: 4 },
-      enabled: true 
+      enabled: true
     }
   )
 
@@ -60,23 +61,23 @@ export default function TrialistsSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {trialists.map((trialist) => (
-            <div 
+            <div
               key={trialist.id}
               className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-sky-500"
             >
               <div className="relative h-80 overflow-hidden bg-gray-900">
-                <div 
+                <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                   style={{ backgroundImage: `url(${trialist.imageUrl})` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
-                
+
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="w-16 h-16 bg-sky-500 rounded-full flex items-center justify-center cursor-pointer hover:bg-sky-600 transition-colors">
                     <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
                   </div>
                 </div>
-                
+
                 <div className="absolute top-4 right-4 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                   {trialist.status}
                 </div>
@@ -86,7 +87,7 @@ export default function TrialistsSection() {
                 <h3 className="text-2xl font-black text-gray-900 mb-2">
                   {trialist.name}
                 </h3>
-                
+
                 <div className="flex items-center gap-2 text-sm text-sky-600 font-bold mb-4">
                   <div className="w-2 h-2 bg-sky-500 rounded-full"></div>
                   {trialist.position}

@@ -57,5 +57,10 @@ router.use('/system', systemRoutes_1.default);
 router.use('/trialists', trialistRoutes_1.default);
 router.use('/users', userRoutes_1.default);
 router.use('/scout', scoutRoutes_1.default);
+const analyticsRoutes_1 = __importDefault(require("./analyticsRoutes"));
+const notificationRoutes_1 = __importDefault(require("./notificationRoutes"));
+// ... (existing imports, keep them essentially)
+router.use('/analytics', analyticsRoutes_1.default);
+router.use('/notifications', notificationRoutes_1.default);
 exports.default = router;
 //# sourceMappingURL=index.js.map

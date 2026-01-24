@@ -304,6 +304,7 @@ export default function GalleryPage() {
                       key={fixture.id}
                       href={`/gallery/${fixture.id}`}
                       className="group bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-lg hover:border-slate-300 transition-all overflow-hidden"
+                      data-testid="gallery-item"
                     >
                       {/* Fixture Header */}
                       <div className="p-6 border-b border-slate-100">

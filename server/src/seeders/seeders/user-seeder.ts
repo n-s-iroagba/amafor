@@ -1,6 +1,6 @@
 
-import { User } from '@models/User';
-import { UserAttributes } from '@models/User';
+import { User } from '../../models/User';
+import { UserAttributes } from '../../models/User';
 import logger from '../../utils/logger';
 import { developmentUsers } from '../data/development/users';
 import { productionUsers } from '../data/production/users';
@@ -14,7 +14,7 @@ export class UserSeeder extends BaseSeeder<User> {
 
   async getData(environment: string): Promise<UserAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

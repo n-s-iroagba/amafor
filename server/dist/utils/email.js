@@ -117,18 +117,19 @@ const sendEmail = async (options) => {
             };
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error sending email', {
-                error: error.message,
+                error: err.message,
                 to: options.to,
                 subject: options.subject,
             });
             return {
                 success: false,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {
@@ -319,13 +320,14 @@ const checkEmailHealth = async () => {
             };
         }
         catch (error) {
+            const err = error;
             span.setAttributes({
                 'email.healthy': false,
-                'email.error': error.message,
+                'email.error': err.message,
             });
             return {
                 healthy: false,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {

@@ -1,6 +1,6 @@
 
-import { Trialist } from '@models/Trialist';
-import { TrialistAttributes } from '@models/Trialist';
+import { Trialist } from '../../models/Trialist';
+import { TrialistAttributes } from '../../models/Trialist';
 import logger from '../../utils/logger';
 import { developmentTrialists } from '../data/development/trialists';
 import { productionTrialists } from '../data/production/trialists';
@@ -14,7 +14,7 @@ export class TrialistSeeder extends BaseSeeder<Trialist> {
 
   async getData(environment: string): Promise<TrialistAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

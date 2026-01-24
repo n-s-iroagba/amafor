@@ -26,8 +26,8 @@ export declare const advertisementSchema: {
                 PENDING_PAYMENT: "PENDING_PAYMENT";
                 PAUSED: "PAUSED";
                 COMPLETED: "COMPLETED";
-                REJECTED: "REJECTED";
                 EXPIRED: "EXPIRED";
+                REJECTED: "REJECTED";
             }>>;
             targetImpressions: z.ZodOptional<z.ZodNumber>;
             dailyBudget: z.ZodOptional<z.ZodNumber>;
@@ -41,8 +41,8 @@ export declare const advertisementSchema: {
                 PENDING_PAYMENT: "PENDING_PAYMENT";
                 PAUSED: "PAUSED";
                 COMPLETED: "COMPLETED";
-                REJECTED: "REJECTED";
                 EXPIRED: "EXPIRED";
+                REJECTED: "REJECTED";
             }>>;
             page: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<number, string>>>;
             limit: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<number, string>>>;

@@ -9,9 +9,6 @@ import League from './League';
 import Advertiser from './Advertiser';
 import AdZones from './AdZones';
 import RssFeedSource from './RssFeedSource';
-import Video from './Video'; // Added
-import Trialist from './Trialist'; // Added
-
 // Content & Staff
 import Article from './Article';
 import FeaturedNews from './FeaturedNews';
@@ -39,8 +36,45 @@ import AuditLog from './AuditLog';
 import SystemNotification from './SystemNotification';
 import ScoutReport from './ScoutReport';
 import ScoutApplication from './ScoutApplication';
+import Video from './Video';
+import Trialist from './Trialist';
+
+export {
+  User,
+  League,
+  Advertiser,
+  AdZones,
+  RssFeedSource,
+  Video,
+  Trialist,
+  Article,
+  FeaturedNews,
+  AcademyStaff,
+  Coach,
+  Fixture,
+  FixtureStatistics,
+  Goal,
+  Lineup,
+  FixtureImage,
+  LeagueStatistics,
+  Player,
+  PlayerLeagueStatistics,
+  Patron,
+  PatronSubscription,
+  Payment,
+  AdCampaign,
+  AdCreative,
+  AuditLog,
+  SystemNotification,
+  ScoutReport,
+  ScoutApplication
+};
 
 export async function setupAssociations(): Promise<void> {
+  console.log('Setting up associations...');
+  console.log('Fixture defined:', !!Fixture);
+  console.log('League defined:', !!League);
+
 
   // ==================== FIXTURE ASSOCIATIONS ====================
   Fixture.hasMany(Goal, {

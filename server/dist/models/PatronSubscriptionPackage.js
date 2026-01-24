@@ -34,10 +34,6 @@ PatronSubscriptionPackage.init({
         defaultValue: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true
     },
-    subscriptionId: {
-        type: sequelize_1.DataTypes.UUID,
-        allowNull: false
-    },
     benefits: {
         type: sequelize_1.DataTypes.JSON,
     },
@@ -65,7 +61,6 @@ PatronSubscriptionPackage.init({
     timestamps: true,
     paranoid: true,
     indexes: [
-        { fields: ['subscriptionId'] },
         { fields: ['tier'] },
         { fields: ['status'] },
         { fields: ['frequency'] },

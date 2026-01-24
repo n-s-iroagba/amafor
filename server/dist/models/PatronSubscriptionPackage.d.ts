@@ -17,7 +17,6 @@ export declare enum SubscriptionStatus {
 }
 export interface PatronSubscriptionPackageAttributes {
     id: string;
-    subscriptionId: string;
     tier: PatronTier;
     frequency: SubscriptionFrequency;
     miniumumAmount: number;
@@ -30,7 +29,6 @@ export interface PatronSubscriptionPackageCreationAttributes extends Optional<Pa
 }
 export declare class PatronSubscriptionPackage extends Model<PatronSubscriptionPackageAttributes, PatronSubscriptionPackageCreationAttributes> implements PatronSubscriptionPackageAttributes {
     id: string;
-    subscriptionId: string;
     tier: PatronTier;
     frequency: SubscriptionFrequency;
     miniumumAmount: number;

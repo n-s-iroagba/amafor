@@ -11,6 +11,7 @@ var ArticleTag;
     ArticleTag["FOOTBALL_NEWS"] = "football_news";
     ArticleTag["MATCH_REPORT"] = "match_report";
     ArticleTag["ACADEMY_UPDATE"] = "academy_update";
+    ArticleTag["ACADEMY"] = "academy";
     ArticleTag["PLAYER_SPOTLIGHT"] = "player_spotlight";
     ArticleTag["CLUB_ANNOUNCEMENT"] = "club_announcement";
 })(ArticleTag || (exports.ArticleTag = ArticleTag = {}));

@@ -7,6 +7,7 @@ const controller = new PatronageController();
 
 // Public routes
 router.get('/packages', controller.listPackages);
+router.get('/top', controller.getTopPatrons);
 
 // Secure routes
 router.use(authMiddleware);

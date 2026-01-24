@@ -1,6 +1,6 @@
 
-import { Article } from '@models/Article';
-import { ArticleAttributes } from '@models/Article';
+import { Article } from '../../models/Article';
+import { ArticleAttributes } from '../../models/Article';
 import logger from '../../utils/logger';
 import { developmentArticles } from '../data/development/articles';
 import { productionArticles } from '../data/production/articles';
@@ -14,7 +14,7 @@ export class ArticleSeeder extends BaseSeeder<Article> {
 
   async getData(environment: string): Promise<ArticleAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

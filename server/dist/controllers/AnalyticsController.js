@@ -11,12 +11,24 @@ class AnalyticsController {
          * @apiGroup Analytics
          * @srsRequirement REQ-ANALYTICS-01
          */
-        this.getAdminDashboard = async (req, res, next) => {
+        this.getDashboardStats = async (req, res, next) => {
             try {
                 const stats = await this.analyticsService.getAdminDashboardSummary();
                 res.status(200).json({
                     success: true,
                     data: stats
+                });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        this.getRevenueStats = async (req, res, next) => {
+            try {
+                // Placeholder implementation
+                res.status(200).json({
+                    success: true,
+                    data: { revenue: 0, growth: 0 }
                 });
             }
             catch (error) {

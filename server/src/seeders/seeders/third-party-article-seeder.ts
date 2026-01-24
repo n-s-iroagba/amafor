@@ -1,7 +1,7 @@
 
 
 // seeders/FeaturedNewsSeeder.ts
-import FeaturedNews, { FeaturedNewsAttributes } from "@models/FeaturedNews";
+import FeaturedNews, { FeaturedNewsAttributes } from "../../models/FeaturedNews";
 import logger from "../../utils/logger";
 // import { developmentFeaturedNewss } from "../data/development/featuredNewss";
 import { BaseSeeder } from "./base-seeder";

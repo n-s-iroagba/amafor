@@ -20,7 +20,7 @@ import { Header } from '@/shared/components/Header';
 
 export default function ProViewApplication() {
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     organization: '',
     socialUrl: '',
@@ -36,7 +36,13 @@ export default function ProViewApplication() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await post(formData);
+    await post({
+      name: formData.fullName,
+      email: formData.email,
+      organization: formData.organization,
+      socialUrl: formData.socialUrl,
+      reason: formData.reason
+    });
   };
 
   if (success) {
@@ -54,7 +60,7 @@ export default function ProViewApplication() {
 
               <h1 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tight">Application Transmitted</h1>
               <p className="text-slate-600 mb-10 text-lg leading-relaxed">
-                Thank you for applying for Pro View access. Your credentials are now{' '}
+                Your application has been submitted. Thank you for applying for Pro View access. Your credentials are now{' '}
                 <span className="font-black text-slate-900 px-2 py-1 bg-sky-100 rounded-lg">Under Verification</span>.
               </p>
 
@@ -141,10 +147,10 @@ export default function ProViewApplication() {
                     <Shield className="w-3.5 h-3.5 mr-2 text-sky-400" /> Full Name
                   </label>
                   <input
-                    name="name"
+                    name="fullName"
                     type="text"
                     placeholder="IDENTIFIED OPERATOR"
-                    value={formData.name}
+                    value={formData.fullName}
                     onChange={handleChange}
                     className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
                     required
@@ -216,7 +222,7 @@ export default function ProViewApplication() {
               <div className="pt-6">
                 <button
                   type="submit"
-                  disabled={loading || !formData.name || !formData.email || !formData.organization || !formData.socialUrl || !formData.reason}
+                  disabled={loading || !formData.fullName || !formData.email || !formData.organization || !formData.socialUrl || !formData.reason}
                   className="w-full bg-slate-900 hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 text-white px-10 py-5 rounded-[1.5rem] transition-all font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-slate-900/20 active:scale-[0.98] duration-200 flex items-center justify-center gap-3"
                 >
                   {loading ? (
@@ -234,6 +240,7 @@ export default function ProViewApplication() {
               </div>
             </form>
           </div>
+
 
           <div className="mt-12 text-center text-slate-400 font-bold text-[10px] uppercase tracking-widest opacity-50">
             Encrypted Transmission Secure &copy; AGFC Protocol 2025

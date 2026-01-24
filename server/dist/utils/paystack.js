@@ -3,12 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkPaystackHealth = exports.handleSubscriptionWebhook = exports.handleDonationWebhook = exports.validateWebhookPayload = exports.mapSubscriptionStatus = exports.mapPaymentStatus = exports.generateReference = exports.verifyWebhookSignature = exports.createSubscription = exports.initiateTransfer = exports.createTransferRecipient = exports.verifyPayment = exports.initializePayment = void 0;
+exports.checkPaystackHealth = exports.handleSubscriptionWebhook = exports.validateWebhookPayload = exports.mapSubscriptionStatus = exports.generateReference = exports.verifyWebhookSignature = exports.createSubscription = exports.initiateTransfer = exports.createTransferRecipient = exports.verifyPayment = exports.initializePayment = void 0;
 const axios_1 = __importDefault(require("axios"));
 const crypto_1 = __importDefault(require("crypto"));
 const logger_1 = require("./logger");
 const tracer_1 = require("./tracer");
-const Donation_1 = require("@models/Donation");
 const PatronSubscription_1 = require("@models/PatronSubscription");
 // Paystack configuration
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || 'sk_test_xxxx';
@@ -52,15 +51,16 @@ const initializePayment = async (request) => {
             return response.data;
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error initializing payment', {
-                error: error.response?.data || error.message,
+                error: err.response?.data || err.message,
                 request,
             });
-            throw new Error(`Payment initialization failed: ${error.message}`);
+            throw new Error(`Payment initialization failed: ${err.message}`);
         }
         finally {
             span.end();
@@ -87,15 +87,16 @@ const verifyPayment = async (reference) => {
             return response.data;
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error verifying payment', {
-                error: error.response?.data || error.message,
+                error: err.response?.data || err.message,
                 reference,
             });
-            throw new Error(`Payment verification failed: ${error.message}`);
+            throw new Error(`Payment verification failed: ${err.message}`);
         }
         finally {
             span.end();
@@ -125,15 +126,16 @@ const createTransferRecipient = async (request) => {
             return response.data;
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error creating transfer recipient', {
-                error: error.response?.data || error.message,
+                error: err.response?.data || err.message,
                 request,
             });
-            throw new Error(`Transfer recipient creation failed: ${error.message}`);
+            throw new Error(`Transfer recipient creation failed: ${err.message}`);
         }
         finally {
             span.end();
@@ -170,15 +172,16 @@ const initiateTransfer = async (request) => {
             return response.data;
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error initiating transfer', {
-                error: error.response?.data || error.message,
+                error: err.response?.data || err.message,
                 request,
             });
-            throw new Error(`Transfer initiation failed: ${error.message}`);
+            throw new Error(`Transfer initiation failed: ${err.message}`);
         }
         finally {
             span.end();
@@ -208,15 +211,16 @@ const createSubscription = async (request) => {
             return response.data;
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error creating subscription', {
-                error: error.response?.data || error.message,
+                error: err.response?.data || err.message,
                 request,
             });
-            throw new Error(`Subscription creation failed: ${error.message}`);
+            throw new Error(`Subscription creation failed: ${err.message}`);
         }
         finally {
             span.end();
@@ -226,36 +230,24 @@ const createSubscription = async (request) => {
 exports.createSubscription = createSubscription;
 // Verify webhook signature
 const verifyWebhookSignature = (payload, signature) => {
-    return tracer_1.tracer.startActiveSpan('paystack.verifyWebhookSignature', (span) => {
-        try {
-            const hash = crypto_1.default
-                .createHmac('sha512', PAYSTACK_SECRET_KEY)
-                .update(JSON.stringify(payload))
-                .digest('hex');
-            const isValid = hash === signature;
-            span.setAttributes({
-                'paystack.webhook_signature_valid': isValid,
+    try {
+        const hash = crypto_1.default
+            .createHmac('sha512', PAYSTACK_SECRET_KEY)
+            .update(JSON.stringify(payload))
+            .digest('hex');
+        const isValid = hash === signature;
+        if (!isValid) {
+            logger_1.logger.warn('Invalid webhook signature', {
+                expected: signature,
+                actual: hash,
             });
-            if (!isValid) {
-                logger_1.logger.warn('Invalid webhook signature', {
-                    expected: signature,
-                    actual: hash,
-                });
-            }
-            return isValid;
         }
-        catch (error) {
-            span.setStatus({
-                code: 2,
-                message: error.message,
-            });
-            logger_1.logger.error('Error verifying webhook signature', { error });
-            return false;
-        }
-        finally {
-            span.end();
-        }
-    });
+        return isValid;
+    }
+    catch (error) {
+        logger_1.logger.error('Error verifying webhook signature', { error });
+        return false;
+    }
 };
 exports.verifyWebhookSignature = verifyWebhookSignature;
 // Generate unique reference
@@ -265,20 +257,6 @@ const generateReference = (prefix = 'AGFC') => {
     return `${prefix}_${timestamp}_${random}`;
 };
 exports.generateReference = generateReference;
-// Map Paystack status to donation status
-const mapPaymentStatus = (paystackStatus) => {
-    switch (paystackStatus.toLowerCase()) {
-        case 'success':
-            return Donation_1.DonationStatus.COMPLETED;
-        case 'failed':
-            return Donation_1.DonationStatus.FAILED;
-        case 'abandoned':
-            return Donation_1.DonationStatus.FAILED;
-        default:
-            return Donation_1.DonationStatus.PENDING;
-    }
-};
-exports.mapPaymentStatus = mapPaymentStatus;
 // Map Paystack status to subscription status
 const mapSubscriptionStatus = (paystackStatus) => {
     switch (paystackStatus.toLowerCase()) {
@@ -318,58 +296,6 @@ const validateWebhookPayload = (payload) => {
     }
 };
 exports.validateWebhookPayload = validateWebhookPayload;
-// Handle donation webhook
-const handleDonationWebhook = async (payload) => {
-    return tracer_1.tracer.startActiveSpan('paystack.handleDonationWebhook', async (span) => {
-        try {
-            const { event, data } = payload;
-            span.setAttributes({
-                'paystack.webhook_event': event,
-                'paystack.reference': data.reference,
-                'paystack.amount': data.amount / 100,
-                'paystack.customer_email': data.customer?.email,
-            });
-            if (event !== 'charge.success' && event !== 'charge.failed') {
-                return {
-                    success: false,
-                    reference: data.reference,
-                    status: Donation_1.DonationStatus.PENDING,
-                };
-            }
-            const status = (0, exports.mapPaymentStatus)(data.status);
-            logger_1.logger.info('Processing donation webhook', {
-                event,
-                reference: data.reference,
-                status,
-                amount: data.amount / 100,
-            });
-            return {
-                success: true,
-                reference: data.reference,
-                status,
-            };
-        }
-        catch (error) {
-            span.setStatus({
-                code: 2,
-                message: error.message,
-            });
-            logger_1.logger.error('Error handling donation webhook', {
-                error,
-                payload,
-            });
-            return {
-                success: false,
-                reference: payload.data?.reference || 'unknown',
-                status: Donation_1.DonationStatus.PENDING,
-            };
-        }
-        finally {
-            span.end();
-        }
-    });
-};
-exports.handleDonationWebhook = handleDonationWebhook;
 // Handle subscription webhook
 const handleSubscriptionWebhook = async (payload) => {
     return tracer_1.tracer.startActiveSpan('paystack.handleSubscriptionWebhook', async (span) => {
@@ -401,9 +327,10 @@ const handleSubscriptionWebhook = async (payload) => {
             };
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error handling subscription webhook', {
                 error,
@@ -438,13 +365,14 @@ const checkPaystackHealth = async () => {
             };
         }
         catch (error) {
+            const err = error;
             span.setAttributes({
                 'paystack.healthy': false,
-                'paystack.error': error.message,
+                'paystack.error': err.message,
             });
             return {
                 healthy: false,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {
@@ -462,10 +390,8 @@ exports.default = {
     createSubscription: exports.createSubscription,
     verifyWebhookSignature: exports.verifyWebhookSignature,
     generateReference: exports.generateReference,
-    mapPaymentStatus: exports.mapPaymentStatus,
     mapSubscriptionStatus: exports.mapSubscriptionStatus,
     validateWebhookPayload: exports.validateWebhookPayload,
-    handleDonationWebhook: exports.handleDonationWebhook,
     handleSubscriptionWebhook: exports.handleSubscriptionWebhook,
     checkPaystackHealth: exports.checkPaystackHealth,
     PAYSTACK_PUBLIC_KEY,

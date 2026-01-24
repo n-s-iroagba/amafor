@@ -1,6 +1,6 @@
 
-import { SystemNotification } from '@models/SystemNotification';
-import { SystemNotificationAttributes } from '@models/SystemNotification';
+import { SystemNotification } from '../../models/SystemNotification';
+import { SystemNotificationAttributes } from '../../models/SystemNotification';
 import logger from '../../utils/logger';
 import { developmentSystemNotifications } from '../data/development/systemnotifications';
 import { productionSystemNotifications } from '../data/production/systemnotifications';
@@ -14,7 +14,7 @@ export class SystemNotificationSeeder extends BaseSeeder<SystemNotification> {
 
   async getData(environment: string): Promise<SystemNotificationAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

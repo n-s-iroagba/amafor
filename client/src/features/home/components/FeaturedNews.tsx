@@ -50,9 +50,7 @@ const FeaturedNews: React.FC = () => {
     loading,
     error,
   } = useGet<RSSResponse>(
-    // Manually setting to match the backend route we created. 
-    // Ideally add to API_ROUTES but for now hardcode or assume it's there
-    '/featured-news/homepage'
+    API_ROUTES.FEATURED_NEWS.LIST
   );
 
   const [totalPages, setTotalPages] = useState(0);

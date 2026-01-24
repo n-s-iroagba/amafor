@@ -1,4 +1,4 @@
-import AcademyStaff, { AcademyStaffAttributes } from "@models/AcademyStaff";
+import AcademyStaff, { AcademyStaffAttributes } from "../../models/AcademyStaff";
 import logger from "@utils/logger";
 import { developmentAcademyStaff } from "../data/development/academystaffs";
 import { productionAcademyStaffs } from "../data/production/academystaffs";
@@ -13,7 +13,7 @@ export class AcademyStaffSeeder extends BaseSeeder<AcademyStaff> {
 
   async getData(environment: string): Promise<AcademyStaffAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

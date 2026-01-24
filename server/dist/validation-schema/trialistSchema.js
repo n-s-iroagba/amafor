@@ -29,7 +29,7 @@ exports.trialistValidationSchemas = {
                 .min(2, 'Position must be at least 2 characters')
                 .max(50, 'Position must be at most 50 characters'),
             preferredFoot: zod_1.z.enum(['LEFT', 'RIGHT', 'BOTH'], {
-                errorMap: () => ({ message: 'Preferred foot must be LEFT, RIGHT, or BOTH' }),
+                message: 'Preferred foot must be LEFT, RIGHT, or BOTH',
             }),
             height: zod_1.z.number()
                 .int()
@@ -86,7 +86,7 @@ exports.trialistValidationSchemas = {
                 .max(50, 'Position must be at most 50 characters')
                 .optional(),
             preferredFoot: zod_1.z.enum(['LEFT', 'RIGHT', 'BOTH'], {
-                errorMap: () => ({ message: 'Preferred foot must be LEFT, RIGHT, or BOTH' }),
+                message: 'Preferred foot must be LEFT, RIGHT, or BOTH',
             }).optional(),
             height: zod_1.z.number()
                 .int()
@@ -123,7 +123,7 @@ exports.trialistValidationSchemas = {
         }),
         body: zod_1.z.object({
             status: zod_1.z.enum(['PENDING', 'REVIEWED', 'INVITED', 'REJECTED'], {
-                errorMap: () => ({ message: 'Status must be PENDING, REVIEWED, INVITED, or REJECTED' }),
+                message: 'Status must be PENDING, REVIEWED, INVITED, or REJECTED',
             }),
         }),
     }),

@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import { SupporterWithTier } from '@/features/patron/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 export default function SupportSection() {
   const { data: topPatrons, loading } = useGet<SupporterWithTier[]>(
-    '/api/supporters/top',
+    API_ROUTES.PATRONS.TOP,
     {
       params: { limit: 4 },
       enabled: true

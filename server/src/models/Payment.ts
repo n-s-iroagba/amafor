@@ -86,11 +86,11 @@ export class Payment extends Model<
   declare type: PaymentType;
   declare provider: PaymentProvider;
   declare metadata: CreationOptional<Record<string, any> | null>;
-  
+
   // FIX: Explicitly allow null for these optional foreign keys
   declare adCampaignId: string | null;
   declare subscriptionId: string | null;
-  
+
   declare customerEmail: string;
   declare customerName: CreationOptional<string | null>;
   declare customerPhone: CreationOptional<string | null>;
@@ -112,7 +112,7 @@ export class Payment extends Model<
 
   static async getTotalRevenue(startDate?: Date, endDate?: Date): Promise<number> {
     const where: any = { status: PaymentStatus.SUCCESSFUL };
-    
+
     if (startDate || endDate) {
       where.createdAt = {};
       if (startDate) where.createdAt.$gte = startDate;

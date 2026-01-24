@@ -1,15 +1,12 @@
 # Traceability Additions for 6 Unmapped Controllers
 
 ## Summary
-This document contains all new content to be added to establish full traceability for 6 unmapped controllers:
+This document contains all new content to be added to establish full traceability for 4 unmapped controllers:
 1. **AdZoneController** - Ad zone management
-2. **AdvertisementController** - Ad serving & tracking
+2. **Advertisi Controller** - Ad serving & tracking
 3. **AnalyticsController** - Dashboard analytics
 4. **AuditController** - Audit trail viewing
-5. **ContentController** - Duplicate of ArticleController (recommend deprecation)
-6. **DonationController** - One-time donations
 
-**Note:** FixtureController is actually FixtureController and is already mapped to API-FIXTURE-* operations.
 
 ---
 
@@ -392,54 +389,7 @@ The system shall provide access to comprehensive audit logs for compliance and t
 
 ---
 
-### Add to Donation Module (new module after Patronage)
-
-#### REQ-DON-01: One-Time Donations
-**Priority:** SHOULD HAVE  
-**Type:** Functional  
-**Traceability:** BR-PP-01 → US-SUP-DON-01 → UJ-SUP-DONATE-001
-
-**Description:**  
-The system shall support one-time charitable donations from supporters.
-
-**Functional Requirements:**
-1. **Donation Initiation**
-   - Accept donation amount (minimum ₦100)
-   - Collect donor name and email
-   - Optional: company/organization name
-   - Optional: donor message
-   - Optional: anonymous donation flag
-
-2. **Payment Processing**
-   - Integrate with Paystack gateway
-   - Generate payment reference
-   - Handle payment webhooks
-   - Verify payment signatures
-
-3. **Confirmation**
-   - Send confirmation email
-   - Include receipt/tax information
-   - Thank you message
-
-4. **Donor Wall**
-   - Display top donors publicly
-   - Respect anonymity preferences
-   - Show donation date
-   - Display donor message (if provided)
-
-5. **Admin Management**
-   - List all donations
-   - Filter by date, amount, status
-   - Export donation data
-   - View donation statistics
-
-**Non-Functional Requirements:**
-- Payment processing via secure HTTPS
-- PCI DSS compliance
-- Email delivery within 1 minute
-
-**API Operations:** API-DONATION-001 to API-DONATION-004
-
+ds
 ---
 
 ## Phase 5: API Specification Additions

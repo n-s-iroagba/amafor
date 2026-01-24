@@ -14,7 +14,7 @@ export const developmentAdCampaigns: AdCampaignAttributes[] = [
   {
     id: CAMPAIGN_ID_1,
     name: 'Summer Season Launch',
-    advertiserId: 'u2u2u2u2-u2u2-u2u2-u2u2-u2u2u2u2u2u2', // Fixturees Advertiser User ID
+    advertiserId: 'ffffffff-ffff-ffff-ffff-ffffffffffff', // Matches TopMedia Agency in advertiser.ts
     status: CampaignStatus.ACTIVE,
     budget: 5000.00,
     spent: 1250.00,
@@ -35,7 +35,7 @@ export const developmentAdCampaigns: AdCampaignAttributes[] = [
   {
     id: CAMPAIGN_ID_2,
     name: 'Youth Academy Promo',
-    advertiserId: 'u2u2u2u2-u2u2-u2u2-u2u2-u2u2u2u2u2u2',
+    advertiserId: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
     status: CampaignStatus.PENDING_PAYMENT,
     budget: 2000.00,
     spent: 0.00,

@@ -18,6 +18,7 @@ const articleLimiter = rateLimit({
 });
 
 // Public routes (with rate limiting)
+router.get('/', articleLimiter, articleController.fetchAllPublishedArticles.bind(articleController));
 router.get('/homepage', articleLimiter, articleController.fetchHomepageArticles.bind(articleController));
 router.get('/published', articleLimiter, articleController.fetchAllPublishedArticles.bind(articleController));
 router.get('/tag/:tag', articleLimiter, articleController.getArticlesByTag.bind(articleController));

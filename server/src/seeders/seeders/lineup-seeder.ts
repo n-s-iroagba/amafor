@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import { developmentLineups } from '../data/development/lineup';
 import { productionLineups } from '../data/production/lineups';
 import { testLineups } from '../data/testing/lineups';
-import Lineup, { LineupAttributes } from '@models/Lineup';
+import Lineup, { LineupAttributes } from '../../models/Lineup';
 import { BaseSeeder } from './base-seeder';
 
 export class LineupSeeder extends BaseSeeder<Lineup> {
@@ -13,7 +13,7 @@ export class LineupSeeder extends BaseSeeder<Lineup> {
 
   async getData(environment: string): Promise<LineupAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

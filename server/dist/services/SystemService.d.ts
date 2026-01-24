@@ -3,7 +3,7 @@ export declare class SystemService {
     private auditRepo;
     constructor();
     getHealthStatus(): Promise<any>;
-    createNotification(title: string, message: string, type: string, severity: string, targetUserId?: string): Promise<import("../models/SystemNotification").SystemNotification>;
+    createNotification(title: string, message: string, type: string, severity: string, targetUserId?: string): Promise<import("../models").SystemNotification>;
     getSystemConfig(): Promise<{
         maintenanceMode: boolean;
         scoutRegistration: boolean;
@@ -13,7 +13,7 @@ export declare class SystemService {
         appVersion: string;
     }>;
     updateSystemConfig(config: any, adminId: string): Promise<any>;
-    getAuditLogs(query: any): Promise<import("../models/AuditLog").AuditLog[]>;
+    getAuditLogs(query: any): Promise<import("../models").AuditLog[]>;
     listBackups(): Promise<{
         id: string;
         name: string;

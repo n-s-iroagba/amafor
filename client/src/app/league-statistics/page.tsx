@@ -310,7 +310,7 @@ export default function LeagueStatsPage() {
             const isExpanded = expandedLeagues.includes(league.id.toString());
 
             return (
-              <div key={league.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+              <div key={league.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" data-testid="league-item">
                 {/* League Header */}
                 <div className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

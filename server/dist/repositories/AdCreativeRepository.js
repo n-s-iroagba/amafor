@@ -19,14 +19,14 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
     async findByCampaignId(campaignId) {
         return await this.findAll({
             where: { campaignId },
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
     }
     // 🔍 Find by zone ID
     async findByZoneId(zoneId) {
         return await this.findAll({
             where: { zoneId },
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
     }
     // 🔍 Find by creative type
@@ -40,7 +40,7 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
     async findByFormat(format) {
         return await this.findAll({
             where: { format },
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
     }
     // 🔍 Find active creatives (with campaign validation)
@@ -72,7 +72,7 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
                     },
                     required: true
                 }],
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
     }
     // 📊 Get creative statistics
@@ -85,7 +85,7 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
             this.count({ where }),
             this.count({ where: { ...where, type: 'image' } }),
             this.count({ where: { ...where, type: 'video' } }),
-            this.model.sum('numberOfViews', { where })
+            this.model.sum('numberOfViews', { where: where })
         ]);
         const averageViews = total > 0 ? Math.round((totalViews || 0) / total) : 0;
         return {
@@ -112,7 +112,7 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
     async getCreativesByCampaign(campaignId) {
         return await this.findAll({
             where: { campaignId },
-            order: [['created_at', 'DESC']],
+            order: [['createdAt', 'DESC']],
             include: [{
                     model: AdCampaign_1.default,
                     as: 'campaign',
@@ -166,7 +166,7 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
                     { destinationUrl: { [sequelize_1.Op.iLike]: `%${query}%` } }
                 ]
             },
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
     }
     // 🔍 Filter by dimensions (assuming dimensions is JSON with width/height)
@@ -186,7 +186,7 @@ class AdCreativeRepository extends BaseRepository_1.BaseRepository {
         }
         return await this.findAll({
             where,
-            order: [['created_at', 'DESC']]
+            order: [['createdAt', 'DESC']]
         });
     }
     // 🎯 Override create to handle validation

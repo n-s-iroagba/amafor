@@ -3,6 +3,7 @@ export declare enum ArticleTag {
     FOOTBALL_NEWS = "football_news",
     MATCH_REPORT = "match_report",
     ACADEMY_UPDATE = "academy_update",
+    ACADEMY = "academy",
     PLAYER_SPOTLIGHT = "player_spotlight",
     CLUB_ANNOUNCEMENT = "club_announcement"
 }

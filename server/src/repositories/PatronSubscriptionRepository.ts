@@ -282,7 +282,7 @@ export class PatronSubscriptionRepository extends BaseRepository<PatronSubscript
             ['tier', 'ASC'],
             ['displayName', 'ASC']
           ],
-          include: ['user']
+          include: ['patron']
         };
 
         if (pagination) {
@@ -301,6 +301,41 @@ export class PatronSubscriptionRepository extends BaseRepository<PatronSubscript
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
         logger.error('Error finding active patrons', { error, filters });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  async getTopPatrons(limit: number): Promise<PatronSubscription[]> {
+    return tracer.startActiveSpan('repository.PatronSubscription.getTopPatrons', async (span) => {
+      try {
+        span.setAttribute('limit', limit);
+
+        const patrons = await this.findAll({
+          where: { status: SubscriptionStatus.ACTIVE },
+          order: [
+            ['amount', 'DESC'],
+            ['tier', 'ASC'],
+          ],
+          limit,
+          include: ['patron']
+        });
+
+        // Add display name fallback if empty
+        return patrons.map(p => {
+          if (!p.displayName && (p as any).patron?.name) {
+            p.displayName = (p as any).patron.name;
+          }
+          // Use patron email or name as fallback if really needed
+          return p;
+        });
+
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
+        logger.error('Error getting top patrons', { error });
         throw error;
       } finally {
         span.end();

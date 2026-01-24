@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import { developmentLeagues } from '../data/development/leagues';
 import { productionLeagues } from '../data/production/leagues';
 import { testLeagues } from '../data/testing/leagues';
-import League, { LeagueAttributes } from '@models/League';
+import League, { LeagueAttributes } from '../../models/League';
 import { BaseSeeder } from './base-seeder';
 
 export class LeagueSeeder extends BaseSeeder<League> {
@@ -13,7 +13,7 @@ export class LeagueSeeder extends BaseSeeder<League> {
 
   async getData(environment: string): Promise<LeagueAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

@@ -8,7 +8,7 @@ exports.adCreativeSchema = {
         body: zod_1.z.object({
             name: zod_1.z.string().min(2, 'Name must be at least 2 characters').max(150, 'Name must be at most 150 characters'),
             type: zod_1.z.enum(CREATIVE_TYPES, {
-                errorMap: () => ({ message: 'Invalid creative type' })
+                message: 'Invalid creative type'
             }),
             format: zod_1.z.string().min(2, 'Format is required'),
             url: zod_1.z.string().url('Invalid URL'),

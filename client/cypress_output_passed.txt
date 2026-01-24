@@ -1,0 +1,234 @@
+
+DevTools listening on ws://127.0.0.1:45921/devtools/browser/7f4fdf0c-8cda-402a-98fb-6d0e09f03f50
+
+================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.9.0                                                                         │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v22.15.0 (/home/udorakpuenyi/.nvm/versions/node/v22.15.0/bin/node)             │
+  │ Specs:          1 found (public.cy.ts)                                                         │
+  │ Searched:       cypress/e2e/public.cy.ts                                                       │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  public.cy.ts                                                                    (1 of 1)
+
+
+  Public Content Journeys
+    UJ-PUB-001: Browse Fixtures
+      1) should allow a fan to browse fixtures
+    UJ-PUB-002: Browse News
+      2) should allow a fan to browse news
+    UJ-PUB-003: View Team & Players
+      3) should allow a fan to view the team and player profiles
+    UJ-PUB-004: View League Statistics
+      4) should allow a fan to view league statistics
+    UJ-PUB-005: View Fixture Gallery
+      5) should allow a fan to view fixture galleries
+    UJ-PUB-006: Pro View (Scout Registration)
+      ✓ should allow a scout to apply for pro view (158307ms)
+
+
+  1 passing (6m)
+  5 failing
+
+  1) Public Content Journeys
+       UJ-PUB-001: Browse Fixtures
+         should allow a fan to browse fixtures:
+     CypressError: `cy.visit()` failed trying to load:
+
+http://localhost:3000/fixtures
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  > Error: ESOCKETTIMEDOUT
+
+Common situations why this would fail:
+  - you don't have internet access
+  - you forgot to run / boot your web server
+  - your web server isn't accessible
+  - you have weird network configuration settings on your computer
+      at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:134880:74)
+      at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:134454:12)
+      at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:134879:11)
+      at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)
+      at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)
+      at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)
+      at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1667:18)
+      at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2377:12)
+      at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2370:9)
+      at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2386:5)
+      at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2256:14)
+  From Your Spec Code:
+      at Context.eval (webpack://client/./cypress/e2e/public.cy.ts:5:15)
+  
+  From Node.js Internals:
+    Error: ESOCKETTIMEDOUT
+        at ClientRequest.<anonymous> (<embedded>:314:116346)
+        at Object.onceWrapper (node:events:633:28)
+        at ClientRequest.emit (node:events:519:28)
+        at Socket.emitRequestTimeout (node:_http_client:863:9)
+        at Object.onceWrapper (node:events:633:28)
+        at Socket.emit (node:events:531:35)
+        at Socket._onTimeout (node:net:604:8)
+        at listOnTimeout (node:internal/timers:588:17)
+        at process.processTimers (node:internal/timers:523:7)
+
+  2) Public Content Journeys
+       UJ-PUB-002: Browse News
+         should allow a fan to browse news:
+     CypressError: `cy.visit()` failed trying to load:
+
+http://localhost:3000/news
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  > Error: ESOCKETTIMEDOUT
+
+Common situations why this would fail:
+  - you don't have internet access
+  - you forgot to run / boot your web server
+  - your web server isn't accessible
+  - you have weird network configuration settings on your computer
+      at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:134880:74)
+      at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:134454:12)
+      at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:134879:11)
+      at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)
+      at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)
+      at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)
+      at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1667:18)
+      at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2377:12)
+      at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2370:9)
+      at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2386:5)
+      at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2256:14)
+  From Your Spec Code:
+      at Context.eval (webpack://client/./cypress/e2e/public.cy.ts:20:15)
+  
+  From Node.js Internals:
+    Error: ESOCKETTIMEDOUT
+        at ClientRequest.<anonymous> (<embedded>:314:116346)
+        at Object.onceWrapper (node:events:633:28)
+        at ClientRequest.emit (node:events:519:28)
+        at Socket.emitRequestTimeout (node:_http_client:863:9)
+        at Object.onceWrapper (node:events:633:28)
+        at Socket.emit (node:events:531:35)
+        at Socket._onTimeout (node:net:604:8)
+        at listOnTimeout (node:internal/timers:588:17)
+        at process.processTimers (node:internal/timers:523:7)
+
+  3) Public Content Journeys
+       UJ-PUB-003: View Team & Players
+         should allow a fan to view the team and player profiles:
+     CypressError: `cy.visit()` failed trying to load:
+
+http://localhost:3000/team
+
+We attempted to make an http request to this URL but the request failed without a response.
+
+We received this error at the network level:
+
+  > Error: ESOCKETTIMEDOUT
+
+Common situations why this would fail:
+  - you don't have internet access
+  - you forgot to run / boot your web server
+  - your web server isn't accessible
+  - you have weird network configuration settings on your computer
+      at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:134880:74)
+      at visitFailedByErr (http://localhost:3000/__cypress/runner/cypress_runner.js:134454:12)
+      at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:134879:11)
+      at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)
+      at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)
+      at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)
+      at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1667:18)
+      at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2377:12)
+      at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2370:9)
+      at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2386:5)
+      at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2256:14)
+  From Your Spec Code:
+      at Context.eval (webpack://client/./cypress/e2e/public.cy.ts:36:15)
+  
+  From Node.js Internals:
+    Error: ESOCKETTIMEDOUT
+        at ClientRequest.<anonymous> (<embedded>:314:116346)
+        at Object.onceWrapper (node:events:633:28)
+        at ClientRequest.emit (node:events:519:28)
+        at Socket.emitRequestTimeout (node:_http_client:863:9)
+        at Object.onceWrapper (node:events:633:28)
+        at Socket.emit (node:events:531:35)
+        at Socket._onTimeout (node:net:604:8)
+        at listOnTimeout (node:internal/timers:588:17)
+        at process.processTimers (node:internal/timers:523:7)
+
+  4) Public Content Journeys
+       UJ-PUB-004: View League Statistics
+         should allow a fan to view league statistics:
+     AssertionError: Timed out retrying after 30000ms: expected 'http://localhost:3000/league-statistics' to include '/league-statistics/'
+      at Context.eval (webpack://client/./cypress/e2e/public.cy.ts:57:21)
+
+  5) Public Content Journeys
+       UJ-PUB-005: View Fixture Gallery
+         should allow a fan to view fixture galleries:
+     AssertionError: Timed out retrying after 30000ms: Expected to find element: `[data-testid="gallery-item"]`, but never found it.
+      at Context.eval (webpack://client/./cypress/e2e/public.cy.ts:68:15)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        6                                                                                │
+  │ Passing:      1                                                                                │
+  │ Failing:      5                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  5                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     6 minutes, 27 seconds                                                            │
+  │ Spec Ran:     public.cy.ts                                                                     │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  /home/udorakpuenyi/amafor/client/cypress/screenshots/public.cy.ts/Public Content     (1280x720)
+      Journeys -- UJ-PUB-001 Browse Fixtures -- should allow a fan to browse fixtures               
+      (failed).png                                                                                  
+  -  /home/udorakpuenyi/amafor/client/cypress/screenshots/public.cy.ts/Public Content     (1280x720)
+      Journeys -- UJ-PUB-002 Browse News -- should allow a fan to browse news (failed               
+     ).png                                                                                          
+  -  /home/udorakpuenyi/amafor/client/cypress/screenshots/public.cy.ts/Public Content     (1280x720)
+      Journeys -- UJ-PUB-003 View Team & Players -- should allow a fan to view the te               
+     am and player profiles (failed).png                                                            
+  -  /home/udorakpuenyi/amafor/client/cypress/screenshots/public.cy.ts/Public Content     (1280x720)
+      Journeys -- UJ-PUB-004 View League Statistics -- should allow a fan to view lea               
+     gue statistics (failed).png                                                                    
+  -  /home/udorakpuenyi/amafor/client/cypress/screenshots/public.cy.ts/Public Content     (1280x720)
+      Journeys -- UJ-PUB-005 View Fixture Gallery -- should allow a fan to view fixtu               
+     re galleries (failed).png                                                                      
+
+
+================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✖  public.cy.ts                             06:27        6        1        5        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  1 of 1 failed (100%)                     06:27        6        1        5        -        -  
+

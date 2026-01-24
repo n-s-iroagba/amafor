@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import { developmentFixtureImages } from '../data/development/matchimages';
 import { productionFixtureImages } from '../data/production/matchimages';
 import { testFixtureImages } from '../data/testing/matchimages';
-import FixtureImage, { FixtureImageAttributes } from '@models/FixtureImage';
+import FixtureImage, { FixtureImageAttributes } from '../../models/FixtureImage';
 import { BaseSeeder } from './base-seeder';
 
 export class FixtureImageSeeder extends BaseSeeder<FixtureImage> {

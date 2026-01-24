@@ -4,39 +4,69 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.syncDatabase = void 0;
+exports.syncDatabase = exports.ScoutApplication = exports.ScoutReport = exports.SystemNotification = exports.AuditLog = exports.AdCreative = exports.AdCampaign = exports.Payment = exports.PatronSubscription = exports.Patron = exports.PlayerLeagueStatistics = exports.Player = exports.LeagueStatistics = exports.FixtureImage = exports.Lineup = exports.Goal = exports.FixtureStatistics = exports.Fixture = exports.Coach = exports.AcademyStaff = exports.FeaturedNews = exports.Article = exports.Trialist = exports.Video = exports.RssFeedSource = exports.AdZones = exports.Advertiser = exports.League = exports.User = void 0;
 exports.setupAssociations = setupAssociations;
 const database_1 = __importDefault(require("../config/database"));
 // Base Entities
 const User_1 = __importDefault(require("./User"));
+exports.User = User_1.default;
 const League_1 = __importDefault(require("./League"));
+exports.League = League_1.default;
 const Advertiser_1 = __importDefault(require("./Advertiser"));
+exports.Advertiser = Advertiser_1.default;
 const AdZones_1 = __importDefault(require("./AdZones"));
+exports.AdZones = AdZones_1.default;
 const RssFeedSource_1 = __importDefault(require("./RssFeedSource"));
-const Video_1 = __importDefault(require("./Video")); // Added
-const Trialist_1 = __importDefault(require("./Trialist")); // Added
+exports.RssFeedSource = RssFeedSource_1.default;
 // Content & Staff
 const Article_1 = __importDefault(require("./Article"));
+exports.Article = Article_1.default;
 const FeaturedNews_1 = __importDefault(require("./FeaturedNews"));
+exports.FeaturedNews = FeaturedNews_1.default;
 const AcademyStaff_1 = __importDefault(require("./AcademyStaff"));
+exports.AcademyStaff = AcademyStaff_1.default;
 const Coach_1 = __importDefault(require("./Coach"));
+exports.Coach = Coach_1.default;
 // Fixture & Team
 const Fixture_1 = __importDefault(require("./Fixture"));
+exports.Fixture = Fixture_1.default;
 const FixtureStatistics_1 = __importDefault(require("./FixtureStatistics")); // Added
+exports.FixtureStatistics = FixtureStatistics_1.default;
 const Goal_1 = __importDefault(require("./Goal"));
+exports.Goal = Goal_1.default;
 const Lineup_1 = __importDefault(require("./Lineup"));
+exports.Lineup = Lineup_1.default;
 const FixtureImage_1 = __importDefault(require("./FixtureImage"));
+exports.FixtureImage = FixtureImage_1.default;
 const LeagueStatistics_1 = __importDefault(require("./LeagueStatistics"));
+exports.LeagueStatistics = LeagueStatistics_1.default;
 const Player_1 = __importDefault(require("./Player"));
+exports.Player = Player_1.default;
 const PlayerLeagueStatistics_1 = __importDefault(require("./PlayerLeagueStatistics")); // Added
+exports.PlayerLeagueStatistics = PlayerLeagueStatistics_1.default;
 // Commercial & System
 const Patron_1 = __importDefault(require("./Patron"));
+exports.Patron = Patron_1.default;
 const PatronSubscription_1 = __importDefault(require("./PatronSubscription"));
+exports.PatronSubscription = PatronSubscription_1.default;
 const Payment_1 = __importDefault(require("./Payment"));
+exports.Payment = Payment_1.default;
 const AdCampaign_1 = __importDefault(require("./AdCampaign"));
+exports.AdCampaign = AdCampaign_1.default;
 const AdCreative_1 = __importDefault(require("./AdCreative"));
+exports.AdCreative = AdCreative_1.default;
 const AuditLog_1 = __importDefault(require("./AuditLog"));
+exports.AuditLog = AuditLog_1.default;
 const SystemNotification_1 = __importDefault(require("./SystemNotification"));
+exports.SystemNotification = SystemNotification_1.default;
+const ScoutReport_1 = __importDefault(require("./ScoutReport"));
+exports.ScoutReport = ScoutReport_1.default;
+const ScoutApplication_1 = __importDefault(require("./ScoutApplication"));
+exports.ScoutApplication = ScoutApplication_1.default;
+const Video_1 = __importDefault(require("./Video"));
+exports.Video = Video_1.default;
+const Trialist_1 = __importDefault(require("./Trialist"));
+exports.Trialist = Trialist_1.default;
 async function setupAssociations() {
     // ==================== FIXTURE ASSOCIATIONS ====================
     Fixture_1.default.hasMany(Goal_1.default, {

@@ -15,7 +15,8 @@ const validate = (schema) => (0, asyncHandler_1.asyncHandler)(async (req, res, n
     }
     catch (error) {
         if (error instanceof zod_1.z.ZodError) {
-            const errors = error.errors.map(err => ({
+            const zodError = error;
+            const errors = zodError.errors.map((err) => ({
                 field: err.path.join('.'),
                 message: err.message,
             }));

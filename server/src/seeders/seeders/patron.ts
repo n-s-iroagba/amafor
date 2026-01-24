@@ -1,4 +1,4 @@
-import Patron, { PatronAttributes } from "@models/Patron";
+import Patron, { PatronAttributes } from "../../models/Patron";
 import logger from "../../utils/logger";
 import { developmentPatrons } from "../data/development/patron";
 import { productionPatrons } from "../data/production/patron";
@@ -13,7 +13,7 @@ export class PatronSeeder extends BaseSeeder<Patron> {
 
   async getData(environment: string): Promise<PatronAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

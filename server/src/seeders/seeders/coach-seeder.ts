@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import { developmentCoaches } from '../data/development/coachs';
 import { productionCoachs } from '../data/production/coachs';
 import { testCoachs } from '../data/testing/coachs';
-import Coach, { CoachAttributes } from '@models/Coach';
+import Coach, { CoachAttributes } from '../../models/Coach';
 import { BaseSeeder } from './base-seeder';
 
 export class CoachSeeder extends BaseSeeder<Coach> {
@@ -13,7 +13,7 @@ export class CoachSeeder extends BaseSeeder<Coach> {
 
   async getData(environment: string): Promise<CoachAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

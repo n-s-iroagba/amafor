@@ -11,6 +11,7 @@ exports.developmentPlayerLeagueStatistics = [
         id: 'pl1pl1pl-pl1pl-pl1pl-pl1pl-pl1pl1pl1pl1',
         playerId: PLAYER_ID,
         leagueId: LEAGUE_ID,
+        goals: 0,
         assists: 4,
         cleanSheets: 0, // 0 for an outfielder usually
         yellowCards: 1,

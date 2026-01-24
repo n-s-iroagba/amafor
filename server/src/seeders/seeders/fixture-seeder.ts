@@ -1,6 +1,6 @@
 
-import { Fixture } from '@models/Fixture';
-import { FixtureAttributes } from '@models/Fixture';
+import { Fixture } from '../../models/Fixture';
+import { FixtureAttributes } from '../../models/Fixture';
 import logger from '../../utils/logger';
 import { developmentFixtures } from '../data/development/fixtures';
 import { productionFixtures } from '../data/production/fixtures';
@@ -14,7 +14,7 @@ export class FixtureSeeder extends BaseSeeder<Fixture> {
 
   async getData(environment: string): Promise<FixtureAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

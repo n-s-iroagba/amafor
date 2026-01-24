@@ -1,6 +1,6 @@
 
-import { AuditLog } from '@models/AuditLog';
-import { AuditLogAttributes } from '@models/AuditLog';
+import { AuditLog } from '../../models/AuditLog';
+import { AuditLogAttributes } from '../../models/AuditLog';
 import logger from '../../utils/logger';
 import { developmentAuditLogs } from '../data/development/auditlogs';
 import { productionAuditLogs } from '../data/production/auditlogs';
@@ -14,7 +14,7 @@ export class AuditLogSeeder extends BaseSeeder<AuditLog> {
 
   async getData(environment: string): Promise<AuditLogAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

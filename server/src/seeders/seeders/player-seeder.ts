@@ -1,6 +1,6 @@
 
-import { Player } from '@models/Player';
-import { PlayerAttributes } from '@models/Player';
+import { Player } from '../../models/Player';
+import { PlayerAttributes } from '../../models/Player';
 import logger from '../../utils/logger';
 import { developmentPlayers } from '../data/development/player';
 import { productionPlayers } from '../data/production/players';
@@ -14,7 +14,7 @@ export class PlayerSeeder extends BaseSeeder<Player> {
 
   async getData(environment: string): Promise<PlayerAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

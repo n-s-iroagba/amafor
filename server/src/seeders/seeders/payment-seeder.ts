@@ -1,4 +1,4 @@
-import Payment, { PaymentAttributes } from "@models/Payment";
+import Payment, { PaymentAttributes } from "../../models/Payment";
 import logger from "../../utils/logger";
 
 import { BaseSeeder } from "./base-seeder";
@@ -14,7 +14,7 @@ export class PaymentSeeder extends BaseSeeder<Payment> {
 
   async getData(environment: string): Promise<PaymentAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

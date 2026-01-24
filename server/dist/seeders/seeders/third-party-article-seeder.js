@@ -7,7 +7,7 @@ exports.FeaturedNewsSeeder = void 0;
 // seeders/FeaturedNewsSeeder.ts
 const FeaturedNews_1 = __importDefault(require("@models/FeaturedNews"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-const featuredNewss_1 = require("../data/development/featuredNewss");
+// import { developmentFeaturedNewss } from "../data/development/featuredNewss";
 const base_seeder_1 = require("./base-seeder");
 class FeaturedNewsSeeder extends base_seeder_1.BaseSeeder {
     constructor() {
@@ -27,7 +27,7 @@ class FeaturedNewsSeeder extends base_seeder_1.BaseSeeder {
     }
     getDevelopmentData() {
         try {
-            return featuredNewss_1.developmentFeaturedNewss || [];
+            return /* developmentFeaturedNewss || */ [];
         }
         catch (error) {
             logger_1.default.warn(`No development data found for ${this.name}, returning empty array`);

@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import { developmentAdCreatives } from '../data/development/adcreatives';
 import { productionAdCreatives } from '../data/production/adcreatives';
 import { testAdCreatives } from '../data/testing/adcreatives';
-import AdCreative, { AdCreativeAttributes } from '@models/AdCreative';
+import AdCreative, { AdCreativeAttributes } from '../../models/AdCreative';
 import { BaseSeeder } from './base-seeder';
 
 export class AdCreativeSeeder extends BaseSeeder<AdCreative> {
@@ -13,7 +13,7 @@ export class AdCreativeSeeder extends BaseSeeder<AdCreative> {
 
   async getData(environment: string): Promise<AdCreativeAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

@@ -3,13 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.structuredLogger = exports.errorLogger = exports.requestLogger = void 0;
+exports.structuredLogger = exports.errorLogger = exports.requestLogger = exports.logger = void 0;
 const winston_1 = __importDefault(require("winston"));
 const uuid_1 = require("uuid");
 // Define log format
 const logFormat = winston_1.default.format.combine(winston_1.default.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), winston_1.default.format.errors({ stack: true }), winston_1.default.format.json(), winston_1.default.format.metadata());
 // Create logger instance
-const logger = winston_1.default.createLogger({
+exports.logger = winston_1.default.createLogger({
     level: process.env.LOG_LEVEL || 'info',
     format: logFormat,
     defaultMeta: { service: 'amafor-gladiators-api' },
@@ -31,7 +31,7 @@ const logger = winston_1.default.createLogger({
 });
 // Add console transport in non-production environments
 if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston_1.default.transports.Console({
+    exports.logger.add(new winston_1.default.transports.Console({
         format: winston_1.default.format.combine(winston_1.default.format.colorize(), winston_1.default.format.simple())
     }));
 }
@@ -42,7 +42,7 @@ const requestLogger = (req, res, next) => {
     // Store request ID for later use
     req.headers['x-request-id'] = requestId;
     // Log request
-    logger.info('Incoming request', {
+    exports.logger.info('Incoming request', {
         requestId,
         method: req.method,
         url: req.url,
@@ -54,7 +54,7 @@ const requestLogger = (req, res, next) => {
     res.on('finish', () => {
         const duration = Date.now() - startTime;
         const logLevel = res.statusCode >= 400 ? 'warn' : 'info';
-        logger.log(logLevel, 'Request completed', {
+        exports.logger.log(logLevel, 'Request completed', {
             requestId,
             method: req.method,
             url: req.url,
@@ -70,7 +70,7 @@ exports.requestLogger = requestLogger;
 // Error logging middleware
 const errorLogger = (error, req) => {
     const requestId = req?.headers['x-request-id'] || 'unknown';
-    logger.error('Unhandled error', {
+    exports.logger.error('Unhandled error', {
         requestId,
         error: error.message,
         stack: error.stack,
@@ -83,19 +83,19 @@ exports.errorLogger = errorLogger;
 // Structured logging methods
 exports.structuredLogger = {
     info: (message, meta) => {
-        logger.info(message, meta);
+        exports.logger.info(message, meta);
     },
     error: (message, meta) => {
-        logger.error(message, meta);
+        exports.logger.error(message, meta);
     },
     warn: (message, meta) => {
-        logger.warn(message, meta);
+        exports.logger.warn(message, meta);
     },
     debug: (message, meta) => {
-        logger.debug(message, meta);
+        exports.logger.debug(message, meta);
     },
     audit: (action, userId, entityType, entityId, details) => {
-        logger.info('Audit log', {
+        exports.logger.info('Audit log', {
             action,
             userId,
             entityType,
@@ -105,7 +105,7 @@ exports.structuredLogger = {
         });
     },
     security: (event, userId, ipAddress, details) => {
-        logger.warn('Security event', {
+        exports.logger.warn('Security event', {
             event,
             userId,
             ipAddress,
@@ -114,7 +114,7 @@ exports.structuredLogger = {
         });
     },
     business: (event, amount, userId, details) => {
-        logger.info('Business event', {
+        exports.logger.info('Business event', {
             event,
             amount,
             userId,
@@ -124,5 +124,5 @@ exports.structuredLogger = {
     }
 };
 // Export default logger
-exports.default = logger;
+exports.default = exports.logger;
 //# sourceMappingURL=logger.js.map

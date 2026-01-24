@@ -1,1 +1,1 @@
-{"version":3,"file":"matchsummarys.js","sourceRoot":"","sources":["../../../../src/seeders/data/production/matchsummarys.ts"],"names":[],"mappings":";;;AAEa,QAAA,yBAAyB,GAA+B;AACnE,wDAAwD;AACxD,mDAAmD;CACpD,CAAC"}
+{"version":3,"file":"matchsummarys.js","sourceRoot":"","sources":["../../../../src/seeders/data/production/matchsummarys.ts"],"names":[],"mappings":";AAAA,qEAAqE;;;AAExD,QAAA,yBAAyB,CAAQ,gCAAgC,AAAxC,GAA2C;AAC/E,wDAAwD;AACxD,mDAAmD;CACpD,CAAC"}

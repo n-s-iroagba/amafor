@@ -122,6 +122,7 @@ const ArticleList: React.FC = () => {
                 whileHover={{ y: -5 }}
                 className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 flex flex-col h-full hover:shadow-lg transition-all duration-300 border border-gray-100 relative overflow-hidden group w-full cursor-pointer"
                 onClick={() => handleArticleClick(article.id)}
+                data-testid="news-item"
               >
                 {/* Premium badge */}
                 {index < 2 && (

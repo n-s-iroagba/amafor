@@ -1,6 +1,6 @@
 
-import { LeagueStatistics } from '@models/LeagueStatistics';
-import { LeagueStatisticsAttributes } from '@models/LeagueStatistics';
+import { LeagueStatistics } from '../../models/LeagueStatistics';
+import { LeagueStatisticsAttributes } from '../../models/LeagueStatistics';
 import logger from '../../utils/logger';
 import { developmentLeagueStatistics } from '../data/development/leaguestatistics';
 import { productionLeagueStatisticss } from '../data/production/leaguestatisticss';
@@ -14,7 +14,7 @@ export class LeagueStatisticsSeeder extends BaseSeeder<LeagueStatistics> {
 
   async getData(environment: string): Promise<LeagueStatisticsAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

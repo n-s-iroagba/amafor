@@ -4,7 +4,7 @@ const express_1 = require("express");
 const LineupController_1 = require("../controllers/LineupController");
 const router = (0, express_1.Router)();
 const lineupController = new LineupController_1.LineupController();
-router.post('/', lineupController.createLineupPlayer);
+router.post('/', lineupController.createLineup);
 router.get('/:fixtureId', lineupController.getLineupByFixture);
 router.get('/:fixtureId/starters', lineupController.getStartersByFixture);
 router.get('/:fixtureId/substitutes', lineupController.getSubstitutesByFixture);

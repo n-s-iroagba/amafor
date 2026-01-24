@@ -161,6 +161,7 @@ export const API_ROUTES = {
 
   PATRONS: {
     LIST: '/patrons',
+    TOP: '/patrons/top',
     CREATE: '/patrons',
     DETAIL: (id: number) => `/patrons/${id}`,
     UPDATE: (id: number) => `/patrons/${id}`,
@@ -208,19 +209,9 @@ export const API_ROUTES = {
     STATS: '/trialists/stats',
   },
 
-  ACADEMY: {
-    NEWS: '/academy/news',
-    REGISTER: '/academy/register',
-    APPLICATIONS: '/academy/applications',
-    UPDATE_APPLICATION: (id: string | number) => `/academy/applications/${id}`,
-    STAFF: {
-      LIST: '/academy-staff',
-      CREATE: '/academy-staff',
-      VIEW: (id: string | number) => `/academy-staff/${id}`,
-      UPDATE: (id: string | number) => `/academy-staff/${id}`,
-      DELETE: (id: string | number) => `/academy-staff/${id}`,
-    },
-  },
+
+
+
   ADVERTISER: {
     CAMPAIGNS: {
       CREATE: '/advertiser/campaigns',

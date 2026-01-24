@@ -3,7 +3,7 @@ import logger from '../../utils/logger';
 import { developmentGoals } from '../data/development/goals';
 import { productionGoals } from '../data/production/goals';
 import { testGoals } from '../data/testing/goals';
-import Goal, { GoalAttributes } from '@models/Goal';
+import Goal, { GoalAttributes } from '../../models/Goal';
 import { BaseSeeder } from './base-seeder';
 
 export class GoalSeeder extends BaseSeeder<Goal> {
@@ -13,7 +13,7 @@ export class GoalSeeder extends BaseSeeder<Goal> {
 
   async getData(environment: string): Promise<GoalAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

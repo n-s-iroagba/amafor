@@ -60,16 +60,59 @@ export class FixtureController {
     }
   };
 
+  public getNextUpcoming = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Get the single next upcoming fixture
+      const matches = await this.matchService.getUpcoming(1);
+
+      res.status(200).json({
+        success: true,
+        data: matches.length > 0 ? matches[0] : null
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getGallery = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Fetch fixtures with images. Assuming repository 'findAll' passes options to Sequelize
-      // or we use a specific service method. For now, using findAll with query params.
-      // Ideally, specific repo support for "has images" is better, but this connects the plumbing.
-      const query = {
-        ...req.query,
-        include: 'images,league' // Assuming standard include param handling in repo/service
-      };
-      const matches = await this.matchService.findAll(query);
+      const { limit, offset, sort, include, ...filters } = req.query;
+      const options: any = {};
+
+      // Handle pagination
+      if (limit) options.limit = parseInt(limit as string, 10);
+      if (offset) options.offset = parseInt(offset as string, 10);
+
+      // Handle sorting
+      if (sort) {
+        const sortStr = sort as string;
+        if (sortStr.startsWith('-')) {
+          options.order = [[sortStr.substring(1), 'DESC']];
+        } else {
+          options.order = [[sortStr, 'ASC']];
+        }
+      } else {
+        options.order = [['matchDate', 'DESC']];
+      }
+
+      // Handle includes
+      // Force include images for gallery, plus any requested includes
+      const requestedIncludes = include ? (include as string).split(',').map(i => i.trim()) : [];
+      const uniqueIncludes = Array.from(new Set([...requestedIncludes, 'images', 'league'])); // Ensure images and league are present
+      options.include = uniqueIncludes;
+
+      // Handle filters
+      const where: any = {};
+      Object.keys(filters).forEach(key => {
+        if (filters[key] !== undefined && filters[key] !== '') {
+          where[key] = filters[key];
+        }
+      });
+      if (Object.keys(where).length > 0) {
+        options.where = where;
+      }
+
+      const matches = await this.matchService.findAll(options);
 
       res.status(200).json({
         success: true,
@@ -97,8 +140,51 @@ export class FixtureController {
 
   public listAllFixturees = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Fixturees service: findAll(filters)
-      const matches = await this.matchService.findAll(req.query);
+      const { limit, offset, sort, include, ...filters } = req.query;
+
+      const options: any = {};
+
+      // Handle pagination
+      if (limit) options.limit = parseInt(limit as string, 10);
+      if (offset) options.offset = parseInt(offset as string, 10);
+
+      // Handle sorting
+      if (sort) {
+        const sortStr = sort as string;
+        if (sortStr.startsWith('-')) {
+          options.order = [[sortStr.substring(1), 'DESC']];
+        } else {
+          options.order = [[sortStr, 'ASC']];
+        }
+      } else {
+        // Default sort
+        options.order = [['matchDate', 'DESC']];
+      }
+
+      // Handle includes
+      if (include) {
+        const includeStr = include as string;
+        // Handle comma-separated includes
+        options.include = includeStr.split(',').map(i => i.trim());
+      }
+
+      // Handle filters (where clause)
+      // Remove any undefined or empty strings
+      const where: any = {};
+      Object.keys(filters).forEach(key => {
+        if (filters[key] !== undefined && filters[key] !== '') {
+          // Simple equality check for now. 
+          // TODO: Implement more complex filtering if needed (e.g. ranges)
+          where[key] = filters[key];
+        }
+      });
+
+      if (Object.keys(where).length > 0) {
+        options.where = where;
+      }
+
+      // Fixturees service: findAll(options)
+      const matches = await this.matchService.findAll(options);
 
       res.status(200).json({
         success: true,

@@ -1,5 +1,5 @@
 // seeders/FixtureStatisticsSeeder.ts
-import FixtureStatistics, { FixtureStatisticsAttributes } from "@models/FixtureStatistics";
+import FixtureStatistics, { FixtureStatisticsAttributes } from "../../models/FixtureStatistics";
 import logger from "../../utils/logger";
 import { developmentFixtureStatistics } from "../data/development/fixtureStatistics";
 import { BaseSeeder } from "./base-seeder";
@@ -11,7 +11,7 @@ export class FixtureStatisticsSeeder extends BaseSeeder<FixtureStatistics> {
 
   async getData(environment: string): Promise<FixtureStatisticsAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return [];

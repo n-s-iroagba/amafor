@@ -1,4 +1,3 @@
-import { DonationStatus } from '@models/Donation';
 import { SubscriptionStatus } from '@models/PatronSubscription';
 export interface PaymentInitializeRequest {
     email: string;
@@ -131,7 +130,6 @@ export declare const initiateTransfer: (request: TransferRequest) => Promise<Tra
 export declare const createSubscription: (request: SubscriptionRequest) => Promise<SubscriptionResponse>;
 export declare const verifyWebhookSignature: (payload: any, signature: string) => boolean;
 export declare const generateReference: (prefix?: string) => string;
-export declare const mapPaymentStatus: (paystackStatus: string) => DonationStatus;
 export declare const mapSubscriptionStatus: (paystackStatus: string) => SubscriptionStatus;
 export declare const validateWebhookPayload: (payload: any) => {
     isValid: boolean;
@@ -139,12 +137,6 @@ export declare const validateWebhookPayload: (payload: any) => {
     data?: any;
     reference?: string;
 };
-export declare const handleDonationWebhook: (payload: any) => Promise<{
-    success: boolean;
-    donationId?: string;
-    reference: string;
-    status: DonationStatus;
-}>;
 export declare const handleSubscriptionWebhook: (payload: any) => Promise<{
     success: boolean;
     subscriptionCode?: string;
@@ -164,7 +156,6 @@ declare const _default: {
     createSubscription: (request: SubscriptionRequest) => Promise<SubscriptionResponse>;
     verifyWebhookSignature: (payload: any, signature: string) => boolean;
     generateReference: (prefix?: string) => string;
-    mapPaymentStatus: (paystackStatus: string) => DonationStatus;
     mapSubscriptionStatus: (paystackStatus: string) => SubscriptionStatus;
     validateWebhookPayload: (payload: any) => {
         isValid: boolean;
@@ -172,12 +163,6 @@ declare const _default: {
         data?: any;
         reference?: string;
     };
-    handleDonationWebhook: (payload: any) => Promise<{
-        success: boolean;
-        donationId?: string;
-        reference: string;
-        status: DonationStatus;
-    }>;
     handleSubscriptionWebhook: (payload: any) => Promise<{
         success: boolean;
         subscriptionCode?: string;

@@ -236,19 +236,20 @@ const uploadFile = async (file, options) => {
             };
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error uploading file', {
-                error: error.message,
+                error: err.message,
                 type: options.type,
                 originalname: file.originalname,
                 userId: options.userId,
             });
             return {
                 success: false,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {
@@ -318,17 +319,18 @@ const getFile = async (key, options) => {
             }
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error getting file', {
-                error: error.message,
+                error: err.message,
                 key,
             });
             return {
                 success: false,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {
@@ -361,17 +363,18 @@ const deleteFile = async (key) => {
             return { success: true };
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error deleting file', {
-                error: error.message,
+                error: err.message,
                 key,
             });
             return {
                 success: false,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {
@@ -430,7 +433,8 @@ const validateAdCreative = async (file, zone) => {
                     };
                 }
                 catch (imageError) {
-                    errors.push(`Failed to read image dimensions: ${imageError.message}`);
+                    const err = imageError;
+                    errors.push(`Failed to read image dimensions: ${err.message}`);
                 }
             }
             // For videos, we can't easily check dimensions without proper video processing
@@ -450,18 +454,19 @@ const validateAdCreative = async (file, zone) => {
             };
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
             logger_1.logger.error('Error validating ad creative', {
-                error: error.message,
+                error: err.message,
                 zone,
                 filename: file.originalname,
             });
             return {
                 valid: false,
-                errors: [`Validation error: ${error.message}`],
+                errors: [`Validation error: ${err.message}`],
                 warnings: [],
                 actualSize: file.size,
             };
@@ -505,11 +510,12 @@ const generateThumbnail = async (buffer, options) => {
             return thumbnailBuffer;
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
-            logger_1.logger.error('Error generating thumbnail', { error: error.message });
+            logger_1.logger.error('Error generating thumbnail', { error: err.message });
             throw error;
         }
         finally {
@@ -549,7 +555,8 @@ const cleanupOldFiles = async (olderThanDays = 30) => {
                 // S3 cleanup would require listing objects and deleting old ones
                 // This is more complex and requires pagination
                 // For now, we'll skip S3 cleanup
-                warnings.push('S3 cleanup not implemented');
+                // warnings.push('S3 cleanup not implemented');
+                logger_1.logger.warn('S3 cleanup not implemented');
             }
             else {
                 // Local storage cleanup
@@ -590,12 +597,13 @@ const cleanupOldFiles = async (olderThanDays = 30) => {
             return { deleted, errors };
         }
         catch (error) {
+            const err = error;
             span.setStatus({
                 code: 2,
-                message: error.message,
+                message: err.message,
             });
-            logger_1.logger.error('Error cleaning up old files', { error: error.message });
-            return { deleted: 0, errors: [error.message] };
+            logger_1.logger.error('Error cleaning up old files', { error: err.message });
+            return { deleted: 0, errors: [err.message] };
         }
         finally {
             span.end();
@@ -648,15 +656,16 @@ const checkStorageHealth = async () => {
             }
         }
         catch (error) {
+            const err = error;
             span.setAttributes({
                 'storage.healthy': false,
                 'storage.type': STORAGE_TYPE,
-                'storage.error': error.message,
+                'storage.error': err.message,
             });
             return {
                 healthy: false,
                 type: STORAGE_TYPE,
-                error: error.message,
+                error: err.message,
             };
         }
         finally {

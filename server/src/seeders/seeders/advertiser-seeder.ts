@@ -1,5 +1,5 @@
 // seeders/AdvertiserSeeder.ts
-import Advertiser, { AdvertiserAttributes } from "@models/Advertiser";
+import Advertiser, { AdvertiserAttributes } from "../../models/Advertiser";
 import logger from "../../utils/logger";
 import { developmentAdvertisers } from "../data/development/advertiser";
 import { BaseSeeder } from "./base-seeder";
@@ -11,7 +11,7 @@ export class AdvertiserSeeder extends BaseSeeder<Advertiser> {
 
   async getData(environment: string): Promise<AdvertiserAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return this.getDevelopmentData();

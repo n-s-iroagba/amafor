@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.roundTo = exports.calculatePercentage = exports.getTimestamp = exports.maskSensitiveData = exports.generateOTP = exports.formatNigerianPhone = exports.validateNigerianPhone = exports.retry = exports.sleep = exports.parseFloatWithDefault = exports.parseIntWithDefault = exports.parseBoolean = exports.randomString = exports.randomInRange = exports.isObject = exports.deepMerge = exports.deepClone = exports.throttle = exports.debounce = exports.filterBy = exports.sortBy = exports.generatePagination = exports.extractExcerpt = exports.truncateText = exports.slugify = exports.generatePlayerShareMessage = exports.generateArticleShareMessage = exports.generateWhatsAppUrl = exports.generateShareUrl = exports.calculateReadTime = exports.calculateAge = exports.formatDateTime = exports.formatDate = exports.formatCurrency = exports.getRequestId = exports.getUserAgent = exports.getClientIp = exports.generateId = void 0;
+exports.roundTo = exports.calculatePercentage = exports.getTimestamp = exports.maskSensitiveData = exports.generateOTP = exports.formatNigerianPhone = exports.validateNigerianPhone = exports.retry = exports.sleep = exports.parseFloatWithDefault = exports.parseIntWithDefault = exports.parseBoolean = exports.randomString = exports.randomInRange = exports.isObject = exports.deepMerge = exports.deepClone = exports.throttle = exports.debounce = exports.filterBy = exports.sortBy = exports.generatePagination = exports.extractExcerpt = exports.truncateText = exports.slugify = exports.generateWhatsAppUrl = exports.generateShareUrl = exports.calculateReadTime = exports.calculateAge = exports.formatDateTime = exports.formatDate = exports.formatCurrency = exports.getRequestId = exports.getUserAgent = exports.getClientIp = exports.generateId = void 0;
 const tracer_1 = require("./tracer");
 const uuid_1 = require("uuid");
 // Generate a unique ID
@@ -107,16 +107,6 @@ const generateWhatsAppUrl = (phone, message) => {
     return `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodedMessage}`;
 };
 exports.generateWhatsAppUrl = generateWhatsAppUrl;
-// Generate article share message
-const generateArticleShareMessage = (title, url) => {
-    return `Check out this article from Amafor Gladiators FC: "${title}" ${url}`;
-};
-exports.generateArticleShareMessage = generateArticleShareMessage;
-// Generate player share message
-const generatePlayerShareMessage = (playerName, position, url) => {
-    return `Check out ${playerName}, a ${position} from Amafor Gladiators FC: ${url}`;
-};
-exports.generatePlayerShareMessage = generatePlayerShareMessage;
 // Slugify string
 const slugify = (text) => {
     return text
@@ -340,7 +330,7 @@ exports.sleep = sleep;
 // Retry function with exponential backoff
 const retry = async (fn, retries = 3, delay = 1000) => {
     return tracer_1.tracer.startActiveSpan('helpers.retry', async (span) => {
-        let lastError;
+        let lastError = new Error('Retry failed');
         for (let i = 0; i < retries; i++) {
             try {
                 span.setAttributes({
@@ -434,10 +424,6 @@ exports.default = {
     calculateAge: exports.calculateAge,
     calculateReadTime: exports.calculateReadTime,
     generateShareUrl: exports.generateShareUrl,
-    generateWhatsAppUrl: exports.generateWhatsAppUrl,
-    generateArticleShareMessage: exports.generateArticleShareMessage,
-    generatePlayerShareMessage: exports.generatePlayerShareMessage,
-    slugify: exports.slugify,
     truncateText: exports.truncateText,
     extractExcerpt: exports.extractExcerpt,
     generatePagination: exports.generatePagination,

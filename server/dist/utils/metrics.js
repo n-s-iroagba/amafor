@@ -8,7 +8,7 @@ const prom_client_1 = __importDefault(require("prom-client"));
 // Enable default metrics
 prom_client_1.default.collectDefaultMetrics({
     prefix: 'amafor_gladiators_',
-    timeout: 5000,
+    // timeout: 5000,
 });
 // HTTP Metrics
 const httpRequestDuration = new prom_client_1.default.Histogram({

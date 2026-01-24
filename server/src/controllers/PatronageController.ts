@@ -60,6 +60,24 @@ export class PatronageController {
    * @apiGroup Patronage
    * @srsRequirement REQ-ADM-10
    */
+  public getTopPatrons = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 5;
+      const patrons = await this.patronageService.listAllPatrons({
+        limit,
+        sort: '-amount',
+        status: 'active'
+      });
+
+      res.status(200).json({
+        success: true,
+        data: patrons
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public getPatronDetails = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

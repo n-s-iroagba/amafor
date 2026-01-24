@@ -568,7 +568,7 @@ class AdCampaignRepository extends BaseRepository_1.BaseRepository {
                 const exportData = {
                     id: campaign.id,
                     name: campaign.name,
-                    advertiser: campaign.advertiser?.contactEmail,
+                    advertiser: campaign.advertiser?.email,
                     status: campaign.status,
                     budget: campaign.budget,
                     spent: campaign.spent,

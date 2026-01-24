@@ -4,8 +4,7 @@ export declare const adCreativeSchema: {
         body: z.ZodObject<{
             name: z.ZodString;
             type: z.ZodEnum<{
-                image: "image";
-                video: "video";
+                [x: string]: string;
             }>;
             format: z.ZodString;
             url: z.ZodString;

@@ -8,7 +8,7 @@ import disputeRoutes from './disputeRoutes';
 
 import videoRoutes from './videoRoutes';
 import authRoutes from './authRoutes';
-import academyRoutes from './academyRoutes';
+
 import academyStaffRoutes from './academyStaffRoutes';
 import clubLeagueRoutes from './clubLeagueRoutes';
 import feedsRoutes from './feedsRoutes';
@@ -42,7 +42,7 @@ router.use('/ads', advertisingRoutes);
 router.use('/advertiser/disputes', disputeRoutes);
 router.use('/videos', videoRoutes);
 router.use('/auth', authRoutes);
-router.use('/academy', academyRoutes);
+
 router.use('/academy-staff', academyStaffRoutes);
 router.use('/club-league-stats', clubLeagueRoutes);
 router.use('/leagues', leagueRoutes);

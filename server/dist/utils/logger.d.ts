@@ -1,6 +1,6 @@
 import winston from 'winston';
 import { Request, Response, NextFunction } from 'express';
-declare const logger: winston.Logger;
+export declare const logger: winston.Logger;
 export declare const requestLogger: (req: Request, res: Response, next: NextFunction) => void;
 export declare const errorLogger: (error: Error, req?: Request) => void;
 export declare const structuredLogger: {

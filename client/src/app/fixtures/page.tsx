@@ -58,7 +58,7 @@ export default function FixturesPage() {
     params: {
       include: 'league',
       limit: 100,
-      sort: '-date'
+      sort: '-matchDate'
     }
   });
 
@@ -456,6 +456,7 @@ export default function FixturesPage() {
                         key={fixture.id}
                         onClick={() => handleFixtureClick(fixture.id)}
                         className="p-6 border-b border-slate-100 last:border-b-0 hover:bg-slate-50 cursor-pointer transition-colors group"
+                        data-testid="fixture-item"
                       >
                         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                           {/* Date & Status */}

@@ -9,6 +9,7 @@ export declare class AnalyticsController {
      * @apiGroup Analytics
      * @srsRequirement REQ-ANALYTICS-01
      */
-    getAdminDashboard: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getDashboardStats: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getRevenueStats: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 //# sourceMappingURL=AnalyticsController.d.ts.map

@@ -9,9 +9,7 @@ export declare const trialistValidationSchemas: {
             dob: z.ZodPipe<z.ZodString, z.ZodTransform<Date, string>>;
             position: z.ZodString;
             preferredFoot: z.ZodEnum<{
-                LEFT: "LEFT";
-                RIGHT: "RIGHT";
-                BOTH: "BOTH";
+                [x: string]: string;
             }>;
             height: z.ZodOptional<z.ZodNumber>;
             weight: z.ZodOptional<z.ZodNumber>;
@@ -37,9 +35,7 @@ export declare const trialistValidationSchemas: {
             dob: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<Date, string>>>;
             position: z.ZodOptional<z.ZodString>;
             preferredFoot: z.ZodOptional<z.ZodEnum<{
-                LEFT: "LEFT";
-                RIGHT: "RIGHT";
-                BOTH: "BOTH";
+                [x: string]: string;
             }>>;
             height: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
             weight: z.ZodNullable<z.ZodOptional<z.ZodNumber>>;
@@ -64,10 +60,7 @@ export declare const trialistValidationSchemas: {
         }, z.core.$strip>;
         body: z.ZodObject<{
             status: z.ZodEnum<{
-                PENDING: "PENDING";
-                REVIEWED: "REVIEWED";
-                INVITED: "INVITED";
-                REJECTED: "REJECTED";
+                [x: string]: string;
             }>;
         }, z.core.$strip>;
     }, z.core.$strip>;

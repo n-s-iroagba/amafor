@@ -1,3 +1,2 @@
-import { FixtureSummaryAttributes } from '@models/FixtureSummary';
-export declare const productionFixtureSummarys: FixtureSummaryAttributes[];
+export declare const productionFixtureSummarys: any[];
 //# sourceMappingURL=matchsummarys.d.ts.map

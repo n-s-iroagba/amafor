@@ -1,6 +1,6 @@
 
-import { AdCampaign } from '@models/AdCampaign';
-import { AdCampaignAttributes } from '@models/AdCampaign';
+import { AdCampaign } from '../../models/AdCampaign';
+import { AdCampaignAttributes } from '../../models/AdCampaign';
 import logger from '../../utils/logger';
 import { developmentAdCampaigns } from '../data/development/adcampaigns';
 import { productionAdCampaigns } from '../data/production/adcampaigns';
@@ -14,7 +14,7 @@ export class AdCampaignSeeder extends BaseSeeder<AdCampaign> {
 
   async getData(environment: string): Promise<AdCampaignAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

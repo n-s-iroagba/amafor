@@ -1,6 +1,6 @@
 
-import { RssFeedSource } from '@models/RssFeedSource';
-import { RssFeedSourceAttributes } from '@models/RssFeedSource';
+import { RssFeedSource } from '../../models/RssFeedSource';
+import { RssFeedSourceAttributes } from '../../models/RssFeedSource';
 import logger from '../../utils/logger';
 import { developmentRssFeedSources } from '../data/development/rssfeedsources';
 import { productionRssFeedSources } from '../data/production/rssfeedsources';
@@ -14,7 +14,7 @@ export class RssFeedSourceSeeder extends BaseSeeder<RssFeedSource> {
 
   async getData(environment: string): Promise<RssFeedSourceAttributes[]> {
     logger.info(`Loading ${this.name} data for ${environment} environment`);
-    
+
     switch (environment) {
       case 'production':
         return await this.getProductionData();

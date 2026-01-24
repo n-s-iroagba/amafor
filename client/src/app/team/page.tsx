@@ -80,6 +80,7 @@ export default function TeamSquad() {
       <div
         className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-slate-100"
         onClick={() => setSelectedMember(member)}
+        data-testid="player-card"
       >
         <div className="relative h-80 w-full overflow-hidden bg-slate-100">
           {member.imageUrl ? (
