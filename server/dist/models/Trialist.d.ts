@@ -15,6 +15,12 @@ export interface TrialistAttributes {
     cvUrl?: string;
     status: 'PENDING' | 'REVIEWED' | 'INVITED' | 'REJECTED';
     notes?: string;
+    guardianName?: string;
+    guardianPhone?: string;
+    guardianEmail?: string;
+    consentEmail: boolean;
+    consentSmsWhatsapp: boolean;
+    guardianConsent: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -36,6 +42,12 @@ export declare class Trialist extends Model<TrialistAttributes, TrialistCreation
     cvUrl?: string;
     status: 'PENDING' | 'REVIEWED' | 'INVITED' | 'REJECTED';
     notes?: string;
+    guardianName?: string;
+    guardianPhone?: string;
+    guardianEmail?: string;
+    consentEmail: boolean;
+    consentSmsWhatsapp: boolean;
+    guardianConsent: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

@@ -8,7 +8,7 @@ const FIXTURE_ID = 'f1f1f1f1-f1f1-f1f1-f1f1-f1f1f1f1f1f1';
 exports.developmentFixtureImages = [
     {
         id: 1,
-        fixtureId: FIXTURE_ID,
+        fixtureId: FIXTURE_ID, // Type casting if interface expects number vs UUID string
         imageUrl: 'https://placehold.co/800x600/1d3557/ffffff?text=Fixture+Kickoff',
         caption: 'The teams lining up before the kickoff.',
         createdAt: new Date(),

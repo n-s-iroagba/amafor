@@ -14,14 +14,14 @@ var RssFeedSourceCategory;
     RssFeedSourceCategory["BUSINESS"] = "business";
     RssFeedSourceCategory["ENTERTAINMENT"] = "entertainment";
     RssFeedSourceCategory["NIGERIA"] = "nigeria";
-})(RssFeedSourceCategory = exports.RssFeedSourceCategory || (exports.RssFeedSourceCategory = {}));
+})(RssFeedSourceCategory || (exports.RssFeedSourceCategory = RssFeedSourceCategory = {}));
 class RssFeedSource extends sequelize_1.Model {
 }
 exports.RssFeedSource = RssFeedSource;
 RssFeedSource.init({
     id: {
-        type: sequelize_1.DataTypes.INTEGER,
-        autoIncrement: true,
+        type: sequelize_1.DataTypes.UUID,
+        defaultValue: sequelize_1.DataTypes.UUIDV4,
         primaryKey: true
     },
     name: {

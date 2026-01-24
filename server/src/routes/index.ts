@@ -59,4 +59,12 @@ router.use('/trialists', trialistRoutes);
 router.use('/users', userRoutes);
 router.use('/scout', scoutRoutes);
 
+import analyticsRoutes from './analyticsRoutes';
+import notificationRoutes from './notificationRoutes';
+
+// ... (existing imports, keep them essentially)
+
+router.use('/analytics', analyticsRoutes);
+router.use('/notifications', notificationRoutes);
+
 export default router;

@@ -8,7 +8,7 @@ export interface GoalAttributes {
     createdAt: Date;
     updatedAt: Date;
 }
-export declare type GoalCreationAttributes = Omit<GoalAttributes, 'id' | 'createdAt' | 'updatedAt'> & {
+export type GoalCreationAttributes = Omit<GoalAttributes, 'id' | 'createdAt' | 'updatedAt'> & {
     id?: number;
     createdAt?: Date;
     updatedAt?: Date;

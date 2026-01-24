@@ -2,7 +2,6 @@ import axios from 'axios';
 import crypto from 'crypto';
 import { logger } from './logger';
 import { tracer } from './tracer';
-import { DonationStatus } from '@models/Donation';
 import { SubscriptionStatus } from '@models/PatronSubscription';
 
 // Paystack configuration
@@ -419,20 +418,6 @@ export const generateReference = (prefix: string = 'AGFC'): string => {
   return `${prefix}_${timestamp}_${random}`;
 };
 
-// Map Paystack status to donation status
-export const mapPaymentStatus = (paystackStatus: string): DonationStatus => {
-  switch (paystackStatus.toLowerCase()) {
-    case 'success':
-      return DonationStatus.COMPLETED;
-    case 'failed':
-      return DonationStatus.FAILED;
-    case 'abandoned':
-      return DonationStatus.FAILED;
-    default:
-      return DonationStatus.PENDING;
-  }
-};
-
 // Map Paystack status to subscription status
 export const mapSubscriptionStatus = (paystackStatus: string): SubscriptionStatus => {
   switch (paystackStatus.toLowerCase()) {
@@ -462,7 +447,7 @@ export const validateWebhookPayload = (payload: any): {
     }
 
     const { event, data } = payload;
-    
+
     if (!event || !data) {
       return { isValid: false };
     }
@@ -479,68 +464,6 @@ export const validateWebhookPayload = (payload: any): {
   }
 };
 
-// Handle donation webhook
-export const handleDonationWebhook = async (payload: any): Promise<{
-  success: boolean;
-  donationId?: string;
-  reference: string;
-  status: DonationStatus;
-}> => {
-  return tracer.startActiveSpan('paystack.handleDonationWebhook', async (span) => {
-    try {
-      const { event, data } = payload;
-      
-      span.setAttributes({
-        'paystack.webhook_event': event,
-        'paystack.reference': data.reference,
-        'paystack.amount': data.amount / 100,
-        'paystack.customer_email': data.customer?.email,
-      });
-
-      if (event !== 'charge.success' && event !== 'charge.failed') {
-        return {
-          success: false,
-          reference: data.reference,
-          status: DonationStatus.PENDING,
-        };
-      }
-
-      const status = mapPaymentStatus(data.status);
-      
-      logger.info('Processing donation webhook', {
-        event,
-        reference: data.reference,
-        status,
-        amount: data.amount / 100,
-      });
-
-      return {
-        success: true,
-        reference: data.reference,
-        status,
-      };
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error handling donation webhook', {
-        error,
-        payload,
-      });
-
-      return {
-        success: false,
-        reference: payload.data?.reference || 'unknown',
-        status: DonationStatus.PENDING,
-      };
-    } finally {
-      span.end();
-    }
-  });
-};
-
 // Handle subscription webhook
 export const handleSubscriptionWebhook = async (payload: any): Promise<{
   success: boolean;
@@ -551,7 +474,7 @@ export const handleSubscriptionWebhook = async (payload: any): Promise<{
   return tracer.startActiveSpan('paystack.handleSubscriptionWebhook', async (span) => {
     try {
       const { event, data } = payload;
-      
+
       span.setAttributes({
         'paystack.webhook_event': event,
         'paystack.subscription_code': data.subscription_code,
@@ -567,7 +490,7 @@ export const handleSubscriptionWebhook = async (payload: any): Promise<{
       }
 
       const status = mapSubscriptionStatus(data.status);
-      
+
       logger.info('Processing subscription webhook', {
         event,
         subscription_code: data.subscription_code,
@@ -611,11 +534,11 @@ export const checkPaystackHealth = async (): Promise<{
   return tracer.startActiveSpan('paystack.checkHealth', async (span) => {
     try {
       const startTime = Date.now();
-      
+
       await paystackClient.get('/transaction/totals');
-      
+
       const latency = Date.now() - startTime;
-      
+
       span.setAttributes({
         'paystack.healthy': true,
         'paystack.latency_ms': latency,
@@ -650,10 +573,10 @@ export default {
   createSubscription,
   verifyWebhookSignature,
   generateReference,
-  mapPaymentStatus,
+  verifyWebhookSignature,
+  generateReference,
   mapSubscriptionStatus,
   validateWebhookPayload,
-  handleDonationWebhook,
   handleSubscriptionWebhook,
   checkPaystackHealth,
   PAYSTACK_PUBLIC_KEY,

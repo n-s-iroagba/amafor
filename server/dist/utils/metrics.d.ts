@@ -24,7 +24,7 @@ export declare const recordUserRegistration: (userType: string) => void;
 export declare const recordDonation: (amount: number, currency?: string) => void;
 export declare const recordAdView: (zone: string, campaignId: string) => void;
 export declare const recordAdRevenue: (amount: number, zone: string, currency?: string) => void;
-export declare const recordPatronSubscription: (tier: string, action?: 'add' | 'remove') => void;
+export declare const recordPatronSubscription: (tier: string, action?: "add" | "remove") => void;
 export declare const collectSystemMetrics: () => void;
 export declare const metricsHandler: (req: Request, res: Response) => Promise<void>;
 export declare const register: promClient.Registry;

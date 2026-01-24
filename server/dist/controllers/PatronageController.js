@@ -126,6 +126,24 @@ class PatronageController {
                 next(error);
             }
         };
+        /**
+         * List available subscription packages
+         * @api GET /patrons/packages
+         * @apiName API-PATRON-006
+         * @apiGroup Patronage
+         */
+        this.listPackages = async (req, res, next) => {
+            try {
+                const packages = await this.patronageService.getSubscriptionPackages();
+                res.status(200).json({
+                    success: true,
+                    data: packages
+                });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
         this.patronageService = new services_1.PatronageService();
     }
 }

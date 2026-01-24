@@ -10,7 +10,7 @@ export interface RssFeedSortOptions {
     sortBy?: 'name' | 'feedUrl' | 'lastFetchedAt' | 'createdAt' | 'updateFrequency';
     sortOrder?: 'asc' | 'desc';
 }
-export declare class RssFeedRepository extends BaseRepository<RssFeedSource> {
+export declare class RssFeedSourceRepository extends BaseRepository<RssFeedSource> {
     private auditLogRepository;
     constructor();
     searchFeeds(search: string, filters?: Omit<RssFeedFilterOptions, 'search'>, sort?: RssFeedSortOptions, pagination?: {

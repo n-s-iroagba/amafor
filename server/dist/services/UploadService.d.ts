@@ -1,4 +1,3 @@
-/// <reference types="node" />
 export interface FileUpload {
     buffer: Buffer;
     originalname: string;
@@ -40,18 +39,18 @@ export declare class UploadService {
      * Get optimized URLs for different screen sizes
      */
     getResponsiveImageUrls(publicId: string): {
-        thumbnail: any;
-        small: any;
-        medium: any;
-        large: any;
+        thumbnail: string;
+        small: string;
+        medium: string;
+        large: string;
     };
     /**
      * Get optimized video URLs for different qualities
      */
     getResponsiveVideoUrls(publicId: string): {
-        low: any;
-        medium: any;
-        high: any;
+        low: string;
+        medium: string;
+        high: string;
     };
 }
 export declare const uploadService: UploadService;

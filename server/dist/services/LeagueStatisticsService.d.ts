@@ -1,6 +1,7 @@
-import { LeagueStatisticsAttributes, LeagueStatisticsCreationAttributes } from '../models/LeagueStatistics';
+import { LeagueStatisticsAttributes } from '../models/LeagueStatistics';
+import { LeagueStatisticsRepository } from '@repositories/LeagueStatisticsRepository';
 import { PaginatedData } from 'src/types';
-export interface CreateLeagueStatisticsData extends Omit<LeagueStatisticsCreationAttributes, 'id'> {
+export interface CreateLeagueStatisticsData {
     leagueId: string;
     team: string;
     goalsFor?: number;
@@ -10,7 +11,7 @@ export interface UpdateLeagueStatisticsData extends Partial<Omit<LeagueStatistic
 }
 export declare class LeagueStatisticsService {
     private repository;
-    constructor(repository?: ILeagueStatisticsRepository);
+    constructor(repository?: LeagueStatisticsRepository);
     createStatistics(data: CreateLeagueStatisticsData): Promise<LeagueStatisticsAttributes>;
     getStatisticsById(id: string): Promise<LeagueStatisticsAttributes>;
     getAllStatistics(leagueId: string, options?: {

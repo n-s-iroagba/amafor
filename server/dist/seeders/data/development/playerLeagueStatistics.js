@@ -12,10 +12,10 @@ exports.developmentPlayerLeagueStatistics = [
         playerId: PLAYER_ID,
         leagueId: LEAGUE_ID,
         assists: 4,
-        cleanSheets: 0,
+        cleanSheets: 0, // 0 for an outfielder usually
         yellowCards: 1,
         redCards: 0,
-        minutesPlayed: 450,
+        minutesPlayed: 450, // e.g., 5 full games
         createdById: ADMIN_USER_ID,
         updatedById: ADMIN_USER_ID,
         createdAt: new Date(),

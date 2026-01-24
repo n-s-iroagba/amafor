@@ -3,30 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PatronSubscription = exports.SubscriptionStatus = exports.SubscriptionFrequency = exports.PatronTier = void 0;
+exports.PatronSubscription = void 0;
 const database_1 = __importDefault(require("../config/database"));
 const sequelize_1 = require("sequelize");
-var PatronTier;
-(function (PatronTier) {
-    PatronTier["SPONSOR_GRAND_PATRON"] = "sponsor_grand_patron";
-    PatronTier["PATRON"] = "patron";
-    PatronTier["SUPPORTER"] = "supporter";
-    PatronTier["ADVOCATE"] = "advocate";
-    PatronTier["LEGEND"] = "legend";
-})(PatronTier = exports.PatronTier || (exports.PatronTier = {}));
-var SubscriptionFrequency;
-(function (SubscriptionFrequency) {
-    SubscriptionFrequency["MONTHLY"] = "monthly";
-    SubscriptionFrequency["YEARLY"] = "yearly";
-    SubscriptionFrequency["LIFETIME"] = "lifetime";
-})(SubscriptionFrequency = exports.SubscriptionFrequency || (exports.SubscriptionFrequency = {}));
-var SubscriptionStatus;
-(function (SubscriptionStatus) {
-    SubscriptionStatus["ACTIVE"] = "active";
-    SubscriptionStatus["CANCELLED"] = "cancelled";
-    SubscriptionStatus["EXPIRED"] = "expired";
-    SubscriptionStatus["PAYMENT_FAILED"] = "payment_failed";
-})(SubscriptionStatus = exports.SubscriptionStatus || (exports.SubscriptionStatus = {}));
 class PatronSubscription extends sequelize_1.Model {
 }
 exports.PatronSubscription = PatronSubscription;
@@ -40,44 +19,9 @@ PatronSubscription.init({
         type: sequelize_1.DataTypes.UUID,
         allowNull: false
     },
-    tier: {
-        type: sequelize_1.DataTypes.ENUM(...Object.values(PatronTier)),
-        allowNull: false
-    },
-    frequency: {
-        type: sequelize_1.DataTypes.ENUM(...Object.values(SubscriptionFrequency)),
-        allowNull: false
-    },
     amount: {
         type: sequelize_1.DataTypes.DECIMAL(12, 2),
         allowNull: false
-    },
-    status: {
-        type: sequelize_1.DataTypes.ENUM(...Object.values(SubscriptionStatus)),
-        allowNull: false,
-        defaultValue: SubscriptionStatus.ACTIVE
-    },
-    portraitUrl: {
-        type: sequelize_1.DataTypes.STRING(500),
-        allowNull: true,
-        validate: {
-            isUrl: true
-        }
-    },
-    logoUrl: {
-        type: sequelize_1.DataTypes.STRING(500),
-        allowNull: true,
-        validate: {
-            isUrl: true
-        }
-    },
-    displayName: {
-        type: sequelize_1.DataTypes.STRING(200),
-        allowNull: false
-    },
-    message: {
-        type: sequelize_1.DataTypes.TEXT,
-        allowNull: true
     },
     startedAt: {
         type: sequelize_1.DataTypes.DATE,
@@ -91,17 +35,6 @@ PatronSubscription.init({
     cancelledAt: {
         type: sequelize_1.DataTypes.DATE,
         allowNull: true
-    },
-    paymentMethod: {
-        type: sequelize_1.DataTypes.STRING(50),
-        allowNull: true,
-        validate: {
-            isIn: [['card', 'bank_transfer', 'mobile_money']]
-        }
-    },
-    paymentReference: {
-        type: sequelize_1.DataTypes.STRING(100),
-        allowNull: false
     },
     metadata: {
         type: sequelize_1.DataTypes.JSON,

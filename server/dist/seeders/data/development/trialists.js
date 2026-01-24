@@ -8,7 +8,7 @@ exports.developmentTrialists = [
         lastName: 'Chigozie',
         email: 'emmanuel.c@example.com',
         phone: '+2348123456780',
-        dob: new Date('2007-03-12'),
+        dob: new Date('2007-03-12'), // 18 years old approx
         position: 'Midfielder',
         preferredFoot: 'RIGHT',
         height: 175,

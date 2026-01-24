@@ -24,8 +24,8 @@ app.use(express_1.default.urlencoded({ extended: true, limit: '10kb' }));
 app.use((0, compression_1.default)());
 // Rate limiting
 const limiter = (0, express_rate_limit_1.default)({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
     message: 'Too many requests from this IP, please try again later.'
 });
 app.use('/api', limiter);

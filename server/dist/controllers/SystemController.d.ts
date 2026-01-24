@@ -35,6 +35,26 @@ export declare class SystemController {
      */
     listBackups: (req: Request, res: Response, next: NextFunction) => Promise<void>;
     /**
+     * Create system backup
+     * @api POST /system/backups
+     */
+    createBackup: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
+     * Restore system backup
+     * @api POST /system/backups/:id/restore
+     */
+    restoreBackup: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
+     * Delete system backup
+     * @api DELETE /system/backups/:id
+     */
+    deleteBackup: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
+     * Download system backup
+     * @api GET /system/backups/:id/download
+     */
+    downloadBackup: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
      * Health check
      * @api GET /health
      * @apiName API-HEALTH-001
@@ -58,5 +78,10 @@ export declare class SystemController {
      * @srsRequirement REQ-ADM-09
      */
     getRedisHealth: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
+     * Run system diagnostic
+     * @api POST /system/diagnostic
+     */
+    runDiagnostic: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 //# sourceMappingURL=SystemController.d.ts.map

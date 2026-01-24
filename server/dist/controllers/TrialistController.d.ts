@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-export declare const uploadTrialistFiles: any;
 export declare const trialistController: {
     /**
      * Submit trial application
@@ -8,7 +7,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-01, REQ-ACA-02
      */
-    createTrialist: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    createTrialist: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Get all trialists with pagination and filters
      * @api GET /trialists
@@ -16,7 +15,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    getAllTrialists: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    getAllTrialists: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Get trialist by ID
      * @api GET /trialists/:id
@@ -24,7 +23,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    getTrialistById: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    getTrialistById: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Update trialist
      * @api PUT /trialists/:id
@@ -32,7 +31,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    updateTrialist: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    updateTrialist: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Delete trialist
      * @api DELETE /trialists/:id
@@ -40,7 +39,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    deleteTrialist: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    deleteTrialist: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Update trialist status
      * @api PATCH /trialists/:id/status
@@ -48,7 +47,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    updateStatus: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    updateStatus: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Search trialists
      * @api GET /trialists/search
@@ -56,7 +55,7 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    searchTrialists: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    searchTrialists: (req: Request, res: Response, next: NextFunction) => void;
     /**
      * Get trialist statistics
      * @api GET /trialists/stats
@@ -64,6 +63,6 @@ export declare const trialistController: {
      * @apiGroup Trialists
      * @srsRequirement REQ-ACA-03
      */
-    getStatistics: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => void;
+    getStatistics: (req: Request, res: Response, next: NextFunction) => void;
 };
 //# sourceMappingURL=TrialistController.d.ts.map

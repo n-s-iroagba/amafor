@@ -10,7 +10,7 @@ export interface LineupAttributes {
     createdAt: Date;
     updatedAt: Date;
 }
-export declare type LineupCreationAttributes = Omit<LineupAttributes, 'id' | 'createdAt' | 'updatedAt'> & {
+export type LineupCreationAttributes = Omit<LineupAttributes, 'id' | 'createdAt' | 'updatedAt'> & {
     id?: string;
     createdAt?: Date;
     updatedAt?: Date;

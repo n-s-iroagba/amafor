@@ -51,6 +51,30 @@ export declare class ArticleController {
      * @srsRequirement REQ-PUB-03
      */
     getPopularTags(req: Request, res: Response): Promise<void>;
+    /**
+     * Create new article
+     * @api POST /articles
+     * @apiName API-ARTICLE-007
+     */
+    createArticle(req: Request, res: Response): Promise<void>;
+    /**
+   * Update article
+   * @api PATCH /articles/:id
+   * @apiName API-ARTICLE-008
+   */
+    updateArticle(req: Request, res: Response): Promise<void>;
+    /**
+   * Delete article
+   * @api DELETE /articles/:id
+   * @apiName API-ARTICLE-009
+   */
+    deleteArticle(req: Request, res: Response): Promise<void>;
+    /**
+     * Get article analytics
+     * @api GET /articles/analytics
+     * @apiName API-ARTICLE-010
+     */
+    getAnalytics(req: Request, res: Response): Promise<void>;
 }
 declare const _default: ArticleController;
 export default _default;

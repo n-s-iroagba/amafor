@@ -14,7 +14,7 @@ exports.developmentPayments = [
         userId: ADMIN_USER_ID,
         reference: 'REF-PAY-AD-001',
         providerReference: 'PSTK-REF-1234567890',
-        amount: 5000000,
+        amount: 5000000, // 50,000.00 NGN (in kobo)
         currency: Payment_1.Currency.NGN,
         status: Payment_1.PaymentStatus.SUCCESSFUL,
         type: Payment_1.PaymentType.ADVERTISEMENT,
@@ -35,10 +35,10 @@ exports.developmentPayments = [
     // 2. Successful Patron Subscription Payment
     {
         id: 'pay2pay2-pay2-pay2-pay2-pay2pay2pay2',
-        userId: ADMIN_USER_ID,
+        userId: ADMIN_USER_ID, // Usually the patron user, using Admin for dev data consistency
         reference: 'REF-PAY-SUB-001',
         providerReference: 'PSTK-REF-0987654321',
-        amount: 50000000,
+        amount: 50000000, // 500,000.00 NGN (in kobo)
         currency: Payment_1.Currency.NGN,
         status: Payment_1.PaymentStatus.SUCCESSFUL,
         type: Payment_1.PaymentType.SUBSCRIPTION,

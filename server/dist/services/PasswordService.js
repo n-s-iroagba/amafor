@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PasswordService = void 0;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const logger_1 = __importDefault(require("../utils/logger"));
-const crpto_util_1 = require("../utils/crpto.util");
+const crypto_util_1 = require("../utils/crypto.util");
 class PasswordService {
     constructor() {
         this.SALT_ROUNDS = 12;
@@ -17,7 +17,7 @@ class PasswordService {
             throw new Error('Password is required');
         }
         try {
-            const hashedPassword = await bcryptjs_1.default.hash(password, this.SALT_ROUNDS);
+            const hashedPassword = await bcrypt_1.default.hash(password, this.SALT_ROUNDS);
             logger_1.default.info('Password hashed successfully');
             return hashedPassword;
         }
@@ -32,9 +32,9 @@ class PasswordService {
             throw new Error('Both passwords are required for comparison');
         }
         try {
-            const isFixture = await bcryptjs_1.default.compare(plainPassword, hashedPassword);
-            logger_1.default.info('Password comparison completed', { isFixture });
-            return isFixture;
+            const isMatch = await bcrypt_1.default.compare(plainPassword, hashedPassword);
+            logger_1.default.info('Password comparison completed', { isMatch });
+            return isMatch;
         }
         catch (error) {
             logger_1.default.error('Password comparison failed', { error });
@@ -43,7 +43,7 @@ class PasswordService {
     }
     generateResetToken() {
         try {
-            const tokens = crpto_util_1.CryptoUtil.generateSecureToken();
+            const tokens = crypto_util_1.CryptoUtil.generateSecureToken();
             logger_1.default.info('Password reset token generated successfully');
             return tokens;
         }

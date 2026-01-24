@@ -65,6 +65,30 @@ Trialist.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
     },
+    guardianName: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
+    guardianPhone: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
+    guardianEmail: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
+    consentEmail: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    consentSmsWhatsapp: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    guardianConsent: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
     status: {
         type: sequelize_1.DataTypes.ENUM('PENDING', 'REVIEWED', 'INVITED', 'REJECTED'),
         defaultValue: 'PENDING',

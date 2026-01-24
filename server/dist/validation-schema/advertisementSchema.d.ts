@@ -9,29 +9,45 @@ export declare const advertisementSchema: {
             zoneId: z.ZodString;
             targetImpressions: z.ZodOptional<z.ZodNumber>;
             dailyBudget: z.ZodOptional<z.ZodNumber>;
-        }, z.core.$strip, z.core.$strip>;
-    }, z.core.$strip, z.core.$strip>;
+        }, z.core.$strip>;
+    }, z.core.$strip>;
     updateCampaign: z.ZodObject<{
         params: z.ZodObject<{
             id: z.ZodString;
-        }, z.core.$strip, z.core.$strip>;
+        }, z.core.$strip>;
         body: z.ZodObject<{
             name: z.ZodOptional<z.ZodString>;
             budget: z.ZodOptional<z.ZodNumber>;
             startDate: z.ZodOptional<z.ZodString>;
             endDate: z.ZodOptional<z.ZodString>;
-            status: any;
+            status: z.ZodOptional<z.ZodEnum<{
+                DRAFT: "DRAFT";
+                ACTIVE: "ACTIVE";
+                PENDING_PAYMENT: "PENDING_PAYMENT";
+                PAUSED: "PAUSED";
+                COMPLETED: "COMPLETED";
+                REJECTED: "REJECTED";
+                EXPIRED: "EXPIRED";
+            }>>;
             targetImpressions: z.ZodOptional<z.ZodNumber>;
             dailyBudget: z.ZodOptional<z.ZodNumber>;
-        }, z.core.$strip, z.core.$strip>;
-    }, z.core.$strip, z.core.$strip>;
+        }, z.core.$strip>;
+    }, z.core.$strip>;
     queryCampaigns: z.ZodObject<{
         query: z.ZodObject<{
-            status: any;
-            page: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<number, any>>>;
-            limit: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<number, any>>>;
+            status: z.ZodOptional<z.ZodEnum<{
+                DRAFT: "DRAFT";
+                ACTIVE: "ACTIVE";
+                PENDING_PAYMENT: "PENDING_PAYMENT";
+                PAUSED: "PAUSED";
+                COMPLETED: "COMPLETED";
+                REJECTED: "REJECTED";
+                EXPIRED: "EXPIRED";
+            }>>;
+            page: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<number, string>>>;
+            limit: z.ZodOptional<z.ZodPipe<z.ZodString, z.ZodTransform<number, string>>>;
             advertiserId: z.ZodOptional<z.ZodString>;
-        }, z.core.$strip, z.core.$strip>;
-    }, z.core.$strip, z.core.$strip>;
+        }, z.core.$strip>;
+    }, z.core.$strip>;
 };
 //# sourceMappingURL=advertisementSchema.d.ts.map

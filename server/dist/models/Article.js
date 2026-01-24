@@ -13,14 +13,14 @@ var ArticleTag;
     ArticleTag["ACADEMY_UPDATE"] = "academy_update";
     ArticleTag["PLAYER_SPOTLIGHT"] = "player_spotlight";
     ArticleTag["CLUB_ANNOUNCEMENT"] = "club_announcement";
-})(ArticleTag = exports.ArticleTag || (exports.ArticleTag = {}));
+})(ArticleTag || (exports.ArticleTag = ArticleTag = {}));
 var ArticleStatus;
 (function (ArticleStatus) {
     ArticleStatus["DRAFT"] = "draft";
     ArticleStatus["SCHEDULED"] = "scheduled";
     ArticleStatus["PUBLISHED"] = "published";
     ArticleStatus["ARCHIVED"] = "archived";
-})(ArticleStatus = exports.ArticleStatus || (exports.ArticleStatus = {}));
+})(ArticleStatus || (exports.ArticleStatus = ArticleStatus = {}));
 class Article extends sequelize_1.Model {
 }
 exports.Article = Article;

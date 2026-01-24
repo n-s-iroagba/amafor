@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RssFeedRepository = void 0;
+exports.RssFeedSourceRepository = void 0;
 // repositories/RssFeedRepository.ts
 const sequelize_1 = require("sequelize");
 const BaseRepository_1 = require("./BaseRepository");
@@ -11,7 +11,7 @@ const RssFeedSource_1 = require("@models/RssFeedSource");
 const AuditLogRepository_1 = require("./AuditLogRepository");
 const logger_1 = __importDefault(require("@utils/logger"));
 const tracer_1 = __importDefault(require("@utils/tracer"));
-class RssFeedRepository extends BaseRepository_1.BaseRepository {
+class RssFeedSourceRepository extends BaseRepository_1.BaseRepository {
     constructor() {
         super(RssFeedSource_1.RssFeedSource);
         this.auditLogRepository = new AuditLogRepository_1.AuditLogRepository();
@@ -129,5 +129,5 @@ class RssFeedRepository extends BaseRepository_1.BaseRepository {
         });
     }
 }
-exports.RssFeedRepository = RssFeedRepository;
+exports.RssFeedSourceRepository = RssFeedSourceRepository;
 //# sourceMappingURL=RssFeedSourceRepository.js.map

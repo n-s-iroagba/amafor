@@ -14,13 +14,13 @@ var FixtureStatus;
     FixtureStatus["COMPLETED"] = "completed";
     FixtureStatus["POSTPONED"] = "postponed";
     FixtureStatus["CANCELLED"] = "cancelled";
-})(FixtureStatus = exports.FixtureStatus || (exports.FixtureStatus = {}));
+})(FixtureStatus || (exports.FixtureStatus = FixtureStatus = {}));
 var ArchiveStatus;
 (function (ArchiveStatus) {
     ArchiveStatus["PROCESSING"] = "processing";
     ArchiveStatus["AVAILABLE"] = "available";
     ArchiveStatus["FAILED"] = "failed";
-})(ArchiveStatus = exports.ArchiveStatus || (exports.ArchiveStatus = {}));
+})(ArchiveStatus || (exports.ArchiveStatus = ArchiveStatus = {}));
 class Fixture extends sequelize_1.Model {
 }
 exports.Fixture = Fixture;
@@ -139,7 +139,7 @@ Fixture.init({
     indexes: [
         { fields: ['matchDate'] },
         { fields: ['status'] },
-        { fields: ['leagueId'] },
+        { fields: ['leagueId'] }, // CORRECTED: Changed 'competition' to 'leagueId'
         { fields: ['createdAt'] }
     ]
 });

@@ -12,14 +12,14 @@ var AdZoneStatus;
     AdZoneStatus["ACTIVE"] = "active";
     AdZoneStatus["INACTIVE"] = "inactive";
     AdZoneStatus["MAINTENANCE"] = "maintenance";
-})(AdZoneStatus = exports.AdZoneStatus || (exports.AdZoneStatus = {}));
+})(AdZoneStatus || (exports.AdZoneStatus = AdZoneStatus = {}));
 var AdZoneType;
 (function (AdZoneType) {
     AdZoneType["BANNER"] = "banner";
     AdZoneType["SIDEBAR"] = "sidebar";
     AdZoneType["INLINE"] = "inline";
     AdZoneType["FOOTER"] = "footer";
-})(AdZoneType = exports.AdZoneType || (exports.AdZoneType = {}));
+})(AdZoneType || (exports.AdZoneType = AdZoneType = {}));
 // Main AdZone model
 class AdZoneModel extends sequelize_1.Model {
     // Instance methods and Static methods remain the same...
@@ -34,7 +34,7 @@ exports.AdZoneModel = AdZoneModel;
 // Model initialization
 AdZoneModel.init({
     id: {
-        type: sequelize_1.DataTypes.STRING(50),
+        type: sequelize_1.DataTypes.STRING(50), // Changed from UUIDV4 to STRING
         primaryKey: true,
         allowNull: false
     },
@@ -61,13 +61,13 @@ AdZoneModel.init({
         allowNull: false,
     },
     maxSize: {
-        type: sequelize_1.DataTypes.STRING(10),
+        type: sequelize_1.DataTypes.STRING(10), // Added
         allowNull: false,
         defaultValue: '1MB',
         field: 'max_size'
     },
     tags: {
-        type: sequelize_1.DataTypes.JSON,
+        type: sequelize_1.DataTypes.JSON, // Added
         allowNull: false,
         defaultValue: []
     },

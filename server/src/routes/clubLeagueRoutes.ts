@@ -1,20 +1,23 @@
 import express from 'express';
-import { leagueStatisticsController } from '../controllers/leagueStatistics.controller';
-import { validateLeagueStatistics } from '../validations/leagueStatistics.validation';
+import { LeagueStatisticsController } from '../controllers/LeagueStatisticsController';
+import { validateLeagueStatistics } from '../validation-schema/leagueStatistics.validation';
+import { validate } from '../middleware/validate';
+
+const leagueStatisticsController = new LeagueStatisticsController();
 
 const router = express.Router();
 
 // Create league statistics
 router.post(
   '/',
-  validateLeagueStatistics.create,
+  validate(validateLeagueStatistics.create) as any,
   leagueStatisticsController.createStatistics.bind(leagueStatisticsController)
 );
 
 // Get all statistics for a league
 router.get(
   '/league/:leagueId',
-  validateLeagueStatistics.getAll,
+  validate(validateLeagueStatistics.getAll) as any,
   leagueStatisticsController.getAllStatistics.bind(leagueStatisticsController)
 );
 
@@ -27,35 +30,35 @@ router.get(
 // Get single statistics
 router.get(
   '/:id',
-  validateLeagueStatistics.getById,
+  validate(validateLeagueStatistics.getById) as any,
   leagueStatisticsController.getStatisticsById.bind(leagueStatisticsController)
 );
 
 // Get team statistics
 router.get(
   '/league/:leagueId/team/:team',
-  validateLeagueStatistics.getTeamStats,
+  validate(validateLeagueStatistics.getTeamStats) as any,
   leagueStatisticsController.getTeamStatistics.bind(leagueStatisticsController)
 );
 
 // Update statistics
 router.put(
   '/:id',
-  validateLeagueStatistics.update,
+  validate(validateLeagueStatistics.update) as any,
   leagueStatisticsController.updateStatistics.bind(leagueStatisticsController)
 );
 
 // Delete statistics
 router.delete(
   '/:id',
-  validateLeagueStatistics.getById,
+  validate(validateLeagueStatistics.getById) as any,
   leagueStatisticsController.deleteStatistics.bind(leagueStatisticsController)
 );
 
 // Update match result
 router.post(
   '/league/:leagueId/match',
-  validateLeagueStatistics.updateFixtureResult,
+  validate(validateLeagueStatistics.updateFixtureResult) as any,
   leagueStatisticsController.updateFixtureResult.bind(leagueStatisticsController)
 );
 

@@ -1,1 +1,1 @@
-{"version":3,"file":"academyStaffSchema.d.ts","sourceRoot":"","sources":["../../src/validation-schema/academyStaffSchema.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,KAAK,CAAC;AAIxB,eAAO,MAAM,kBAAkB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CA0C9B,CAAC"}
+{"version":3,"file":"academyStaffSchema.d.ts","sourceRoot":"","sources":["../../src/validation-schema/academyStaffSchema.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,KAAK,CAAC;AAIxB,eAAO,MAAM,kBAAkB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CA0C9B,CAAC"}

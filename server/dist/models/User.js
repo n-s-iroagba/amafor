@@ -19,13 +19,13 @@ var UserType;
     UserType["COMMERCIAL_MANAGER"] = "commercial_manager";
     UserType["IT_SECURITY"] = "it_security";
     UserType["SUPER_ADMIN"] = "super_admin";
-})(UserType = exports.UserType || (exports.UserType = {}));
+})(UserType || (exports.UserType = UserType = {}));
 var UserStatus;
 (function (UserStatus) {
     UserStatus["ACTIVE"] = "active";
     UserStatus["PENDING_VERIFICATION"] = "pending_verification";
     UserStatus["SUSPENDED"] = "suspended";
-})(UserStatus = exports.UserStatus || (exports.UserStatus = {}));
+})(UserStatus || (exports.UserStatus = UserStatus = {}));
 class User extends sequelize_1.Model {
 }
 exports.User = User;

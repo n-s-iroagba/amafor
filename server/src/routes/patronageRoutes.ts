@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { PatronageController } from '../controllers/PatronageController';
-import { authMiddleware } from '../middlewares';
+import { authenticate as authMiddleware } from '../middleware/auth';
 
 const router = Router();
 const controller = new PatronageController();

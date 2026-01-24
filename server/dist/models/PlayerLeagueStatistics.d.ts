@@ -3,6 +3,7 @@ export interface PlayerLeagueStatisticsAttributes {
     id: string;
     playerId: string;
     leagueId: string;
+    goals: number;
     assists: number;
     cleanSheets: number;
     yellowCards: number;

@@ -9,7 +9,7 @@ export declare class LineupController {
      * @apiGroup Lineups
      * @srsRequirement REQ-PUB-02, REQ-ADM-03
      */
-    createLineupPlayer: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    createLineup: (req: Request, res: Response, next: NextFunction) => Promise<void>;
     getLineupPlayer: (req: Request, res: Response, next: NextFunction) => Promise<void>;
     /**
      * Get lineup for fixture

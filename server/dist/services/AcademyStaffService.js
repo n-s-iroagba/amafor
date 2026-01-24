@@ -9,6 +9,7 @@ const logger_1 = __importDefault(require("@utils/logger"));
 const tracer_1 = __importDefault(require("@utils/tracer"));
 const AuditService_1 = require("./AuditService");
 const sequelize_1 = require("sequelize");
+const AuditLog_1 = require("@models/AuditLog");
 class AcademyStaffService {
     constructor() {
         this.staffRepository = new AcademyStaffRepository_1.AcademyStaffRepository();
@@ -39,9 +40,10 @@ class AcademyStaffService {
                 // Audit log
                 await this.auditService.logAction({
                     userId,
+                    userEmail: 'admin',
                     userType: 'admin',
-                    action: 'CREATE',
-                    entityType: 'STAFF',
+                    action: AuditLog_1.AuditAction.CREATE,
+                    entityType: AuditLog_1.EntityType.STAFF,
                     entityId: staff.id,
                     entityName: staff.name,
                     changes: Object.keys(data).map(field => ({
@@ -49,7 +51,8 @@ class AcademyStaffService {
                         newValue: data[field]
                     })),
                     ipAddress: '0.0.0.0',
-                    metadata: { role: data.role, category: data.category }
+                    metadata: { role: data.role, category: data.category },
+                    timestamp: new Date()
                 });
                 logger_1.default.info('STAFF_CREATED', {
                     staffId: staff.id,
@@ -171,14 +174,16 @@ class AcademyStaffService {
                 if (changes.length > 0) {
                     await this.auditService.logAction({
                         userId,
+                        userEmail: 'admin',
                         userType: 'admin',
-                        action: 'UPDATE',
-                        entityType: 'STAFF',
+                        action: AuditLog_1.AuditAction.UPDATE,
+                        entityType: AuditLog_1.EntityType.STAFF,
                         entityId: id,
                         entityName: existingStaff.name,
                         changes,
                         ipAddress: '0.0.0.0',
-                        metadata: { updateFields: Object.keys(data) }
+                        metadata: { updateFields: Object.keys(data) },
+                        timestamp: new Date()
                     });
                 }
                 logger_1.default.info('STAFF_UPDATED', {
@@ -221,9 +226,10 @@ class AcademyStaffService {
                 // Audit log
                 await this.auditService.logAction({
                     userId,
+                    userEmail: 'admin',
                     userType: 'admin',
-                    action: 'DELETE',
-                    entityType: 'STAFF',
+                    action: AuditLog_1.AuditAction.DELETE,
+                    entityType: AuditLog_1.EntityType.STAFF,
                     entityId: id,
                     entityName: staff.name,
                     changes: [],
@@ -232,7 +238,8 @@ class AcademyStaffService {
                         role: staff.role,
                         category: staff.category,
                         experience: staff.yearsOfExperience
-                    }
+                    },
+                    timestamp: new Date()
                 });
                 logger_1.default.info('STAFF_DELETED', {
                     staffId: id,
@@ -355,9 +362,10 @@ class AcademyStaffService {
                 // Audit log for bulk import
                 await this.auditService.logAction({
                     userId,
+                    userEmail: 'admin',
                     userType: 'admin',
-                    action: 'BULK_IMPORT',
-                    entityType: 'STAFF',
+                    action: AuditLog_1.AuditAction.BULK_IMPORT,
+                    entityType: AuditLog_1.EntityType.STAFF,
                     entityId: 'bulk_import',
                     entityName: `${importedStaff.length} staff members`,
                     changes: [],
@@ -365,7 +373,8 @@ class AcademyStaffService {
                     metadata: {
                         count: importedStaff.length,
                         categories: [...new Set(staffData.map(s => s.category))].filter(Boolean)
-                    }
+                    },
+                    timestamp: new Date()
                 });
                 logger_1.default.info('STAFF_BULK_IMPORTED', {
                     count: importedStaff.length,

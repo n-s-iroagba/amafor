@@ -38,7 +38,7 @@ exports.developmentPatronSubscriptions = [
         paymentMethod: 'bank_transfer',
         paymentReference: 'REF-ANI-LIFE-001',
         startedAt: new Date('2023-01-01'),
-        nextBillingDate: undefined,
+        nextBillingDate: undefined, // Lifetime has no next billing
         metadata: { notes: 'VIP seating required at finals' },
         createdAt: new Date('2023-01-01'),
         updatedAt: TODAY,

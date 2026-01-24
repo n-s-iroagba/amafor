@@ -26,5 +26,17 @@ export declare class UserController {
      * @srsRequirement REQ-ADM-06, REQ-ADM-11
      */
     verifyUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
+     * Get pending advertisers
+     * @api GET /users/pending-advertisers
+     * @apiName API-USER-004
+     * @apiGroup Users
+     * @srsRequirement REQ-ADM-06
+     */
+    getPendingAdvertisers: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    listUsers: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    getUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    createUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    deleteUser: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 //# sourceMappingURL=UserController.d.ts.map

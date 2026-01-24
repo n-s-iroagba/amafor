@@ -1,53 +1,56 @@
 // data/development/ad-campaign.ts
-import { 
-  AdCampaignAttributes, 
-  CampaignStatus, 
-  PaymentStatus 
-} from "../../../models/AdCampaign";
+import AdCampaign, { AdCampaignAttributes, CampaignStatus, PaymentStatus } from "../../../models/AdCampaign";
 
-// Helper dates
-const TODAY = new Date();
-const NEXT_MONTH = new Date(new Date().setMonth(TODAY.getMonth() + 1));
+// Calculate dates
+const NOW = new Date();
+const NEXT_MONTH = new Date(NOW.setMonth(NOW.getMonth() + 1));
+const LAST_MONTH = new Date(NOW.setMonth(NOW.getMonth() - 2));
+
+// Use fixed UUIDs
+const CAMPAIGN_ID_1 = 'c1c1c1c1-c1c1-c1c1-c1c1-c1c1c1c1c1c1';
+const CAMPAIGN_ID_2 = 'c2c2c2c2-c2c2-c2c2-c2c2-c2c2c2c2c2c2';
 
 export const developmentAdCampaigns: AdCampaignAttributes[] = [
   {
-    id: 'aaaaaaaa-1111-1111-1111-aaaaaaaaaaaa',
-    name: 'Summer Boot Sale',
-    // Placeholder ID: Ensure you create an Advertiser with this ID later
-    advertiserId: 'ffffffff-ffff-ffff-ffff-ffffffffffff', 
+    id: CAMPAIGN_ID_1,
+    name: 'Summer Season Launch',
+    advertiserId: 'u2u2u2u2-u2u2-u2u2-u2u2-u2u2u2u2u2u2', // Fixturees Advertiser User ID
     status: CampaignStatus.ACTIVE,
-    budget: 50000.00,
-    spent: 12500.00,
-    viewsDelivered: 5000,
-    uniqueViews: 4200,
-    targeting: ['Lagos', 'Abuja', 'Sports Fans'],
+    budget: 5000.00,
+    spent: 1250.00,
+    viewsDelivered: 45000,
+    uniqueViews: 38000,
+    currentClicks: 1200,
+    targetViews: 100000,
+    targeting: ['NG', 'GH', 'KE'],
     paymentStatus: PaymentStatus.PAID,
-    paymentReference: 'PAY-CAM-001',
-    cpv: 2.50,
-    startDate: TODAY,
+    paymentReference: 'PAY-123456789',
+    cpv: 5.00, // Cost per view
+    startDate: LAST_MONTH,
     endDate: NEXT_MONTH,
-    metadata: { agency: 'TopMedia' },
-    createdAt: TODAY,
-    updatedAt: TODAY,
+    metadata: { category: 'Sports Equipment' },
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    id: 'bbbbbbbb-2222-2222-2222-bbbbbbbbbbbb',
-    name: 'Tech Scholarship Awareness',
-    // Same placeholder Advertiser ID
-    advertiserId: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+    id: CAMPAIGN_ID_2,
+    name: 'Youth Academy Promo',
+    advertiserId: 'u2u2u2u2-u2u2-u2u2-u2u2-u2u2u2u2u2u2',
     status: CampaignStatus.PENDING_PAYMENT,
-    budget: 100000.00,
+    budget: 2000.00,
     spent: 0.00,
     viewsDelivered: 0,
     uniqueViews: 0,
-    targeting: ['Youth', 'Education', 'Tech'],
+    currentClicks: 0,
+    targetViews: 50000,
+    targeting: ['NG'],
     paymentStatus: PaymentStatus.PENDING,
     paymentReference: 'PAY-PENDING-002',
     cpv: 3.00,
     startDate: NEXT_MONTH,
     endDate: undefined,
-    metadata: {},
-    createdAt: TODAY,
-    updatedAt: TODAY,
+    metadata: { category: 'Education' },
+    createdAt: new Date(),
+    updatedAt: new Date(),
   }
 ];

@@ -38,7 +38,7 @@ exports.developmentAdvertisers = [
         website: 'https://edutech.ng',
         industry: 'Education Technology',
         address: 'Innovation Hub, Wuse 2, Abuja',
-        status: 'inactive',
+        status: 'inactive', // Currently inactive
         createdAt: new Date(),
         updatedAt: new Date(),
     }

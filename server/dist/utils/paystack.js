@@ -34,7 +34,7 @@ const initializePayment = async (request) => {
             });
             const response = await paystackClient.post('/transaction/initialize', {
                 email: request.email,
-                amount: request.amount * 100,
+                amount: request.amount * 100, // Convert to kobo
                 currency: request.currency || 'NGN',
                 reference: request.reference || (0, exports.generateReference)(),
                 metadata: request.metadata,
@@ -152,7 +152,7 @@ const initiateTransfer = async (request) => {
             });
             const response = await paystackClient.post('/transfer', {
                 source: request.source,
-                amount: request.amount * 100,
+                amount: request.amount * 100, // Convert to kobo
                 recipient: request.recipient,
                 reason: request.reason,
                 reference: request.reference || (0, exports.generateReference)(),

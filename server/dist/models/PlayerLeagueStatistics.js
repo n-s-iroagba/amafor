@@ -32,6 +32,11 @@ PlayerLeagueStatistics.init({
         },
         onDelete: 'CASCADE'
     },
+    goals: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
     assists: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,

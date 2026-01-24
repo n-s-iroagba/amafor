@@ -168,26 +168,26 @@ declare const _default: {
     mapSubscriptionStatus: (paystackStatus: string) => SubscriptionStatus;
     validateWebhookPayload: (payload: any) => {
         isValid: boolean;
-        event?: string | undefined;
+        event?: string;
         data?: any;
-        reference?: string | undefined;
+        reference?: string;
     };
     handleDonationWebhook: (payload: any) => Promise<{
         success: boolean;
-        donationId?: string | undefined;
+        donationId?: string;
         reference: string;
         status: DonationStatus;
     }>;
     handleSubscriptionWebhook: (payload: any) => Promise<{
         success: boolean;
-        subscriptionCode?: string | undefined;
+        subscriptionCode?: string;
         reference: string;
         status: SubscriptionStatus;
     }>;
     checkPaystackHealth: () => Promise<{
         healthy: boolean;
-        latency?: number | undefined;
-        error?: string | undefined;
+        latency?: number;
+        error?: string;
     }>;
     PAYSTACK_PUBLIC_KEY: string;
     PAYSTACK_SECRET_KEY: string;

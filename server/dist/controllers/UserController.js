@@ -57,6 +57,61 @@ class UserController {
                 next(error);
             }
         };
+        /**
+         * Get pending advertisers
+         * @api GET /users/pending-advertisers
+         * @apiName API-USER-004
+         * @apiGroup Users
+         * @srsRequirement REQ-ADM-06
+         */
+        this.getPendingAdvertisers = async (req, res, next) => {
+            try {
+                const users = await this.userService.getPendingAdvertisers();
+                res.status(200).json({ success: true, data: users });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        this.listUsers = async (req, res, next) => {
+            try {
+                const users = await this.userService.getAllUsers(req.query);
+                res.status(200).json({ success: true, data: users });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        this.getUser = async (req, res, next) => {
+            try {
+                const { id } = req.params;
+                const user = await this.userService.getUserById(id);
+                res.status(200).json({ success: true, data: user });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        this.createUser = async (req, res, next) => {
+            try {
+                const user = await this.userService.createUser(req.body);
+                res.status(201).json({ success: true, data: user });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        this.deleteUser = async (req, res, next) => {
+            try {
+                const { id } = req.params;
+                const adminId = req.user.id;
+                await this.userService.deleteUser(id, adminId);
+                res.status(200).json({ success: true, message: 'User deleted successfully' });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
         this.userService = new services_1.UserService();
     }
 }

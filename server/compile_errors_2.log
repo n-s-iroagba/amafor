@@ -1,0 +1,219 @@
+src/middleware/validate.ts(17,30): error TS2339: Property 'errors' does not exist on type 'ZodError<unknown>'.
+src/middleware/validate.ts(17,41): error TS7006: Parameter 'err' implicitly has an 'any' type.
+src/repositories/AdCampaignRepository.ts(264,11): error TS2353: Object literal may only specify known properties, and 'paymentReference' does not exist in type 'Partial<AdCampaignAttributes>'.
+src/repositories/AdCreativeRepository.ts(146,41): error TS2322: Type 'WhereAttributeHash<AdCreativeAttributes>' is not assignable to type 'WhereOptions<InferAttributes<AdCreative, { omit: never; }>> | undefined'.
+  Type 'WhereAttributeHash<AdCreativeAttributes>' is not assignable to type 'WhereAttributeHash<InferAttributes<AdCreative, { omit: never; }>>'.
+    Type 'WhereAttributeHash<AdCreativeAttributes>' is not assignable to type '{ id?: WhereAttributeHashValue<string & { [CreationAttributeBrand]?: true | undefined; }>; $id$?: WhereAttributeHashValue<string & { [CreationAttributeBrand]?: true | undefined; }>; ... 23 more ...; $updated_at$?: WhereAttributeHashValue<...>; }'.
+      Types of property 'created_at' are incompatible.
+        Type 'WhereAttributeHashValue<Date | undefined>' is not assignable to type 'WhereAttributeHashValue<Date & { [CreationAttributeBrand]?: true | undefined; }>'.
+          Type 'WhereOperators<undefined>' is not assignable to type 'WhereAttributeHashValue<Date & { [CreationAttributeBrand]?: true | undefined; }>'.
+            Type 'WhereOperators<undefined>' is not assignable to type 'WhereOperators<Date & { [CreationAttributeBrand]?: true | undefined; }>'.
+              Types of property '[Op.eq]' are incompatible.
+                Type 'AllowAnyAll<OperatorValues<undefined>>' is not assignable to type 'AllowAnyAll<OperatorValues<Date & { [CreationAttributeBrand]?: true | undefined; }>> | undefined'.
+                  Type '{ [OpTypes.all]: Literal | (WhereSerializableValue | undefined)[] | { [OpTypes.values]: (string | number | boolean | Date | ... 7 more ... | undefined)[]; }; }' is not assignable to type 'AllowAnyAll<OperatorValues<Date & { [CreationAttributeBrand]?: true | undefined; }>> | undefined'.
+                    Type '{ [OpTypes.all]: Literal | (WhereSerializableValue | undefined)[] | { [OpTypes.values]: (string | number | boolean | Date | ... 7 more ... | undefined)[]; }; }' is not assignable to type '{ [OpTypes.all]: Literal | (WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[] | { ...; }; }'.
+                      Types of property '[Op.all]' are incompatible.
+                        Type 'Literal | (WhereSerializableValue | undefined)[] | { [OpTypes.values]: (string | number | boolean | Date | Fn | Col | ... 5 more ... | undefined)[]; }' is not assignable to type 'Literal | (WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[] | { [OpTypes.values]: (string | ... 10 more ... | (Date & { ...; }))[]; }'.
+                          Type '(WhereSerializableValue | undefined)[]' is not assignable to type 'Literal | (WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[] | { [OpTypes.values]: (string | ... 10 more ... | (Date & { ...; }))[]; }'.
+                            Type '(WhereSerializableValue | undefined)[]' is not assignable to type '(WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; }))[]'.
+                              Type 'WhereSerializableValue | undefined' is not assignable to type 'WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; })'.
+                                Type 'undefined' is not assignable to type 'WhereSerializableValue | (Date & { [CreationAttributeBrand]?: true | undefined; })'.
+src/repositories/LineupRepository.ts(301,29): error TS2551: Property 'player' does not exist on type 'Lineup'. Did you mean 'playerId'?
+src/routes/authRoutes.ts(4,33): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/authRoutes.ts(5,25): error TS2307: Cannot find module '../schemas/user' or its corresponding type declarations.
+src/routes/authRoutes.ts(10,80): error TS2339: Property 'register' does not exist on type 'AuthController'.
+src/routes/clubLeagueRoutes.ts(2,44): error TS2307: Cannot find module '../controllers/leagueStatistics.controller' or its corresponding type declarations.
+src/routes/clubLeagueRoutes.ts(3,42): error TS2307: Cannot find module '../validations/leagueStatistics.validation' or its corresponding type declarations.
+src/routes/fixtureImageRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/fixtureImageRoutes.ts(10,8): error TS2307: Cannot find module '../validations/fixtureImage.schema' or its corresponding type declarations.
+src/routes/goalRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/goalRoutes.ts(11,8): error TS2307: Cannot find module '../validations/goal.schema' or its corresponding type declarations.
+src/routes/lineupRoutes.ts(3,26): error TS2307: Cannot find module '../middleware/validation' or its corresponding type declarations.
+src/routes/lineupRoutes.ts(11,8): error TS2307: Cannot find module '../validations/lineup.schema' or its corresponding type declarations.
+src/routes/lineupRoutes.ts(16,36): error TS2551: Property 'createLineupPlayer' does not exist on type 'LineupController'. Did you mean 'getLineupPlayer'?
+src/routes/patronageRoutes.ts(3,32): error TS2307: Cannot find module '../middlewares' or its corresponding type declarations.
+src/routes/paymentRoutes.ts(7,45): error TS2339: Property 'getPaymentsByAdvertiserId' does not exist on type 'typeof PaymentController'.
+src/routes/paymentRoutes.ts(8,35): error TS2339: Property 'getAllPayments' does not exist on type 'typeof PaymentController'.
+src/seeders/data/development/adcampaigns.ts(25,5): error TS2353: Object literal may only specify known properties, and 'paymentReference' does not exist in type 'AdCampaignAttributes'.
+src/seeders/data/development/adcampaigns.ts(45,5): error TS2353: Object literal may only specify known properties, and 'paymentReference' does not exist in type 'AdCampaignAttributes'.
+src/seeders/data/development/matchimages.ts(11,5): error TS2322: Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/matchimages.ts(19,5): error TS2322: Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/player.ts(8,3): error TS2740: Type '{ id: string; name: string; dateOfBirth: Date; position: PlayerPosition.FW; height: number; nationality: string; biography: string; jerseyNumber: number; imageUrl: string; ... 9 more ...; updatedAt: Date; }' is missing the following properties from type 'PlayerAttributes': appearances, goals, assists, cleanSheets, and 3 more.
+src/seeders/data/development/player.ts(30,3): error TS2740: Type '{ id: string; name: string; dateOfBirth: Date; position: PlayerPosition.DF; height: number; nationality: string; biography: string; jerseyNumber: number; imageUrl: string; ... 7 more ...; updatedAt: Date; }' is missing the following properties from type 'PlayerAttributes': appearances, goals, assists, cleanSheets, and 3 more.
+src/seeders/data/development/playerLeagueStatistics.ts(11,3): error TS2741: Property 'goals' is missing in type '{ id: string; playerId: string; leagueId: string; assists: number; cleanSheets: number; yellowCards: number; redCards: number; minutesPlayed: number; createdById: string; updatedById: string; createdAt: Date; updatedAt: Date; }' but required in type 'PlayerLeagueStatisticsAttributes'.
+src/seeders/data/development/rssfeedsources.ts(6,5): error TS2322: Type 'number' is not assignable to type 'string & { [CreationAttributeBrand]?: true | undefined; }'.
+  Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/rssfeedsources.ts(14,5): error TS2322: Type 'number' is not assignable to type 'string & { [CreationAttributeBrand]?: true | undefined; }'.
+  Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/rssfeedsources.ts(22,5): error TS2322: Type 'number' is not assignable to type 'string & { [CreationAttributeBrand]?: true | undefined; }'.
+  Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/thirdPartyArticles.ts(6,5): error TS2322: Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/thirdPartyArticles.ts(7,5): error TS2322: Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/thirdPartyArticles.ts(17,5): error TS2322: Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/thirdPartyArticles.ts(18,5): error TS2322: Type 'number' is not assignable to type 'string'.
+src/seeders/data/development/trialists.ts(5,3): error TS2739: Type '{ id: string; firstName: string; lastName: string; email: string; phone: string; dob: Date; position: string; preferredFoot: "RIGHT"; height: number; weight: number; previousClub: string; videoUrl: string; ... 4 more ...; updatedAt: Date; }' is missing the following properties from type 'TrialistAttributes': consentEmail, consentSmsWhatsapp, guardianConsent
+src/seeders/data/development/trialists.ts(24,3): error TS2739: Type '{ id: string; firstName: string; lastName: string; email: string; phone: string; dob: Date; position: string; preferredFoot: "BOTH"; height: number; weight: number; previousClub: string; videoUrl: string; ... 4 more ...; updatedAt: Date; }' is missing the following properties from type 'TrialistAttributes': consentEmail, consentSmsWhatsapp, guardianConsent
+src/seeders/data/production/matchsummarys.ts(1,42): error TS2307: Cannot find module '@models/FixtureSummary' or its corresponding type declarations.
+src/seeders/data/testing/matchsummarys.ts(1,42): error TS2307: Cannot find module '@models/FixtureSummary' or its corresponding type declarations.
+src/seeders/seeders/third-party-article-seeder.ts(6,42): error TS2307: Cannot find module '../data/development/featuredNewss' or its corresponding type declarations.
+src/services/ArticleService.ts(318,5): error TS2322: Type '[number, Article[]]' is not assignable to type 'Article'.
+src/types/adCampaign.ts(2,10): error TS2614: Module '"@models/Advertiser"' has no exported member 'Advertiser'. Did you mean to use 'import Advertiser from "@models/Advertiser"' instead?
+src/utils/email.ts(91,3): error TS2322: Type '{ success: true; messageId: string; accepted: (string | Address)[]; rejected: (string | Address)[]; error?: undefined; } | { success: false; error: any; messageId?: undefined; accepted?: undefined; rejected?: undefined; }' is not assignable to type 'EmailSendResult'.
+  Type '{ success: true; messageId: string; accepted: (string | Mail.Address)[]; rejected: (string | Mail.Address)[]; error?: undefined; }' is not assignable to type 'EmailSendResult'.
+    Types of property 'accepted' are incompatible.
+      Type '(string | Address)[]' is not assignable to type 'string[]'.
+        Type 'string | Address' is not assignable to type 'string'.
+          Type 'Address' is not assignable to type 'string'.
+src/utils/email.ts(155,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(159,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(166,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(420,24): error TS18046: 'error' is of type 'unknown'.
+src/utils/email.ts(425,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/helpers.ts(195,7): error TS2322: Type 'number' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'number'.
+src/utils/helpers.ts(196,7): error TS2322: Type 'number' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'number'.
+src/utils/helpers.ts(201,7): error TS2322: Type 'string' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'string'.
+src/utils/helpers.ts(202,7): error TS2322: Type 'string' is not assignable to type 'T[keyof T]'.
+  'T[keyof T]' could be instantiated with an arbitrary type which could be unrelated to 'string'.
+src/utils/helpers.ts(403,9): error TS2322: Type 'unknown' is not assignable to type 'Error'.
+src/utils/helpers.ts(414,16): error TS2454: Variable 'lastError' is used before being assigned.
+src/utils/helpers.ts(417,11): error TS2454: Variable 'lastError' is used before being assigned.
+src/utils/metrics.ts(7,3): error TS2353: Object literal may only specify known properties, and 'timeout' does not exist in type 'DefaultMetricsCollectorConfiguration'.
+src/utils/metrics.ts(183,19): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(190,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(194,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(194,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(198,57): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(229,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(233,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(233,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(237,55): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(271,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(275,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(275,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(279,62): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(320,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(324,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(324,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(328,54): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(362,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(366,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(366,40): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(370,56): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(379,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'boolean'.
+src/utils/paystack.ts(379,68): error TS2345: Argument of type '(span: Span) => boolean' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'boolean' is not assignable to type 'Promise<unknown>'.
+src/utils/paystack.ts(403,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(509,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(554,27): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(559,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/paystack.ts(576,3): error TS1117: An object literal cannot have multiple properties with the same name.
+src/utils/paystack.ts(577,3): error TS1117: An object literal cannot have multiple properties with the same name.
+src/utils/security.ts(32,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(57,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(70,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(79,25): error TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | JsonWebKeyInput | PrivateKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | JsonWebKeyInput | PrivateKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.
+src/utils/security.ts(95,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(108,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(116,25): error TS2769: No overload matches this call.
+  Overload 1 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: null, options?: (SignOptions & { algorithm: "none"; }) | undefined): string', gave the following error.
+    Argument of type 'string' is not assignable to parameter of type 'null'.
+  Overload 2 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | JsonWebKeyInput | PrivateKeyInput, options?: SignOptions | undefined): string', gave the following error.
+    Type 'string' is not assignable to type 'number | StringValue | undefined'.
+  Overload 3 of 5, '(payload: string | object | Buffer<ArrayBufferLike>, secretOrPrivateKey: Buffer<ArrayBufferLike> | Secret | JsonWebKeyInput | PrivateKeyInput, callback: SignCallback): void', gave the following error.
+    Object literal may only specify known properties, and 'expiresIn' does not exist in type 'SignCallback'.
+src/utils/security.ts(131,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(144,57): error TS2345: Argument of type '(span: Span) => string | JwtPayload' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string | JwtPayload' is not assignable to type 'Promise<unknown>'.
+    Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(160,33): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(163,61): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(173,64): error TS2345: Argument of type '(span: Span) => string | JwtPayload' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string | JwtPayload' is not assignable to type 'Promise<unknown>'.
+    Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(189,41): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(192,65): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(202,3): error TS2739: Type 'Promise<unknown>' is missing the following properties from type '{ token: string; expires: Date; }': token, expires
+src/utils/security.ts(202,71): error TS2345: Argument of type '(span: Span) => { token: string; expires: Date; }' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type '{ token: string; expires: Date; }' is missing the following properties from type 'Promise<unknown>': then, catch, finally, [Symbol.toStringTag]
+src/utils/security.ts(217,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(230,3): error TS2739: Type 'Promise<unknown>' is missing the following properties from type '{ token: string; expires: Date; }': token, expires
+src/utils/security.ts(230,72): error TS2345: Argument of type '(span: Span) => { token: string; expires: Date; }' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type '{ token: string; expires: Date; }' is missing the following properties from type 'Promise<unknown>': then, catch, finally, [Symbol.toStringTag]
+src/utils/security.ts(245,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(258,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(258,60): error TS2345: Argument of type '(span: Span) => string' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(275,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(288,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(288,56): error TS2345: Argument of type '(span: Span) => string' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(303,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(316,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'string'.
+src/utils/security.ts(316,63): error TS2345: Argument of type '(span: Span) => string' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'string' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(328,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/security.ts(341,3): error TS2322: Type 'Promise<unknown>' is not assignable to type 'boolean'.
+src/utils/security.ts(341,63): error TS2345: Argument of type '(span: Span) => boolean' is not assignable to parameter of type '(span: Span) => Promise<unknown>'.
+  Type 'boolean' is not assignable to type 'Promise<unknown>'.
+src/utils/security.ts(360,32): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(2,83): error TS2307: Cannot find module '@aws-sdk/client-s3' or its corresponding type declarations.
+src/utils/storage.ts(3,30): error TS2307: Cannot find module '@aws-sdk/s3-request-presigner' or its corresponding type declarations.
+src/utils/storage.ts(4,19): error TS2307: Cannot find module 'sharp' or its corresponding type declarations.
+src/utils/storage.ts(277,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(281,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(289,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(379,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(383,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(389,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(430,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(434,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(440,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(514,59): error TS18046: 'imageError' is of type 'unknown'.
+src/utils/storage.ts(538,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(542,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(549,39): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(607,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(610,59): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(656,9): error TS2304: Cannot find name 'warnings'.
+src/utils/storage.ts(682,62): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(702,18): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(705,60): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(706,37): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(769,26): error TS18046: 'error' is of type 'unknown'.
+src/utils/storage.ts(775,16): error TS18046: 'error' is of type 'unknown'.
+src/utils/validation.ts(538,20): error TS18046: 'validationError' is of type 'unknown'.
+src/utils/validation.ts(542,18): error TS18046: 'validationError' is of type 'unknown'.
+src/utils/validation.ts(595,18): error TS18046: 'validationError' is of type 'unknown'.
+src/validation-schema/adCreativeSchema.ts(9,21): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["image", "video"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'readonly ["image", "video"]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'readonly ["image", "video"]'.
+src/validation-schema/trialistSchema.ts(37,24): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["LEFT", "RIGHT", "BOTH"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/validation-schema/trialistSchema.ts(106,24): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["LEFT", "RIGHT", "BOTH"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.
+src/validation-schema/trialistSchema.ts(150,17): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(values: readonly ["PENDING", "REVIEWED", "INVITED", "REJECTED"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type 'string[]'.

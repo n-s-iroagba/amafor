@@ -179,6 +179,34 @@ class AdCreativeController {
             }
         });
     }
+    /**
+     * Get Creatives by Campaign ID
+     * @api GET /campaigns/:id/creatives
+     * @apiName API-ADV-011
+     * @apiGroup Advertising
+     * @srsRequirement REQ-ADV-07
+     */
+    async getCreativesByCampaign(req, res, next) {
+        return tracer_1.default.startActiveSpan('controller.AdCreativeController.getCreativesByCampaign', async (span) => {
+            try {
+                const { id } = req.params;
+                span.setAttribute('campaignId', id);
+                const creatives = await this.adCreativeService.getAdCreativesByCampaign(id);
+                res.status(200).json({
+                    success: true,
+                    data: creatives
+                });
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                logger_1.default.error('CONTROLLER_GET_CAMPAIGN_CREATIVES_ERROR', { error: error.message, campaignId: req.params.id });
+                next(error);
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
 }
 exports.AdCreativeController = AdCreativeController;
 //# sourceMappingURL=AdCreativeController.js.map

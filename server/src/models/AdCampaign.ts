@@ -39,6 +39,7 @@ export interface AdCampaignAttributes {
   uniqueViews: number;
   targetViews: number;
   paymentStatus: PaymentStatus;
+  paymentReference?: string;
 
   cpv: number;
   startDate?: Date;

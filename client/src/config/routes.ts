@@ -1,57 +1,6 @@
-export const INTERNAL_ROUTES = {
-  HOME: '/',
-  AUTH: {
-    LOGIN: '/auth/login',
-    SIGNUP: '/auth/signup',
-    VERIFY_EMAIL: (token: string) => `/auth/verify-email/${token}`,
-    RESEND_VERIFICATION_CODE: '/auth/resend-verification-code',
-    LOGOUT: '/auth/logout',
-    ME: '/auth/me',
-    FORGOT_PASSWORD: '/auth/forgot-password',
-    RESET_PASSWORD: (token: string) => `/auth/reset-password/${token}`,
-    REFRESH_ACCESS_TOKEN: '/auth/refresh-token',
-  },
-  DASHBOARD: (role: string) => `/${role}/dashboard`,
-  ADMIN: {
-    USERS: {
-      LIST: '/admin/users',
-      DETAIL: (id: string) => `/admin/users/${id}`,
-      LOGS: (id: string) => `/admin/users/${id}/logs`,
-    },
-
-    FEEDS: {
-      LIST: '/admin/feeds',
-      DETAIL: (id: string) => `/admin/feeds/${id}`,
-    },
-    ADS: '/admin/ads',
-    HEALTH: {
-      DETAIL: (id: string) => `/admin/health/${id}`,
-    },
-    SUBSCRIPTIONS: '/admin/subscriptions',
-    ALERTS: '/admin/alerts',
-  },
-
-  AD_PLACER: {
-    CAMPAIGNS: '/ad-placer/campaigns',
-    CAMPAIGN: (id: string) => `/ad-placer/campaigns/${id}`,
-    ANALYTICS: (id: string) => `/ad-placer/analytics/${id}`,
-  },
-  ACCOUNT: {
-    PROFILE: '/account/profile',
-  },
-  ERROR: {
-    NOT_FOUND: '/404',
-    UNAUTHORIZED: '/403',
-  },
-};
 
 export const API_ROUTES = {
-  LEAGUE_STATS: {
-    CREATE: `/club-league-stats`,
-    MUTATE: (id: number | null) => `/club-league-stats/${id}`,
-    LIST: `/club-league-stats`,
-    VIEW: (id: string) => `/club-league-stats/${id}`,
-  },
+
   AUTH: {
     LOGIN: '/auth/login',
     SIGNUP: '/auth/signup',
@@ -65,9 +14,7 @@ export const API_ROUTES = {
     ADMIN_SIGNUP: '/auth/signup/admin',
     SPORTS_ADMIN: '/auth/signup/sports-admin'
   },
-  AD: {
-    DISPLAY: (indentifier: string) => `/ads/public/${indentifier}`,
-  },
+
   ADMIN: {
     METRICS: '/api/admin/metrics',
     SYSTEM_STATUS: '/api/admin/system-status',
@@ -190,27 +137,12 @@ export const API_ROUTES = {
     VIEW: (id: string) => `/videos/${id}`,
   },
   USERS: {
-    CREATE: `/users`,
-    MUTATE: (id: number | null) => `/users/${id}`,
-    DELETE: (id: string | number) => `/users/${id}`,
-    LIST: `/users`,
-    VIEW: (id: string | number) => `/users/${id}`,
-    PENDING_ADVERTISERS: '/users/pending-advertisers',
-    VERIFY: (id: string | number) => `/users/${id}/verify`,
-  },
-  MATCH_SUMMARY: {
-    CREATE: (fixtureId: string) => `/match-summary/${fixtureId}`,
-    MUTATE: (id: string) => `/match-summary/${id}`,
-    BY_FIXTURE: (id: string) => `/match-summary/fixture/${id}`,
-    VIEW: (id: string) => `/match-summary/${id}`,
-  },
-  MATCH_GALLERY: {
-    CREATE: (fixtureId: string | number) => `/match-gallery/${fixtureId}`,
 
-    MUTATE: (id: number | null) => `/match-gallery/${id}`,
-    LIST: (fixtureId: string) => `/match-gallery/fixture/${fixtureId}`,
-    VIEW: (id: string) => `/match-gallery/${id}`,
+    PENDING_ADVERTISERS: '/users/pending-advertisers',
+
   },
+
+
   PATRONS: {
     LIST: '/patrons',
     CREATE: '/patrons',

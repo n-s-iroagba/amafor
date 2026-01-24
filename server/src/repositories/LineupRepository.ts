@@ -298,7 +298,7 @@ export class LineupRepository extends BaseRepository<Lineup> implements ILineupR
     // Filter by team (this assumes Player model has a teamId or similar field)
     // This is a simplified version - you might need to adjust based on your Player model
     const teamLineups = lineups.filter(lineup => {
-      const player = lineup.player;
+      const player = (lineup as any).player;
       if (!player) return false;
 
       // Assuming Player has a team property

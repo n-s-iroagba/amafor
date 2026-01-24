@@ -13,6 +13,7 @@ export declare class PatronSubscriptionRepository extends BaseRepository<PatronS
     findActiveByPatronId(patronId: string): Promise<PatronSubscription | null>;
     createWithAudit(data: PatronSubscriptionCreationAttributes, auditData: any): Promise<PatronSubscription>;
     updateWithAudit(id: string, data: Partial<PatronSubscriptionAttributes>, auditData: any): Promise<PatronSubscription | null>;
+    sumCompletedAmounts(): Promise<number>;
     cancelSubscription(id: string, auditData: any): Promise<PatronSubscription | null>;
     updatePaymentStatus(id: string, status: SubscriptionStatus, paymentReference: string, nextBillingDate?: Date): Promise<[number, PatronSubscription[]] | null>;
     findByPatron(patronId: string, filters?: PatronFilterOptions): Promise<PatronSubscription[]>;

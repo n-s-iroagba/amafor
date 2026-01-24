@@ -1,16 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const AcademyController_1 = require("../controllers/AcademyController");
-const middlewares_1 = require("../middlewares");
-const router = (0, express_1.Router)();
-const controller = new AcademyController_1.AcademyController();
-// Public
-router.get('/news', controller.getAcademyNews);
-router.post('/register', controller.registerTrialist);
-// Protected
-router.use(middlewares_1.authMiddleware);
-router.get('/applications', (0, middlewares_1.rbacMiddleware)(['admin', 'academy_manager']), controller.listApplications);
-router.patch('/applications/:id', (0, middlewares_1.rbacMiddleware)(['admin', 'academy_manager']), controller.updateApplicationStatus);
+const express_1 = __importDefault(require("express"));
+const router = express_1.default.Router();
+// Placeholder routes
+router.get('/', (req, res) => {
+    res.json({ message: 'Academy routes working' });
+});
 exports.default = router;
 //# sourceMappingURL=academyRoutes.js.map

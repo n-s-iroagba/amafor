@@ -1,6 +1,6 @@
 export declare class AnalyticsService {
     private userRepo;
-    private donationRepo;
+    private patronSubRepo;
     private adRepo;
     private articleRepo;
     private playerRepo;

@@ -5,7 +5,7 @@ export declare class FixtureImageService {
     constructor();
     createFixtureImage(imageData: FixtureImageCreationAttributes[]): Promise<FixtureImage[]>;
     getFixtureImageById(id: string): Promise<FixtureImage>;
-    getFixtureImagesByFixture(fixtureId: number): Promise<FixtureImage[]>;
+    getFixtureImagesByFixture(fixtureId: string): Promise<FixtureImage[]>;
     updateFixtureImage(id: string, imageData: Partial<FixtureImage>): Promise<FixtureImage>;
     deleteFixtureImage(id: string): Promise<void>;
 }

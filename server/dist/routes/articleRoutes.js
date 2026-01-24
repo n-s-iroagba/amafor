@@ -13,8 +13,8 @@ const express_rate_limit_1 = require("express-rate-limit");
 const router = (0, express_1.Router)();
 // Rate limiting for article endpoints
 const articleLimiter = (0, express_rate_limit_1.rateLimit)({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
     message: 'Too many requests from this IP, please try again later',
     standardHeaders: true,
     legacyHeaders: false
@@ -25,7 +25,12 @@ router.get('/published', articleLimiter, ArticleController_1.default.fetchAllPub
 router.get('/tag/:tag', articleLimiter, ArticleController_1.default.getArticlesByTag.bind(ArticleController_1.default));
 router.get('/search', articleLimiter, ArticleController_1.default.searchArticles.bind(ArticleController_1.default));
 router.get('/popular-tags', articleLimiter, ArticleController_1.default.getPopularTags.bind(ArticleController_1.default));
+router.get('/analytics', articleLimiter, ArticleController_1.default.getAnalytics.bind(ArticleController_1.default));
 router.get('/:id', articleLimiter, ArticleController_1.default.getArticleById.bind(ArticleController_1.default));
+// Protected Routes (To be implemented with proper middleware later)
+router.post('/', articleLimiter, ArticleController_1.default.createArticle.bind(ArticleController_1.default));
+router.patch('/:id', articleLimiter, ArticleController_1.default.updateArticle.bind(ArticleController_1.default));
+router.delete('/:id', articleLimiter, ArticleController_1.default.deleteArticle.bind(ArticleController_1.default));
 // // Admin routes (protected)
 // router.post(
 //   '/cache/invalidate',

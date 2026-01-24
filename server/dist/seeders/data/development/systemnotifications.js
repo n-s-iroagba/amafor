@@ -29,9 +29,9 @@ exports.developmentSystemNotifications = [
         message: 'The yearly sponsorship for "Global Tech Solutions" is due for renewal in 3 days.',
         data: { subscriptionId: '88888888-8888-8888-8888-888888888888' },
         read: false,
-        userId: ADMIN_USER_ID,
+        userId: ADMIN_USER_ID, // Sending to admin to follow up
         actionUrl: 'https://academy.com/admin/subscriptions',
-        expiresAt: new Date(new Date().setDate(new Date().getDate() + 7)),
+        expiresAt: new Date(new Date().setDate(new Date().getDate() + 7)), // Expires in 7 days
         metadata: { priority: 'high' },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -44,7 +44,7 @@ exports.developmentSystemNotifications = [
         message: 'The system will undergo maintenance on Sunday at 2:00 AM WAT.',
         data: { duration: '2 hours' },
         read: false,
-        userId: undefined,
+        userId: undefined, // Global notification (no specific user)
         expiresAt: new Date(new Date().setDate(new Date().getDate() + 2)),
         metadata: { broadcast: true },
         createdAt: new Date(),

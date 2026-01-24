@@ -13,14 +13,14 @@ var NotificationType;
     NotificationType["PAYMENT"] = "payment";
     NotificationType["CONTENT"] = "content";
     NotificationType["SECURITY"] = "security";
-})(NotificationType = exports.NotificationType || (exports.NotificationType = {}));
+})(NotificationType || (exports.NotificationType = NotificationType = {}));
 var NotificationSeverity;
 (function (NotificationSeverity) {
     NotificationSeverity["INFO"] = "info";
     NotificationSeverity["WARNING"] = "warning";
     NotificationSeverity["ERROR"] = "error";
     NotificationSeverity["CRITICAL"] = "critical";
-})(NotificationSeverity = exports.NotificationSeverity || (exports.NotificationSeverity = {}));
+})(NotificationSeverity || (exports.NotificationSeverity = NotificationSeverity = {}));
 class SystemNotification extends sequelize_1.Model {
 }
 exports.SystemNotification = SystemNotification;

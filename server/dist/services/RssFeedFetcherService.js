@@ -26,8 +26,8 @@ class RssFeedFetcherService {
             timeout: 10000 // 10 second timeout
         });
     }
-    async fetchFeeds(category, page, limit) {
-        const cacheKey = `articles:${category}:page:${page}:limit:${limit}`;
+    async fetchFeeds(page, limit) {
+        const cacheKey = `featured-news:page:${page}:limit:${limit}`;
         // Check cache
         // const cached = await redis.get(cacheKey);
         // if (cached) {
@@ -35,7 +35,7 @@ class RssFeedFetcherService {
         //   return JSON.parse(cached);
         // }
         let articles = [];
-        const feeds = await this.rssFeedSourceService.getFeedsByCategory(category);
+        const feeds = await this.rssFeedSourceService.getAllFeedSources();
         let successCount = 0;
         let errorCount = 0;
         for (const feed of feeds) {
@@ -99,7 +99,7 @@ class RssFeedFetcherService {
         if (!articleUrl) {
             throw new Error('Article URL is required');
         }
-        return (await this.featuredNewsRepository.createOrUpdateArticle(articleData)).article;
+        return (await this.featuredNewsRepository.createOrUpdateNews(articleData)).article;
     }
     extractThumbnailUrl(item) {
         // Try to extract thumbnail from various possible locations
@@ -128,11 +128,11 @@ class RssFeedFetcherService {
             Object.values(RssFeedSource_1.RssFeedSourceCategory).forEach(category => {
                 this.fetchFeeds(category)
                     .then(({ success, errors }) => {
-                        console.log(`Scheduled feed fetch (${category}) completed: ${success} succeeded, ${errors} failed`);
-                    })
+                    console.log(`Scheduled feed fetch (${category}) completed: ${success} succeeded, ${errors} failed`);
+                })
                     .catch(error => {
-                        console.error(`Scheduled feed fetch (${category}) failed:`, error);
-                    });
+                    console.error(`Scheduled feed fetch (${category}) failed:`, error);
+                });
             });
         }, intervalMinutes * 60 * 1000);
     }

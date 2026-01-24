@@ -1,13 +1,15 @@
 import { Router } from 'express';
 import { FixtureImageController } from '../controllers/FixtureImageController';
-import { validate } from '../middleware/validation';
+import { validate } from '../middleware/validate';
 import {
   createFixtureImageSchema,
   updateFixtureImageSchema,
+} from '../validation-schema/fixtureImage.schema';
+import {
   getFixtureImageSchema,
   deleteFixtureImageSchema,
   getFixtureImagesByFixtureSchema,
-} from '../validations/fixtureImage.schema';
+} from '../validation-schema/fixtureImage.schema';
 
 const router = Router();
 const fixtureImageController = new FixtureImageController();

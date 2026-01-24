@@ -13,14 +13,14 @@ var PlayerPosition;
     PlayerPosition["DF"] = "DF";
     PlayerPosition["MF"] = "MF";
     PlayerPosition["FW"] = "FW";
-})(PlayerPosition = exports.PlayerPosition || (exports.PlayerPosition = {}));
+})(PlayerPosition || (exports.PlayerPosition = PlayerPosition = {}));
 var PlayerStatus;
 (function (PlayerStatus) {
     PlayerStatus["ACTIVE"] = "active";
     PlayerStatus["INJURED"] = "injured";
     PlayerStatus["SUSPENDED"] = "suspended";
     PlayerStatus["TRANSFERRED"] = "transferred";
-})(PlayerStatus = exports.PlayerStatus || (exports.PlayerStatus = {}));
+})(PlayerStatus || (exports.PlayerStatus = PlayerStatus = {}));
 class Player extends sequelize_1.Model {
 }
 exports.Player = Player;
@@ -119,6 +119,42 @@ Player.init({
     },
     updatedById: {
         type: sequelize_1.DataTypes.UUID
+    },
+    // Stats
+    appearances: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    goals: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    assists: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    cleanSheets: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    yellowCards: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    redCards: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    minutesPlayed: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 }, {
     sequelize: database_1.default,

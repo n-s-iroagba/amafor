@@ -3,8 +3,8 @@ import { FeaturedNewsAttributes } from "../../../models/FeaturedNews";
 
 export const developmentFeaturedNewss: FeaturedNewsAttributes[] = [
   {
-    id: 1,
-    rssFeedSourceId: 1, // Fixturees 'Goal.com Nigeria' from RssFeedSource seeder
+    id: '3a7a7a7a-7a7a-7a7a-7a7a-7a7a7a7a7a71',
+    rssFeedSourceId: '2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f61', // Matches Goal.com Nigeria UUID
     originalId: 'https://www.goal.com/en-ng/news/super-eagles-qualify-afcon/12345abcde',
     title: 'Super Eagles secure AFCON ticket with game to spare',
     summary: 'Nigeria have booked their place in the next Africa Cup of Nations after a hard-fought draw in Sierra Leone.',
@@ -14,8 +14,8 @@ export const developmentFeaturedNewss: FeaturedNewsAttributes[] = [
     created_at: new Date(),
   },
   {
-    id: 2,
-    rssFeedSourceId: 3, // Fixturees 'BBC Sport' from RssFeedSource seeder
+    id: '3a7a7a7a-7a7a-7a7a-7a7a-7a7a7a7a7a72',
+    rssFeedSourceId: '2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f63', // Matches BBC Sport UUID
     originalId: 'http://www.bbc.co.uk/sport/football/55555555',
     title: 'African Talent: The next generation of stars',
     summary: 'A look at the top 5 emerging talents from West African academies making waves in Europe.',

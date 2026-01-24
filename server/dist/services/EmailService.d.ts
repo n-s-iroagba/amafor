@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import User from '../models/User';
 import Payment from '@models/Payment';
 interface EmailOptions {

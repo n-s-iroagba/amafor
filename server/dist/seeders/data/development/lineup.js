@@ -24,7 +24,7 @@ exports.developmentLineups = [
         position: 'CB',
         isStarter: true,
         jerseyNumber: 4,
-        captain: true,
+        captain: true, // David is the captain
         createdAt: new Date(),
         updatedAt: new Date(),
     }

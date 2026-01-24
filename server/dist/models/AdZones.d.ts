@@ -23,7 +23,7 @@ export interface AdZoneAttributes {
     createdAt: Date;
     updatedAt: Date;
 }
-export declare type AdZoneCreationAttributes = Omit<AdZoneAttributes, 'createdAt' | 'updatedAt'> & {
+export type AdZoneCreationAttributes = Omit<AdZoneAttributes, 'createdAt' | 'updatedAt'> & {
     createdAt?: Date;
     updatedAt?: Date;
 };

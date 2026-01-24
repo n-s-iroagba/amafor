@@ -14,7 +14,7 @@ class AdvertisingService {
                 const campaign = await this.adRepository.create({
                     ...data,
                     advertiserId,
-                    status: 'PENDING_PAYMENT',
+                    status: 'PENDING_PAYMENT', // Default start state
                     currentImpressions: 0,
                     currentClicks: 0
                 });
@@ -131,6 +131,90 @@ class AdvertisingService {
                     where.advertiserId = advertiserId;
                 }
                 return await this.adRepository.findAll({ where });
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    async getAdForZone(zone) {
+        return utils_1.tracer.startActiveSpan('service.AdvertisingService.getAdForZone', async (span) => {
+            try {
+                const where = {
+                    // zone, // Assuming zone column exists
+                    status: 'active',
+                    startDate: { [sequelize_1.Op.lte]: new Date() },
+                    endDate: { [sequelize_1.Op.gte]: new Date() }
+                };
+                // Add zone filter if possible. Using casting to avoid TS error if model def is strict but DB has it.
+                where.zone = zone;
+                const ads = await this.adRepository.findAll({ where });
+                if (ads.length === 0)
+                    return null;
+                // Simple rotation strategy: random
+                const ad = ads[Math.floor(Math.random() * ads.length)];
+                // Track impression (async, don't wait)
+                this.trackImpression(ad.id).catch(err => console.error('Impression tracking failed', err));
+                return ad;
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    async trackImpression(id) {
+        try {
+            const ad = await this.adRepository.findById(id);
+            if (ad) {
+                await this.adRepository.update(id, { viewsDelivered: (ad.viewsDelivered || 0) + 1 });
+            }
+        }
+        catch (error) {
+            console.error('Failed to track impression', error);
+        }
+    }
+    async trackClick(id) {
+        try {
+            const ad = await this.adRepository.findById(id);
+            if (ad) {
+                await this.adRepository.update(id, { currentClicks: (ad.currentClicks || 0) + 1 });
+                utils_1.structuredLogger.business('AD_CLICKED', 0, ad.advertiserId, { campaignId: id });
+            }
+        }
+        catch (error) {
+            console.error('Failed to track click', error);
+        }
+    }
+    async getAdvertiserReports(advertiserId) {
+        return utils_1.tracer.startActiveSpan('service.AdvertisingService.getAdvertiserReports', async (span) => {
+            try {
+                const campaigns = await this.adRepository.findAll({
+                    where: { advertiserId }
+                });
+                const totalSpend = campaigns.reduce((sum, c) => sum + Number(c.spent || 0), 0);
+                const totalViews = campaigns.reduce((sum, c) => sum + (c.viewsDelivered || 0), 0);
+                return {
+                    summary: {
+                        totalSpend,
+                        totalViews
+                    },
+                    campaigns: campaigns.map(c => ({
+                        id: c.id,
+                        name: c.name,
+                        date: c.createdAt,
+                        views: c.viewsDelivered,
+                        spend: c.spent,
+                        status: c.status
+                    }))
+                };
             }
             catch (error) {
                 span.setStatus({ code: 2, message: error.message });

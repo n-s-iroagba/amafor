@@ -1,16 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.trialistController = exports.uploadTrialistFiles = void 0;
-const trialist_service_1 = require("../services/trialist.service");
+exports.trialistController = void 0;
+const TrialistService_1 = require("../services/TrialistService");
 const asyncHandler_1 = require("../middleware/asyncHandler");
-const AppError_1 = require("../utils/AppError");
-const uploadMiddleware_1 = require("../middleware/uploadMiddleware");
-const trialistService = new trialist_service_1.TrialistService();
-// File upload middleware configuration
-exports.uploadTrialistFiles = uploadMiddleware_1.upload.fields([
-    { name: 'videoFile', maxCount: 1 },
-    { name: 'cvFile', maxCount: 1 },
-]);
+const errors_1 = require("../utils/errors");
+const trialistService = new TrialistService_1.TrialistService();
 exports.trialistController = {
     /**
      * Submit trial application
@@ -20,14 +14,18 @@ exports.trialistController = {
      * @srsRequirement REQ-ACA-01, REQ-ACA-02
      */
     createTrialist: (0, asyncHandler_1.asyncHandler)(async (req, res, next) => {
-        const files = req.files;
         const trialistData = {
             ...req.body,
             dob: new Date(req.body.dob),
             height: req.body.height ? parseInt(req.body.height) : undefined,
             weight: req.body.weight ? parseInt(req.body.weight) : undefined,
-            videoFile: files?.videoFile?.[0],
-            cvFile: files?.cvFile?.[0],
+            videoUrl: req.body.videoUrl, // Correction: lowercase 'videourl' was in original file, standardizing to camelCase
+            guardianName: req.body.guardianName,
+            guardianPhone: req.body.guardianPhone,
+            guardianEmail: req.body.guardianEmail,
+            consentEmail: req.body.consentEmail,
+            consentSmsWhatsapp: req.body.consentSmsWhatsapp,
+            guardianConsent: req.body.guardianConsent
         };
         const trialist = await trialistService.createTrialist(trialistData);
         res.status(201).json({
@@ -136,7 +134,7 @@ exports.trialistController = {
         const { id } = req.params;
         const { status } = req.body;
         if (!status || !['PENDING', 'REVIEWED', 'INVITED', 'REJECTED'].includes(status)) {
-            throw new AppError_1.AppError('Invalid status value', 400);
+            throw new errors_1.AppError('Invalid status value', 400);
         }
         const trialist = await trialistService.updateTrialistStatus(id, status);
         res.status(200).json({
@@ -155,7 +153,7 @@ exports.trialistController = {
     searchTrialists: (0, asyncHandler_1.asyncHandler)(async (req, res, next) => {
         const { keyword } = req.query;
         if (!keyword || typeof keyword !== 'string') {
-            throw new AppError_1.AppError('Search keyword is required', 400);
+            throw new errors_1.AppError('Search keyword is required', 400);
         }
         const trialists = await trialistService.searchTrialists(keyword);
         res.status(200).json({

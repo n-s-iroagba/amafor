@@ -8,7 +8,7 @@ exports.developmentVideos = [
         excerpt: "Top goals and skills from the 2024 season, featuring our U-17 squad.",
         thumbnail: "https://placehold.co/600x400/1d3557/ffffff?text=Highlights+2024",
         videoUrl: "https://www.youtube.com/watch?v=dummy1",
-        duration: 345,
+        duration: 345, // seconds
         createdAt: new Date(),
         updatedAt: new Date(),
     },

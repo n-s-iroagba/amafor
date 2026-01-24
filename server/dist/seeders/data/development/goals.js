@@ -6,7 +6,7 @@ const FIXTURE_ID = 'f1f1f1f1-f1f1-f1f1-f1f1-f1f1f1f1f1f1';
 exports.developmentGoals = [
     {
         id: 1,
-        fixtureId: FIXTURE_ID,
+        fixtureId: FIXTURE_ID, // Cast to any if interface expects number, but DB needs UUID string
         scorer: 'Musa Ibrahim',
         minute: 15,
         isPenalty: false,
@@ -26,7 +26,7 @@ exports.developmentGoals = [
         id: 3,
         fixtureId: FIXTURE_ID,
         scorer: 'David Okafor',
-        minute: 88,
+        minute: 88, // Late winner
         isPenalty: true,
         createdAt: new Date(),
         updatedAt: new Date(),

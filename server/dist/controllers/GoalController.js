@@ -22,7 +22,7 @@ class GoalController {
         };
         this.getGoal = async (req, res, next) => {
             try {
-                const goal = await this.goalService.getGoalById(parseInt(req.params.id));
+                const goal = await this.goalService.getGoalById(req.params.id);
                 res.status(200).json(goal);
             }
             catch (error) {
@@ -38,7 +38,7 @@ class GoalController {
          */
         this.getGoalsByFixture = async (req, res, next) => {
             try {
-                const goals = await this.goalService.getGoalsByFixture(parseInt(req.params.fixtureId));
+                const goals = await this.goalService.getFixtureGoals(req.params.fixtureId);
                 res.status(200).json(goals);
             }
             catch (error) {
@@ -54,7 +54,7 @@ class GoalController {
          */
         this.updateGoal = async (req, res, next) => {
             try {
-                const goal = await this.goalService.updateGoal(parseInt(req.params.id), req.body);
+                const goal = await this.goalService.updateGoal(req.params.id, req.body);
                 res.status(200).json(goal);
             }
             catch (error) {
@@ -70,7 +70,7 @@ class GoalController {
          */
         this.deleteGoal = async (req, res, next) => {
             try {
-                await this.goalService.deleteGoal(parseInt(req.params.id));
+                await this.goalService.deleteGoal(req.params.id);
                 res.status(204).send();
             }
             catch (error) {
@@ -79,7 +79,7 @@ class GoalController {
         };
         this.getGoalsByScorer = async (req, res, next) => {
             try {
-                const goals = await this.goalService.getGoalsByScorer(req.params.scorer);
+                const goals = await this.goalService.searchGoalsByPlayer(req.params.scorer);
                 res.status(200).json(goals);
             }
             catch (error) {
@@ -88,7 +88,7 @@ class GoalController {
         };
         this.getPenaltyGoals = async (req, res, next) => {
             try {
-                const goals = await this.goalService.getPenaltyGoals();
+                const goals = await this.goalService.getPenaltyStats();
                 res.status(200).json(goals);
             }
             catch (error) {

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { AdvertisingController } from '../controllers/AdvertisingController';
-import { validate } from '../middleware/validate';
+
 import { validate } from '../middleware/validate';
 import { authenticate, authorize } from '../middleware/auth';
 import { advertisementSchema } from '../validation-schema/advertisementSchema';

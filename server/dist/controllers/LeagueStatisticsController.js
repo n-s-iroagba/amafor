@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.leagueStatisticsController = exports.LeagueStatisticsController = void 0;
-const leagueStatistics_service_1 = require("../services/leagueStatistics.service");
-const AppError_1 = require("../utils/AppError");
+const LeagueStatisticsService_1 = require("@services/LeagueStatisticsService");
+const errors_1 = require("@utils/errors");
 class LeagueStatisticsController {
     constructor(leagueStatisticsService) {
-        this.leagueStatisticsService = leagueStatisticsService || new leagueStatistics_service_1.LeagueStatisticsService();
+        this.leagueStatisticsService = leagueStatisticsService || new LeagueStatisticsService_1.LeagueStatisticsService();
     }
     /**
      * Create league statistics
@@ -186,7 +186,7 @@ class LeagueStatisticsController {
             const { leagueId } = req.params;
             const { homeTeam, awayTeam, homeGoals, awayGoals } = req.body;
             if (!homeTeam || !awayTeam || homeGoals === undefined || awayGoals === undefined) {
-                throw new AppError_1.AppError('Missing required fields: homeTeam, awayTeam, homeGoals, awayGoals', 400);
+                throw new errors_1.AppError('Missing required fields: homeTeam, awayTeam, homeGoals, awayGoals', 400);
             }
             await this.leagueStatisticsService.updateFixtureResult(leagueId, homeTeam, awayTeam, parseInt(homeGoals), parseInt(awayGoals));
             res.status(200).json({

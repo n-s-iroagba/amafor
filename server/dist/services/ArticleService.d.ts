@@ -25,6 +25,10 @@ export declare class ArticleService {
     private generatePublishedCacheKey;
     private invalidateHomepageCache;
     warmCache(): Promise<void>;
+    getAnalytics(dateFrom: Date, dateTo: Date): Promise<any>;
+    createArticle(data: any): Promise<Article>;
+    updateArticle(id: string, data: any): Promise<Article | null>;
+    deleteArticle(id: string): Promise<boolean>;
 }
 declare const _default: ArticleService;
 export default _default;

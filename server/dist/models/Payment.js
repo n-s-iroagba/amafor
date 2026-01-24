@@ -14,27 +14,27 @@ var PaymentStatus;
     PaymentStatus["FAILED"] = "failed";
     PaymentStatus["CANCELLED"] = "cancelled";
     PaymentStatus["REFUNDED"] = "refunded";
-})(PaymentStatus = exports.PaymentStatus || (exports.PaymentStatus = {}));
+})(PaymentStatus || (exports.PaymentStatus = PaymentStatus = {}));
 var PaymentType;
 (function (PaymentType) {
     PaymentType["ADVERTISEMENT"] = "advertisement";
     PaymentType["DONATION"] = "donation";
     PaymentType["SUBSCRIPTION"] = "subscription";
-})(PaymentType = exports.PaymentType || (exports.PaymentType = {}));
+})(PaymentType || (exports.PaymentType = PaymentType = {}));
 var PaymentProvider;
 (function (PaymentProvider) {
     PaymentProvider["PAYSTACK"] = "paystack";
     PaymentProvider["FLUTTERWAVE"] = "flutterwave";
     PaymentProvider["STRIPE"] = "stripe";
     PaymentProvider["MANUAL"] = "manual";
-})(PaymentProvider = exports.PaymentProvider || (exports.PaymentProvider = {}));
+})(PaymentProvider || (exports.PaymentProvider = PaymentProvider = {}));
 var Currency;
 (function (Currency) {
     Currency["NGN"] = "NGN";
     Currency["USD"] = "USD";
     Currency["GBP"] = "GBP";
     Currency["EUR"] = "EUR";
-})(Currency = exports.Currency || (exports.Currency = {}));
+})(Currency || (exports.Currency = Currency = {}));
 // Main Payment model
 class Payment extends sequelize_1.Model {
     // Static methods

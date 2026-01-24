@@ -46,7 +46,7 @@ export interface PaymentAttributes {
     createdAt: Date;
     updatedAt: Date;
 }
-export declare type PaymentCreationAttributes = Omit<PaymentAttributes, 'id' | 'createdAt' | 'updatedAt' | 'verifiedAt' | 'refundedAt'> & {
+export type PaymentCreationAttributes = Omit<PaymentAttributes, 'id' | 'createdAt' | 'updatedAt' | 'verifiedAt' | 'refundedAt'> & {
     id?: string;
     verifiedAt?: Date | null;
     refundedAt?: Date | null;

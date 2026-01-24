@@ -7,5 +7,9 @@ export declare class FixtureService {
     recordResult(fixtureId: string, resultData: any, updaterId: string): Promise<Fixture>;
     calculateLeagueTable(season: string): Promise<any[]>;
     findAll(filters: any): Promise<Fixture[]>;
+    findById(id: string | number, options?: any): Promise<Fixture | null>;
+    update(id: string | number, data: any): Promise<number>;
+    delete(id: string | number): Promise<boolean>;
+    findByLeague(leagueId: string | number): Promise<Fixture[]>;
 }
 //# sourceMappingURL=FixtureService.d.ts.map

@@ -22,7 +22,7 @@ export declare const sanitizeSqlInput: (input: string) => string;
 export declare const createRateLimiterKey: (req: Request) => string;
 export declare const checkPasswordStrength: (password: string) => {
     score: number;
-    strength: 'weak' | 'medium' | 'strong' | 'very_strong';
+    strength: "weak" | "medium" | "strong" | "very_strong";
     suggestions: string[];
 };
 export declare const generateRandomString: (length?: number) => string;
@@ -48,10 +48,10 @@ declare const _default: {
     generateCsrfToken: () => string;
     validateCsrfToken: (token: string, sessionToken: string) => boolean;
     sanitizeSqlInput: (input: string) => string;
-    createRateLimiterKey: (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>) => string;
+    createRateLimiterKey: (req: Request) => string;
     checkPasswordStrength: (password: string) => {
         score: number;
-        strength: "medium" | "weak" | "strong" | "very_strong";
+        strength: "weak" | "medium" | "strong" | "very_strong";
         suggestions: string[];
     };
     generateRandomString: (length?: number) => string;

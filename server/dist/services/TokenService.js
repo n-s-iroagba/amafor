@@ -420,7 +420,7 @@ class TokenService {
         return {
             accessToken,
             refreshToken,
-            accessExpiresIn: 15 * 60,
+            accessExpiresIn: 15 * 60, // 15 minutes in seconds
             refreshExpiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
         };
     }

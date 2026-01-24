@@ -5,13 +5,14 @@ import { PlayerLeagueStatisticsAttributes } from "../../../models/PlayerLeagueSt
 const LEAGUE_ID = '11111111-aaaa-1111-aaaa-111111111111';
 const ADMIN_USER_ID = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
 // Placeholder Player ID - Ensure you create a Player with this ID
-const PLAYER_ID = 'p1p1p1p1-p1p1-p1p1-p1p1-p1p1p1p1p1p1'; 
+const PLAYER_ID = 'p1p1p1p1-p1p1-p1p1-p1p1-p1p1p1p1p1p1';
 
 export const developmentPlayerLeagueStatistics: PlayerLeagueStatisticsAttributes[] = [
   {
     id: 'pl1pl1pl-pl1pl-pl1pl-pl1pl-pl1pl1pl1pl1',
     playerId: PLAYER_ID,
     leagueId: LEAGUE_ID,
+    goals: 0,
     assists: 4,
     cleanSheets: 0, // 0 for an outfielder usually
     yellowCards: 1,

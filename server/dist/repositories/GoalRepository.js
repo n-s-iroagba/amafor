@@ -187,7 +187,7 @@ class GoalRepository extends BaseRepository_1.BaseRepository {
             { label: '0-15', min: 0, max: 15 },
             { label: '16-30', min: 16, max: 30 },
             { label: '31-45', min: 31, max: 45 },
-            { label: '45+', min: 45, max: 50 },
+            { label: '45+', min: 45, max: 50 }, // Stoppage time in first half
             { label: '46-60', min: 46, max: 60 },
             { label: '61-75', min: 61, max: 75 },
             { label: '76-90', min: 76, max: 90 },

@@ -25,8 +25,8 @@ export declare const sendDonationReceipt: (email: string, name: string, amount: 
 export declare const sendCampaignApprovalEmail: (email: string, campaignName: string, advertiserName: string) => Promise<EmailSendResult>;
 export declare const sendScoutApprovalEmail: (email: string, scoutName: string) => Promise<EmailSendResult>;
 export declare const sendPatronWelcomeEmail: (email: string, name: string, tier: string, amount: number, frequency: string) => Promise<EmailSendResult>;
-export declare const sendSystemNotificationEmail: (email: string, subject: string, message: string, actionUrl?: string | undefined) => Promise<EmailSendResult>;
-export declare const sendBatchJobCompletionEmail: (email: string, jobType: string, successCount: number, failureCount: number, totalCount: number, downloadUrl?: string | undefined) => Promise<EmailSendResult>;
+export declare const sendSystemNotificationEmail: (email: string, subject: string, message: string, actionUrl?: string) => Promise<EmailSendResult>;
+export declare const sendBatchJobCompletionEmail: (email: string, jobType: string, successCount: number, failureCount: number, totalCount: number, downloadUrl?: string) => Promise<EmailSendResult>;
 export declare const sendRatesChangeNotification: (advertiserEmails: string[], effectiveDate: Date, changes: Array<{
     zone: string;
     oldRate: number;
@@ -61,13 +61,13 @@ declare const _default: {
     sendCampaignApprovalEmail: (email: string, campaignName: string, advertiserName: string) => Promise<EmailSendResult>;
     sendScoutApprovalEmail: (email: string, scoutName: string) => Promise<EmailSendResult>;
     sendPatronWelcomeEmail: (email: string, name: string, tier: string, amount: number, frequency: string) => Promise<EmailSendResult>;
-    sendSystemNotificationEmail: (email: string, subject: string, message: string, actionUrl?: string | undefined) => Promise<EmailSendResult>;
-    sendBatchJobCompletionEmail: (email: string, jobType: string, successCount: number, failureCount: number, totalCount: number, downloadUrl?: string | undefined) => Promise<EmailSendResult>;
-    sendRatesChangeNotification: (advertiserEmails: string[], effectiveDate: Date, changes: {
+    sendSystemNotificationEmail: (email: string, subject: string, message: string, actionUrl?: string) => Promise<EmailSendResult>;
+    sendBatchJobCompletionEmail: (email: string, jobType: string, successCount: number, failureCount: number, totalCount: number, downloadUrl?: string) => Promise<EmailSendResult>;
+    sendRatesChangeNotification: (advertiserEmails: string[], effectiveDate: Date, changes: Array<{
         zone: string;
         oldRate: number;
         newRate: number;
-    }[]) => Promise<EmailSendResult[]>;
+    }>) => Promise<EmailSendResult[]>;
     sendDailySummaryEmail: (adminEmails: string[], summary: {
         date: string;
         newUsers: number;
@@ -79,8 +79,8 @@ declare const _default: {
     }) => Promise<EmailSendResult[]>;
     checkEmailHealth: () => Promise<{
         healthy: boolean;
-        latency?: number | undefined;
-        error?: string | undefined;
+        latency?: number;
+        error?: string;
     }>;
     generateUnsubscribeLink: (email: string, subscriptionType: string) => string;
     validateUnsubscribeToken: (token: string) => {

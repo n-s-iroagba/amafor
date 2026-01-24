@@ -1,5 +1,5 @@
+import { LeagueStatisticsService } from '@services/LeagueStatisticsService';
 import { Request, Response, NextFunction } from 'express';
-import { LeagueStatisticsService } from '../services/leagueStatistics.service';
 export declare class LeagueStatisticsController {
     private leagueStatisticsService;
     constructor(leagueStatisticsService?: LeagueStatisticsService);

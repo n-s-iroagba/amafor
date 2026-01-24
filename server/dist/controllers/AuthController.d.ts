@@ -9,7 +9,9 @@ export declare class AuthController {
      * @apiGroup Authentication
      * @srsRequirement REQ-AUTH-01
      */
-    register: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    signupAdvertiser(req: Request, res: Response, next: NextFunction): Promise<void>;
+    signupAdmin(req: Request, res: Response, next: NextFunction): Promise<void>;
+    createSportsAdmin(req: Request, res: Response, next: NextFunction): Promise<void>;
     /**
      * User login endpoint
      * @api POST /auth/login
@@ -17,7 +19,7 @@ export declare class AuthController {
      * @apiGroup Authentication
      * @srsRequirement REQ-AUTH-02
      */
-    login: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    login(req: Request, res: Response, next: NextFunction): Promise<void>;
     /**
      * User logout endpoint
      * @api POST /auth/logout
@@ -27,6 +29,12 @@ export declare class AuthController {
      * @remarks Logout is often handled on client-side by destroying token,
      * but we provide endpoint for strict cookie clearing or blacklist logic if needed
      */
-    logout: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    resendCode(req: Request, res: Response, next: NextFunction): Promise<void>;
+    forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void>;
+    getMe(req: Request, res: Response, next: NextFunction): Promise<void>;
+    verifyEmail(req: Request, res: Response, next: NextFunction): Promise<void>;
+    resetPassword(req: Request, res: Response, next: NextFunction): Promise<void>;
+    refreshToken(req: Request, res: Response, next: NextFunction): Promise<void>;
+    logout(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 //# sourceMappingURL=AuthController.d.ts.map

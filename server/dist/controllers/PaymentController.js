@@ -60,7 +60,7 @@ class PaymentController {
         try {
             const data = {
                 userId: req.user.id,
-                donationId: req.body.donationId,
+                subscriptionId: req.body.subscriptionId,
                 amount: parseFloat(req.body.amount),
                 currency: req.body.currency,
                 customerEmail: req.body.email || req.user.email,

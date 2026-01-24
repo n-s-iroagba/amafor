@@ -13,7 +13,7 @@ var AdZone;
     AdZone["SIDEBAR"] = "sidebar";
     AdZone["ARTICLE_FOOTER"] = "article_footer";
     AdZone["MID_ARTICLE"] = "mid_article";
-})(AdZone = exports.AdZone || (exports.AdZone = {}));
+})(AdZone || (exports.AdZone = AdZone = {}));
 var CampaignStatus;
 (function (CampaignStatus) {
     CampaignStatus["DRAFT"] = "draft";
@@ -22,14 +22,14 @@ var CampaignStatus;
     CampaignStatus["PAUSED"] = "paused";
     CampaignStatus["COMPLETED"] = "completed";
     CampaignStatus["CANCELLED"] = "cancelled";
-})(CampaignStatus = exports.CampaignStatus || (exports.CampaignStatus = {}));
+})(CampaignStatus || (exports.CampaignStatus = CampaignStatus = {}));
 var PaymentStatus;
 (function (PaymentStatus) {
     PaymentStatus["PENDING"] = "pending";
     PaymentStatus["PAID"] = "paid";
     PaymentStatus["REFUNDED"] = "refunded";
     PaymentStatus["FAILED"] = "failed";
-})(PaymentStatus = exports.PaymentStatus || (exports.PaymentStatus = {}));
+})(PaymentStatus || (exports.PaymentStatus = PaymentStatus = {}));
 class AdCampaign extends sequelize_1.Model {
 }
 exports.AdCampaign = AdCampaign;
@@ -67,7 +67,17 @@ AdCampaign.init({
         allowNull: false,
         defaultValue: 0
     },
+    currentClicks: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
     uniqueViews: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    targetViews: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
@@ -81,10 +91,6 @@ AdCampaign.init({
         type: sequelize_1.DataTypes.ENUM(...Object.values(PaymentStatus)),
         allowNull: false,
         defaultValue: PaymentStatus.PENDING
-    },
-    paymentReference: {
-        type: sequelize_1.DataTypes.STRING(100),
-        allowNull: true
     },
     cpv: {
         type: sequelize_1.DataTypes.DECIMAL(10, 2),

@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
 export declare const commonSchemas: {
@@ -73,7 +72,7 @@ export declare const systemSchemas: {
     notificationFilter: Joi.ObjectSchema<any>;
     cookieConsent: Joi.ObjectSchema<any>;
 };
-export declare const validate: (schema: Joi.ObjectSchema, property?: 'body' | 'query' | 'params') => (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const validate: (schema: Joi.ObjectSchema, property?: "body" | "query" | "params") => (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare const validateAsync: (data: any, schema: Joi.ObjectSchema) => Promise<{
     valid: boolean;
     errors?: any[];
@@ -161,10 +160,10 @@ declare const _default: {
         notificationFilter: Joi.ObjectSchema<any>;
         cookieConsent: Joi.ObjectSchema<any>;
     };
-    validate: (schema: Joi.ObjectSchema<any>, property?: "query" | "body" | "params") => (req: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
-    validateAsync: (data: any, schema: Joi.ObjectSchema<any>) => Promise<{
+    validate: (schema: Joi.ObjectSchema, property?: "body" | "query" | "params") => (req: Request, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
+    validateAsync: (data: any, schema: Joi.ObjectSchema) => Promise<{
         valid: boolean;
-        errors?: any[] | undefined;
+        errors?: any[];
         value?: any;
     }>;
     validateFile: (file: Express.Multer.File, allowedTypes: string[], maxSize: number) => {

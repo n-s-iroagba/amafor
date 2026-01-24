@@ -29,9 +29,10 @@ export interface AdCampaignAttributes {
     spent: number;
     targeting: string[];
     viewsDelivered: number;
+    currentClicks: number;
     uniqueViews: number;
+    targetViews: number;
     paymentStatus: PaymentStatus;
-    paymentReference?: string;
     cpv: number;
     startDate?: Date;
     endDate?: Date;
@@ -46,14 +47,15 @@ export declare class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCr
     id: string;
     name: string;
     advertiserId: string;
+    targetViews: number;
     status: CampaignStatus;
     budget: number;
     spent: number;
     viewsDelivered: number;
+    currentClicks: number;
     uniqueViews: number;
     targeting: string[];
     paymentStatus: PaymentStatus;
-    paymentReference?: string;
     cpv: number;
     startDate?: Date;
     endDate?: Date;

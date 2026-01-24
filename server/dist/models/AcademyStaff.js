@@ -73,7 +73,7 @@ AcademyStaff.init({
     modelName: 'AcademyStaff',
     tableName: 'academy_staff',
     timestamps: true,
-    paranoid: false,
+    paranoid: false, // Set to true if you want soft deletes
     indexes: [
         {
             fields: ['name'],

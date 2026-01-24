@@ -16,7 +16,8 @@ var AuditAction;
     AuditAction["PAYMENT"] = "payment";
     AuditAction["VIEW"] = "view";
     AuditAction["ACCESS"] = "access";
-})(AuditAction = exports.AuditAction || (exports.AuditAction = {}));
+    AuditAction["BULK_IMPORT"] = "bulk_import";
+})(AuditAction || (exports.AuditAction = AuditAction = {}));
 var EntityType;
 (function (EntityType) {
     EntityType["USER"] = "user";
@@ -27,7 +28,8 @@ var EntityType;
     EntityType["DONATION"] = "donation";
     EntityType["PATRON"] = "patron";
     EntityType["SYSTEM"] = "system";
-})(EntityType = exports.EntityType || (exports.EntityType = {}));
+    EntityType["STAFF"] = "staff";
+})(EntityType || (exports.EntityType = EntityType = {}));
 class AuditLog extends sequelize_1.Model {
 }
 exports.AuditLog = AuditLog;

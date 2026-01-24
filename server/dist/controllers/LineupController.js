@@ -11,9 +11,9 @@ class LineupController {
          * @apiGroup Lineups
          * @srsRequirement REQ-PUB-02, REQ-ADM-03
          */
-        this.createLineupPlayer = async (req, res, next) => {
+        this.createLineup = async (req, res, next) => {
             try {
-                const player = await this.lineupService.createLineupPlayer(req.body);
+                const player = await this.lineupService.createLineup(req.body);
                 res.status(201).json(player);
             }
             catch (error) {
@@ -22,7 +22,7 @@ class LineupController {
         };
         this.getLineupPlayer = async (req, res, next) => {
             try {
-                const player = await this.lineupService.getLineupPlayerById(parseInt(req.params.id));
+                const player = await this.lineupService.getLineupById(req.params.id);
                 res.status(200).json(player);
             }
             catch (error) {
@@ -38,7 +38,7 @@ class LineupController {
          */
         this.getLineupByFixture = async (req, res, next) => {
             try {
-                const lineup = await this.lineupService.getLineupByFixture(parseInt(req.params.fixtureId));
+                const lineup = await this.lineupService.getFixtureLineup(req.params.fixtureId);
                 res.status(200).json(lineup);
             }
             catch (error) {
@@ -47,7 +47,7 @@ class LineupController {
         };
         this.getStartersByFixture = async (req, res, next) => {
             try {
-                const starters = await this.lineupService.getStartersByFixture(parseInt(req.params.fixtureId));
+                const { starters } = await this.lineupService.getDetailedFixtureLineup(req.params.fixtureId);
                 res.status(200).json(starters);
             }
             catch (error) {
@@ -56,7 +56,7 @@ class LineupController {
         };
         this.getSubstitutesByFixture = async (req, res, next) => {
             try {
-                const substitutes = await this.lineupService.getSubstitutesByFixture(parseInt(req.params.fixtureId));
+                const { substitutes } = await this.lineupService.getDetailedFixtureLineup(req.params.fixtureId);
                 res.status(200).json(substitutes);
             }
             catch (error) {
@@ -72,7 +72,7 @@ class LineupController {
          */
         this.updateLineupPlayer = async (req, res, next) => {
             try {
-                const player = await this.lineupService.updateLineupPlayer(parseInt(req.params.id), req.body);
+                const player = await this.lineupService.updateLineup(req.params.id, req.body);
                 res.status(200).json(player);
             }
             catch (error) {
@@ -88,7 +88,7 @@ class LineupController {
          */
         this.deleteLineupPlayer = async (req, res, next) => {
             try {
-                await this.lineupService.deleteLineupPlayer(parseInt(req.params.id));
+                await this.lineupService.deleteLineup(req.params.id);
                 res.status(204).send();
             }
             catch (error) {
@@ -97,7 +97,7 @@ class LineupController {
         };
         this.batchUpdateLineup = async (req, res, next) => {
             try {
-                const lineup = await this.lineupService.batchUpdateLineup(parseInt(req.params.fixtureId), req.body);
+                const lineup = await this.lineupService.replaceFixtureLineup(req.params.fixtureId, req.body);
                 res.status(200).json(lineup);
             }
             catch (error) {

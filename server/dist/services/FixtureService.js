@@ -80,15 +80,79 @@ class FixtureService {
     async calculateLeagueTable(season) {
         return utils_1.tracer.startActiveSpan('service.FixtureService.calculateLeagueTable', async (span) => {
             try {
-                // Filter by season if your DB supports it, otherwise fetch all completed
+                // Fetch all completed matches for the league
+                // Note: Assuming 'season' filtering needs to be handled by date range or specific season field if added later
+                // For now, we fetch all completed fixtures. In a real scenario, we'd filter by leagueId and season dates.
                 const matches = await this.fixtureRepository.findAll({
                     where: { status: 'COMPLETED' }
-                    // add season filter here if column exists
                 });
-                // Calculation logic (Simplified)
                 const table = {};
-                // ... logic to populate table from matches ...
-                return Object.values(table).sort((a, b) => b.points - a.points);
+                matches.forEach((match) => {
+                    // Initialize home team if not exists
+                    if (!table[match.homeTeam]) {
+                        table[match.homeTeam] = {
+                            team: match.homeTeam,
+                            played: 0,
+                            won: 0,
+                            drawn: 0,
+                            lost: 0,
+                            gf: 0,
+                            ga: 0,
+                            gd: 0,
+                            points: 0
+                        };
+                    }
+                    // Initialize away team if not exists
+                    if (!table[match.awayTeam]) {
+                        table[match.awayTeam] = {
+                            team: match.awayTeam,
+                            played: 0,
+                            won: 0,
+                            drawn: 0,
+                            lost: 0,
+                            gf: 0,
+                            ga: 0,
+                            gd: 0,
+                            points: 0
+                        };
+                    }
+                    const homeStats = table[match.homeTeam];
+                    const awayStats = table[match.awayTeam];
+                    const homeScore = match.homeScore || 0;
+                    const awayScore = match.awayScore || 0;
+                    homeStats.played += 1;
+                    awayStats.played += 1;
+                    homeStats.gf += homeScore;
+                    homeStats.ga += awayScore;
+                    awayStats.gf += awayScore;
+                    awayStats.ga += homeScore;
+                    if (homeScore > awayScore) {
+                        homeStats.won += 1;
+                        homeStats.points += 3;
+                        awayStats.lost += 1;
+                    }
+                    else if (homeScore < awayScore) {
+                        awayStats.won += 1;
+                        awayStats.points += 3;
+                        homeStats.lost += 1;
+                    }
+                    else {
+                        homeStats.drawn += 1;
+                        homeStats.points += 1;
+                        awayStats.drawn += 1;
+                        awayStats.points += 1;
+                    }
+                    homeStats.gd = homeStats.gf - homeStats.ga;
+                    awayStats.gd = awayStats.gf - awayStats.ga;
+                });
+                // Sort by Points, then Goal Difference, then Goals For
+                return Object.values(table).sort((a, b) => {
+                    if (b.points !== a.points)
+                        return b.points - a.points;
+                    if (b.gd !== a.gd)
+                        return b.gd - a.gd;
+                    return b.gf - a.gf;
+                });
             }
             catch (error) {
                 span.setStatus({ code: 2, message: error.message });
@@ -104,6 +168,64 @@ class FixtureService {
         return utils_1.tracer.startActiveSpan('service.FixtureService.findAll', async (span) => {
             try {
                 return await this.fixtureRepository.findAll(filters);
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    async findById(id, options) {
+        return utils_1.tracer.startActiveSpan('service.FixtureService.findById', async (span) => {
+            try {
+                return await this.fixtureRepository.findById(String(id), options);
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    async update(id, data) {
+        return utils_1.tracer.startActiveSpan('service.FixtureService.update', async (span) => {
+            try {
+                const [affected] = await this.fixtureRepository.update(String(id), data);
+                return affected;
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    async delete(id) {
+        return utils_1.tracer.startActiveSpan('service.FixtureService.delete', async (span) => {
+            try {
+                const deleted = await this.fixtureRepository.delete(String(id));
+                return deleted > 0;
+            }
+            catch (error) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    async findByLeague(leagueId) {
+        return utils_1.tracer.startActiveSpan('service.FixtureService.findByLeague', async (span) => {
+            try {
+                return await this.fixtureRepository.findAll({ where: { leagueId } });
             }
             catch (error) {
                 span.setStatus({ code: 2, message: error.message });

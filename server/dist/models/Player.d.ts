@@ -33,6 +33,13 @@ export interface PlayerAttributes {
     updatedById: string;
     createdAt: Date;
     updatedAt: Date;
+    appearances: number;
+    goals: number;
+    assists: number;
+    cleanSheets: number;
+    yellowCards: number;
+    redCards: number;
+    minutesPlayed: number;
     deletedAt?: Date;
 }
 export interface PlayerCreationAttributes extends Optional<PlayerAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'previousClubs' | 'metadata'> {
@@ -59,6 +66,13 @@ export declare class Player extends Model<PlayerAttributes, PlayerCreationAttrib
     updatedById: string;
     createdAt: Date;
     updatedAt: Date;
+    appearances: number;
+    goals: number;
+    assists: number;
+    cleanSheets: number;
+    yellowCards: number;
+    redCards: number;
+    minutesPlayed: number;
     deletedAt?: Date;
 }
 export default Player;

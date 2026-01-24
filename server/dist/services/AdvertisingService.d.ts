@@ -8,5 +8,9 @@ export declare class AdvertisingService {
     getActiveCampaigns(advertiserId?: string): Promise<AdCampaign[]>;
     getExpiredCampaigns(advertiserId?: string): Promise<AdCampaign[]>;
     getPendingCampaigns(advertiserId?: string): Promise<AdCampaign[]>;
+    getAdForZone(zone: string): Promise<AdCampaign | null>;
+    trackImpression(id: string): Promise<void>;
+    trackClick(id: string): Promise<void>;
+    getAdvertiserReports(advertiserId: string): Promise<any>;
 }
 //# sourceMappingURL=AdvertisingService.d.ts.map

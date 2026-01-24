@@ -47,5 +47,12 @@ export declare class PatronageController {
      * @remarks This is a utility method not in API spec
      */
     checkStatus: (req: Request, res: Response, next: NextFunction) => Promise<void>;
+    /**
+     * List available subscription packages
+     * @api GET /patrons/packages
+     * @apiName API-PATRON-006
+     * @apiGroup Patronage
+     */
+    listPackages: (req: Request, res: Response, next: NextFunction) => Promise<void>;
 }
 //# sourceMappingURL=PatronageController.d.ts.map

@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.syncDatabase = exports.setupAssociations = void 0;
+exports.syncDatabase = void 0;
+exports.setupAssociations = setupAssociations;
 const database_1 = __importDefault(require("../config/database"));
 // Base Entities
 const User_1 = __importDefault(require("./User"));
@@ -327,7 +328,6 @@ async function setupAssociations() {
     });
     console.log('✅ All associations configured');
 }
-exports.setupAssociations = setupAssociations;
 const syncDatabase = async (force = false) => {
     try {
         await setupAssociations();

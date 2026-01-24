@@ -124,6 +124,14 @@ class PatronSubscriptionRepository extends BaseRepository_1.BaseRepository {
             }
         });
     }
+    async sumCompletedAmounts() {
+        const result = await this.model.sum('amount', {
+            where: {
+                status: { [sequelize_1.Op.or]: [PatronSubscription_1.SubscriptionStatus.ACTIVE, PatronSubscription_1.SubscriptionStatus.EXPIRED] } // Count active and expired subscriptions
+            }
+        });
+        return result || 0;
+    }
     async cancelSubscription(id, auditData) {
         return tracer_1.tracer.startActiveSpan('repository.PatronSubscription.cancelSubscription', async (span) => {
             try {

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { GoalController } from '../controllers/GoalController';
-import { validate } from '../middleware/validation';
+import { validate } from '../middleware/validate';
 import {
   createGoalSchema,
   updateGoalSchema,
@@ -8,7 +8,8 @@ import {
   deleteGoalSchema,
   getGoalsByFixtureSchema,
   getGoalsByScorerSchema,
-} from '../validations/goal.schema';
+} from '../validation-schema/goal.schema';
+
 
 const router = Router();
 const goalController = new GoalController();

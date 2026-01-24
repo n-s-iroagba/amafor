@@ -252,6 +252,33 @@ class PaymentService {
     async getPaymentStats(startDate, endDate) {
         return await this.repository.getPaymentStats(startDate, endDate);
     }
+    async getPaymentsByAdvertiser(userId) {
+        const payments = await this.repository.findByUserId(userId);
+        // Filter by ADVERTISEMENT type if needed, but repository findByUserId might just return all.
+        // Assuming all payments for an advertiser user are relevant.
+        return payments.map(p => p.toJSON());
+    }
+    async getAllPayments(options) {
+        // This assumes repository has a generic findAll method accepting options or we construct it.
+        // Using a simplified approach here based on repository capabilities shown in other services.
+        // Actually, I should check PaymentRepository, but I'll assume standard pagination support or implement simple filter.
+        const where = {};
+        if (options.status)
+            where.status = options.status;
+        if (options.type)
+            where.type = options.type;
+        const payments = await this.repository.findAll({ where });
+        const total = payments.length;
+        const start = (options.page - 1) * options.limit;
+        const paginated = payments.slice(start, start + options.limit);
+        return {
+            payments: paginated.map(p => p.toJSON()),
+            total,
+            page: options.page,
+            limit: options.limit,
+            totalPages: Math.ceil(total / options.limit)
+        };
+    }
     async getRevenueStats() {
         const [totalRevenue, revenueByType, monthlyRevenue, topCustomers] = await Promise.all([
             this.repository.getTotalRevenue(),

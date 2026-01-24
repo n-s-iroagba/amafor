@@ -11,20 +11,20 @@ const logFormat = winston.format.combine(
 );
 
 // Create logger instance
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: logFormat,
   defaultMeta: { service: 'amafor-gladiators-api' },
   transports: [
     // Write all logs with importance level of 'error' or less to error.log
-    new winston.transports.File({ 
-      filename: 'logs/error.log', 
+    new winston.transports.File({
+      filename: 'logs/error.log',
       level: 'error',
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
     // Write all logs with importance level of 'info' or less to combined.log
-    new winston.transports.File({ 
+    new winston.transports.File({
       filename: 'logs/combined.log',
       maxsize: 5242880, // 5MB
       maxFiles: 5,
@@ -64,7 +64,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
   res.on('finish', () => {
     const duration = Date.now() - startTime;
     const logLevel = res.statusCode >= 400 ? 'warn' : 'info';
-    
+
     logger.log(logLevel, 'Request completed', {
       requestId,
       method: req.method,
@@ -82,7 +82,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
 // Error logging middleware
 export const errorLogger = (error: Error, req?: Request) => {
   const requestId = req?.headers['x-request-id'] as string || 'unknown';
-  
+
   logger.error('Unhandled error', {
     requestId,
     error: error.message,
@@ -98,19 +98,19 @@ export const structuredLogger = {
   info: (message: string, meta?: any) => {
     logger.info(message, meta);
   },
-  
+
   error: (message: string, meta?: any) => {
     logger.error(message, meta);
   },
-  
+
   warn: (message: string, meta?: any) => {
     logger.warn(message, meta);
   },
-  
+
   debug: (message: string, meta?: any) => {
     logger.debug(message, meta);
   },
-  
+
   audit: (action: string, userId: string, entityType: string, entityId: string, details?: any) => {
     logger.info('Audit log', {
       action,
@@ -121,7 +121,7 @@ export const structuredLogger = {
       timestamp: new Date().toISOString()
     });
   },
-  
+
   security: (event: string, userId: string, ipAddress?: string, details?: any) => {
     logger.warn('Security event', {
       event,
@@ -131,7 +131,7 @@ export const structuredLogger = {
       timestamp: new Date().toISOString()
     });
   },
-  
+
   business: (event: string, amount?: number, userId?: string, details?: any) => {
     logger.info('Business event', {
       event,

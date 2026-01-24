@@ -42,5 +42,13 @@ export declare class AdCreativeController {
      * @srsRequirement REQ-ADV-07
      */
     deleteAdCreative(req: Request, res: Response, next: NextFunction): Promise<void>;
+    /**
+     * Get Creatives by Campaign ID
+     * @api GET /campaigns/:id/creatives
+     * @apiName API-ADV-011
+     * @apiGroup Advertising
+     * @srsRequirement REQ-ADV-07
+     */
+    getCreativesByCampaign(req: Request, res: Response, next: NextFunction): Promise<void>;
 }
 //# sourceMappingURL=AdCreativeController.d.ts.map

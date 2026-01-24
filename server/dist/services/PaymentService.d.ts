@@ -12,17 +12,17 @@ export interface CreateAdvertisementPaymentData {
     ipAddress?: string;
     userAgent?: string;
 }
-export interfaceCreatePatronSubscriptionPaymentData {
+export interface CreatePatronSubscriptionPaymentData {
     userId: string;
-    subscriptionId ?: string;
+    subscriptionId?: string;
     amount: number;
-    currency ?: Currency;
+    currency?: Currency;
     customerEmail: string;
     customerName: string;
-    customerPhone ?: string;
-    metadata ?: Record<string, any>;
-    ipAddress ?: string;
-    userAgent ?: string;
+    customerPhone?: string;
+    metadata?: Record<string, any>;
+    ipAddress?: string;
+    userAgent?: string;
 }
 export interface PaymentInitiationResult {
     payment: PaymentAttributes;
@@ -72,6 +72,13 @@ export declare class PaymentService {
         failed: number;
         totalAmount: number;
     }>;
+    getPaymentsByAdvertiser(userId: string): Promise<PaymentAttributes[]>;
+    getAllPayments(options: {
+        page: number;
+        limit: number;
+        status?: string;
+        type?: string;
+    }): Promise<any>;
     getRevenueStats(): Promise<RevenueStats>;
     refundPayment(id: string): Promise<PaymentAttributes>;
     private generateReference;

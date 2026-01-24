@@ -313,6 +313,111 @@ class ArticleController {
             }
         });
     }
+    /**
+     * Create new article
+     * @api POST /articles
+     * @apiName API-ARTICLE-007
+     */
+    async createArticle(req, res) {
+        return tracer_1.tracer.startActiveSpan('controller.Article.createArticle', async (span) => {
+            try {
+                // Basic validation - enhance with Zod later if needed
+                const { title, content, status } = req.body;
+                if (!title || !content) {
+                    apiResponse_1.ApiResponse.error(res, {
+                        message: 'Title and Content are required',
+                        statusCode: 400
+                    });
+                    return;
+                }
+                const article = await this.articleService.createArticle(req.body);
+                apiResponse_1.ApiResponse.success(res, {
+                    message: 'Article created successfully',
+                    data: article,
+                    statusCode: 201
+                });
+            }
+            catch (error) {
+                logger_1.default.error('Error creating article', { error });
+                apiResponse_1.ApiResponse.error(res, { message: 'Failed to create article', statusCode: 500 });
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    /**
+   * Update article
+   * @api PATCH /articles/:id
+   * @apiName API-ARTICLE-008
+   */
+    async updateArticle(req, res) {
+        return tracer_1.tracer.startActiveSpan('controller.Article.updateArticle', async (span) => {
+            try {
+                const { id } = req.params;
+                const article = await this.articleService.updateArticle(id, req.body);
+                apiResponse_1.ApiResponse.success(res, {
+                    message: 'Article updated successfully',
+                    data: article
+                });
+            }
+            catch (error) {
+                logger_1.default.error('Error updating article', { error });
+                apiResponse_1.ApiResponse.error(res, { message: 'Failed to update article', statusCode: 500 });
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    /**
+   * Delete article
+   * @api DELETE /articles/:id
+   * @apiName API-ARTICLE-009
+   */
+    async deleteArticle(req, res) {
+        return tracer_1.tracer.startActiveSpan('controller.Article.deleteArticle', async (span) => {
+            try {
+                const { id } = req.params;
+                await this.articleService.deleteArticle(id);
+                apiResponse_1.ApiResponse.success(res, {
+                    message: 'Article deleted successfully'
+                });
+            }
+            catch (error) {
+                logger_1.default.error('Error deleting article', { error });
+                apiResponse_1.ApiResponse.error(res, { message: 'Failed to delete article', statusCode: 500 });
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
+    /**
+     * Get article analytics
+     * @api GET /articles/analytics
+     * @apiName API-ARTICLE-010
+     */
+    async getAnalytics(req, res) {
+        return tracer_1.tracer.startActiveSpan('controller.Article.getAnalytics', async (span) => {
+            try {
+                const dateFrom = req.query.dateFrom ? new Date(req.query.dateFrom) : new Date(new Date().setDate(new Date().getDate() - 30));
+                const dateTo = req.query.dateTo ? new Date(req.query.dateTo) : new Date();
+                const analytics = await this.articleService.getAnalytics(dateFrom, dateTo);
+                apiResponse_1.ApiResponse.success(res, {
+                    message: 'Analytics fetched successfully',
+                    data: analytics
+                });
+            }
+            catch (error) {
+                logger_1.default.error('Error fetching analytics', { error });
+                apiResponse_1.ApiResponse.error(res, { message: 'Failed to fetch analytics', statusCode: 500 });
+            }
+            finally {
+                span.end();
+            }
+        });
+    }
 }
 exports.ArticleController = ArticleController;
 exports.default = new ArticleController();

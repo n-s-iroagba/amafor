@@ -22,7 +22,7 @@ class FixtureImageController {
         };
         this.getFixtureImage = async (req, res, next) => {
             try {
-                const image = await this.fixtureImageService.getFixtureImageById(parseInt(req.params.id));
+                const image = await this.fixtureImageService.getFixtureImageById(req.params.id);
                 res.status(200).json(image);
             }
             catch (error) {
@@ -38,7 +38,7 @@ class FixtureImageController {
          */
         this.getFixtureImagesByFixture = async (req, res, next) => {
             try {
-                const images = await this.fixtureImageService.getFixtureImagesByFixture(parseInt(req.params.fixtureId));
+                const images = await this.fixtureImageService.getFixtureImagesByFixture(req.params.fixtureId);
                 res.status(200).json(images);
             }
             catch (error) {
@@ -47,7 +47,7 @@ class FixtureImageController {
         };
         this.updateFixtureImage = async (req, res, next) => {
             try {
-                const image = await this.fixtureImageService.updateFixtureImage(parseInt(req.params.id), req.body);
+                const image = await this.fixtureImageService.updateFixtureImage(req.params.id, req.body);
                 res.status(200).json(image);
             }
             catch (error) {
@@ -63,7 +63,7 @@ class FixtureImageController {
          */
         this.deleteFixtureImage = async (req, res, next) => {
             try {
-                await this.fixtureImageService.deleteFixtureImage(parseInt(req.params.id));
+                await this.fixtureImageService.deleteFixtureImage(req.params.id);
                 res.status(204).send();
             }
             catch (error) {

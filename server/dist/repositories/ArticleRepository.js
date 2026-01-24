@@ -433,9 +433,9 @@ class ArticleRepository extends BaseRepository_1.BaseRepository {
                 // Mock data for demonstration
                 const analytics = {
                     totalViews: totalViews || 0,
-                    uniqueVisitors: Math.floor((totalViews || 0) * 0.7),
-                    averageTimeOnPage: 2.5,
-                    bounceRate: 45,
+                    uniqueVisitors: Math.floor((totalViews || 0) * 0.7), // 70% unique visitors
+                    averageTimeOnPage: 2.5, // minutes
+                    bounceRate: 45, // percentage
                     topArticles: articles.map(article => ({
                         id: article.id,
                         title: article.title,

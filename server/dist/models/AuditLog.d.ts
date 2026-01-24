@@ -7,7 +7,8 @@ export declare enum AuditAction {
     LOGOUT = "logout",
     PAYMENT = "payment",
     VIEW = "view",
-    ACCESS = "access"
+    ACCESS = "access",
+    BULK_IMPORT = "bulk_import"
 }
 export declare enum EntityType {
     USER = "user",
@@ -17,7 +18,8 @@ export declare enum EntityType {
     CAMPAIGN = "campaign",
     DONATION = "donation",
     PATRON = "patron",
-    SYSTEM = "system"
+    SYSTEM = "system",
+    STAFF = "staff"
 }
 export interface AuditLogAttributes {
     id: string;

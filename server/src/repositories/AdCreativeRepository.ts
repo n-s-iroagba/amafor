@@ -64,7 +64,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
   async findByCampaignId(campaignId: string): Promise<AdCreative[]> {
     return await this.findAll({
       where: { campaignId },
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
   }
 
@@ -72,7 +72,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
   async findByZoneId(zoneId: string): Promise<AdCreative[]> {
     return await this.findAll({
       where: { zoneId },
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
   }
 
@@ -88,7 +88,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
   async findByFormat(format: string): Promise<AdCreative[]> {
     return await this.findAll({
       where: { format },
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
   }
 
@@ -122,7 +122,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
         },
         required: true
       }],
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
   }
 
@@ -143,7 +143,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
       this.count({ where }),
       this.count({ where: { ...where, type: 'image' } }),
       this.count({ where: { ...where, type: 'video' } }),
-      this.model.sum('numberOfViews', { where })
+      this.model.sum('numberOfViews', { where: where as any })
     ]);
 
     const averageViews = total > 0 ? Math.round((totalViews || 0) / total) : 0;
@@ -174,7 +174,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
   async getCreativesByCampaign(campaignId: string): Promise<AdCreative[]> {
     return await this.findAll({
       where: { campaignId },
-      order: [['created_at', 'DESC']],
+      order: [['createdAt', 'DESC']],
       include: [{
         model: AdCampaign,
         as: 'campaign',
@@ -235,7 +235,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
           { destinationUrl: { [Op.iLike]: `%${query}%` } }
         ]
       },
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
   }
 
@@ -259,7 +259,7 @@ export class AdCreativeRepository extends BaseRepository<AdCreative> implements 
 
     return await this.findAll({
       where,
-      order: [['created_at', 'DESC']]
+      order: [['createdAt', 'DESC']]
     });
   }
 

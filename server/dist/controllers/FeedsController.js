@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeedsController = void 0;
 const RssFeedSourceService_1 = require("../services/RssFeedSourceService");
+const RssFeedFetcherService_1 = require("@services/RssFeedFetcherService");
 const FeaturedNewsService_1 = require("../services/FeaturedNewsService");
-const RssFeedFetcherService_1 = require("../services/RssFeedFetcherService");
 class FeedsController {
     constructor() {
         /**
@@ -41,7 +41,7 @@ class FeedsController {
         this.getFeedSource = async (req, res, next) => {
             try {
                 const { id } = req.params;
-                const feedSource = await this.rssFeedSourceService.getFeedSourceById(parseInt(id));
+                const feedSource = await this.rssFeedSourceService.getFeedSourceById(id);
                 if (!feedSource) {
                     res.status(404).json({ error: 'Feed source not found' });
                     return;
@@ -62,7 +62,7 @@ class FeedsController {
         this.updateFeedSource = async (req, res, next) => {
             try {
                 const { id } = req.params;
-                const feedSource = await this.rssFeedSourceService.updateFeedSource(parseInt(id), req.body);
+                const feedSource = await this.rssFeedSourceService.updateFeedSource(id, req.body);
                 if (!feedSource) {
                     res.status(404).json({ error: 'Feed source not found' });
                     return;
@@ -83,7 +83,7 @@ class FeedsController {
         this.deleteFeedSource = async (req, res, next) => {
             try {
                 const { id } = req.params;
-                const success = await this.rssFeedSourceService.deleteFeedSource(parseInt(id));
+                const success = await this.rssFeedSourceService.deleteFeedSource(id);
                 if (!success) {
                     res.status(404).json({ error: 'Feed source not found' });
                     return;

@@ -44,7 +44,7 @@ class LeagueStatisticsService {
         return statistics;
     }
     async getAllStatistics(leagueId, options = {}) {
-        const { rows: statistics, count: total } = await this.repository.findAll(leagueId, options);
+        const { rows: statistics, count: total } = await this.repository.findAllByLeague(leagueId, options);
         const page = options.page || 1;
         const limit = options.limit || 20;
         const totalPages = Math.ceil(total / limit);

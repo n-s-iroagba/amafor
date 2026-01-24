@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RssFeedSourceService = void 0;
+const index_1 = require("@repositories/index");
 class RssFeedSourceService {
     constructor() {
-        this.rssFeedSourceRepository = new RssFeedSourceRepository();
+        this.rssFeedSourceRepository = new index_1.RssFeedSourceRepository();
     }
     async getAllFeedSources() {
         return (await this.rssFeedSourceRepository.findAll());
@@ -11,23 +12,17 @@ class RssFeedSourceService {
     async getFeedSourceById(id) {
         return await this.rssFeedSourceRepository.findById(id);
     }
-    async getFeedSourceByUrl(feedUrl) {
-        return await this.rssFeedSourceRepository.findByUrl(feedUrl);
-    }
     async createFeedSource(feedSourceData) {
         return await this.rssFeedSourceRepository.create(feedSourceData);
     }
     async updateFeedSource(id, feedSourceData) {
-        return await this.rssFeedSourceRepository.updateById(id, feedSourceData);
+        return await this.rssFeedSourceRepository.update(id, feedSourceData);
     }
     async deleteFeedSource(id) {
-        return await this.rssFeedSourceRepository.deleteById(id);
-    }
-    async getFeedsByCategory(category) {
-        return await this.rssFeedSourceRepository.findByCategory(category);
+        return await this.rssFeedSourceRepository.delete(id);
     }
     async updateFetchStatus(id, status) {
-        await this.rssFeedSourceRepository.updateFetchStatus(id, status);
+        await this.rssFeedSourceRepository.update(id, status);
     }
     async getFeedsNeedingUpdate(thresholdMinutes = 30) {
         return await this.rssFeedSourceRepository.getFeedsNeedingUpdate(thresholdMinutes);

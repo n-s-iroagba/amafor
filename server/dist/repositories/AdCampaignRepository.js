@@ -338,7 +338,7 @@ class AdCampaignRepository extends BaseRepository_1.BaseRepository {
                     campaignId: campaign.id,
                     viewsDelivered: campaign.viewsDelivered,
                     uniqueViews: campaign.uniqueViews,
-                    totalImpressions: campaign.viewsDelivered * 1.5,
+                    totalImpressions: campaign.viewsDelivered * 1.5, // Estimated impressions (1.5x views)
                     clickThroughRate: campaign.uniqueViews > 0 ? (campaign.uniqueViews / campaign.viewsDelivered) * 100 : 0,
                     cpv: campaign.cpv,
                     totalSpent: campaign.spent,

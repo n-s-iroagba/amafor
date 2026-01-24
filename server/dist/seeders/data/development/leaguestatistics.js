@@ -11,7 +11,7 @@ exports.developmentLeagueStatistics = [
         id: 'ls1ls1ls-ls1ls-ls1ls-ls1ls-ls1ls1ls1ls1',
         leagueId: LEAGUE_ID,
         team: 'Academy U17',
-        fixtureId: FIXTURE_ID,
+        fixtureId: FIXTURE_ID, // Cast if model expects number vs UUID string mismatch in definitions
         matchesPlayed: 1,
         wins: 1,
         draws: 0,

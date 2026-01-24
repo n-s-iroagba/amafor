@@ -33,7 +33,7 @@ exports.developmentArticles = [
         viewCount: 1250,
         readTime: 4,
         status: Article_1.ArticleStatus.PUBLISHED,
-        publishedAt: new Date(new Date().setDate(new Date().getDate() - 1)),
+        publishedAt: new Date(new Date().setDate(new Date().getDate() - 1)), // Published yesterday
         adZones: ['mid_article', 'article_footer'],
         metadata: { seo_keywords: ['U17', 'Victory', 'Derby'] },
         createdAt: new Date(),

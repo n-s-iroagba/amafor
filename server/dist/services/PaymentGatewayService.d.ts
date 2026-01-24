@@ -80,4 +80,5 @@ export declare class PaystackService {
     generateReference(prefix?: string): string;
 }
 export declare function getPaystackService(): PaystackService;
+export default getPaystackService;
 //# sourceMappingURL=PaymentGatewayService.d.ts.map

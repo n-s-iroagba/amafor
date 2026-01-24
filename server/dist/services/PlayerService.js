@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerService = void 0;
 const PlayerRepository_1 = require("../repositories/PlayerRepository");
 const AuditService_1 = require("./AuditService");
+const AuditLog_1 = require("../models/AuditLog");
 const logger_1 = __importDefault(require("../utils/logger"));
 class PlayerService {
     constructor() {
@@ -19,13 +20,14 @@ class PlayerService {
                 userId: creatorId,
                 userEmail: 'system',
                 userType: 'admin',
-                action: 'CREATE',
-                entityType: 'PLAYER',
+                action: AuditLog_1.AuditAction.CREATE,
+                entityType: AuditLog_1.EntityType.PLAYER,
                 entityId: player.id,
                 entityName: player.name,
                 changes: [],
                 ipAddress: '0.0.0.0',
-                metadata: { position: player.position }
+                metadata: { position: player.position },
+                timestamp: new Date()
             });
             logger_1.default.info('Player created', { playerId: player.id, position: player.position });
             return player;
@@ -66,13 +68,14 @@ class PlayerService {
                 userId: adminId,
                 userEmail: 'admin',
                 userType: 'admin',
-                action: 'UPDATE',
-                entityType: 'PLAYER',
+                action: AuditLog_1.AuditAction.UPDATE,
+                entityType: AuditLog_1.EntityType.PLAYER,
                 entityId: playerId,
                 entityName: 'Stats Update',
                 changes: Object.keys(statsData).map(k => ({ field: k, newValue: statsData[k] })),
                 ipAddress: '0.0.0.0',
-                metadata: { type: 'performance_update' }
+                metadata: { type: 'performance_update' },
+                timestamp: new Date()
             });
             return updatedPlayers[0];
         }

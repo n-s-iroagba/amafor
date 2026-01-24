@@ -6,7 +6,7 @@ const utils_1 = require("../utils");
 class AnalyticsService {
     constructor() {
         this.userRepo = new repositories_1.UserRepository();
-        this.donationRepo = new repositories_1.DonationRepository();
+        this.patronSubRepo = new repositories_1.PatronSubscriptionRepository();
         this.adRepo = new repositories_1.AdCampaignRepository();
         this.articleRepo = new repositories_1.ArticleRepository();
         this.playerRepo = new repositories_1.PlayerRepository();
@@ -43,7 +43,7 @@ class AnalyticsService {
     }
     async calculateTotalRevenue() {
         // Sum Donations + Ad Spend (simplified)
-        const donations = await this.donationRepo.sumCompletedAmounts();
+        const donations = await this.patronSubRepo.sumCompletedAmounts();
         // Assuming Ad Campaigns have a 'budget' or 'spend' field
         const adRevenue = await this.adRepo.sumActiveBudgets();
         return donations + adRevenue;

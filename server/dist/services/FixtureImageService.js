@@ -15,7 +15,6 @@ class FixtureImageService {
         this.fixtureRepository = new FixtureRepository_1.FixtureRepository();
     }
     async createFixtureImage(imageData) {
-        console.log('llllllllllllll');
         try {
             return await FixtureImage_1.default.bulkCreate(imageData);
         }

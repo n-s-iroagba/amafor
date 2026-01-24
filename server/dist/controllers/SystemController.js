@@ -70,6 +70,61 @@ class SystemController {
             }
         };
         /**
+         * Create system backup
+         * @api POST /system/backups
+         */
+        this.createBackup = async (req, res, next) => {
+            try {
+                const result = await this.systemService.createBackup();
+                res.status(201).json({ success: true, data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
+         * Restore system backup
+         * @api POST /system/backups/:id/restore
+         */
+        this.restoreBackup = async (req, res, next) => {
+            try {
+                const { id } = req.params;
+                const result = await this.systemService.restoreBackup(id);
+                res.status(200).json({ success: true, data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
+         * Delete system backup
+         * @api DELETE /system/backups/:id
+         */
+        this.deleteBackup = async (req, res, next) => {
+            try {
+                const { id } = req.params;
+                await this.systemService.deleteBackup(id);
+                res.status(200).json({ success: true, message: 'Backup deleted' });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
+         * Download system backup
+         * @api GET /system/backups/:id/download
+         */
+        this.downloadBackup = async (req, res, next) => {
+            try {
+                const { id } = req.params;
+                const result = await this.systemService.downloadBackup(id);
+                res.status(200).json({ success: true, data: result });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
          * Health check
          * @api GET /health
          * @apiName API-HEALTH-001
@@ -112,6 +167,19 @@ class SystemController {
             try {
                 const status = await this.systemService.getRedisHealth();
                 res.status(200).json({ success: true, data: status });
+            }
+            catch (error) {
+                next(error);
+            }
+        };
+        /**
+         * Run system diagnostic
+         * @api POST /system/diagnostic
+         */
+        this.runDiagnostic = async (req, res, next) => {
+            try {
+                const result = await this.systemService.runDiagnostic();
+                res.status(200).json({ success: true, data: result });
             }
             catch (error) {
                 next(error);
