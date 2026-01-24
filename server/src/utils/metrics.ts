@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 // Enable default metrics
 promClient.collectDefaultMetrics({
   prefix: 'amafor_gladiators_',
-  timeout: 5000,
+  // timeout: 5000,
 });
 
 // HTTP Metrics
@@ -117,36 +117,36 @@ const activeConnections = new promClient.Gauge({
 export const metricsMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const startTime = Date.now();
   const route = req.route?.path || req.path;
-  
+
   // Record response finish
   res.on('finish', () => {
     const duration = (Date.now() - startTime) / 1000;
-    
+
     httpRequestDuration.observe(
       { method: req.method, route, status_code: res.statusCode },
       duration
     );
-    
+
     httpRequestsTotal.inc({
       method: req.method,
       route,
       status_code: res.statusCode,
     });
   });
-  
+
   next();
 };
 
 // Error Metrics Middleware
 export const errorMetricsMiddleware = (error: Error, req: Request, res: Response, next: NextFunction) => {
   const route = req.route?.path || req.path;
-  
+
   httpRequestErrors.inc({
     method: req.method,
     route,
     error_type: error.constructor.name,
   });
-  
+
   next(error);
 };
 
@@ -157,32 +157,32 @@ export const recordDbMetrics = async <T>(
   fn: () => Promise<T>
 ): Promise<T> => {
   const startTime = Date.now();
-  
+
   try {
     dbQueriesTotal.inc({ operation, table });
     const result = await fn();
     const duration = (Date.now() - startTime) / 1000;
-    
+
     dbQueryDuration.observe(
       { operation, table, success: 'true' },
       duration
     );
-    
+
     return result;
-  } catch (error) {
+  } catch (error: any) {
     const duration = (Date.now() - startTime) / 1000;
-    
+
     dbQueryDuration.observe(
       { operation, table, success: 'false' },
       duration
     );
-    
+
     dbErrors.inc({
       operation,
       table,
       error_type: error.constructor.name,
     });
-    
+
     throw error;
   }
 };
@@ -221,11 +221,11 @@ export const collectSystemMetrics = () => {
   memoryUsage.set({ type: 'heapUsed' }, memory.heapUsed);
   memoryUsage.set({ type: 'heapTotal' }, memory.heapTotal);
   memoryUsage.set({ type: 'rss' }, memory.rss);
-  
+
   // CPU usage
   const cpu = process.cpuUsage();
   cpuUsage.set((cpu.user + cpu.system) / 1000000); // Convert to percentage
-  
+
   // Event loop lag
   const start = process.hrtime();
   setImmediate(() => {

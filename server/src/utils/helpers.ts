@@ -40,7 +40,7 @@ export const formatCurrency = (amount: number, currency: string = 'NGN'): string
 // Format date
 export const formatDate = (date: Date | string, format: 'short' | 'medium' | 'long' | 'full' = 'medium'): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: format === 'short' ? 'short' : 'long',
@@ -59,7 +59,7 @@ export const formatDate = (date: Date | string, format: 'short' | 'medium' | 'lo
 // Format date-time
 export const formatDateTime = (date: Date | string): string => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+
   return dateObj.toLocaleString('en-NG', {
     year: 'numeric',
     month: 'long',
@@ -74,14 +74,14 @@ export const formatDateTime = (date: Date | string): string => {
 export const calculateAge = (dateOfBirth: Date | string): number => {
   const birthDate = typeof dateOfBirth === 'string' ? new Date(dateOfBirth) : dateOfBirth;
   const today = new Date();
-  
+
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  
+
   return age;
 };
 
@@ -96,7 +96,7 @@ export const calculateReadTime = (content: string, wordsPerMinute: number = 200)
 export const generateShareUrl = (type: 'whatsapp' | 'facebook' | 'twitter', url: string, text?: string): string => {
   const encodedUrl = encodeURIComponent(url);
   const encodedText = encodeURIComponent(text || 'Check this out!');
-  
+
   switch (type) {
     case 'whatsapp':
       return `https://wa.me/?text=${encodedText}%20${encodedUrl}`;
@@ -138,7 +138,7 @@ export const slugify = (text: string): string => {
 // Truncate text with ellipsis
 export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text;
-  
+
   return text.substring(0, maxLength - 3) + '...';
 };
 
@@ -146,10 +146,10 @@ export const truncateText = (text: string, maxLength: number): string => {
 export const extractExcerpt = (content: string, maxLength: number = 200): string => {
   // Remove HTML tags
   const plainText = content.replace(/<[^>]*>/g, ' ');
-  
+
   // Collapse multiple spaces
   const collapsedText = plainText.replace(/\s+/g, ' ').trim();
-  
+
   return truncateText(collapsedText, maxLength);
 };
 
@@ -171,7 +171,7 @@ export const generatePagination = (
   const totalPages = Math.ceil(total / limit);
   const hasNext = page < totalPages;
   const hasPrevious = page > 1;
-  
+
   return {
     page,
     limit,
@@ -187,21 +187,21 @@ export const generatePagination = (
 // Sort array by property
 export const sortBy = <T>(array: T[], property: keyof T, order: 'asc' | 'desc' = 'asc'): T[] => {
   return [...array].sort((a, b) => {
-    let aValue = a[property];
-    let bValue = b[property];
-    
+    let aValue: any = a[property];
+    let bValue: any = b[property];
+
     // Handle dates
     if (aValue instanceof Date && bValue instanceof Date) {
       aValue = aValue.getTime();
       bValue = bValue.getTime();
     }
-    
+
     // Handle strings case-insensitive
     if (typeof aValue === 'string' && typeof bValue === 'string') {
       aValue = aValue.toLowerCase();
       bValue = bValue.toLowerCase();
     }
-    
+
     if (aValue < bValue) return order === 'asc' ? -1 : 1;
     if (aValue > bValue) return order === 'asc' ? 1 : -1;
     return 0;
@@ -219,41 +219,41 @@ export const filterBy = <T>(
       // All filters must match
       return Object.entries(filters).every(([key, value]) => {
         if (value === undefined || value === null) return true;
-        
+
         const itemValue = item[key as keyof T];
-        
+
         // Handle array values
         if (Array.isArray(value)) {
           return value.includes(itemValue);
         }
-        
+
         // Handle regex
         if (value instanceof RegExp) {
           return value.test(String(itemValue));
         }
-        
+
         // Handle exact match
-        return itemValue === value;
+        return itemValue === (value as any);
       });
     } else {
       // OR: At least one filter must match
       return Object.entries(filters).some(([key, value]) => {
         if (value === undefined || value === null) return false;
-        
+
         const itemValue = item[key as keyof T];
-        
+
         // Handle array values
         if (Array.isArray(value)) {
           return value.includes(itemValue);
         }
-        
+
         // Handle regex
         if (value instanceof RegExp) {
           return value.test(String(itemValue));
         }
-        
+
         // Handle exact match
-        return itemValue === value;
+        return itemValue === (value as any);
       });
     }
   });
@@ -265,7 +265,7 @@ export const debounce = <T extends (...args: any[]) => any>(
   wait: number
 ): ((...args: Parameters<T>) => void) => {
   let timeout: NodeJS.Timeout;
-  
+
   return (...args: Parameters<T>) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
@@ -278,7 +278,7 @@ export const throttle = <T extends (...args: any[]) => any>(
   limit: number
 ): ((...args: Parameters<T>) => void) => {
   let inThrottle: boolean;
-  
+
   return (...args: Parameters<T>) => {
     if (!inThrottle) {
       func(...args);
@@ -291,9 +291,9 @@ export const throttle = <T extends (...args: any[]) => any>(
 // Deep clone object
 export const deepClone = <T>(obj: T): T => {
   if (obj === null || typeof obj !== 'object') return obj;
-  
+
   if (obj instanceof Date) return new Date(obj.getTime()) as T;
-  
+
   if (obj instanceof Array) {
     const arrCopy: any[] = [];
     obj.forEach((item, index) => {
@@ -301,7 +301,7 @@ export const deepClone = <T>(obj: T): T => {
     });
     return arrCopy as T;
   }
-  
+
   if (typeof obj === 'object') {
     const objCopy: Record<string, any> = {};
     Object.keys(obj).forEach(key => {
@@ -309,14 +309,14 @@ export const deepClone = <T>(obj: T): T => {
     });
     return objCopy as T;
   }
-  
+
   return obj;
 };
 
 // Merge objects deeply
 export const deepMerge = (target: any, source: any): any => {
   const output = { ...target };
-  
+
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach(key => {
       if (isObject(source[key])) {
@@ -330,7 +330,7 @@ export const deepMerge = (target: any, source: any): any => {
       }
     });
   }
-  
+
   return output;
 };
 
@@ -348,11 +348,11 @@ export const randomInRange = (min: number, max: number): number => {
 export const randomString = (length: number = 8): string => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
-  
+
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  
+
   return result;
 };
 
@@ -389,31 +389,31 @@ export const retry = async <T>(
   delay: number = 1000
 ): Promise<T> => {
   return tracer.startActiveSpan('helpers.retry', async (span) => {
-    let lastError: Error;
-    
+    let lastError: Error = new Error('Retry failed');
+
     for (let i = 0; i < retries; i++) {
       try {
         span.setAttributes({
           'helpers.retry_attempt': i + 1,
           'helpers.max_retries': retries,
         });
-        
+
         return await fn();
       } catch (error) {
-        lastError = error;
-        
+        lastError = error as Error;
+
         if (i < retries - 1) {
           const waitTime = delay * Math.pow(2, i); // Exponential backoff
           await sleep(waitTime);
         }
       }
     }
-    
+
     span.setStatus({
       code: 2,
       message: lastError.message,
     });
-    
+
     throw lastError;
   });
 };
@@ -427,13 +427,13 @@ export const validateNigerianPhone = (phone: string): boolean => {
 // Format Nigerian phone number
 export const formatNigerianPhone = (phone: string): string => {
   const clean = phone.replace(/\D/g, '');
-  
+
   if (clean.startsWith('234')) {
     return `+${clean}`;
   } else if (clean.startsWith('0')) {
     return `+234${clean.substring(1)}`;
   }
-  
+
   return phone;
 };
 
@@ -441,11 +441,11 @@ export const formatNigerianPhone = (phone: string): string => {
 export const generateOTP = (length: number = 6): string => {
   const digits = '0123456789';
   let otp = '';
-  
+
   for (let i = 0; i < length; i++) {
     otp += digits[Math.floor(Math.random() * digits.length)];
   }
-  
+
   return otp;
 };
 
@@ -454,11 +454,11 @@ export const maskSensitiveData = (data: string, visibleChars: number = 4): strin
   if (!data || data.length <= visibleChars * 2) {
     return '*'.repeat(data?.length || 0);
   }
-  
+
   const firstPart = data.substring(0, visibleChars);
   const lastPart = data.substring(data.length - visibleChars);
   const maskedPart = '*'.repeat(data.length - visibleChars * 2);
-  
+
   return `${firstPart}${maskedPart}${lastPart}`;
 };
 

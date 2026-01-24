@@ -146,8 +146,8 @@ export const sendEmail = async (options: EmailOptions): Promise<EmailSendResult>
       return {
         success: true,
         messageId: info.messageId,
-        accepted: info.accepted,
-        rejected: info.rejected,
+        accepted: info.accepted as any,
+        rejected: info.rejected as any,
       };
     } catch (error) {
       const err = error as any;

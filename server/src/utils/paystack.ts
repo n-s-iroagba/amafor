@@ -381,40 +381,26 @@ export const createSubscription = async (request: SubscriptionRequest): Promise<
 
 // Verify webhook signature
 export const verifyWebhookSignature = (payload: any, signature: string): boolean => {
-  return tracer.startActiveSpan('paystack.verifyWebhookSignature', (span) => {
-    try {
-      const hash = crypto
-        .createHmac('sha512', PAYSTACK_SECRET_KEY)
-        .update(JSON.stringify(payload))
-        .digest('hex');
+  try {
+    const hash = crypto
+      .createHmac('sha512', PAYSTACK_SECRET_KEY)
+      .update(JSON.stringify(payload))
+      .digest('hex');
 
-      const isValid = hash === signature;
+    const isValid = hash === signature;
 
-      span.setAttributes({
-        'paystack.webhook_signature_valid': isValid,
+    if (!isValid) {
+      logger.warn('Invalid webhook signature', {
+        expected: signature,
+        actual: hash,
       });
-
-      if (!isValid) {
-        logger.warn('Invalid webhook signature', {
-          expected: signature,
-          actual: hash,
-        });
-      }
-
-      return isValid;
-    } catch (error) {
-      const err = error as any;
-      span.setStatus({
-        code: 2,
-        message: err.message,
-      });
-
-      logger.error('Error verifying webhook signature', { error });
-      return false;
-    } finally {
-      span.end();
     }
-  });
+
+    return isValid;
+  } catch (error: any) {
+    logger.error('Error verifying webhook signature', { error });
+    return false;
+  }
 };
 
 // Generate unique reference
@@ -579,8 +565,6 @@ export default {
   createTransferRecipient,
   initiateTransfer,
   createSubscription,
-  verifyWebhookSignature,
-  generateReference,
   verifyWebhookSignature,
   generateReference,
   mapSubscriptionStatus,

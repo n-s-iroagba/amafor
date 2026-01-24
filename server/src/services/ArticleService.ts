@@ -317,9 +317,10 @@ export class ArticleService {
   async updateArticle(id: string, data: any): Promise<Article | null> {
     return tracer.startActiveSpan('service.Article.updateArticle', async (span) => {
       try {
-        const article = await this.articleRepository.update(id, data);
+        const [affectedCount, affectedRows] = await this.articleRepository.update(id, data);
+        const updatedArticle = affectedRows && affectedRows.length > 0 ? affectedRows[0] : null;
         await this.invalidateArticleCache(id);
-        return article;
+        return updatedArticle;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });

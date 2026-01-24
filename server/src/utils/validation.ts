@@ -532,7 +532,7 @@ export const validate = (schema: Joi.ObjectSchema, property: 'body' | 'query' | 
         });
 
         next();
-      } catch (validationError) {
+      } catch (validationError: any) {
         span.setStatus({
           code: 2,
           message: validationError.message,
@@ -589,7 +589,7 @@ export const validateAsync = async (data: any, schema: Joi.ObjectSchema): Promis
       });
 
       return { valid: true, value };
-    } catch (validationError) {
+    } catch (validationError: any) {
       span.setStatus({
         code: 2,
         message: validationError.message,
@@ -649,7 +649,7 @@ export const validateUrl = (url: string): boolean => {
 // Sanitize input
 export const sanitizeInput = (input: string): string => {
   if (!input) return '';
-  
+
   return input
     .replace(/[<>]/g, '') // Remove HTML tags
     .trim() // Trim whitespace

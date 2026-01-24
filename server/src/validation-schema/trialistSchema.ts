@@ -34,8 +34,8 @@ export const trialistValidationSchemas = {
         .min(2, 'Position must be at least 2 characters')
         .max(50, 'Position must be at most 50 characters'),
 
-      preferredFoot: z.enum(['LEFT', 'RIGHT', 'BOTH'], {
-        errorMap: () => ({ message: 'Preferred foot must be LEFT, RIGHT, or BOTH' }),
+      preferredFoot: z.enum(['LEFT', 'RIGHT', 'BOTH'] as [string, ...string[]], {
+        message: 'Preferred foot must be LEFT, RIGHT, or BOTH',
       }),
 
       height: z.number()
@@ -103,8 +103,8 @@ export const trialistValidationSchemas = {
         .max(50, 'Position must be at most 50 characters')
         .optional(),
 
-      preferredFoot: z.enum(['LEFT', 'RIGHT', 'BOTH'], {
-        errorMap: () => ({ message: 'Preferred foot must be LEFT, RIGHT, or BOTH' }),
+      preferredFoot: z.enum(['LEFT', 'RIGHT', 'BOTH'] as [string, ...string[]], {
+        message: 'Preferred foot must be LEFT, RIGHT, or BOTH',
       }).optional(),
 
       height: z.number()
@@ -147,8 +147,8 @@ export const trialistValidationSchemas = {
       id: z.string().uuid('Invalid trialist ID format'),
     }),
     body: z.object({
-      status: z.enum(['PENDING', 'REVIEWED', 'INVITED', 'REJECTED'], {
-        errorMap: () => ({ message: 'Status must be PENDING, REVIEWED, INVITED, or REJECTED' }),
+      status: z.enum(['PENDING', 'REVIEWED', 'INVITED', 'REJECTED'] as [string, ...string[]], {
+        message: 'Status must be PENDING, REVIEWED, INVITED, or REJECTED',
       }),
     }),
   }),

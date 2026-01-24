@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { Request, Response, NextFunction } from 'express';
+import { Request } from 'express';
 import { logger } from './logger';
 import { tracer } from './tracer';
-import { UserType, UserStatus } from '@models/User';
+import { UserType } from '@models/User';
 
 // JWT Configuration
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -19,19 +19,20 @@ export const hashPassword = async (password: string): Promise<string> => {
     try {
       const salt = await bcrypt.genSalt(SALT_ROUNDS);
       const hash = await bcrypt.hash(password, salt);
-      
+
       span.setAttributes({
         'security.salt_rounds': SALT_ROUNDS,
         'security.hash_length': hash.length,
       });
-      
+
       return hash;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
-      
+
       logger.error('Error hashing password', { error });
       throw error;
     } finally {
@@ -45,18 +46,19 @@ export const verifyPassword = async (password: string, hash: string): Promise<bo
   return tracer.startActiveSpan('security.verifyPassword', async (span) => {
     try {
       const isValid = await bcrypt.compare(password, hash);
-      
+
       span.setAttributes({
         'security.password_valid': isValid,
       });
-      
+
       return isValid;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
-      
+
       logger.error('Error verifying password', { error });
       throw error;
     } finally {
@@ -67,311 +69,173 @@ export const verifyPassword = async (password: string, hash: string): Promise<bo
 
 // Generate JWT token
 export const generateToken = (userId: string, userType: UserType, roles: string[]): string => {
-  return tracer.startActiveSpan('security.generateToken', (span) => {
-    try {
-      const payload = {
-        sub: userId,
-        type: userType,
-        roles,
-        iat: Math.floor(Date.now() / 1000),
-      };
+  try {
+    const payload = {
+      sub: userId,
+      type: userType,
+      roles,
+      iat: Math.floor(Date.now() / 1000),
+    };
 
-      const token = jwt.sign(payload, JWT_SECRET, {
-        expiresIn: JWT_EXPIRES_IN,
-        issuer: 'amafor-gladiators-api',
-        audience: 'amafor-gladiators-web',
-      });
+    const token = jwt.sign(payload as any, JWT_SECRET as any, {
+      expiresIn: JWT_EXPIRES_IN,
+      issuer: 'amafor-gladiators-api',
+      audience: 'amafor-gladiators-web',
+    } as any);
 
-      span.setAttributes({
-        'security.user_id': userId,
-        'security.user_type': userType,
-        'security.token_expires_in': JWT_EXPIRES_IN,
-      });
-
-      return token;
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error generating JWT token', { error, userId });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return token;
+  } catch (error: any) {
+    logger.error('Error generating JWT token', { error, userId });
+    throw error;
+  }
 };
 
 // Generate refresh token
 export const generateRefreshToken = (userId: string): string => {
-  return tracer.startActiveSpan('security.generateRefreshToken', (span) => {
-    try {
-      const payload = {
-        sub: userId,
-        type: 'refresh',
-        iat: Math.floor(Date.now() / 1000),
-      };
+  try {
+    const payload = {
+      sub: userId,
+      type: 'refresh',
+      iat: Math.floor(Date.now() / 1000),
+    };
 
-      const token = jwt.sign(payload, JWT_REFRESH_SECRET, {
-        expiresIn: REFRESH_TOKEN_EXPIRES_IN,
-        issuer: 'amafor-gladiators-api',
-        audience: 'amafor-gladiators-web',
-      });
+    const token = jwt.sign(payload as any, JWT_REFRESH_SECRET as any, {
+      expiresIn: REFRESH_TOKEN_EXPIRES_IN,
+      issuer: 'amafor-gladiators-api',
+      audience: 'amafor-gladiators-web',
+    } as any);
 
-      span.setAttributes({
-        'security.user_id': userId,
-        'security.refresh_token_expires_in': REFRESH_TOKEN_EXPIRES_IN,
-      });
-
-      return token;
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error generating refresh token', { error, userId });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return token;
+  } catch (error: any) {
+    logger.error('Error generating refresh token', { error, userId });
+    throw error;
+  }
 };
 
 // Verify JWT token
 export const verifyToken = (token: string): any => {
-  return tracer.startActiveSpan('security.verifyToken', (span) => {
-    try {
-      const decoded = jwt.verify(token, JWT_SECRET, {
-        issuer: 'amafor-gladiators-api',
-        audience: 'amafor-gladiators-web',
-      });
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET, {
+      issuer: 'amafor-gladiators-api',
+      audience: 'amafor-gladiators-web',
+    });
 
-      span.setAttributes({
-        'security.token_valid': true,
-        'security.user_id': (decoded as any).sub,
-      });
-
-      return decoded;
-    } catch (error) {
-      span.setAttributes({
-        'security.token_valid': false,
-        'security.token_error': error.message,
-      });
-
-      logger.warn('JWT token verification failed', { error: error.message });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return decoded;
+  } catch (error: any) {
+    logger.warn('JWT token verification failed', { error: error.message });
+    throw error;
+  }
 };
 
 // Verify refresh token
 export const verifyRefreshToken = (token: string): any => {
-  return tracer.startActiveSpan('security.verifyRefreshToken', (span) => {
-    try {
-      const decoded = jwt.verify(token, JWT_REFRESH_SECRET, {
-        issuer: 'amafor-gladiators-api',
-        audience: 'amafor-gladiators-web',
-      });
+  try {
+    const decoded = jwt.verify(token, JWT_REFRESH_SECRET, {
+      issuer: 'amafor-gladiators-api',
+      audience: 'amafor-gladiators-web',
+    });
 
-      span.setAttributes({
-        'security.refresh_token_valid': true,
-        'security.user_id': (decoded as any).sub,
-      });
-
-      return decoded;
-    } catch (error) {
-      span.setAttributes({
-        'security.refresh_token_valid': false,
-        'security.refresh_token_error': error.message,
-      });
-
-      logger.warn('Refresh token verification failed', { error: error.message });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return decoded;
+  } catch (error: any) {
+    logger.warn('Refresh token verification failed', { error: error.message });
+    throw error;
+  }
 };
 
 // Generate verification token
 export const generateVerificationToken = (): { token: string; expires: Date } => {
-  return tracer.startActiveSpan('security.generateVerificationToken', (span) => {
-    try {
-      const token = crypto.randomBytes(32).toString('hex');
-      const expires = new Date();
-      expires.setHours(expires.getHours() + 24); // 24 hours expiration
+  try {
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 24); // 24 hours expiration
 
-      span.setAttributes({
-        'security.token_length': token.length,
-        'security.token_expires': expires.toISOString(),
-      });
-
-      return { token, expires };
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error generating verification token', { error });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return { token, expires };
+  } catch (error: any) {
+    logger.error('Error generating verification token', { error });
+    throw error;
+  }
 };
 
 // Generate password reset token
 export const generatePasswordResetToken = (): { token: string; expires: Date } => {
-  return tracer.startActiveSpan('security.generatePasswordResetToken', (span) => {
-    try {
-      const token = crypto.randomBytes(32).toString('hex');
-      const expires = new Date();
-      expires.setHours(expires.getHours() + 1); // 1 hour expiration
+  try {
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1); // 1 hour expiration
 
-      span.setAttributes({
-        'security.reset_token_length': token.length,
-        'security.reset_token_expires': expires.toISOString(),
-      });
-
-      return { token, expires };
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error generating password reset token', { error });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return { token, expires };
+  } catch (error: any) {
+    logger.error('Error generating password reset token', { error });
+    throw error;
+  }
 };
 
 // Generate API key
 export const generateApiKey = (): string => {
-  return tracer.startActiveSpan('security.generateApiKey', (span) => {
-    try {
-      const apiKey = crypto.randomBytes(32).toString('hex');
-      const prefix = 'agfc_';
-      const timestamp = Date.now().toString(36);
-      
-      const key = `${prefix}${apiKey}_${timestamp}`;
+  try {
+    const apiKey = crypto.randomBytes(32).toString('hex');
+    const prefix = 'agfc_';
+    const timestamp = Date.now().toString(36);
 
-      span.setAttributes({
-        'security.api_key_length': key.length,
-        'security.api_key_prefix': prefix,
-      });
+    const key = `${prefix}${apiKey}_${timestamp}`;
 
-      return key;
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error generating API key', { error });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return key;
+  } catch (error: any) {
+    logger.error('Error generating API key', { error });
+    throw error;
+  }
 };
 
 // Hash API key for storage
 export const hashApiKey = (apiKey: string): string => {
-  return tracer.startActiveSpan('security.hashApiKey', (span) => {
-    try {
-      const hash = crypto
-        .createHash('sha256')
-        .update(apiKey)
-        .digest('hex');
+  try {
+    const hash = crypto
+      .createHash('sha256')
+      .update(apiKey)
+      .digest('hex');
 
-      span.setAttributes({
-        'security.api_key_hash_length': hash.length,
-      });
-
-      return hash;
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error hashing API key', { error });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return hash;
+  } catch (error: any) {
+    logger.error('Error hashing API key', { error });
+    throw error;
+  }
 };
 
 // Generate CSRF token
 export const generateCsrfToken = (): string => {
-  return tracer.startActiveSpan('security.generateCsrfToken', (span) => {
-    try {
-      const token = crypto.randomBytes(32).toString('hex');
+  try {
+    const token = crypto.randomBytes(32).toString('hex');
 
-      span.setAttributes({
-        'security.csrf_token_length': token.length,
-      });
-
-      return token;
-    } catch (error) {
-      span.setStatus({
-        code: 2,
-        message: error.message,
-      });
-
-      logger.error('Error generating CSRF token', { error });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+    return token;
+  } catch (error: any) {
+    logger.error('Error generating CSRF token', { error });
+    throw error;
+  }
 };
 
 // Validate CSRF token
 export const validateCsrfToken = (token: string, sessionToken: string): boolean => {
-  return tracer.startActiveSpan('security.validateCsrfToken', (span) => {
-    try {
-      const isValid = crypto.timingSafeEqual(
-        Buffer.from(token),
-        Buffer.from(sessionToken)
-      );
+  try {
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(token),
+      Buffer.from(sessionToken)
+    );
 
-      span.setAttributes({
-        'security.csrf_valid': isValid,
-      });
-
-      if (!isValid) {
-        logger.warn('CSRF token validation failed');
-      }
-
-      return isValid;
-    } catch (error) {
-      span.setAttributes({
-        'security.csrf_valid': false,
-        'security.csrf_error': error.message,
-      });
-
-      logger.error('Error validating CSRF token', { error });
-      return false;
-    } finally {
-      span.end();
+    if (!isValid) {
+      logger.warn('CSRF token validation failed');
     }
-  });
+
+    return isValid;
+  } catch (error: any) {
+    logger.error('Error validating CSRF token', { error });
+    return false;
+  }
 };
 
 // Sanitize user input for SQL injection prevention
 export const sanitizeSqlInput = (input: string): string => {
   if (!input) return '';
-  
+
   // Remove SQL keywords and special characters
   const sqlKeywords = [
     'SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'UNION', 'OR', 'AND',
@@ -396,7 +260,7 @@ export const createRateLimiterKey = (req: Request): string => {
   const ip = req.ip || req.connection.remoteAddress || 'unknown';
   const userId = (req as any).user?.id || 'anonymous';
   const endpoint = req.path;
-  
+
   return `rate_limit:${ip}:${userId}:${endpoint}`;
 };
 
@@ -453,12 +317,12 @@ export const generateRandomString = (length: number = 32): string => {
 export const encryptData = (data: string, secret: string = JWT_SECRET): string => {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv('aes-256-gcm', Buffer.from(secret.padEnd(32, '0').slice(0, 32)), iv);
-  
+
   let encrypted = cipher.update(data, 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  
+
   const authTag = cipher.getAuthTag();
-  
+
   return iv.toString('hex') + ':' + authTag.toString('hex') + ':' + encrypted;
 };
 
@@ -468,17 +332,17 @@ export const decryptData = (encryptedData: string, secret: string = JWT_SECRET):
   if (parts.length !== 3) {
     throw new Error('Invalid encrypted data format');
   }
-  
+
   const iv = Buffer.from(parts[0], 'hex');
   const authTag = Buffer.from(parts[1], 'hex');
   const encrypted = parts[2];
-  
+
   const decipher = crypto.createDecipheriv('aes-256-gcm', Buffer.from(secret.padEnd(32, '0').slice(0, 32)), iv);
   decipher.setAuthTag(authTag);
-  
+
   let decrypted = decipher.update(encrypted, 'hex', 'utf8');
   decrypted += decipher.final('utf8');
-  
+
   return decrypted;
 };
 

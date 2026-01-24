@@ -100,7 +100,7 @@ export const generateFilename = (originalname: string, prefix?: string): string 
   const random = crypto.randomBytes(8).toString('hex');
   const extension = path.extname(originalname).toLowerCase();
   const name = prefix ? `${prefix}_${timestamp}_${random}${extension}` : `${timestamp}_${random}${extension}`;
-  
+
   return name;
 };
 
@@ -108,11 +108,11 @@ export const generateFilename = (originalname: string, prefix?: string): string 
 const localStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(UPLOAD_DIR, req.params.type || 'general');
-    
+
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
-    
+
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
@@ -137,7 +137,7 @@ export const upload = multer({
       'video/mp4',
       'application/pdf',
     ];
-    
+
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
@@ -181,10 +181,10 @@ export const uploadFile = async (
       // Process image if it's an image and resize options are provided
       if (file.mimetype.startsWith('image/') && options.resizeOptions) {
         const { width, height, quality = 80 } = options.resizeOptions;
-        
+
         const image = sharp(file.buffer);
         const metadata = await image.metadata();
-        
+
         dimensions = {
           width: metadata.width || 0,
           height: metadata.height || 0,
@@ -208,7 +208,7 @@ export const uploadFile = async (
         }
 
         processedBuffer = await image.toBuffer();
-        
+
         span.setAttributes({
           'storage.processed_size': processedBuffer.length,
           'storage.original_width': dimensions.width,
@@ -242,7 +242,7 @@ export const uploadFile = async (
 
         const filePath = path.join(uploadPath, filename);
         fs.writeFileSync(filePath, processedBuffer);
-        
+
         key = filename;
         url = `/uploads/${options.type}/${filename}`;
       }
@@ -272,13 +272,14 @@ export const uploadFile = async (
         dimensions,
       };
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error uploading file', {
-        error: error.message,
+        error: err.message,
         type: options.type,
         originalname: file.originalname,
         userId: options.userId,
@@ -286,7 +287,7 @@ export const uploadFile = async (
 
       return {
         success: false,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();
@@ -338,7 +339,7 @@ export const getFile = async (
         } else {
           // Get public URL
           const url = `https://${S3_BUCKET}.s3.${S3_REGION}.amazonaws.com/${key}`;
-          
+
           span.setAttributes({
             'storage.success': true,
             'storage.public_url': true,
@@ -352,7 +353,7 @@ export const getFile = async (
       } else {
         // Get from local storage
         const filePath = path.join(UPLOAD_DIR, key);
-        
+
         if (!fs.existsSync(filePath)) {
           throw new Error('File not found');
         }
@@ -374,19 +375,20 @@ export const getFile = async (
         };
       }
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error getting file', {
-        error: error.message,
+        error: err.message,
         key,
       });
 
       return {
         success: false,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();
@@ -413,7 +415,7 @@ export const deleteFile = async (key: string): Promise<{
       } else {
         // Delete from local storage
         const filePath = path.join(UPLOAD_DIR, key);
-        
+
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
         }
@@ -425,19 +427,20 @@ export const deleteFile = async (key: string): Promise<{
 
       return { success: true };
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error deleting file', {
-        error: error.message,
+        error: err.message,
         key,
       });
 
       return {
         success: false,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();
@@ -491,7 +494,7 @@ export const validateAdCreative = async (
       if (file.mimetype.startsWith('image/')) {
         try {
           const metadata = await sharp(file.buffer).metadata();
-          
+
           if (metadata.width !== specs.width || metadata.height !== specs.height) {
             warnings.push(`Recommended dimensions: ${specs.width}x${specs.height}px. Current: ${metadata.width}x${metadata.height}px`);
           }
@@ -511,7 +514,8 @@ export const validateAdCreative = async (
             actualSize: file.size,
           };
         } catch (imageError) {
-          errors.push(`Failed to read image dimensions: ${imageError.message}`);
+          const err = imageError as any;
+          errors.push(`Failed to read image dimensions: ${err.message}`);
         }
       }
 
@@ -533,20 +537,21 @@ export const validateAdCreative = async (
         actualSize: file.size,
       };
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error validating ad creative', {
-        error: error.message,
+        error: err.message,
         zone,
         filename: file.originalname,
       });
 
       return {
         valid: false,
-        errors: [`Validation error: ${error.message}`],
+        errors: [`Validation error: ${err.message}`],
         warnings: [],
         actualSize: file.size,
       };
@@ -575,7 +580,7 @@ export const generateThumbnail = async (
       });
 
       const image = sharp(buffer);
-      
+
       // Resize
       image.resize(options.width, options.height, {
         fit: 'cover',
@@ -595,19 +600,20 @@ export const generateThumbnail = async (
       }
 
       const thumbnailBuffer = await image.toBuffer();
-      
+
       span.setAttributes({
         'storage.thumbnail_size': thumbnailBuffer.length,
       });
 
       return thumbnailBuffer;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
-      logger.error('Error generating thumbnail', { error: error.message });
+      logger.error('Error generating thumbnail', { error: err.message });
       throw error;
     } finally {
       span.end();
@@ -653,21 +659,22 @@ export const cleanupOldFiles = async (olderThanDays: number = 30): Promise<{
         // S3 cleanup would require listing objects and deleting old ones
         // This is more complex and requires pagination
         // For now, we'll skip S3 cleanup
-        warnings.push('S3 cleanup not implemented');
+        // warnings.push('S3 cleanup not implemented');
+        logger.warn('S3 cleanup not implemented');
       } else {
         // Local storage cleanup
         const cleanupDirectory = (dir: string) => {
           if (!fs.existsSync(dir)) return;
 
           const files = fs.readdirSync(dir);
-          
+
           for (const file of files) {
             const filePath = path.join(dir, file);
             const stat = fs.statSync(filePath);
 
             if (stat.isDirectory()) {
               cleanupDirectory(filePath);
-              
+
               // Remove empty directories
               const subFiles = fs.readdirSync(filePath);
               if (subFiles.length === 0) {
@@ -678,7 +685,7 @@ export const cleanupOldFiles = async (olderThanDays: number = 30): Promise<{
                 fs.unlinkSync(filePath);
                 deleted++;
                 logger.debug('Deleted old file', { filePath });
-              } catch (error) {
+              } catch (error: any) {
                 errors.push(`Failed to delete ${filePath}: ${error.message}`);
               }
             }
@@ -697,13 +704,14 @@ export const cleanupOldFiles = async (olderThanDays: number = 30): Promise<{
 
       return { deleted, errors };
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
-      logger.error('Error cleaning up old files', { error: error.message });
-      return { deleted: 0, errors: [error.message] };
+      logger.error('Error cleaning up old files', { error: err.message });
+      return { deleted: 0, errors: [err.message] };
     } finally {
       span.end();
     }
@@ -763,16 +771,17 @@ export const checkStorageHealth = async (): Promise<{
         };
       }
     } catch (error) {
+      const err = error as any;
       span.setAttributes({
         'storage.healthy': false,
         'storage.type': STORAGE_TYPE,
-        'storage.error': error.message,
+        'storage.error': err.message,
       });
 
       return {
         healthy: false,
         type: STORAGE_TYPE,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();

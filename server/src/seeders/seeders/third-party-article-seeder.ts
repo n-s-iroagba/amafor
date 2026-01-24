@@ -3,7 +3,7 @@
 // seeders/FeaturedNewsSeeder.ts
 import FeaturedNews, { FeaturedNewsAttributes } from "@models/FeaturedNews";
 import logger from "../../utils/logger";
-import { developmentFeaturedNewss } from "../data/development/featuredNewss";
+// import { developmentFeaturedNewss } from "../data/development/featuredNewss";
 import { BaseSeeder } from "./base-seeder";
 
 export class FeaturedNewsSeeder extends BaseSeeder<FeaturedNews> {
@@ -27,7 +27,7 @@ export class FeaturedNewsSeeder extends BaseSeeder<FeaturedNews> {
 
   private getDevelopmentData(): FeaturedNewsAttributes[] {
     try {
-      return developmentFeaturedNewss || [];
+      return /* developmentFeaturedNewss || */[];
     } catch (error) {
       logger.warn(`No development data found for ${this.name}, returning empty array`);
       return [];
