@@ -15,6 +15,16 @@ interface User {
   createdAt: string;
 }
 
+
+/**
+ * Page: Scout Verification Queue
+ * Description: Admin review of professional scout access applications.
+ * Requirements: REQ-ADM-03 (Scout Verification)
+ * User Story: US-ADM-003 (Verify Scouts)
+ * User Journey: UJ-ADM-006 (Talent ID)
+ * API: GET /users (API_ROUTES.USERS.LIST - filtered by role)
+ * Hook: useGet(API_ROUTES.USERS.LIST)
+ */
 export default function ScoutVerificationQueue() {
   const { data: usersData, loading } = useGet<User[]>(API_ROUTES.USERS.LIST);
 

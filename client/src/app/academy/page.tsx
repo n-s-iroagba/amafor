@@ -7,6 +7,16 @@ import { Target, BookOpen, Users, TrendingUp, Loader2 } from 'lucide-react'
 import { AcademyStaff } from '@/features/academy/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
+
+/**
+ * Page: Academy Hub
+ * Description: Public landing page for the youth academy, showcasing philosophy, curriculum, and staff.
+ * Requirements: REQ-ACA-01 (Academy Information)
+ * User Story: US-ACA-001 (View Academy Info)
+ * User Journey: UJ-ACA-001 (Academy Discovery)
+ * API: GET /api/academy/staff (API_ROUTES.ACADEMY.STAFF.LIST)
+ * Hook: useGet(API_ROUTES.ACADEMY.STAFF.LIST)
+ */
 export default function AcademyHub({ params }: { params: { section?: string[] } }) {
   const activeSection = params.section?.[0] || 'overview'
 
@@ -48,7 +58,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
   return (
     <>
       <Header />
-      
+
       <main className="py-16 bg-slate-50 min-h-screen">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl mb-8 font-heading">Youth Academy</h1>
@@ -61,11 +71,10 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                 <Link
                   key={sec.id}
                   href={`/academy/${sec.id}`}
-                  className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${
-                    activeSection === sec.id
+                  className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${activeSection === sec.id
                       ? 'bg-sky-700 text-white font-medium'
                       : 'bg-white text-slate-700 hover:bg-slate-100'
-                  }`}
+                    }`}
                   aria-current={activeSection === sec.id ? 'page' : undefined}
                 >
                   <Icon className="w-5 h-5" />
@@ -133,7 +142,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {staffData.length > 0 ? (
                       staffData.map((staff) => (
-                        <div 
+                        <div
                           key={staff.id}
                           className="bg-slate-50 p-6 rounded-lg shadow-card hover:shadow-lg transition-shadow"
                         >
@@ -149,7 +158,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                           {staff.qualifications && (
                             <div className="flex flex-wrap justify-center gap-2 mb-3">
                               {staff.qualifications.map((qual, index) => (
-                                <span 
+                                <span
                                   key={index}
                                   className="px-2 py-1 bg-sky-100 text-sky-800 text-xs rounded-full"
                                 >
@@ -214,7 +223,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                 <Link href="/help" className="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-lg transition-colors font-medium">
                   Contact Us
                 </Link>
-                <button 
+                <button
                   onClick={() => {
                     const phoneNumber = '234XXXXXXXXXX'
                     const message = encodeURIComponent('Hello, I\'m interested in joining the Amafor Gladiators FC Academy...')

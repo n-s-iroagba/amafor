@@ -8,6 +8,16 @@ import { useState } from 'react'
 import { usePost } from '@/shared/hooks/useApiQuery'
 import { API_ROUTES } from '@/config/routes'
 
+
+/**
+ * Page: Advertiser Registration
+ * Description: Registration form for new business advertisers.
+ * Requirements: REQ-ADV-01 (Advertiser Registration)
+ * User Story: US-ADV-002 (Register Account)
+ * User Journey: UJ-ADV-001 (Registration)
+ * API: POST /auth/signup (API-AUTH-006)
+ * Hook: usePost(API_ROUTES.AUTH.SIGNUP)
+ */
 export default function AdvertiserRegistration() {
   const [businessName, setBusinessName] = useState('')
   const [email, setEmail] = useState('')

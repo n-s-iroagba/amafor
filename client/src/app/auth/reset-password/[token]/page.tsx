@@ -14,6 +14,16 @@ import { useAuthContext } from '@/shared/hooks/useAuthContext';
 import { AuthUser, UserType } from '@/shared/types';
 
 
+
+/**
+ * Page: Reset Password Page
+ * Description: Allows users to set a new password using a token received via email.
+ * Requirements: REQ-AUTH-03 (Password Reset)
+ * User Story: US-AUTH-003 (Reset Forgotten Password)
+ * User Journey: UJ-AUTH-003 (Password Recovery)
+ * API: POST /auth/reset-password (API-AUTH-005)
+ * Hook: usePost(API_ROUTES.AUTH.RESET_PASSWORD)
+ */
 interface FormState {
   password: string;
   confirmPassword: string;
@@ -147,8 +157,8 @@ export default function ResetPasswordPage() {
                   onChange={handleChange}
                   required
                   className={`w-full p-3 rounded-xl border-2 ${error?.toLowerCase().includes(name)
-                      ? 'border-red-300'
-                      : 'border-slate-100'
+                    ? 'border-red-300'
+                    : 'border-slate-100'
                     } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
                 />
               </div>

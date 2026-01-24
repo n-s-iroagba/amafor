@@ -4,7 +4,7 @@ info:
   description: |
     Complete REST API specification with full traceability to SRS requirements.
     Each endpoint includes custom extension `x-srs-req` for requirement mapping.
-  version: 1.0.0
+  version: 1.1.0
   contact:
     name: Engineering Team
     email: dev@amaforgladiatorsfc.com
@@ -1109,6 +1109,108 @@ paths:
         '204':
           description: Feed deleted
 
+  # Advertising
+  /ads/campaigns:
+    post:
+      tags: [Advertising]
+      summary: Create campaign
+      operationId: API-ADS-001
+      x-srs-req: REQ-ADV-02
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Campaign created
+
+  /ads/campaigns/active:
+    get:
+      tags: [Advertising]
+      summary: Get active campaigns
+      operationId: API-ADS-002
+      x-srs-req: REQ-ADV-03
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Active campaigns
+
+  /ads/reports:
+    get:
+      tags: [Advertising]
+      summary: Get advertiser reports
+      operationId: API-ADS-003
+      x-srs-req: REQ-ADV-05
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Reports data
+
+  # Ad Creatives
+  /ad-creatives:
+    post:
+      tags: [Ad Creatives]
+      summary: Upload ad creative
+      operationId: API-AD-CREATIVE-001
+      x-srs-req: REQ-ADV-07
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Creative uploaded
+
+  /ad-creatives/campaign/{campaignId}:
+    get:
+      tags: [Ad Creatives]
+      summary: Get creatives for campaign
+      operationId: API-AD-CREATIVE-002
+      x-srs-req: REQ-ADV-07
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: campaignId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Creatives list
+
+  # Ad Disputes
+  /advertiser/disputes:
+    get:
+      tags: [Disputes]
+      summary: List disputes
+      operationId: API-DISPUTE-001
+      x-srs-req: REQ-ADV-06
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of disputes
+    post:
+      tags: [Disputes]
+      summary: Raise a dispute
+      operationId: API-DISPUTE-002
+      x-srs-req: REQ-ADV-06
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Dispute raised
+
   # Patronage
   /patrons/subscribe:
     post:
@@ -1588,6 +1690,45 @@ paths:
       responses:
         '200':
           description: Click tracked
+
+  # Scout
+  /scout/applications:
+    post:
+      tags: [Scouts]
+      summary: Submit scout application
+      operationId: API-SCOUT-001
+      x-srs-req: [REQ-PUB-08, REQ-ADM-11]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Application submitted
+
+  /scout/reports:
+    get:
+      tags: [Scouts]
+      summary: List scout reports
+      operationId: API-SCOUT-002
+      x-srs-req: REQ-SCT-04
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of reports
+    post:
+      tags: [Scouts]
+      summary: Create scout report
+      operationId: API-SCOUT-003
+      x-srs-req: REQ-SCT-04
+      security:
+        - BearerAuth: []
+      responses:
+        '201':
+          description: Report created
 
   # System
   /system/config:

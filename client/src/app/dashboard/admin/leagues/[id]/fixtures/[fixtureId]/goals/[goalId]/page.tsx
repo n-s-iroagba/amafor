@@ -25,7 +25,16 @@ interface Goal {
   };
 }
 
-export default function GoalDetail() {
+
+/**
+ * Page: Fixture Goal Detail
+ * Description: View specific details of a recorded goal.
+ * Requirements: REQ-ADM-06 (Record Goals)
+ * User Story: US-ADM-006 (Record Goals)
+ * User Journey: UJ-ADM-002 (Manage Fixtures)
+ * API: GET /goals/:id (API_ROUTES.GOALS.VIEW)
+ */
+export default function GoalDetailPage() {
   const router = useRouter();
   const params = useParams();
   const goalId = params.goalId as string; // Corrected from params.id

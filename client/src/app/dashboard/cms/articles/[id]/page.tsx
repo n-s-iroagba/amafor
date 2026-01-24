@@ -27,7 +27,16 @@ interface Article {
   publishedAt?: string;
 }
 
-export default function AdminArticlePage() {
+
+/**
+ * Page: CMS Article Detail
+ * Description: View article version history and status.
+ * Requirements: REQ-CMS-01 (Article List/Detail)
+ * User Story: US-CMS-001 (View Article List)
+ * User Journey: UJ-CMS-001 (Manage Articles)
+ * API: GET /articles/:id (API_ROUTES.ARTICLES.VIEW)
+ */
+export default function ArticleDetail() {
   const router = useRouter();
   const { id } = useParams(); // article id from URL
   const [deleteConfirm, setDeleteConfirm] = useState(false);

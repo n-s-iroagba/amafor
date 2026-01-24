@@ -25,6 +25,16 @@ interface HealthData {
   rps: number;
 }
 
+
+/**
+ * Page: Infrastructure Health
+ * Description: Real-time monitoring of system components, latency, and integrations.
+ * Requirements: REQ-ADM-04 (System Monitoring), REQ-SEC-03 (Health Checks)
+ * User Story: US-ADM-004 (Monitor Health)
+ * User Journey: UJ-ADM-003 (System Admin)
+ * API: GET /system/health (API_ROUTES.HEALTH.STATUS)
+ * Hook: useGet(API_ROUTES.HEALTH.STATUS)
+ */
 export default function InfrastructureHealthPage() {
   const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false);
 

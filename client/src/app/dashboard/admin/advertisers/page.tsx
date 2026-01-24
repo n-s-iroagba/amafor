@@ -15,6 +15,16 @@ interface Advertiser {
   website: string;
 }
 
+
+/**
+ * Page: Advertiser Verification Queue
+ * Description: Admin list of pending advertiser applications for review.
+ * Requirements: REQ-ADM-08 (Advertiser Verification)
+ * User Story: US-ADM-008 (Verify Advertisers)
+ * User Journey: UJ-ADM-004 (Commercial Ops)
+ * API: GET /users/pending-advertisers (API_ROUTES.USERS.PENDING_ADVERTISERS)
+ * Hook: useGet(API_ROUTES.USERS.PENDING_ADVERTISERS)
+ */
 export default function AdvertiserVerificationQueue() {
   const { data: queue, loading } = useGet<Advertiser[]>(
     API_ROUTES.USERS.PENDING_ADVERTISERS)

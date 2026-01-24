@@ -5,7 +5,16 @@ import { Header } from '@/shared/components/Header';
 import { Footer } from '@/shared/components/Footer';
 import { Shield, Lock, FileText, CheckCircle, AlertTriangle } from 'lucide-react';
 
-export default function DataWorksPortal() {
+
+/**
+ * Page: Data Subject Request
+ * Description: Form for users to request data export or deletion (GDPR/NDPR).
+ * Requirements: REQ-DSR-01 (Data Rights)
+ * User Story: US-UTL-004 (View Compliance Information)
+ * User Journey: UJ-UTL-002 (View Legal Pages)
+ * API: POST /privacy/request
+ */
+export default function DataRequestPage() {
     const [requestType, setRequestType] = useState('access');
     const [submitted, setSubmitted] = useState(false);
 
@@ -109,8 +118,8 @@ export default function DataWorksPortal() {
                                                     key={type}
                                                     onClick={() => setRequestType(type)}
                                                     className={`cursor-pointer border rounded-lg p-4 text-center transition-all ${requestType === type
-                                                            ? 'border-sky-600 bg-sky-50 text-sky-800 ring-1 ring-sky-600'
-                                                            : 'border-slate-200 hover:border-slate-300'
+                                                        ? 'border-sky-600 bg-sky-50 text-sky-800 ring-1 ring-sky-600'
+                                                        : 'border-slate-200 hover:border-slate-300'
                                                         }`}
                                                 >
                                                     <div className="font-semibold capitalize mb-1">

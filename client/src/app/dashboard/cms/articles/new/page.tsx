@@ -29,6 +29,15 @@ interface ValidationErrors {
   general?: string;
 }
 
+
+/**
+ * Page: Create Article
+ * Description: Interface for creating and publishing new articles.
+ * Requirements: REQ-CMS-02 (Create Article)
+ * User Story: US-CMS-002 (Create Article)
+ * User Journey: UJ-CMS-001 (Manage Articles)
+ * API: POST /articles (API_ROUTES.ARTICLES.CREATE)
+ */
 export default function NewArticlePage() {
   const router = useRouter();
   const [title, setTitle] = useState('');

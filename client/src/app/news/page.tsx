@@ -17,6 +17,16 @@ import { formatDate } from '@/shared/utils';
 
 
 
+
+/**
+ * Page: News List
+ * Description: Displays paginated list of club news articles.
+ * Requirements: REQ-PUB-03 (Articles)
+ * User Story: US-PUB-003 (Browse News)
+ * User Journey: UJ-PUB-002 (Browse News)
+ * API: GET /articles/published (API_ROUTES.ARTICLES.PUBLISHED)
+ * Hook: useGet(API_ROUTES.ARTICLES.PUBLISHED)
+ */
 const ArticleList: React.FC = () => {
   const router = useRouter();
   const limit = 10;

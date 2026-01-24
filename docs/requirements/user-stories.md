@@ -1,6 +1,6 @@
 # User Stories - Amafor Football Club
 
-Last Updated: 2026-01-21  
+Last Updated: 2026-01-24  
 Maintained by: Amafor Engineering Team  
 Source of Truth: `client/src/app` directory structure  
 Journey Reference: [user-journeys.md](./user-journeys.md)
@@ -208,12 +208,12 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-SUP-001: Make One-Time Donation
 **Journey:** [UJ-SUP-001](./user-journeys.md#uj-sup-001-make-one-time-donation)  
 **User Type:** Donor  
-**Pages:** `/support`, `/patron/checkout`
+**Pages:** `/patron`, `/patron/checkout`
 
 > As a **supporter**, I want to **make a one-time donation** so that I can **contribute to the club**.
 
 **Acceptance Criteria:**
-- [ ] Support page shows donation option
+- [ ] Patron page shows donation option
 - [ ] User can select or enter donation amount
 - [ ] Checkout page integrates with Paystack/Flutterwave
 - [ ] Confirmation shown after successful payment
@@ -224,12 +224,13 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-SUP-002: Subscribe as Patron
 **Journey:** [UJ-SUP-002](./user-journeys.md#uj-sup-002-become-a-patron)  
 **User Type:** Patron  
-**Pages:** `/support`, `/patron/checkout`, `/support/wall`
+**Pages:** `/patron`, `/patron/checkout`, `/patron/wall`
+
 
 > As a **supporter**, I want to **subscribe as a patron** so that I can **support the club regularly and get recognition**.
 
 **Acceptance Criteria:**
-- [ ] Support page shows patron subscription options
+- [ ] Patron page shows subscription options
 - [ ] User can select tier (sponsor, patron, supporter)
 - [ ] User can choose frequency (monthly, yearly, lifetime)
 - [ ] Payment processes successfully
@@ -240,7 +241,8 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-SUP-003: View Patron Wall
 **Journey:** [UJ-SUP-003](./user-journeys.md#uj-sup-003-view-patron-wall)  
 **User Type:** Fan (public)  
-**Pages:** `/support/wall`
+**Pages:** `/patron/wall`
+
 
 > As a **visitor**, I want to **view the patron wall** so that I can **see who supports the club**.
 
@@ -381,7 +383,7 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-ADV-007: Manage Disputes
 **Journey:** [UJ-ADV-002](./user-journeys.md#uj-adv-002-manage-ad-campaigns)  
 **User Type:** Advertiser  
-**Pages:** `/dashboard/advertiser/disputes`, `/dashboard/advertiser/disputes/[id]`
+**Pages:** `/dashboard/advertiser/disputes`, `/dashboard/advertiser/disputes/new`, `/dashboard/advertiser/disputes/[id]`
 
 > As an **advertiser**, I want to **file and manage disputes** so that I can **resolve billing issues**.
 
@@ -390,6 +392,21 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 - [ ] User can create new dispute with details
 - [ ] Dispute status is tracked
 - [ ] Communication history is visible
+
+---
+
+### US-ADV-008: Manage Ad Creatives
+**Journey:** [UJ-ADV-002](./user-journeys.md#uj-adv-002-manage-ad-campaigns)  
+**User Type:** Advertiser  
+**Pages:** `/dashboard/advertiser/campaigns/[id]/ad-creatives`, `/dashboard/advertiser/campaigns/[id]/ad-creatives/new`
+
+> As an **advertiser**, I want to **manage ad creatives** so that I can **control what is shown to users**.
+
+**Acceptance Criteria:**
+- [ ] Creative list shows all media for campaign
+- [ ] New images/videos can be uploaded
+- [ ] Creative status (active/inactive) can be toggled
+- [ ] Analytics per creative are visible
 
 ---
 
@@ -627,7 +644,8 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-ADM-007: Create Fixture Summary
 **Journey:** [UJ-ADM-002](./user-journeys.md#uj-adm-002-manage-fixtures)  
 **User Type:** Sports Admin  
-**Pages:** `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/match-summary/new`
+**Pages:** `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/new`, `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/details/[summaryId]`
+
 
 > As a **sports admin**, I want to **create match summaries** so that I can **document match highlights**.
 
@@ -642,7 +660,8 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-ADM-008: Manage Fixture Images
 **Journey:** [UJ-ADM-002](./user-journeys.md#uj-adm-002-manage-fixtures)  
 **User Type:** Sports Admin  
-**Pages:** `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images`
+**Pages:** `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images`, `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/new`
+
 
 > As a **sports admin**, I want to **manage match images** so that I can **build match galleries**.
 
@@ -657,7 +676,8 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-ADM-009: Manage League Statistics
 **Journey:** [UJ-ADM-001](./user-journeys.md#uj-adm-001-manage-leagues)  
 **User Type:** Sports Admin  
-**Pages:** `/dashboard/admin/leagues/[id]/league-stats/[statsId]`
+**Pages:** `/dashboard/admin/leagues/[id]/league-statstics/[statsId]`
+
 
 > As a **sports admin**, I want to **manage league statistics** so that I can **update standings**.
 
@@ -966,7 +986,7 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 | UJ-SUP-003 | US-SUP-003 |
 | UJ-ACA-001 | US-ACA-001, US-ACA-002 |
 | UJ-ADV-001 | US-ADV-001, US-ADV-002 |
-| UJ-ADV-002 | US-ADV-003, US-ADV-004, US-ADV-005, US-ADV-006, US-ADV-007 |
+| UJ-ADV-002 | US-ADV-003, US-ADV-004, US-ADV-005, US-ADV-006, US-ADV-007, US-ADV-008 |
 | UJ-SCT-001 | US-SCT-001, US-SCT-002, US-SCT-003, US-SCT-004 |
 | UJ-CMS-001 | US-CMS-001, US-CMS-002, US-CMS-003, US-CMS-004 |
 | UJ-CMS-002 | US-CMS-005 |
@@ -991,3 +1011,4 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 | Date | Change | Changed By |
 |------|--------|------------|
 | 2026-01-21 | Initial document creation from app analysis | Engineering Team |
+| 2026-01-24 | Updated stories to match client file structure (Ad Creatives, Fixture Mgmt) | Engineering Team |

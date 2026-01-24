@@ -33,6 +33,16 @@ interface FixtureImage {
   caption?: string;
 }
 
+
+/**
+ * Page: Fixture Detail
+ * Description: Comprehensive view of a match fixture including goals, lineup, and summary.
+ * Requirements: REQ-ADM-08 (Fixture Management)
+ * User Story: US-ADM-010 (Fixture Detail)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: GET /fixtures/:id (API_ROUTES.FIXTURES.VIEW)
+ * Hook: useGet(API_ROUTES.FIXTURES.VIEW)
+ */
 export default function FixtureDetail() {
   const router = useRouter();
   const params = useParams();

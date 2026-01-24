@@ -5,6 +5,15 @@ import { Calendar, Download, Search, ArrowLeft, BarChart3, FileText, ChevronRigh
 import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
+/**
+ * Page: Advertiser Reports
+ * Description: Historical performance reports and analytics.
+ * Requirements: REQ-ADV-05 (Detailed Reports)
+ * User Story: US-ADV-006 (View Analytics)
+ * User Journey: UJ-ADV-003 (Performance Review)
+ * API: GET /ads/reports (API_ROUTES.ADVERTISER.REPORTS)
+ * Hook: useGet(API_ROUTES.ADVERTISER.REPORTS)
+ */
 export default function HistoricalReportsPage() {
   const [dateRange, setDateRange] = useState('Last 30 Days');
 

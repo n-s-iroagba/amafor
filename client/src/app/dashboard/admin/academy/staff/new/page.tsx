@@ -8,6 +8,15 @@ import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
+
+/**
+ * Page: New Staff
+ * Description: Registration form for new academy staff members.
+ * Requirements: REQ-ACA-02 (Staff Management)
+ * User Story: US-ACA-001 (Register Staff)
+ * User Journey: UJ-ACA-004 (Academy Admin)
+ * API: POST /academy/staff (API_ROUTES.STAFF.CREATE)
+ */
 export default function NewStaff() {
   const router = useRouter();
   const [formData, setFormData] = useState({

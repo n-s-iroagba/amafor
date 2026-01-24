@@ -88,6 +88,15 @@ const statusConfig = {
   }
 };
 
+
+/**
+ * Page: New Fixture
+ * Description: Form to schedule a new match fixture.
+ * Requirements: REQ-ADM-08 (Fixture Management)
+ * User Story: US-ADM-009 (Schedule Fixture)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: POST /fixtures (API_ROUTES.FIXTURES.CREATE)
+ */
 export default function NewFixture() {
   const router = useRouter();
   const params = useParams();

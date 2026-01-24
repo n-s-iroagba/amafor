@@ -28,6 +28,15 @@ const uploadFile = async (
   return data.url;
 };
 
+
+/**
+ * Page: New Patron
+ * Description: Registration form for new club patrons.
+ * Requirements: REQ-ADM-12 (Patron Management)
+ * User Story: US-ADM-014 (Register Patron)
+ * User Journey: UJ-ADM-008 (Community Relations)
+ * API: POST /patrons (API_ROUTES.PATRONS.CREATE)
+ */
 export default function NewPatronPage() {
   const [form, setForm] = useState({
     name: '',

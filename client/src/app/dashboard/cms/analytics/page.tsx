@@ -22,7 +22,16 @@ interface ArticleAnalytics {
   }[];
 }
 
-export default function CMSAnalyticsPage() {
+
+/**
+ * Page: Content Analytics
+ * Description: Dashboard for viewing article and video performance metrics.
+ * Requirements: REQ-CMS-04 (Content Analytics)
+ * User Story: US-CMS-004 (View Content Analytics)
+ * User Journey: UJ-CMS-001 (Manage Articles)
+ * API: GET /articles/analytics (API_ROUTES.ARTICLES.ANALYTICS)
+ */
+export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState({
     from: new Date(new Date().setDate(new Date().getDate() - 30)),
     to: new Date(),

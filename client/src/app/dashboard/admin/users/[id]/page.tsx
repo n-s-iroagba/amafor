@@ -16,7 +16,16 @@ interface UserData {
   createdAt: string;
 }
 
-export default function UserPermissionPage() {
+
+/**
+ * Page: User Detail & Permissions
+ * Description: View user profile and manage their system permissions/roles.
+ * Requirements: REQ-ADM-15 (User Management)
+ * User Story: US-ADM-015 (Manage Users)
+ * User Journey: UJ-ADM-007 (Manage Users & Permissions)
+ * API: GET /users/:id (API_ROUTES.USERS.VIEW), PUT /users/:id/role
+ */
+export default function UserDetailPage() {
   const { id } = useParams();
   const router = useRouter();
 

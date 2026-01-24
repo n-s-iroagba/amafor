@@ -15,6 +15,16 @@ interface User {
   createdAt: string;
 }
 
+
+/**
+ * Page: User Management
+ * Description: Administration of all system users, roles, and verification status.
+ * Requirements: REQ-ADM-03 (User Administration), REQ-ADM-04 (Role Assignment)
+ * User Story: US-ADM-003 (Manage Users)
+ * User Journey: UJ-ADM-002 (User Management)
+ * API: GET /users (API_ROUTES.USERS.LIST)
+ * Hook: useGet(API_ROUTES.USERS.LIST)
+ */
 export default function UserManagementPage() {
   const { data: usersData, loading, error } = useGet<User[]>(API_ROUTES.USERS.LIST);
 

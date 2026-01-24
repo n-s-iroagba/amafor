@@ -28,7 +28,16 @@ interface FixtureSummary {
   };
 }
 
-export default function FixtureSummaryDetail() {
+
+/**
+ * Page: Fixture Summary Detail
+ * Description: Read-only view of a fixture's narrative summary.
+ * Requirements: REQ-ADM-07 (Match Summary)
+ * User Story: US-ADM-007 (Create Match Summary)
+ * User Journey: UJ-ADM-002 (Manage Fixtures)
+ * API: GET /match-summaries/:id (API_ROUTES.MATCH_SUMMARY.VIEW)
+ */
+export default function SummaryDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;

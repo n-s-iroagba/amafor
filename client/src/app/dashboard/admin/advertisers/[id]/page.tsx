@@ -16,6 +16,16 @@ interface Advertiser {
   status: string;
 }
 
+
+/**
+ * Page: Advertiser Review Detail
+ * Description: Admin interface to review and verify/deny advertiser applications.
+ * Requirements: REQ-ADM-08 (Advertiser Verification)
+ * User Story: US-ADM-008 (Verify Advertisers)
+ * User Journey: UJ-ADM-004 (Commercial Ops)
+ * API: GET /users/:id (API_ROUTES.USERS.VIEW), PATCH /users/:id/verify (API_ROUTES.USERS.VERIFY)
+ * Hook: useGet(API_ROUTES.USERS.VIEW), usePatch(API_ROUTES.USERS.VERIFY)
+ */
 export default function AdvertiserReviewDetail() {
   const { id } = useParams();
   const router = useRouter();

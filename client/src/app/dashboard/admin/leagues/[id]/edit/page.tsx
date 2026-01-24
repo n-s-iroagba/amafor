@@ -8,6 +8,15 @@ import { API_ROUTES } from '@/config/routes';
 import { League } from '@/features/league/types';
 
 
+
+/**
+ * Page: Edit League
+ * Description: Form to update existing league details.
+ * Requirements: REQ-ADM-07 (League Management)
+ * User Story: US-ADM-008 (Update Competition)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: PUT /leagues/:id (API_ROUTES.LEAGUES.MUTATE)
+ */
 export default function EditLeague() {
   const router = useRouter();
   const params = useParams();

@@ -9,6 +9,15 @@ import { usePost } from '@/shared/hooks/useApiQuery';
 import Image from 'next/image';
 import { uploadFile } from '@/shared/utils';
 
+
+/**
+ * Page: New Player
+ * Description: Registration form for new players in the system.
+ * Requirements: REQ-ADM-02 (Player Management)
+ * User Story: US-ADM-005 (Register Player)
+ * User Journey: UJ-ADM-006 (Team Management)
+ * API: POST /players (API_ROUTES.PLAYERS.CREATE)
+ */
 export default function NewPlayer() {
   const router = useRouter();
 

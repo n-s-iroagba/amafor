@@ -36,6 +36,15 @@ const uploadFile = async (
   return data.url;
 };
 
+
+/**
+ * Page: Edit Patron
+ * Description: Form to update patron details.
+ * Requirements: REQ-ADM-12 (Patron Management)
+ * User Story: US-ADM-014 (Update Patron)
+ * User Journey: UJ-ADM-008 (Community Relations)
+ * API: PUT /patrons/:id (API_ROUTES.PATRONS.UPDATE)
+ */
 export default function EditPatronPage() {
   const { id } = useParams();
   const router = useRouter();

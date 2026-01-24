@@ -20,6 +20,15 @@ interface AcademyStaff {
   yearsOfExperience?: number;
 }
 
+
+/**
+ * Page: Edit Staff
+ * Description: Form to update academy staff details and qualifications.
+ * Requirements: REQ-ACA-02 (Staff Management)
+ * User Story: US-ACA-003 (Update Staff)
+ * User Journey: UJ-ACA-004 (Academy Admin)
+ * API: PUT /academy/staff/:id (API_ROUTES.ACADEMY.STAFF.UPDATE)
+ */
 export default function EditStaff() {
   const router = useRouter();
   const params = useParams();
@@ -342,8 +351,8 @@ export default function EditStaff() {
               <div
                 onClick={() => imageInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile || formData.imageUrl
-                    ? 'border-green-300 bg-green-50'
-                    : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
+                  ? 'border-green-300 bg-green-50'
+                  : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
                   }`}
               >
                 <input

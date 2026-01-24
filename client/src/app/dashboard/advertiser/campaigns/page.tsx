@@ -6,6 +6,16 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { AdCampaign } from '@/features/advertisement/types';
 
+
+/**
+ * Page: Campaign List
+ * Description: List of all advertising campaigns with status filters and search.
+ * Requirements: REQ-ADV-03 (View Active & History)
+ * User Story: US-ADV-004 (Manage Campaigns)
+ * User Journey: UJ-ADV-002 (Campaign Management)
+ * API: GET /advertiser/campaigns (API_ROUTES.ADVERTISER.CAMPAIGNS.LIST)
+ * Hook: useGet(API_ROUTES.ADVERTISER.CAMPAIGNS.LIST)
+ */
 export default function CampaignsPage() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -75,8 +85,8 @@ export default function CampaignsPage() {
                     <Megaphone className="w-6 h-6 text-[#87CEEB] group-hover:text-white transition-colors duration-500" />
                   </div>
                   <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${campaign.status === 'active' ? 'bg-green-100 text-green-600' :
-                      campaign.status === 'completed' ? 'bg-blue-100 text-blue-600' :
-                        'bg-gray-100 text-gray-500'
+                    campaign.status === 'completed' ? 'bg-blue-100 text-blue-600' :
+                      'bg-gray-100 text-gray-500'
                     }`}>
                     {campaign.status}
                   </span>

@@ -43,7 +43,18 @@ type FeedResponse = {
   currentPage: number;
 };
 
-export default function RssFeedList() {
+
+/**
+ * Page: RSS Feed Sources
+ * Description: Management of external RSS feed integrations for news aggregation.
+ * Page: RSS Feeds List
+ * Description: Management interface for external news sources.
+ * Requirements: REQ-ADM-17 (Feed Management)
+ * User Story: US-ADM-017 (Manage RSS Feeds)
+ * User Journey: UJ-ADM-008 (Manage RSS Feeds)
+ * API: GET /feeds (API_ROUTES.FEEDS.LIST)
+ */
+export default function RSSFeedsPage() {
   const router = useRouter();
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [page, setPage] = useState(1);

@@ -1,6 +1,6 @@
 # User Journeys - Amafor Football Club
 
-Last Updated: 2026-01-21  
+Last Updated: 2026-01-24  
 Maintained by: Amafor Engineering Team  
 Synced with: `client/src/app` directory structure
 
@@ -116,7 +116,8 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 **Pages Involved:**
 - `/team` - Squad overview with players and coaches
 - `/player/[id]` - Individual player profile
-- `/coaches` - Coaching staff view
+- `/coaches/[id]` - Coach details
+
 
 **Steps:**
 1. User navigates to team page
@@ -191,7 +192,7 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 **BRD Requirements:** BR-AO-02  
 **Entry Point:** `/patron`  
 **Pages Involved:**
-- `/support` - Support options overview
+- `/patron` - Support options overview (Patron landing page)
 - `/patron/checkout` - Donation checkout flow
 
 **Steps:**
@@ -211,7 +212,7 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 **BRD Requirements:** BR-PP-01, BR-PP-02, BR-PP-03  
 **Entry Point:** `/patron`  
 **Pages Involved:**
-- `/support` - Support options overview
+- `/patron` - Support options overview
 - `/patron/checkout` - Patron subscription checkout
 - `/support/wall` - Patron recognition wall
 
@@ -231,9 +232,9 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 ### UJ-SUP-003: View Patron Wall
 **User Types:** Fan (public)  
 **BRD Requirements:** BR-PP-03, BR-PP-04  
-**Entry Point:** `/support/wall`  
+**Entry Point:** `/patron/wall`  
 **Pages Involved:**
-- `/support/wall` - Patron recognition display
+- `/patron/wall` - Patron recognition display
 
 **Steps:**
 1. User navigates to patron wall
@@ -297,16 +298,26 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 - `/dashboard/advertiser/campaigns` - Campaign list
 - `/dashboard/advertiser/campaigns/new` - Create new campaign
 - `/dashboard/advertiser/campaigns/[id]` - Campaign details
+- `/dashboard/advertiser/campaigns/[id]/ad-creatives` - Campaign creatives list
+- `/dashboard/advertiser/campaigns/[id]/ad-creatives/new` - Upload creative
+- `/dashboard/advertiser/campaigns/[id]/ad-creatives/[id]/edit` - Edit creative
 - `/dashboard/advertiser/reports` - Performance reports
-- `/dashboard/advertiser/disputes` - Dispute management
+- `/dashboard/advertiser/disputes` - Dispute list
+- `/dashboard/advertiser/disputes/new` - Raise dispute
 
 **Steps:**
 1. Advertiser logs in → redirected to dashboard
 2. Views active campaigns and performance metrics
 3. Creates new campaign with budget, targeting, and ad zones
-4. Monitors campaign performance
-5. Views detailed reports
-6. Manages disputes if needed
+4. **Ad Creative Management**:
+    - Navigates to campaign details
+    - Uploads new ad creatives (images/video) via `/ad-creatives/new`
+    - Manages existing creatives
+5. Monitors campaign performance
+6. Views detailed reports
+7. **Dispute Management**:
+    - Can raise disputes for specific campaigns via `/disputes/new`
+    - Tracks dispute status
 
 **Domain Terms:** [Advertiser](./ubiquitous-language.md#advertiser), [Ad Campaign](./ubiquitous-language.md#ad-campaign), [Payment](./ubiquitous-language.md#payment)
 
@@ -392,7 +403,8 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 - `/dashboard/admin/leagues/new` - Create league
 - `/dashboard/admin/leagues/[id]` - League details
 - `/dashboard/admin/leagues/[id]/fixtures` - League fixtures
-- `/dashboard/admin/leagues/[id]/league-stats` - League statistics
+- `/dashboard/admin/leagues/[id]/league-statstics` - League statistics (Note: Matches directory typo `statstics`)
+- `/dashboard/admin/leagues/[id]/league-statstics/[statsId]/edit` - Edit league stats
 
 **Steps:**
 1. Admin logs in → admin dashboard
@@ -416,7 +428,10 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 - `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/edit` - Edit fixture
 - `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/lineup` - Manage lineup
 - `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals` - Manage goals
-- `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/match-summary` - Fixture summary
+- `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary` - Fixture summary
+- `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/new` - Create fixture summary
+- `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images` - Fixture gallery management
+- `/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/new` - Upload new images
 
 **Steps:**
 1. Admin selects a league

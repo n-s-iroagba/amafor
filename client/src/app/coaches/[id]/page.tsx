@@ -10,6 +10,16 @@ import { ErrorAlert } from '@/shared/components/Alerts';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
 
+
+/**
+ * Page: Coach Detail
+ * Description: Public profile view for coaching staff.
+ * Requirements: REQ-PUB-06 (Staff Profiles)
+ * User Story: US-PUB-007 (View Coach Profile)
+ * User Journey: UJ-PUB-003 (Team Exploration)
+ * API: GET /academy-staff/:id (API_ROUTES.COACHES.MUTATE actually VIEW)
+ * Hook: useGet(API_ROUTES.COACHES.VIEW)
+ */
 export default function CoachDetail() {
   const params = useParams();
   const router = useRouter();

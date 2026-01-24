@@ -37,6 +37,16 @@ type TabType = 'all' | FixtureStatus;
 
 import { useParams } from 'next/navigation';
 
+
+/**
+ * Page: Fixtures List
+ * Description: Management of match fixtures for a specific league.
+ * Requirements: REQ-ADM-08 (Fixture Management)
+ * User Story: US-ADM-009 (Manage Fixtures)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: GET /fixtures (API_ROUTES.FIXTURES.LIST or BY_LEAGUE)
+ * Hook: useGet(API_ROUTES.FIXTURES.LIST)
+ */
 export default function FixturesList() {
   const router = useRouter();
   const params = useParams();

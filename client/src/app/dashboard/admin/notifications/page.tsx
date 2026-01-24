@@ -15,6 +15,16 @@ interface Notification {
   read: boolean;
 }
 
+
+/**
+ * Page: System Notifications
+ * Description: Centralized alert management for security, payment, and user events.
+ * Requirements: REQ-ADM-13 (Notification Command)
+ * User Story: US-ADM-013 (Manage Alerts)
+ * User Journey: UJ-ADM-002 (Daily Ops)
+ * API: GET /notifications (API_ROUTES.NOTIFICATIONS.LIST)
+ * Hook: useGet(API_ROUTES.NOTIFICATIONS.LIST)
+ */
 export default function SystemNotificationsPage() {
   const [activeFilter, setActiveFilter] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');

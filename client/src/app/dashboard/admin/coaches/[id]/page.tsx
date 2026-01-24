@@ -9,6 +9,16 @@ import { API_ROUTES } from '@/config/routes';
 import { Coach } from '@/features/coach/types';
 import { ErrorAlert } from '@/shared/components/Alerts';
 
+
+/**
+ * Page: Coach Details
+ * Description: Detailed profile view for a specific coach.
+ * Requirements: REQ-ADM-09 (Staff Directory)
+ * User Story: US-ADM-010 (View Coach Profile)
+ * User Journey: UJ-ADM-006 (Team Management)
+ * API: GET /coaches/:id (API_ROUTES.COACHES.VIEW)
+ * Hook: useGet(API_ROUTES.COACHES.VIEW)
+ */
 export default function CoachDetail() {
   const params = useParams();
   const router = useRouter();

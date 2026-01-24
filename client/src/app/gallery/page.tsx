@@ -23,6 +23,16 @@ import { API_ROUTES } from '@/config/routes';
 import { FixtureStatus, FixtureWithLeague, FixtureImage } from '@/features/fixture/types';
 
 
+
+/**
+ * Page: Gallery List
+ * Description: Browsable gallery of match photos organized by fixture.
+ * Requirements: REQ-PUB-07 (Fixture Gallery)
+ * User Story: US-PUB-008 (Browse Fixture Gallery)
+ * User Journey: UJ-PUB-005 (View Match Gallery)
+ * API: GET /fixtures/gallery (API_ROUTES.FIXTURES.GALLERY)
+ * Hook: useGet(API_ROUTES.FIXTURES.GALLERY)
+ */
 export default function GalleryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<FixtureStatus | 'all'>('all');

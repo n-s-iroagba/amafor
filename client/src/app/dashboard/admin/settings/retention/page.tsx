@@ -4,6 +4,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Save, AlertCircle, Clock, Archive, Trash2, ArrowLeft } from 'lucide-react';
 
+
+/**
+ * Page: Data Retention Settings
+ * Description: Configuration of data lifecycle and anonymization policies.
+ * Requirements: REQ-SEC-09 (Data Retention), REQ-LEG-03 (GDPR/NDPR Compliance)
+ * User Story: US-ADM-012 (Configure Retention)
+ * User Journey: UJ-ADM-007 (Compliance Ops)
+ * API: POST /api/admin/settings (Mock)
+ */
 export default function RetentionSettings() {
 
 

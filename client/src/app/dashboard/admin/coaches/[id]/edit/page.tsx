@@ -19,6 +19,15 @@ interface Coach {
   bio?: string;
 }
 
+
+/**
+ * Page: Edit Coach
+ * Description: Admin form to modify coach profile details.
+ * Requirements: REQ-ADM-09 (Staff Management)
+ * User Story: US-ADM-011 (Update Coach)
+ * User Journey: UJ-ADM-006 (Team Management)
+ * API: PUT /coaches/:id (API_ROUTES.COACHES.MUTATE)
+ */
 export default function EditCoach() {
   const router = useRouter();
   const params = useParams();
@@ -180,10 +189,10 @@ export default function EditCoach() {
             <div
               onClick={() => imageInputRef.current?.click()}
               className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer ${imageFile
-                  ? 'border-green-300 bg-green-50'
-                  : errors.imageUrl
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-sky-300 bg-sky-50 hover:border-sky-400'
+                ? 'border-green-300 bg-green-50'
+                : errors.imageUrl
+                  ? 'border-red-300 bg-red-50'
+                  : 'border-sky-300 bg-sky-50 hover:border-sky-400'
                 }`}
             >
               <input

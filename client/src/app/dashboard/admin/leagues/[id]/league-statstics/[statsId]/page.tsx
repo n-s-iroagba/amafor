@@ -26,6 +26,16 @@ interface ClubLeagueStats {
   };
 }
 
+
+/**
+ * Page: League Statistics Detail
+ * Description: Detailed view of a club's performance statistics in a league.
+ * Requirements: REQ-ADM-07 (League Statistics)
+ * User Story: US-ADM-007 (View League Stats)
+ * User Journey: UJ-ADM-005 (Competition Review)
+ * API: GET /league-stats/:id (API_ROUTES.LEAGUE_STATS.VIEW)
+ * Hook: useGet(API_ROUTES.LEAGUE_STATS.VIEW)
+ */
 export default function LeagueStatsDetail() {
   const router = useRouter();
   const params = useParams();

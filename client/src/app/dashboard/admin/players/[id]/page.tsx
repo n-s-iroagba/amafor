@@ -21,6 +21,16 @@ interface Player {
   createdAt: string;
 }
 
+
+/**
+ * Page: Player Details
+ * Description: Admin view of a player's profile, including bio and system metadata.
+ * Requirements: REQ-ADM-02 (Player Management)
+ * User Story: US-ADM-002 (View Player)
+ * User Journey: UJ-ADM-006 (Team Management)
+ * API: GET /players/:id (API_ROUTES.PLAYERS.VIEW)
+ * Hook: useGet(API_ROUTES.PLAYERS.VIEW)
+ */
 const PlayerDetailsPage = () => {
   const params = useParams();
   const router = useRouter();

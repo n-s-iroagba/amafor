@@ -6,6 +6,16 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { Loader2 } from 'lucide-react';
 
+
+/**
+ * Page: League Statistics Redirect
+ * Description: Redirects to the detail view of the league statistics.
+ * Requirements: REQ-ADM-07 (League Statistics)
+ * User Story: US-ADM-007 (View League Stats)
+ * User Journey: UJ-ADM-005 (Competition Review)
+ * API: GET /leagues/:id/statistics (API_ROUTES.LEAGUES.STATISTICS)
+ * Hook: useGet(API_ROUTES.LEAGUES.STATISTICS)
+ */
 export default function LeagueStatisticsPage() {
     const params = useParams();
     const router = useRouter();

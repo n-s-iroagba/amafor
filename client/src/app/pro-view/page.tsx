@@ -5,6 +5,15 @@ import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
 import { Eye, Database, Video, Shield, ArrowRight, ChevronRight } from 'lucide-react'
 
+
+/**
+ * Page: Pro View Landing
+ * Description: Information page for the professional scout portal "Pro View".
+ * Requirements: REQ-SCT-01 (Pro View Access)
+ * User Story: US-SCT-001 (View Scout Program)
+ * User Journey: UJ-SCT-001 (Scout Registration)
+ * API: None (Static)
+ */
 export default function ProViewAccess() {
   return (
     <>

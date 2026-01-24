@@ -1,6 +1,15 @@
 import { Shield, Lock, FileCheck, ShieldAlert, CheckCircle, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+
+/**
+ * Page: Compliance & Security Policy
+ * Description: Public declaration of security standards (ISO 27001, NDPR) and data integrity.
+ * Requirements: REQ-SEC-01 (Security Standards), REQ-LEG-02 (Compliance Indicators)
+ * User Story: US-SEC-001 (View Security Compliance)
+ * User Journey: UJ-PUB-006 (Trust Verification)
+ * API: None (Static)
+ */
 export default function CompliancePage() {
   const standards = [
     { title: 'ISO 27001:2022', desc: 'International standard for information security management systems (ISMS).', status: 'Certified' },

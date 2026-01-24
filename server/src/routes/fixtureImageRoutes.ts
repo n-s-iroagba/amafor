@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { FixtureImageController } from '../controllers/FixtureImageController';
 import { validate } from '../middleware/validate';
 import {
-  createFixtureImageSchema,
   updateFixtureImageSchema,
 } from '../validation-schema/fixtureImage.schema';
 import {

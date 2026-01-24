@@ -9,7 +9,16 @@ import { API_ROUTES } from '@/config/routes';
 
 
 // Changed params to optional to resolve TS error in index.tsx
-export default function FixtureAnalysisPlayer({ params }: { params?: { id: string } }) {
+
+/**
+ * Page: Scout Match Analysis
+ * Description: Detailed view of a match for scouting purposes.
+ * Requirements: REQ-SCT-03 (Match Analysis)
+ * User Story: US-SCT-003 (View Match Analysis)
+ * User Journey: UJ-SCT-001 (Scout Dashboard)
+ * API: GET /scout/matches/:id (API_ROUTES.FIXTURES.VIEW + Analysis Data)
+ */
+export default function MatchAnalysisPage({ params }: { params?: { id: string } }) {
   const urlParams = useParams();
   const matchId = params?.id || (urlParams.id as string);
 

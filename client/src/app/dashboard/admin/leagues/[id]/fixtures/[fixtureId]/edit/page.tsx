@@ -99,6 +99,15 @@ const statusConfig = {
   }
 };
 
+
+/**
+ * Page: Edit Fixture
+ * Description: Form to update fixture details (scores, status, venue).
+ * Requirements: REQ-ADM-08 (Fixture Management)
+ * User Story: US-ADM-011 (Update Fixture)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: PUT /fixtures/:id (API_ROUTES.FIXTURES.UPDATE)
+ */
 export default function EditFixture() {
   const router = useRouter();
   const params = useParams();

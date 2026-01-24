@@ -34,6 +34,16 @@ interface League {
   updatedAt: string;
 }
 
+
+/**
+ * Page: League Detail
+ * Description: Detailed view of a league with management options and statistics.
+ * Requirements: REQ-ADM-07 (League Details)
+ * User Story: US-ADM-007 (View League)
+ * User Journey: UJ-ADM-005 (Competition Review)
+ * API: GET /leagues/:id (API_ROUTES.LEAGUES.VIEW), DELETE /leagues/:id
+ * Hook: useGet(API_ROUTES.LEAGUES.VIEW), useDelete(API_ROUTES.LEAGUES.MUTATE)
+ */
 export default function LeagueDetail() {
   const router = useRouter();
   const params = useParams();

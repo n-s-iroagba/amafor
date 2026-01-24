@@ -137,9 +137,25 @@ export const API_ROUTES = {
     VIEW: (id: string) => `/videos/${id}`,
   },
   USERS: {
-
     PENDING_ADVERTISERS: '/users/pending-advertisers',
+    LIST: '/users',
+    VIEW: (id: string | number) => `/users/${id}`,
+    VERIFY: (id: string | number) => `/users/${id}/verify`,
+    UPDATE_ROLE: (id: string | number) => `/users/${id}/role`,
+    MUTATE: (id: string | number) => `/users/${id}`,
+    DELETE: (id: string | number) => `/users/${id}`,
+  },
 
+  LEAGUE_STATS: {
+    VIEW: (id: string | number) => `/league-stats/${id}`,
+    MUTATE: (id: number | null) => `/league-stats/${id}`,
+  },
+
+  MATCH_SUMMARY: {
+    CREATE: (fixtureId: string | number) => `/match-summaries/${fixtureId}`,
+    MUTATE: (id: number | string) => `/match-summaries/${id}`,
+    VIEW: (id: string | number) => `/match-summaries/${id}`,
+    BY_FIXTURE: (fixtureId: string | number) => `/match-summaries/fixture/${fixtureId}`,
   },
 
 
@@ -254,6 +270,7 @@ export const API_ROUTES = {
     RECENT_VIEWS: '/scout/recent-views',
     PLAYER_VIEW: (id: string | number) => `/scout/view/${id}`,
     APPLY: '/scout/applications',
+    MUTATE: (id: string | number) => `/scout/${id}`, // Added generic mutate
   },
   HEALTH: {
     STATUS: '/system/health',
@@ -261,4 +278,4 @@ export const API_ROUTES = {
     DB: '/system/health/db',
     REDIS: '/system/health/redis',
   },
-};
+}

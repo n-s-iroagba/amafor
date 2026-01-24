@@ -4,7 +4,16 @@ import { useRouter } from 'next/navigation';
 import { Shield, Loader2 } from 'lucide-react';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
 
-export default function DashboardRouter() {
+
+/**
+ * Page: Dashboard Landing
+ * Description: Main dashboard entry point, routing users based on role.
+ * Requirements: REQ-ADM-01 (Admin Dashboard), REQ-ADV-03 (Advertiser Dashboard)
+ * User Story: US-ADM-001, US-ADV-003, US-SCT-001
+ * User Journey: UJ-ADM-009, UJ-ADV-002, UJ-SCT-001
+ * Role: All Authenticated Users
+ */
+export default function DashboardPage() {
   const router = useRouter();
   const { user, loading } = useAuthContext();
 

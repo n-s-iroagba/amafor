@@ -58,7 +58,16 @@ interface LeagueDetails extends League {
   }>;
 }
 
-export default function LeagueTablePage() {
+
+/**
+ * Page: Public League Standings
+ * Description: Detailed table of standings for a specific league.
+ * Requirements: REQ-PUB-07 (League Stats)
+ * User Story: US-PUB-007 (View League Statistics)
+ * User Journey: UJ-PUB-004 (View League Statistics)
+ * API: GET /leagues/:id/table (API_ROUTES.LEAGUES.TABLE)
+ */
+export default function LeagueDetailPage() {
   const params = useParams();
   const router = useRouter();
   const leagueId = params.id as string;

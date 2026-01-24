@@ -36,7 +36,16 @@ interface ValidationErrors {
   general?: string;
 }
 
-export default function NewRssFeedSource() {
+
+/**
+ * Page: New RSS Feed
+ * Description: Form to add a new external news source.
+ * Requirements: REQ-ADM-17 (Feed Management)
+ * User Story: US-ADM-017 (Manage RSS Feeds)
+ * User Journey: UJ-ADM-008 (Manage RSS Feeds)
+ * API: POST /feeds (API_ROUTES.FEEDS.CREATE)
+ */
+export default function NewFeedPage() {
   const router = useRouter();
 
   // Form state matching the model exactly

@@ -5,6 +5,15 @@ import { Footer } from '@/shared/components/Footer'
 import { Mail, Phone, MapPin, MessageCircle, HelpCircle } from 'lucide-react'
 import { useState } from 'react'
 
+
+/**
+ * Page: Help & Contact
+ * Description: User support portal with FAQs and contact form.
+ * Requirements: REQ-SUP-01 (Help Center)
+ * User Story: US-SUP-001 (Access FAQs), US-SUP-002 (Contact Support)
+ * User Journey: UJ-SUP-001 (Issue Resolution)
+ * API: POST /api/contact (Mock/Future)
+ */
 export default function HelpContact() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')

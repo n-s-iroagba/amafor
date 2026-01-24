@@ -2,6 +2,15 @@ import React from 'react';
 import { FileText, Scale, Gavel, ShieldCheck, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+
+/**
+ * Page: Terms of Service
+ * Description: Legal terms and conditions for platform usage.
+ * Requirements: REQ-UTL-02 (Legal Pages)
+ * User Story: US-UTL-002 (View Terms)
+ * User Journey: UJ-UTL-003 (Legal Review)
+ * API: None (Static)
+ */
 export default function TermsPage() {
   return (
     <div className="bg-gray-50 min-h-screen py-20 px-4">
@@ -9,7 +18,7 @@ export default function TermsPage() {
         <Link href="/" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-12 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back Home
         </Link>
-        
+
         <header className="mb-16">
           <div className="bg-[#2F4F4F] w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-xl">
             <Scale className="w-8 h-8 text-[#87CEEB]" />

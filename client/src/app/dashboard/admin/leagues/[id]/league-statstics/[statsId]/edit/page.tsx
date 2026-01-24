@@ -24,6 +24,15 @@ interface League {
   season: string;
 }
 
+
+/**
+ * Page: Edit League Statistics
+ * Description: Form to manually update a club's statistics in a league.
+ * Requirements: REQ-ADM-07 (League Statistics)
+ * User Story: US-ADM-008 (Update League Stats)
+ * User Journey: UJ-ADM-005 (Competition Review)
+ * API: PUT /league-stats/:id (API_ROUTES.LEAGUE_STATS.MUTATE)
+ */
 export default function EditLeagueStats() {
   const router = useRouter();
   const params = useParams();

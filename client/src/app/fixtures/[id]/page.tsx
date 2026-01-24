@@ -33,9 +33,13 @@ import { Lineup } from '@/features/lineup/types';
 
 
 /**
- * @requirements REQ-FIX-03
- * @description Detailed fixture view showing lineups, statistics, and overview.
- * Fetches data with rich relations (league, lineups, players, stats).
+ * Page: Fixture Details
+ * Description: Detailed view of a specific fixture including lineups, stats, and match events.
+ * Requirements: REQ-PUB-02 (Lineups, Goals), REQ-PUB-01 (Details)
+ * User Story: US-PUB-002 (View Fixture Details)
+ * User Journey: UJ-PUB-001 (Browse Fixtures)
+ * API: GET /fixtures/one/:id (API_ROUTES.FIXTURES.VIEW)
+ * Hook: useGet(API_ROUTES.FIXTURES.VIEW(id))
  */
 interface FixtureDetails extends FixtureWithLeague {
   lineups?: Lineup[];

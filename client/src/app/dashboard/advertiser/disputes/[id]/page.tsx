@@ -7,6 +7,15 @@ import { useParams } from 'next/navigation';
 
 
 // Changed params to optional to resolve TS error in index.tsx
+
+/**
+ * Page: Dispute Detail (Advertiser)
+ * Description: View status and history of a billing dispute.
+ * Requirements: REQ-ADV-07 (Dispute Resolution)
+ * User Story: US-ADV-007 (Manage Disputes)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: GET /advertiser/disputes/:id (API_ROUTES.ADVERTISER.DISPUTES.VIEW)
+ */
 export default function DisputeDetailPage({ params }: { params?: { id: string } }) {
   const urlParams = useParams();
   const disputeId = params?.id || urlParams.id;
@@ -58,11 +67,10 @@ export default function DisputeDetailPage({ params }: { params?: { id: string } 
                   <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-2">
                     {msg.sender} • {msg.time}
                   </div>
-                  <div className={`p-6 rounded-[2rem] text-sm leading-relaxed ${
-                    msg.sender.includes('Admin') 
-                    ? 'bg-[#2F4F4F] text-white rounded-tl-none' 
-                    : 'bg-[#87CEEB] text-[#2F4F4F] rounded-tr-none shadow-lg shadow-[#87CEEB]/20 font-bold'
-                  }`}>
+                  <div className={`p-6 rounded-[2rem] text-sm leading-relaxed ${msg.sender.includes('Admin')
+                      ? 'bg-[#2F4F4F] text-white rounded-tl-none'
+                      : 'bg-[#87CEEB] text-[#2F4F4F] rounded-tr-none shadow-lg shadow-[#87CEEB]/20 font-bold'
+                    }`}>
                     {msg.text}
                   </div>
                 </div>
@@ -75,8 +83,8 @@ export default function DisputeDetailPage({ params }: { params?: { id: string } 
               <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#2F4F4F] rounded-2xl transition-all">
                 <Paperclip className="w-5 h-5" />
               </button>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Provide details or upload evidence..."
                 className="flex-1 bg-gray-50 px-8 py-5 rounded-[2rem] border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm font-bold"
               />

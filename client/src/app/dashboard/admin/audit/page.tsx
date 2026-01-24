@@ -23,6 +23,16 @@ interface AuditStats {
   avgLogsPerDay: number;
 }
 
+
+/**
+ * Page: Audit Trail
+ * Description: Immutable log of all administrative and sensitive actions for security compliance.
+ * Requirements: REQ-ADM-05 (Audit Logging)
+ * User Story: US-ADM-005 (View Audit Logs)
+ * User Journey: UJ-ADM-004 (Compliance Review)
+ * API: GET /system/audit (API_ROUTES.AUDIT.LIST), POST /system/audit/export (API_ROUTES.AUDIT.EXPORT)
+ * Hook: useGet(API_ROUTES.AUDIT.LIST), usePost(API_ROUTES.AUDIT.EXPORT)
+ */
 export default function AuditTrailDashboard() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');

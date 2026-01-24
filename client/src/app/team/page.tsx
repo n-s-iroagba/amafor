@@ -12,12 +12,13 @@ import { Users, Shield, Star, Trophy, ArrowRight, X, Info, ChevronRight, MapPin,
 import Link from 'next/link';
 
 /**
- * Team Squad Page
- * 
- * Showcases the official Amafor Gladiators FC squad, including
- * technical staff and players across all positions.
- * 
- * @requirement REQ-PUB-02: Public squad/team information.
+ * Page: Team Squad
+ * Description: Showcases the team roster including players and coaching staff.
+ * Requirements: REQ-PUB-05 (Team Roster)
+ * User Story: US-PUB-005 (View Team Squad)
+ * User Journey: UJ-PUB-003 (View Team & Players)
+ * API: GET /players, GET /academy-staff (Coaches)
+ * Hook: useGet(API_ROUTES.PLAYERS.LIST), useGet(API_ROUTES.COACHES.LIST)
  */
 export default function TeamSquad() {
   const [selectedTab, setSelectedTab] = useState<'coaches' | 'players'>('players');

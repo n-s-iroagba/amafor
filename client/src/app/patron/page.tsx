@@ -17,6 +17,15 @@ import { PatronSubscriptionPackage, PatronTier } from '@/features/patron/types'
  * 
  * @requirement REQ-SUP-01: Public support/donation page.
  */
+/**
+ * Page: Patron Support Landing
+ * Description: Overview of patron tiers and support options.
+ * Requirements: REQ-SUP-02 (Subscription Tiers)
+ * User Story: US-SUP-002 (View Subscription Plans)
+ * User Journey: UJ-SUP-001 (Subscribe)
+ * API: GET /patrons/packages (API_ROUTES.PATRONS.PACKAGES)
+ * Hook: useGet(API_ROUTES.PATRONS.PACKAGES)
+ */
 export default function SupportDonate() {
   const { data: patronTiers, loading } = useGet<PatronSubscriptionPackage[]>(API_ROUTES.PATRONS.PACKAGES)
 
@@ -115,8 +124,8 @@ export default function SupportDonate() {
                   <div
                     key={index}
                     className={`relative p-1 rounded-[3rem] transition-transform duration-500 hover:-translate-y-2 group ${tier.tier === PatronTier.PATRON
-                        ? 'bg-gradient-to-br from-sky-400 to-indigo-500'
-                        : 'bg-slate-200'
+                      ? 'bg-gradient-to-br from-sky-400 to-indigo-500'
+                      : 'bg-slate-200'
                       }`}
                   >
                     <div className="bg-white p-10 rounded-[2.8rem] h-full flex flex-col justify-between">
@@ -152,8 +161,8 @@ export default function SupportDonate() {
                       <Link
                         href={`/patron/checkout?tier=${tier.tier}`}
                         className={`w-full py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest text-center ${tier.tier === PatronTier.PATRON
-                            ? 'bg-slate-900 text-white hover:bg-slate-800'
-                            : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
+                          ? 'bg-slate-900 text-white hover:bg-slate-800'
+                          : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
                           }`}
                       >
                         Select Tier

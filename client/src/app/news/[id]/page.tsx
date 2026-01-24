@@ -8,9 +8,13 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 /**
- * @requirements REQ-PUB-03
- * @description News detail page showing full article content.
- * Fetches data using useGet and project-standard routes.
+ * Page: Article Detail
+ * Description: Displays full content of a news article.
+ * Requirements: REQ-PUB-03 (Articles)
+ * User Story: US-PUB-004 (Read Full Article)
+ * User Journey: UJ-PUB-002 (Browse News)
+ * API: GET /articles/:id (API_ROUTES.ARTICLES.VIEW)
+ * Hook: useGet(API_ROUTES.ARTICLES.VIEW(id))
  */
 export default function NewsDetailPage() {
   const params = useParams();

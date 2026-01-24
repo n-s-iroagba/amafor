@@ -22,6 +22,15 @@ interface Player {
   updatedAt: string;
 }
 
+
+/**
+ * Page: Edit Player
+ * Description: Admin form to update player details (bio, stats, media).
+ * Requirements: REQ-ADM-02 (Player Management)
+ * User Story: US-ADM-006 (Update Player Information)
+ * User Journey: UJ-ADM-006 (Team Management)
+ * API: PUT /players/:id (API_ROUTES.PLAYERS.MUTATE)
+ */
 export default function EditPlayer() {
   const router = useRouter();
   const params = useParams();

@@ -14,6 +14,16 @@ interface RecentView {
   imageUrl: string;
 }
 
+
+/**
+ * Page: Scout Dashboard Overview
+ * Description: Central hub for authenticated scouts showing assigned matches and recent views.
+ * Requirements: REQ-SCT-03 (Scout Dashboard)
+ * User Story: US-SCT-003 (View Assignments)
+ * User Journey: UJ-SCT-002 (Scouting Workflow)
+ * API: GET /scout/recent-views (API_ROUTES.SCOUT.RECENT_VIEWS)
+ * Hook: useGet(API_ROUTES.SCOUT.RECENT_VIEWS)
+ */
 export default function ScoutDashboard() {
   const { user, loading: authLoading } = useAuthContext();
 

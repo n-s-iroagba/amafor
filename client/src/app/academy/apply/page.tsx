@@ -8,6 +8,16 @@ import Link from 'next/link';
 import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
+
+/**
+ * Page: Trialist Application
+ * Description: Public form for aspiring players to apply for academy trials.
+ * Requirements: REQ-ACA-02 (Trial Application)
+ * User Story: US-ACA-002 (Apply for Trial)
+ * User Journey: UJ-ACA-002 (Application Submission)
+ * API: POST /trialists (API_ROUTES.TRIALISTS.CREATE)
+ * Hook: usePost(API_ROUTES.TRIALISTS.CREATE)
+ */
 export default function TrialistApplication() {
     const [formData, setFormData] = useState({
         firstName: '',

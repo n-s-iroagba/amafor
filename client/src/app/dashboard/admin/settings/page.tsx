@@ -13,6 +13,16 @@ interface SystemStatus {
   sessionTimeout: number;
 }
 
+
+/**
+ * Page: System Settings
+ * Description: Configuration of global platform settings including maintenance mode and security thresholds.
+ * Requirements: REQ-ADM-06 (System Configuration)
+ * User Story: US-ADM-006 (Platform Settings)
+ * User Journey: UJ-ADM-003 (System Config)
+ * API: GET/PUT /api/admin/system-status (API_ROUTES.ADMIN.SYSTEM_STATUS)
+ * Hook: useGet(API_ROUTES.ADMIN.SYSTEM_STATUS), usePut(API_ROUTES.ADMIN.SYSTEM_STATUS)
+ */
 export default function PlatformSettingsPage() {
   const { data: status, loading, refetch } = useGet<SystemStatus>(API_ROUTES.ADMIN.SYSTEM_STATUS);
   const { put, isPending: isSaving } = usePut(API_ROUTES.ADMIN.SYSTEM_STATUS);

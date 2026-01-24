@@ -24,6 +24,15 @@ import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
 
+
+/**
+ * Page: Upload Video
+ * Description: Form to upload new video content via URL.
+ * Requirements: REQ-CMS-05 (Manage Videos)
+ * User Story: US-CMS-005 (Manage Videos)
+ * User Journey: UJ-CMS-002 (Manage Videos)
+ * API: POST /videos (API_ROUTES.VIDEOS.CREATE)
+ */
 export default function NewVideo() {
   const router = useRouter();
 
@@ -404,8 +413,8 @@ export default function NewVideo() {
                       onClick={() => videoInputRef.current?.click()}
                       disabled={isUploading}
                       className={`w-full p-8 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.video
-                          ? 'border-red-300 bg-red-50 text-red-700'
-                          : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                        ? 'border-red-300 bg-red-50 text-red-700'
+                        : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
                         } disabled:opacity-50`}
                     >
                       <Video className="w-12 h-12 mx-auto mb-3 opacity-60" />
@@ -471,8 +480,8 @@ export default function NewVideo() {
                       onClick={() => thumbnailInputRef.current?.click()}
                       disabled={isUploading}
                       className={`w-full p-8 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.thumbnail
-                          ? 'border-red-300 bg-red-50 text-red-700'
-                          : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                        ? 'border-red-300 bg-red-50 text-red-700'
+                        : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
                         } disabled:opacity-50`}
                     >
                       <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-60" />

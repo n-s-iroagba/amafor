@@ -17,6 +17,15 @@ interface FixtureImageCreationAttributes {
   caption?: string;
 }
 
+
+/**
+ * Page: Upload Fixture Image
+ * Description: Form to upload new photos for a fixture.
+ * Requirements: REQ-ADM-08 (Fixture Images)
+ * User Story: US-ADM-008 (Manage Fixture Images)
+ * User Journey: UJ-ADM-002 (Manage Fixtures)
+ * API: POST /fixtures/gallery (API_ROUTES.FIXTURES.GALLERY)
+ */
 export default function BulkUploadFixtureImages() {
   const router = useRouter();
   const params = useParams();

@@ -8,7 +8,16 @@ import { useRouter } from 'next/navigation';
 import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
-export default function CreateDisputePage() {
+
+/**
+ * Page: New Dispute (Advertiser)
+ * Description: Form to raise a new billing dispute.
+ * Requirements: REQ-ADV-07 (Dispute Resolution)
+ * User Story: US-ADV-007 (Manage Disputes)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: POST /advertiser/disputes (API_ROUTES.ADVERTISER.DISPUTES.CREATE)
+ */
+export default function NewDisputePage() {
   const navigate = useRouter();
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');

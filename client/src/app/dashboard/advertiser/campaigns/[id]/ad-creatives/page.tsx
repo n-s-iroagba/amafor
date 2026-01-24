@@ -21,7 +21,15 @@ interface AdCreative {
     format: string; // e.g., "300x250"
 }
 
-export default function CampaignCreativesPage() {
+/**
+ * Page: Campaign Creatives
+ * Description: Manage media assets for a specific campaign.
+ * Requirements: REQ-ADV-08 (Creative Management)
+ * User Story: US-ADV-008 (Manage Ad Creatives)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: GET /advertiser/campaigns/:id/creatives (API_ROUTES.ADVERTISER.CAMPAIGNS.CREATIVES)
+ */
+export default function CreativesListPage() {
     const params = useParams();
     const campaignId = params.id as string;
 
@@ -96,8 +104,8 @@ export default function CampaignCreativesPage() {
                                                 <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{creative.format} • {creative.type}</div>
                                             </div>
                                             <span className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${creative.status === 'active' ? 'bg-green-100 text-green-600' :
-                                                    creative.status === 'rejected' ? 'bg-red-100 text-red-600' :
-                                                        'bg-yellow-100 text-yellow-600'
+                                                creative.status === 'rejected' ? 'bg-red-100 text-red-600' :
+                                                    'bg-yellow-100 text-yellow-600'
                                                 }`}>
                                                 {creative.status}
                                             </span>

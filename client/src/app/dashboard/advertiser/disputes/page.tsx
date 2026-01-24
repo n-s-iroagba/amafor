@@ -18,6 +18,15 @@ interface Dispute {
   updatedAt: string;
 }
 
+/**
+ * Page: Disputes List
+ * Description: List of support tickets and billing disputes.
+ * Requirements: REQ-ADV-06 (Dispute Management)
+ * User Story: US-ADV-007 (Raise/View Dispute)
+ * User Journey: UJ-ADV-004 (Support)
+ * API: GET /advertiser/disputes (API_ROUTES.ADVERTISER.DISPUTES.LIST)
+ * Hook: useGet(API_ROUTES.ADVERTISER.DISPUTES.LIST)
+ */
 export default function AdvertiserDisputeListPage() {
   const { data: disputes, loading } = useGet<Dispute[]>(
     API_ROUTES.ADVERTISER.DISPUTES.LIST

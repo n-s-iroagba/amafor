@@ -115,15 +115,7 @@ export const generateWhatsAppUrl = (phone: string, message?: string): string => 
   return `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodedMessage}`;
 };
 
-// Generate article share message
-export const generateArticleShareMessage = (title: string, url: string): string => {
-  return `Check out this article from Amafor Gladiators FC: "${title}" ${url}`;
-};
 
-// Generate player share message
-export const generatePlayerShareMessage = (playerName: string, position: string, url: string): string => {
-  return `Check out ${playerName}, a ${position} from Amafor Gladiators FC: ${url}`;
-};
 
 // Slugify string
 export const slugify = (text: string): string => {
@@ -491,10 +483,7 @@ export default {
   calculateAge,
   calculateReadTime,
   generateShareUrl,
-  generateWhatsAppUrl,
-  generateArticleShareMessage,
-  generatePlayerShareMessage,
-  slugify,
+
   truncateText,
   extractExcerpt,
   generatePagination,

@@ -23,6 +23,16 @@ interface Goal {
     // But given the schema, we just list them.
 }
 
+
+/**
+ * Page: Fixture Goals Management
+ * Description: Interface to list, add, and delete goals for a fixture.
+ * Requirements: REQ-ADM-10 (Goal Tracking)
+ * User Story: US-ADM-013 (Manage Goals)
+ * User Journey: UJ-ADM-006 (Match Day Ops)
+ * API: GET /goals (API_ROUTES.GOALS.LIST), POST /goals, DELETE /goals/:id
+ * Hook: useGet, usePost, useDelete
+ */
 export default function GoalsPage() {
     const params = useParams();
     const fixtureId = params.fixtureId as string;

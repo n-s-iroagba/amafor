@@ -31,6 +31,16 @@ import { DeletionConfirmationModal } from '@/shared/components/DeleteModal';
 import { API_ROUTES } from '@/config/routes';
 
 
+
+/**
+ * Page: Academy Staff Management
+ * Description: List and management of academy coaching and support staff.
+ * Requirements: REQ-ADM-10 (Staff Management)
+ * User Story: US-ADM-010 (Manage Staff)
+ * User Journey: UJ-ADM-006 (Academy Ops)
+ * API: GET /academy-staff (API_ROUTES.STAFF.LIST), DELETE /academy-staff/:id
+ * Hook: useGet(API_ROUTES.STAFF.LIST), useDelete(API_ROUTES.STAFF.LIST)
+ */
 export default function AcademyStaffPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');

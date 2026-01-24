@@ -6,6 +6,15 @@ import { useRouter } from 'next/navigation';
 import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
+
+/**
+ * Page: New League
+ * Description: Form to create a new league competition or friendly series.
+ * Requirements: REQ-ADM-07 (League Management)
+ * User Story: US-ADM-007 (Create Competition)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: POST /leagues (API_ROUTES.LEAGUES.CREATE)
+ */
 export default function NewLeague() {
   const router = useRouter();
   const [name, setName] = useState('');

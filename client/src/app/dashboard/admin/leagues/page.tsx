@@ -10,6 +10,16 @@ import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 import { League } from '@/shared/types';
 
+
+/**
+ * Page: League Management List
+ * Description: List of all leagues with options to create, edit, or delete.
+ * Requirements: REQ-ADM-07 (League Management)
+ * User Story: US-ADM-007 (Manage Competitions)
+ * User Journey: UJ-ADM-005 (Competition Setup)
+ * API: GET /leagues (API_ROUTES.LEAGUES.LIST), DELETE /leagues/:id (API_ROUTES.LEAGUES.MUTATE)
+ * Hook: useGet(API_ROUTES.LEAGUES.LIST), useDelete(API_ROUTES.LEAGUES.MUTATE)
+ */
 export default function LeaguesList() {
   const router = useRouter();
 

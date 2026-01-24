@@ -7,6 +7,15 @@ import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 
+
+/**
+ * Page: New Trialist
+ * Description: Intake form for new academy trialists/recruits.
+ * Requirements: REQ-ACA-01 (Trialist Management)
+ * User Story: US-ACA-004 (Register Trialist)
+ * User Journey: UJ-ACA-001 (Recruitment)
+ * API: POST /academy/trialists (API_ROUTES.TRIALISTS.CREATE)
+ */
 export default function NewTrialist() {
   const router = useRouter();
   const [formData, setFormData] = useState({

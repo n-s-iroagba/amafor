@@ -19,6 +19,16 @@ const PaymentButton = dynamic(
 
 
 
+
+/**
+ * Page: Patron Checkout
+ * Description: Processing page for patron subscriptions and donations.
+ * Requirements: REQ-SUP-01 (Donations), REQ-SUP-02 (Subscriptions)
+ * User Story: US-SUP-001 (Make Donation), US-SUP-002 (Subscribe)
+ * User Journey: UJ-SUP-001 (Subscribe)
+ * API: POST /payments/initialize (Payment Gateway)
+ * Component: PaymentButton (Paystack Integration)
+ */
 export default function PatronCheckout() {
 
   const { data: patronTiers } = useGet<PatronSubscriptionPackage[]>('')

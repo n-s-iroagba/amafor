@@ -16,6 +16,16 @@ interface Patron {
   updatedAt?: Date;
 }
 
+
+/**
+ * Page: Patron Details
+ * Description: Detailed view of a patron's profile and contribution history.
+ * Requirements: REQ-ADM-12 (Patron Management)
+ * User Story: US-ADM-014 (View Patron Profile)
+ * User Journey: UJ-ADM-008 (Community Relations)
+ * API: GET /patrons/:id (API_ROUTES.PATRONS.DETAIL)
+ * Hook: useGet(API_ROUTES.PATRONS.DETAIL)
+ */
 export default function PatronDetailsPage() {
   const { id } = useParams();
   const {

@@ -7,7 +7,15 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 
-export default function ScoutPlayerDirectory() {
+/**
+ * Page: Scout Player Database
+ * Description: Searchable database of players for scouting.
+ * Requirements: REQ-SCT-02 (Player Database)
+ * User Story: US-SCT-002 (Browse Player Database)
+ * User Journey: UJ-SCT-001 (Scout Dashboard)
+ * API: GET /players (API_ROUTES.PLAYERS.LIST)
+ */
+export default function PlayerScoutingPage() {
   const [filter, setFilter] = useState('ALL');
 
   const { data: playersData, loading } = useGet<any[]>(API_ROUTES.PLAYERS.LIST);

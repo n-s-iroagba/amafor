@@ -34,7 +34,16 @@ interface LeagueWithTable extends League {
   amaforStats?: LeagueTableProps;
 }
 
-export default function LeagueStatisticsPage() {
+
+/**
+ * Page: Public League Statistics List
+ * Description: List of all leagues available for public viewing.
+ * Requirements: REQ-PUB-07 (League Stats)
+ * User Story: US-PUB-007 (View League Statistics)
+ * User Journey: UJ-PUB-004 (View League Statistics)
+ * API: GET /leagues (API_ROUTES.LEAGUES.LIST)
+ */
+export default function LeagueStatsPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'completed'>('all');

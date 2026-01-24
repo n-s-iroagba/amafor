@@ -7,6 +7,16 @@ import { Heart, Loader2, AlertCircle } from 'lucide-react'
 import { useGet } from '@/shared/hooks/useApiQuery'
 import { PatronTier, PatronWithSubscription } from '@/features/patron/types'
 
+
+/**
+ * Page: Patron Wall
+ * Description: Public display of active patrons and supporters.
+ * Requirements: REQ-SUP-03 (Patron Wall)
+ * User Story: US-SUP-003 (View Patron Wall)
+ * User Journey: UJ-SUP-002 (View Wall)
+ * API: GET /patrons (API_ROUTES.PATRONS.LIST)
+ * Hook: useGet('/api/supporters')
+ */
 export default function SupporterWall() {
   const { data: supporters, loading, error } = useGet<PatronWithSubscription[]>('/api/supporters')
 

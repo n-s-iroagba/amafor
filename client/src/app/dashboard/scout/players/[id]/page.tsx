@@ -9,7 +9,15 @@ import { API_ROUTES } from '@/config/routes';
 import Link from 'next/link';
 
 
-export default function ScoutPlayerDetail() {
+/**
+ * Page: Scout Player Detail
+ * Description: Detailed scouting view of a player profile.
+ * Requirements: REQ-SCT-02 (Player Database)
+ * User Story: US-SCT-002 (Browse Player Database)
+ * User Journey: UJ-SCT-001 (Scout Dashboard)
+ * API: GET /scout/view/:id (API_ROUTES.SCOUT.PLAYER_VIEW)
+ */
+export default function PlayerScoutProfile() {
   const { id } = useParams();
   const { data: player, loading } = useGet<any>(API_ROUTES.PLAYERS.VIEW(id as string));
   const [isGenerating, setIsGenerating] = useState(false);

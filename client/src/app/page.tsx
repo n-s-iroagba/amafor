@@ -14,7 +14,16 @@ import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget';
 import FixtureGallerySection from '@/features/fixture/components/FixtureGallerySection';
 import FeaturedNews from '@/features/home/components/FeaturedNews';
 
-export default function Homepage() {
+
+/**
+ * Page: Homepage
+ * Description: Landing page with featured news, matches, and call-to-actions.
+ * Requirements: REQ-PUB-01 to 09 (General Access)
+ * User Story: US-PUB-001 (View Fixture List), US-PUB-003 (Browse News)
+ * User Journey: UJ-PUB-001, UJ-PUB-002
+ * API: Multiple (News, Fixtures, Videos)
+ */
+export default function Home() {
   return (
     <>
       <Header />

@@ -20,6 +20,16 @@ import { Article, ArticleStatus, PaginatedData } from '@/shared/types';
 
 type TabType = ArticleStatus | 'all';
 
+
+/**
+ * Page: CMS Article Management
+ * Description: Management of sports articles, news, and match reports.
+ * Requirements: REQ-CMS-01 (Content Management)
+ * User Story: US-CMS-002 (Manage Articles)
+ * User Journey: UJ-CMS-001 (Content Publication)
+ * API: GET /articles (API_ROUTES.ARTICLES.LIST)
+ * Hook: useGet(API_ROUTES.ARTICLES.LIST)
+ */
 const ArticleList: React.FC = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);

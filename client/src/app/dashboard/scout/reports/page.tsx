@@ -5,6 +5,15 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
 
+/**
+ * Page: Scout Reports List
+ * Description: Archive of generated scout reports and dossiers.
+ * Requirements: REQ-SCT-04 (Report Management)
+ * User Story: US-SCT-004 (Manage Reports)
+ * User Journey: UJ-SCT-003 (Report Generation)
+ * API: GET /scout/reports (API_ROUTES.SCOUT.REPORTS)
+ * Hook: useGet(API_ROUTES.SCOUT.REPORTS)
+ */
 export default function ScoutReportsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const { data: reportsData, loading, refetch } = useGet<any[]>('/scout/reports');

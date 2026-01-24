@@ -31,9 +31,13 @@ import { League } from '@/features/league/types';
 
 
 /**
- * @requirements REQ-FIX-01, REQ-FIX-02
- * @description Public-facing fixtures page showing upcoming and past match schedules.
- * Provides filtering by status, league, and date, as well as search functionality.
+ * Page: Fixtures List
+ * Description: Displays a list of scheduled, live, and past fixtures. Supports filtering by league, status, and date.
+ * Requirements: REQ-PUB-01 (Fixture List)
+ * User Story: US-PUB-001 (View Fixture List)
+ * User Journey: UJ-PUB-001 (Browse Fixtures)
+ * API: GET /fixtures (API_ROUTES.FIXTURES.LIST)
+ * Hook: useGet(API_ROUTES.FIXTURES.LIST)
  */
 export default function FixturesPage() {
   const router = useRouter();

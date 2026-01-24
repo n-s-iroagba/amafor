@@ -16,6 +16,15 @@ interface AdCreative {
     destinationUrl?: string;
 }
 
+
+/**
+ * Page: Edit Ad Creative
+ * Description: Form to update an ad creative's details.
+ * Requirements: REQ-ADV-08 (Creative Management)
+ * User Story: US-ADV-008 (Manage Ad Creatives)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: PUT /ads/creatives/:id (API_ROUTES.ADS.CREATIVES.UPDATE)
+ */
 export default function EditCreativePage() {
     const params = useParams();
     const router = useRouter();

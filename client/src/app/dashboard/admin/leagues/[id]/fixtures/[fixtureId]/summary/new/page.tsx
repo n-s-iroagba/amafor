@@ -25,6 +25,15 @@ interface FixtureSummaryAttributes {
   updatedAt?: Date;
 }
 
+
+/**
+ * Page: New Match Summary (Text)
+ * Description: Form to create a textual summary/report of the match.
+ * Requirements: REQ-ADM-11 (Match Summary)
+ * User Story: US-ADM-015 (Write Match Report)
+ * User Journey: UJ-ADM-006 (Match Day Ops)
+ * API: POST /match-summaries (API_ROUTES.MATCH_SUMMARY.CREATE)
+ */
 const CreateFixtureSummaryForm = ({ }) => {
   const router = useRouter();
   const [summary, setSummary] = useState('');

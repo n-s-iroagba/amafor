@@ -2,6 +2,15 @@ import React from 'react';
 import { Lock, EyeOff, ShieldCheck, Database, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+
+/**
+ * Page: Privacy Policy
+ * Description: Legal privacy policy outlining data collection and usage.
+ * Requirements: REQ-UTL-02 (Legal Pages)
+ * User Story: US-UTL-002 (View Privacy Policy)
+ * User Journey: UJ-UTL-003 (Legal Review)
+ * API: None (Static)
+ */
 export default function PrivacyPage() {
   return (
     <div className="bg-gray-50 min-h-screen py-20 px-4">

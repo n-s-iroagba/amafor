@@ -21,6 +21,15 @@ interface Fixture {
   status: string;
 }
 
+
+/**
+ * Page: Edit Match Summary (Text)
+ * Description: Form to update the textual summary/report of the match.
+ * Requirements: REQ-ADM-11 (Match Summary)
+ * User Story: US-ADM-015 (Edit Match Report)
+ * User Journey: UJ-ADM-006 (Match Day Ops)
+ * API: PUT /match-summaries/:id (API_ROUTES.MATCH_SUMMARY.MUTATE)
+ */
 export default function EditFixtureSummary() {
   const router = useRouter();
   const params = useParams();

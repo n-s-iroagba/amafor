@@ -2,11 +2,11 @@
 import type React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from 'react';
-import { 
-  Mail, 
-  CheckCircle, 
-  RefreshCw, 
-  Lock, 
+import {
+  Mail,
+  CheckCircle,
+  RefreshCw,
+  Lock,
   AlertCircle,
   Loader2,
   ArrowRight,
@@ -19,6 +19,16 @@ import { AuthUser } from '@/shared/types';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
 
 
+
+/**
+ * Page: Verify Email Page
+ * Description: Verifies user email address using a token/code.
+ * Requirements: REQ-AUTH-01 (Email Verification)
+ * User Story: US-AUTH-001 (Sign Up Verification)
+ * User Journey: UJ-AUTH-001 (User Registration)
+ * API: POST /auth/verify-email, POST /auth/resend-verification-code
+ * Hook: usePost(API_ROUTES.AUTH.VERIFY_EMAIL), usePost(API_ROUTES.AUTH.RESEND_VERIFICATION_CODE)
+ */
 const VerifyEmail = () => {
   const params = useParams();
   const urlToken = params.token;
@@ -31,15 +41,15 @@ const VerifyEmail = () => {
   const [token, setToken] = useState<string>('');
   const [verifySuccess, setVerifySuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  
+
   const router = useRouter();
 
   // Use the usePost hook for verify email
-  const { 
-    post: verifyEmailPost, 
-    isPending: verifying, 
-    error: verifyError, 
-    reset: resetVerifyState 
+  const {
+    post: verifyEmailPost,
+    isPending: verifying,
+    error: verifyError,
+    reset: resetVerifyState
   } = usePost<any, any>(API_ROUTES.AUTH.VERIFY_EMAIL, {
     onSuccess: (data) => {
       if (data && 'user' in data && 'accessToken' in data) {
@@ -52,7 +62,7 @@ const VerifyEmail = () => {
 
         // Auto-redirect based on role
         setTimeout(() => {
-         router.push('/dashboard')
+          router.push('/dashboard')
         }, 3000);
       }
     },
@@ -64,11 +74,11 @@ const VerifyEmail = () => {
   });
 
   // Use the usePost hook for resend code
-  const { 
-    post: resendCodePost, 
-    isPending: resending, 
-    error: resendError, 
-    reset: resetResendState 
+  const {
+    post: resendCodePost,
+    isPending: resending,
+    error: resendError,
+    reset: resetResendState
   } = usePost<any, any>(API_ROUTES.AUTH.RESEND_VERIFICATION_CODE);
 
   useEffect(() => {
@@ -195,12 +205,12 @@ const VerifyEmail = () => {
         // Update the token and refresh the page
         setToken(response.verificationToken);
         router.push(`/auth/verify-email/${response.verificationToken}`);
-        
+
         // Reset countdown
         setTimeLeft(300);
         setCanResend(false);
         setErrorMessage('');
-        
+
         // Restart the timer
         const timer = setInterval(() => {
           setTimeLeft((prev) => {
@@ -325,11 +335,10 @@ const VerifyEmail = () => {
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onFocus={(e) => e.target.select()}
-                className={`w-12 h-12 text-center text-lg font-semibold text-slate-800 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all ${
-                  digit 
-                    ? 'border-slate-300 bg-white' 
+                className={`w-12 h-12 text-center text-lg font-semibold text-slate-800 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all ${digit
+                    ? 'border-slate-300 bg-white'
                     : 'border-slate-200 bg-slate-50'
-                } ${verifying ? 'opacity-50' : ''}`}
+                  } ${verifying ? 'opacity-50' : ''}`}
                 disabled={verifying}
               />
             ))}
@@ -374,11 +383,10 @@ const VerifyEmail = () => {
             <button
               onClick={handleResendCode}
               disabled={!canResend || resending}
-              className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
-                canResend && !resending
+              className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${canResend && !resending
                   ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-800 shadow-sm hover:shadow'
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              }`}
+                }`}
             >
               {resending ? (
                 <>

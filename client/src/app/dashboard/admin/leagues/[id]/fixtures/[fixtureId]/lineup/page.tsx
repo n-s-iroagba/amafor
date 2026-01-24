@@ -10,6 +10,16 @@ import LineupForm from '@/features/lineup/components/LineupForm';
 import LineupList from '@/features/lineup/components/LineupList';
 import { Loader2, ArrowLeft } from 'lucide-react';
 
+
+/**
+ * Page: Fixture Lineup Management
+ * Description: interface to manage team lineup for a specific fixture.
+ * Requirements: REQ-ADM-09 (Lineup Management)
+ * User Story: US-ADM-012 (Manage Lineup)
+ * User Journey: UJ-ADM-006 (Match Day Ops)
+ * API: GET /fixtures/:id/lineup (API_ROUTES.LINEUP.BY_FIXTURE)
+ * Hook: useGet(API_ROUTES.LINEUP.BY_FIXTURE)
+ */
 const FixtureLineupPage = () => {
   const params = useParams();
   const router = useRouter();

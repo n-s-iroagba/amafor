@@ -38,6 +38,15 @@ interface Video {
 
 
 
+
+/**
+ * Page: Edit Video
+ * Description: Form to update video metadata.
+ * Requirements: REQ-CMS-05 (Manage Videos)
+ * User Story: US-CMS-005 (Manage Videos)
+ * User Journey: UJ-CMS-002 (Manage Videos)
+ * API: PUT /videos/:id (API_ROUTES.VIDEOS.MUTATE)
+ */
 export default function EditVideo() {
   const router = useRouter();
   const params = useParams();
@@ -472,8 +481,8 @@ export default function EditVideo() {
                     onClick={() => videoInputRef.current?.click()}
                     disabled={isUploading}
                     className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.video
-                        ? 'border-red-300 bg-red-50 text-red-700'
-                        : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                      ? 'border-red-300 bg-red-50 text-red-700'
+                      : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
                       } disabled:opacity-50`}
                   >
                     <Video className="w-8 h-8 mx-auto mb-2 opacity-60" />
@@ -554,8 +563,8 @@ export default function EditVideo() {
                     onClick={() => thumbnailInputRef.current?.click()}
                     disabled={isUploading}
                     className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.thumbnail
-                        ? 'border-red-300 bg-red-50 text-red-700'
-                        : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
+                      ? 'border-red-300 bg-red-50 text-red-700'
+                      : 'border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700'
                       } disabled:opacity-50`}
                   >
                     <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-60" />

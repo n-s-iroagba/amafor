@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  UserCircle, 
-  Mail, 
+import {
+  UserCircle,
+  Mail,
   RefreshCw,
   ArrowRight,
   Shield,
@@ -14,6 +14,16 @@ import { API_ROUTES } from '@/config/routes';
 import { usePost } from '@/shared/hooks/useApiQuery';
 
 
+
+/**
+ * Page: Forgot Password Page
+ * Description: Allows users to request a password reset link via email.
+ * Requirements: REQ-AUTH-03 (Password Reset)
+ * User Story: US-AUTH-003 (Reset Forgotten Password)
+ * User Journey: UJ-AUTH-003 (Password Recovery)
+ * API: POST /auth/forgot-password (API-AUTH-004)
+ * Hook: usePost(API_ROUTES.AUTH.FORGOT_PASSWORD)
+ */
 interface FormState {
   email: string;
 }
@@ -28,7 +38,7 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
-  const {post} = usePost(API_ROUTES.AUTH.FORGOT_PASSWORD)
+  const { post } = usePost(API_ROUTES.AUTH.FORGOT_PASSWORD)
 
   useEffect(() => {
     setIsMounted(true);
@@ -61,14 +71,14 @@ export default function ForgotPasswordPage() {
     } catch (err: unknown) {
       let msg = 'Failed to send reset email. Please try again.';
       if (err instanceof Error) msg = err.message;
-      
+
       // Handle specific API error responses
       if (msg.includes('404') || msg.includes('not found')) {
         msg = 'No account found with this email address.';
       } else if (msg.includes('429') || msg.includes('rate limit')) {
         msg = 'Too many attempts. Please try again in a few minutes.';
       }
-      
+
       console.error('Error in forgot password:', err);
       setError(msg);
     } finally {
@@ -132,7 +142,7 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
               </div>
-              
+
               <button
                 type="submit"
                 disabled={submitting || !form.email}
@@ -176,7 +186,7 @@ export default function ForgotPasswordPage() {
                 <span className="font-medium text-slate-800">{form.email}</span>
               </p>
             </div>
-            
+
             <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600">
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
@@ -202,7 +212,7 @@ export default function ForgotPasswordPage() {
                 <ArrowRight className="w-5 h-5 rotate-180" />
                 Return to Login
               </button>
-              
+
               <button
                 onClick={() => {
                   setMessage('');

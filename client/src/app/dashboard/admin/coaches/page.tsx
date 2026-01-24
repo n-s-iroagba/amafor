@@ -24,6 +24,16 @@ interface CoachResponse {
   data: Coach[];
 }
 
+
+/**
+ * Page: Coaches List
+ * Description: Admin directory of all coaching staff with filtering and management.
+ * Requirements: REQ-ADM-09 (Staff Directory)
+ * User Story: US-ADM-009 (View Coaches)
+ * User Journey: UJ-ADM-006 (Team Management)
+ * API: GET /coaches (API_ROUTES.COACHES.LIST)
+ * Hook: useGet(API_ROUTES.COACHES.LIST)
+ */
 export default function CoachesList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');

@@ -1,6 +1,6 @@
 # Ubiquitous Language - Amafor Football Club
 
-Last Updated: 2026-01-20  
+Last Updated: 2026-01-24  
 Maintained by: Amafor Engineering Team
 
 ## Overview
@@ -128,7 +128,23 @@ Fixture Management
 - Entity: [Fixture.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/Fixture.ts)
 - Repository: [FixtureRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/FixtureRepository.ts)
 
+- Repository: [FixtureRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/FixtureRepository.ts)
+
 ---
+
+### Fixture Image
+
+**Definition:**  
+An image uploaded to a fixture's gallery, depicting match action or highlights.
+
+**Context:**  
+Fixture Data
+
+**Related Terms:**  
+- [Fixture](#fixture)
+
+**Code References:**  
+- Entity: [FixtureImage.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/FixtureImage.ts)
 
 ### League
 
@@ -311,7 +327,20 @@ Supporter Engagement
 - Entity: [PatronSubscription.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/PatronSubscription.ts)
 - Repository: [PatronSubscriptionRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/PatronSubscriptionRepository.ts)
 
+- Repository: [PatronSubscriptionRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/PatronSubscriptionRepository.ts)
+
 ---
+
+### Patron Subscription Package
+
+**Definition:**  
+A predefined package of benefits and recognition available for patron subscription tiers.
+
+**Context:**  
+Supporter Engagement
+
+**Code References:**  
+- Entity: [PatronSubscriptionPackage.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/PatronSubscriptionPackage.ts)
 
 ### Advertiser
 
@@ -366,6 +395,45 @@ Commercial Operations
 **Code References:**  
 - Entity: [AdCampaign.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/AdCampaign.ts)
 - Repository: [AdCampaignRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/AdCampaignRepository.ts)
+
+---
+
+### Ad Creative
+
+**Definition:**  
+Media asset (image or video) associated with an ad campaign.
+
+**Context:**  
+Commercial Operations
+
+**Types:**
+- `image` - Static banner
+- `video` - Video commercial
+
+**Related Terms:**  
+- [Ad Campaign](#ad-campaign)
+
+**Code References:**  
+- Entity: [AdCreative.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/AdCreative.ts)
+
+---
+
+### Dispute
+
+**Definition:**  
+A formal complaint or issue raised by an advertiser regarding a campaign or payment.
+
+**Context:**  
+Commercial Operations
+
+**States/Lifecycle:**
+- `open` - Dispute raised
+- `in_review` - Under investigation
+- `resolved` - Issue settled
+- `rejected` - Dispute dismissed
+
+**Code References:**  
+- Entity: [Dispute.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/Dispute.ts)
 
 ---
 
@@ -561,6 +629,42 @@ Content Management
 **Code References:**  
 - Entity: [Video.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/Video.ts)
 - Repository: [VideoRepository.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/repositories/VideoRepository.ts)
+
+---
+
+### Scout Application
+
+**Definition:**  
+A formal request by a user to become a verified scout and access pro-view features.
+
+**Context:**  
+Scout Operations
+
+**States/Lifecycle:**
+- `pending` - Application submitted
+- `approved` - Access granted
+- `rejected` - Access denied
+
+**Code References:**  
+- Entity: [ScoutApplication.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/ScoutApplication.ts)
+
+---
+
+### Scout Report
+
+**Definition:**  
+A detailed evaluation of a player or match created by a scout.
+
+**Context:**  
+Scout Operations
+
+**Related Terms:**  
+- [Scout](#user)
+- [Player](#player)
+- [Fixture](#fixture)
+
+**Code References:**  
+- Entity: [ScoutReport.ts](file:///home/udorakpuenyi/amafor/agfc_server_app/src/models/ScoutReport.ts)
 
 ---
 

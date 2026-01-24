@@ -28,6 +28,16 @@ interface Patron {
   updatedAt?: Date;
 }
 
+
+/**
+ * Page: Patron List
+ * Description: Management of club patrons and supporters.
+ * Requirements: REQ-ADM-12 (Patron Management)
+ * User Story: US-ADM-014 (Manage Patrons)
+ * User Journey: UJ-ADM-008 (Community Relations)
+ * API: GET /patrons (API_ROUTES.PATRONS.LIST)
+ * Hook: useGet(API_ROUTES.PATRONS.LIST)
+ */
 export default function PatronListPage() {
   const { data, loading, error, refetch } = useGet<{ data: Patron[] }>(
     API_ROUTES.PATRONS.LIST

@@ -7,6 +7,15 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { AdCampaignWithAdCreatives } from '@/features/advertisement/types';
 
+
+/**
+ * Page: Advertiser Campaign Detail
+ * Description: Detailed view of an ad campaign including performance metrics.
+ * Requirements: REQ-ADV-05 (Campaign Monitoring)
+ * User Story: US-ADV-005 (View Campaign Details)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: GET /advertiser/campaigns/:id (API_ROUTES.ADVERTISER.CAMPAIGNS.VIEW)
+ */
 export default function CampaignDetailPage() {
     const { id } = useParams();
     const [status, setStatus] = useState<'active' | 'paused'>('active');

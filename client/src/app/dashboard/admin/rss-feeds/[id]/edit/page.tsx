@@ -35,7 +35,16 @@ interface ValidationErrors {
   general?: string;
 }
 
-export default function EditRssFeedSource() {
+
+/**
+ * Page: Edit RSS Feed
+ * Description: Form to update an existing RSS feed source.
+ * Requirements: REQ-ADM-17 (Feed Management)
+ * User Story: US-ADM-017 (Manage RSS Feeds)
+ * User Journey: UJ-ADM-008 (Manage RSS Feeds)
+ * API: PUT /feeds/:id (API_ROUTES.FEEDS.MUTATE)
+ */
+export default function EditFeedPage() {
   const router = useRouter();
   const { id } = useParams();
 

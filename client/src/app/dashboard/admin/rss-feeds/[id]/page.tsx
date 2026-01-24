@@ -34,7 +34,16 @@ interface RssFeedSource {
   updatedAt: Date;
 }
 
-export default function RssFeedDetail() {
+
+/**
+ * Page: RSS Feed Detail
+ * Description: View details of a specific RSS feed source.
+ * Requirements: REQ-ADM-17 (Feed Management)
+ * User Story: US-ADM-017 (Manage RSS Feeds)
+ * User Journey: UJ-ADM-008 (Manage RSS Feeds)
+ * API: GET /feeds/:id (API_ROUTES.FEEDS.VIEW)
+ */
+export default function FeedDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;

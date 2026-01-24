@@ -27,6 +27,16 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { FixtureWithLeague, FixtureImage, FixtureStatus } from '@/features/fixture/types';
 
 
+
+/**
+ * Page: Gallery Detail
+ * Description: Displays grid of photos for a specific fixture with lightbox viewing.
+ * Requirements: REQ-PUB-07 (Fixture Gallery)
+ * User Story: US-PUB-008 (Browse Fixture Gallery)
+ * User Journey: UJ-PUB-005 (View Match Gallery)
+ * API: GET /fixtures/:id/images (API_ROUTES.FIXTURES.GALLERY)
+ * Hook: useGet('/api/fixtures/${fixtureId}/images')
+ */
 export default function FixtureGalleryPage() {
   const params = useParams();
   const router = useRouter();

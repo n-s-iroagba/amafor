@@ -16,7 +16,16 @@ interface User {
   createdAt: string;
 }
 
-export default function ScoutApplicationDetail() {
+
+/**
+ * Page: Scout Application Review
+ * Description: Admin view to approve or reject scout applications.
+ * Requirements: REQ-ADM-23 (Scout Approval)
+ * User Story: US-ADM-023 (Approve Scout Applications)
+ * User Journey: UJ-ADM-010 (Manage Scouts)
+ * API: GET /scouts/:id, PUT /scouts/:id/status
+ */
+export default function ScoutDetailPage() {
   const { id } = useParams();
   const router = useRouter();
 

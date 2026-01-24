@@ -14,6 +14,16 @@ interface Backup {
   type: 'full' | 'incremental';
 }
 
+
+/**
+ * Page: Data Backups
+ * Description: Management of system backups and data snapshots.
+ * Requirements: REQ-SEC-04 (Backup Management), REQ-ADM-03 (System Maintenance)
+ * User Story: US-ADM-003 (Manage Backups)
+ * User Journey: UJ-ADM-003 (System Admin)
+ * API: GET /system/backups (API_ROUTES.BACKUPS.LIST)
+ * Hook: useGet(API_ROUTES.BACKUPS.LIST), usePost(API_ROUTES.BACKUPS.CREATE)
+ */
 export default function BackupsPage() {
   const [creating, setCreating] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);

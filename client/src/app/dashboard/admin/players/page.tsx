@@ -21,6 +21,16 @@ interface Player {
   createdAt: string;
 }
 
+
+/**
+ * Page: Player Roster Management
+ * Description: Management of the official team roster, including player profiles and jersey numbers.
+ * Requirements: REQ-ADM-11 (Roster Management)
+ * User Story: US-ADM-011 (Manage Roster)
+ * User Journey: UJ-ADM-005 (Team Setup)
+ * API: GET /players (API_ROUTES.PLAYERS.LIST), DELETE /players/:id (API_ROUTES.PLAYERS.MUTATE)
+ * Hook: useGet(API_ROUTES.PLAYERS.LIST), useDelete(API_ROUTES.PLAYERS.MUTATE)
+ */
 export default function PlayersList() {
   const router = useRouter();
   const { data: players, loading: isLoading, refetch } = useGet<Player[]>(API_ROUTES.PLAYERS.LIST);

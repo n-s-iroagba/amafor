@@ -7,6 +7,15 @@ import { useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
 import { usePost } from '@/shared/hooks/useApiQuery';
 
+
+/**
+ * Page: Invite User
+ * Description: Form to invite a new administrator or staff member.
+ * Requirements: REQ-ADM-16 (User Onboarding)
+ * User Story: US-ADM-016 (Invite New User)
+ * User Journey: UJ-ADM-007 (Manage Users & Permissions)
+ * API: POST /auth/invite (Internal API)
+ */
 export default function InviteUserPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');

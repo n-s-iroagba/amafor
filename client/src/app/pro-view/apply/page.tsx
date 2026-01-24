@@ -9,12 +9,13 @@ import { Footer } from '@/shared/components/Footer';
 import { Header } from '@/shared/components/Header';
 
 /**
- * Pro-View Application Page
- * 
- * Allows professional scouts and agents to apply for access to 
- * restricted player performance data and video archives.
- * 
- * @requirement REQ-SCT-01: Scout application form.
+ * Page: Pro View Application
+ * Description: Application form for professional scouts to request access.
+ * Requirements: REQ-SCT-01 (Application Form)
+ * User Story: US-SCT-001 (Apply for Access)
+ * User Journey: UJ-SCT-001 (Scout Registration)
+ * API: POST /scout/applications (API_ROUTES.SCOUT.APPLY)
+ * Hook: usePost(API_ROUTES.SCOUT.APPLY)
  */
 
 export default function ProViewApplication() {

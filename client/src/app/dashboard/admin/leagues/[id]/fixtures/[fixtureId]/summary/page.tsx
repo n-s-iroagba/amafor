@@ -27,6 +27,15 @@ interface FixtureStatistics {
     awayOffsides: number;
 }
 
+
+/**
+ * Page: Match Summary Statistics
+ * Description: Interface to manage detailed match statistics (possession, shots, etc.).
+ * Requirements: REQ-ADM-11 (Match Summary)
+ * User Story: US-ADM-015 (Match Reporting)
+ * User Journey: UJ-ADM-006 (Match Day Ops)
+ * API: GET/POST/PUT /match-summaries (API_ROUTES.MATCH_SUMMARY)
+ */
 export default function MatchSummaryPage() {
     const params = useParams();
     const router = useRouter();

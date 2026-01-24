@@ -7,6 +7,15 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 
+/**
+ * Page: Fixture Video Archive
+ * Description: Library of full-match video recordings for analysis.
+ * Requirements: REQ-SCT-06 (Video Archive)
+ * User Story: US-SCT-006 (Watch Match Replays)
+ * User Journey: UJ-SCT-004 (Video Analysis)
+ * API: GET /videos (API_ROUTES.VIDEOS.LIST)
+ * Hook: useGet(API_ROUTES.VIDEOS.LIST)
+ */
 export default function FixtureArchivesLibrary() {
   const { data: videos, loading } = useGet<any[]>(API_ROUTES.VIDEOS.LIST, {
     params: { limit: 10 }

@@ -19,6 +19,15 @@ interface Video {
   updatedAt: string;
 }
 
+
+/**
+ * Page: CMS Video Detail
+ * Description: View video details and status.
+ * Requirements: REQ-CMS-05 (Manage Videos)
+ * User Story: US-CMS-005 (Manage Videos)
+ * User Journey: UJ-CMS-002 (Manage Videos)
+ * API: GET /videos/:id (API_ROUTES.VIDEOS.VIEW)
+ */
 export default function VideoDetail() {
   const router = useRouter();
   const params = useParams();
@@ -36,10 +45,10 @@ export default function VideoDetail() {
   const fetchVideo = async () => {
     try {
       const response = await api.get(`/videos/${id}`);
-     
-        const data = await response.data;
-        setVideo(data);
-  
+
+      const data = await response.data;
+      setVideo(data);
+
     } catch (error) {
       console.error('Error fetching video:', error);
     } finally {
@@ -51,9 +60,9 @@ export default function VideoDetail() {
     try {
       const response = await api.delete(`/videos/${id}`)
 
-   
-        router.push('/sports-admin/videos');
-     
+
+      router.push('/sports-admin/videos');
+
     } catch (error) {
       console.error('Error deleting video:', error);
     }
@@ -193,10 +202,10 @@ export default function VideoDetail() {
                   </h4>
                   <div className="border border-sky-200 rounded-lg p-2">
                     <Image
-                    unoptimized
-                    height={50}
-                    width={50}
-                     
+                      unoptimized
+                      height={50}
+                      width={50}
+
                       src={video.thumbnail}
                       alt={video.title}
                       className="w-full h-24 object-contain rounded"

@@ -20,7 +20,16 @@ interface AdCreative {
     destinationUrl?: string; // e.g. where the ad clicks to
 }
 
-export default function CreativeDetailsPage() {
+
+/**
+ * Page: View Ad Creative
+ * Description: Preview of an uploaded ad creative.
+ * Requirements: REQ-ADV-08 (Creative Management)
+ * User Story: US-ADV-008 (Manage Ad Creatives)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: GET /ads/creatives/:id (API_ROUTES.ADS.CREATIVES.DETAIL)
+ */
+export default function CreativeDetailPage() {
     const params = useParams();
     const router = useRouter();
     const campaignId = params.id as string;

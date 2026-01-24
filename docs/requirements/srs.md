@@ -1,7 +1,7 @@
 # Software Requirements Specification (SRS)
 **Project:** Amafor Gladiators Digital Ecosystem  
 **Version:** 2.1  
-**Date:** 2026-01-22  
+**Date:** 2026-01-24  
 **Status:** VERIFIED  
 
 ---
@@ -72,7 +72,7 @@ This SRS details functional and non-functional requirements for the Amafor Gladi
 | REQ-PUB-02 | BR-CE-07 | Fixture Lineups & Goals | `lineupRoutes`, `goalRoutes` | `/fixtures/[id]` |
 | REQ-PUB-03 | BR-CE-01 | News Articles | `articleRoutes` | `/news`, `/news/[id]` |
 | REQ-PUB-04 | BR-CE-10 | Featured RSS News | `feedsRoutes` | `/featured-news` |
-| REQ-PUB-05 | - | Team Roster & Player Profiles | `playerRoutes` | `/team`, `/player/[id]` |
+| REQ-PUB-05 | - | Team Roster & Player Profiles | `playerRoutes` | `/team`, `/player/[id]`, `/coaches/[id]` |
 | REQ-PUB-06 | - | League Statistics | `clubLeagueRoutes` | `/league-statistics` |
 | REQ-PUB-07 | - | Fixture Gallery | `fixtureImageRoutes` | `/gallery` |
 | REQ-PUB-08 | BR-TP-11 | Pro View Scout CTA | - | Homepage |
@@ -119,7 +119,7 @@ This SRS details functional and non-functional requirements for the Amafor Gladi
 | REQ-ADV-04 | BR-AD-03 | Dual currency: NGN (Paystack), USD (Stripe) | `paymentRoutes` | Checkout pages |
 | REQ-ADV-05 | BR-AD-05 | Performance reports (≤5min latency) | `AnalyticsService` | `/dashboard/advertiser/reports` |
 | REQ-ADV-06 | BR-AD-13 | Dispute management | `AdvertisingService` | `/dashboard/advertiser/disputes` |
-| REQ-ADV-07 | BR-AD-07 | Ad Serving & Creative Optimization | `AdCreativeService` | - |
+| REQ-ADV-07 | BR-AD-07 | Ad Creative Management (Upload/Edit) | `AdCreativeService` | `/dashboard/advertiser/campaigns/[id]/ad-creatives` |
 
 ---
 
@@ -128,7 +128,7 @@ This SRS details functional and non-functional requirements for the Amafor Gladi
 |---|---|---|---|---|
 | REQ-SUP-01 | BR-AO-02 | One-time donations with custom amount | `paymentRoutes` | `/patron/checkout` |
 | REQ-SUP-02 | BR-PP-01 | Recurring patron subscriptions | `patronageRoutes` | `/patron/checkout` |
-| REQ-SUP-03 | BR-PP-03 | Patron wall display | `patronageRoutes` | `/support/wall` |
+| REQ-SUP-03 | BR-PP-03 | Patron wall display | `patronageRoutes` | `/patron/wall` |
 
 ---
 
@@ -136,8 +136,8 @@ This SRS details functional and non-functional requirements for the Amafor Gladi
 | REQ ID | BRD | Description | Backend | Frontend |
 |---|---|---|---|---|
 | REQ-ADM-01 | - | Admin dashboard overview | `systemRoutes` | `/dashboard/admin` |
-| REQ-ADM-02 | - | League management | `clubLeagueRoutes` | `/dashboard/admin/leagues` |
-| REQ-ADM-03 | - | Fixture management with lineups, goals, images, summaries | Multiple routes | `/dashboard/admin/leagues/[id]/fixtures` |
+| REQ-ADM-02 | - | League management & Stats | `clubLeagueRoutes` | `/dashboard/admin/leagues`, `/dashboard/admin/leagues/[id]/league-statstics` |
+| REQ-ADM-03 | - | Fixture management (Lineups, Goals, Summary, Images) | Multiple routes | `/dashboard/admin/leagues/[id]/fixtures` |
 | REQ-ADM-04 | - | Player management | `playerRoutes` | `/dashboard/admin/players` |
 | REQ-ADM-05 | - | Coach management | `playerRoutes` | `/dashboard/admin/coaches` |
 | REQ-ADM-06 | BR-ADV-01 | User management, role assignment | `userRoutes` | `/dashboard/admin/users` |

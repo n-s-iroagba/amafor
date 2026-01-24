@@ -22,6 +22,15 @@ interface Fixture {
   matchDate?: string; // Alias for date
 }
 
+
+/**
+ * Page: Edit Goal
+ * Description: Form to update an existing goal record.
+ * Requirements: REQ-ADM-10 (Goal Tracking)
+ * User Story: US-ADM-013 (Update Goal)
+ * User Journey: UJ-ADM-006 (Match Day Ops)
+ * API: PUT /goals/:id (API_ROUTES.GOALS.MUTATE)
+ */
 export default function EditGoal() {
   const router = useRouter();
   const params = useParams();

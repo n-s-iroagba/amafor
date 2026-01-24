@@ -13,6 +13,16 @@ import {
 import { Trialist } from '@/features/academy/types';
 import { ErrorAlert } from '@/shared/components/Alerts';
 
+
+/**
+ * Page: Trialist Detail
+ * Description: Detailed view of a potential recruit, including scout notes and attachments.
+ * Requirements: REQ-ACA-01 (Trialist Management), REQ-SCT-01 (Scouting Reports)
+ * User Story: US-ACA-005 (View Trialist)
+ * User Journey: UJ-ACA-001 (Recruitment)
+ * API: GET /academy/trialists/:id (API_ROUTES.TRIALISTS.VIEW)
+ * Hook: useGet(API_ROUTES.TRIALISTS.VIEW)
+ */
 export default function TrialistDetail() {
   const params = useParams();
   const router = useRouter();

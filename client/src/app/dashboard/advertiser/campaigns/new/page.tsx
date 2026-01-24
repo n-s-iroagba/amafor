@@ -10,6 +10,16 @@ import PaymentButton from '@/features/paystack/components/PaymentButton';
 import { PaymentType } from '@/features/paystack/types';
 import { AdZone } from '@/features/advertisement/types';
 
+
+/**
+ * Page: Create Campaign
+ * Description: Multi-step form to create a new advertising campaign (Zone selection, creative upload, targeting, payment).
+ * Requirements: REQ-ADV-02 (Create Campaign), REQ-ADV-04 (Targeting)
+ * User Story: US-ADV-003 (Launch Campaign)
+ * User Journey: UJ-ADV-002 (Campaign Creation)
+ * API: POST /advertiser/campaigns (API_ROUTES.ADVERTISER.CAMPAIGNS.CREATE), GET /ads/zones (API_ROUTES.ADS.ZONES.LIST)
+ * Hook: usePost(API_ROUTES.ADVERTISER.CAMPAIGNS.CREATE), useGet(API_ROUTES.ADS.ZONES.LIST)
+ */
 export default function CreateCampaignPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);

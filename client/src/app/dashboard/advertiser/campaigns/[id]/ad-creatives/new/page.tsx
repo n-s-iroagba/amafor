@@ -10,6 +10,15 @@ import { API_ROUTES } from '@/config/routes';
  * @requirements REQ-ADV-02, REQ-ADV-07
  */
 
+
+/**
+ * Page: Upload Ad Creative
+ * Description: Form to upload a new ad image or video.
+ * Requirements: REQ-ADV-08 (Creative Management)
+ * User Story: US-ADV-008 (Manage Ad Creatives)
+ * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
+ * API: POST /ads/creatives (API_ROUTES.ADS.CREATIVES.CREATE)
+ */
 export default function NewCreativePage() {
     const params = useParams();
     const router = useRouter();

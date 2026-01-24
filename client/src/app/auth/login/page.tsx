@@ -20,6 +20,16 @@ import { AuthUser } from '@/shared/types';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
 
 
+
+/**
+ * Page: Login Page
+ * Description: Handles user authentication via email/password. Also serves as entry point for registration via "Sign Up" link.
+ * Requirements: REQ-AUTH-02 (Login), REQ-AUTH-01 (Entry to Registration)
+ * User Story: US-AUTH-002 (Log In), US-AUTH-001 (Sign Up Entry)
+ * User Journey: UJ-AUTH-002 (User Login), UJ-AUTH-001 (User Registration)
+ * API: POST /auth/login (API-AUTH-002)
+ * Hook: usePost(API_ROUTES.AUTH.LOGIN)
+ */
 interface LoginRequestDto {
   email: string;
   password: string;

@@ -22,7 +22,16 @@ interface PaginatedData<T> {
   data: T;
   pagination: any;
 }
-export default function VideosList() {
+
+/**
+ * Page: Video Management
+ * Description: List and manage uploaded video content.
+ * Requirements: REQ-CMS-05 (Manage Videos)
+ * User Story: US-CMS-005 (Manage Videos)
+ * User Journey: UJ-CMS-002 (Manage Videos)
+ * API: GET /videos (API_ROUTES.VIDEOS.LIST)
+ */
+export default function VideoLibrary() {
   const router = useRouter();
 
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
@@ -32,7 +41,7 @@ export default function VideosList() {
   // const { handleDelete } = useDelete(API_ROUTES.VIDEOS.MUTATE(deleteConfirm));
 
   const videos = data?.data;
-  
+
 
 
   const formatDuration = (minutes?: number) => {
@@ -48,7 +57,7 @@ export default function VideosList() {
 
   const handleDeleteClick = async (videoId: number) => {
     try {
-    
+
       setDeleteConfirm(null);
       // The useEffect will handle the refresh
     } catch (error) {
