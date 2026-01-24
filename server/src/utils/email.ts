@@ -41,21 +41,21 @@ const templates: Record<string, handlebars.TemplateDelegate> = {};
 
 const loadTemplates = () => {
   const templatesDir = path.join(__dirname, '../templates/email');
-  
+
   if (!fs.existsSync(templatesDir)) {
     logger.warn('Email templates directory not found', { path: templatesDir });
     return;
   }
 
   const templateFiles = fs.readdirSync(templatesDir);
-  
+
   templateFiles.forEach(file => {
     if (file.endsWith('.hbs')) {
       const templatePath = path.join(templatesDir, file);
       const templateContent = fs.readFileSync(templatePath, 'utf8');
       const templateName = path.basename(file, '.hbs');
       templates[templateName] = handlebars.compile(templateContent);
-      
+
       logger.debug('Loaded email template', { template: templateName });
     }
   });
@@ -150,20 +150,21 @@ export const sendEmail = async (options: EmailOptions): Promise<EmailSendResult>
         rejected: info.rejected,
       };
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error sending email', {
-        error: error.message,
+        error: err.message,
         to: options.to,
         subject: options.subject,
       });
 
       return {
         success: false,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();
@@ -174,7 +175,7 @@ export const sendEmail = async (options: EmailOptions): Promise<EmailSendResult>
 // Send verification email
 export const sendVerificationEmail = async (email: string, name: string, token: string): Promise<EmailSendResult> => {
   const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
-  
+
   return sendEmail({
     to: email,
     subject: 'Verify Your Email - Amafor Gladiators FC',
@@ -190,7 +191,7 @@ export const sendVerificationEmail = async (email: string, name: string, token: 
 // Send password reset email
 export const sendPasswordResetEmail = async (email: string, name: string, token: string): Promise<EmailSendResult> => {
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-  
+
   return sendEmail({
     to: email,
     subject: 'Reset Your Password - Amafor Gladiators FC',
@@ -400,11 +401,11 @@ export const checkEmailHealth = async (): Promise<{
   return tracer.startActiveSpan('email.checkHealth', async (span) => {
     try {
       const startTime = Date.now();
-      
+
       await transporter.verify();
-      
+
       const latency = Date.now() - startTime;
-      
+
       span.setAttributes({
         'email.healthy': true,
         'email.latency_ms': latency,
@@ -415,14 +416,15 @@ export const checkEmailHealth = async (): Promise<{
         latency,
       };
     } catch (error) {
+      const err = error as any;
       span.setAttributes({
         'email.healthy': false,
-        'email.error': error.message,
+        'email.error': err.message,
       });
 
       return {
         healthy: false,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();
@@ -441,7 +443,7 @@ export const validateUnsubscribeToken = (token: string): { email: string; subscr
   try {
     const decoded = Buffer.from(token, 'base64').toString('utf8');
     const [email, subscriptionType, timestamp] = decoded.split(':');
-    
+
     if (!email || !subscriptionType || !timestamp) {
       return null;
     }

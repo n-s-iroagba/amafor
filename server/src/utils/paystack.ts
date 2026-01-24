@@ -185,17 +185,18 @@ export const initializePayment = async (request: PaymentInitializeRequest): Prom
 
       return response.data;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error initializing payment', {
-        error: error.response?.data || error.message,
+        error: err.response?.data || err.message,
         request,
       });
 
-      throw new Error(`Payment initialization failed: ${error.message}`);
+      throw new Error(`Payment initialization failed: ${err.message}`);
     } finally {
       span.end();
     }
@@ -224,17 +225,18 @@ export const verifyPayment = async (reference: string): Promise<PaymentVerifyRes
 
       return response.data;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error verifying payment', {
-        error: error.response?.data || error.message,
+        error: err.response?.data || err.message,
         reference,
       });
 
-      throw new Error(`Payment verification failed: ${error.message}`);
+      throw new Error(`Payment verification failed: ${err.message}`);
     } finally {
       span.end();
     }
@@ -266,17 +268,18 @@ export const createTransferRecipient = async (request: TransferRecipientRequest)
 
       return response.data;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error creating transfer recipient', {
-        error: error.response?.data || error.message,
+        error: err.response?.data || err.message,
         request,
       });
 
-      throw new Error(`Transfer recipient creation failed: ${error.message}`);
+      throw new Error(`Transfer recipient creation failed: ${err.message}`);
     } finally {
       span.end();
     }
@@ -315,17 +318,18 @@ export const initiateTransfer = async (request: TransferRequest): Promise<Transf
 
       return response.data;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error initiating transfer', {
-        error: error.response?.data || error.message,
+        error: err.response?.data || err.message,
         request,
       });
 
-      throw new Error(`Transfer initiation failed: ${error.message}`);
+      throw new Error(`Transfer initiation failed: ${err.message}`);
     } finally {
       span.end();
     }
@@ -357,17 +361,18 @@ export const createSubscription = async (request: SubscriptionRequest): Promise<
 
       return response.data;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error creating subscription', {
-        error: error.response?.data || error.message,
+        error: err.response?.data || err.message,
         request,
       });
 
-      throw new Error(`Subscription creation failed: ${error.message}`);
+      throw new Error(`Subscription creation failed: ${err.message}`);
     } finally {
       span.end();
     }
@@ -398,9 +403,10 @@ export const verifyWebhookSignature = (payload: any, signature: string): boolean
 
       return isValid;
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error verifying webhook signature', { error });
@@ -504,9 +510,10 @@ export const handleSubscriptionWebhook = async (payload: any): Promise<{
         status,
       };
     } catch (error) {
+      const err = error as any;
       span.setStatus({
         code: 2,
-        message: error.message,
+        message: err.message,
       });
 
       logger.error('Error handling subscription webhook', {
@@ -549,14 +556,15 @@ export const checkPaystackHealth = async (): Promise<{
         latency,
       };
     } catch (error) {
+      const err = error as any;
       span.setAttributes({
         'paystack.healthy': false,
-        'paystack.error': error.message,
+        'paystack.error': err.message,
       });
 
       return {
         healthy: false,
-        error: error.message,
+        error: err.message,
       };
     } finally {
       span.end();
