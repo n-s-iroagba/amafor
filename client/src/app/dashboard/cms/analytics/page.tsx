@@ -1,15 +1,54 @@
 'use client';
-import React from 'react';
-import { BarChart3, TrendingUp, Users, Clock, Globe, ArrowLeft, Download, Calendar, Filter } from 'lucide-react';
+
+import { API_ROUTES } from '@/config/routes';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { BarChart3, TrendingUp, Users, Clock, Globe, ArrowLeft, Download, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
+
+interface ArticleAnalytics {
+  totalViews: number;
+  uniqueVisitors: number;
+  averageTimeOnPage: number;
+  bounceRate: number;
+  topArticles: {
+    id: number;
+    title: string;
+    views: number;
+  }[];
+  viewsByDay: {
+    date: string;
+    views: number;
+  }[];
+}
 
 export default function CMSAnalyticsPage() {
+  const [dateRange, setDateRange] = useState({
+    from: new Date(new Date().setDate(new Date().getDate() - 30)),
+    to: new Date(),
+  });
+
+  const { data: analytics, loading, error } = useGet<ArticleAnalytics>(API_ROUTES.ARTICLES.ANALYTICS, {
+    params: {
+      dateFrom: dateRange.from.toISOString(),
+      dateTo: dateRange.to.toISOString(),
+    },
+  });
+
   const stats = [
-    { label: 'Total Read Time', value: '45.2k Hours', trend: '+12%', icon: <Clock className="w-5 h-5" /> },
-    { label: 'Avg. Completion', value: '68%', trend: '+4%', icon: <TrendingUp className="w-5 h-5" /> },
-    { label: 'Unique Readers', value: '892k', trend: '+18%', icon: <Users className="w-5 h-5" /> },
-    { label: 'Global Reach', value: '142 Countries', trend: '+2', icon: <Globe className="w-5 h-5" /> },
+    { label: 'Total Read Time', value: analytics ? `${(analytics.totalViews * (analytics.averageTimeOnPage || 0) / 60).toFixed(1)}k Hours` : '...', trend: '+12%', icon: <Clock className="w-5 h-5" /> },
+    { label: 'Avg. Completion', value: analytics ? `${analytics.averageTimeOnPage}m` : '...', trend: '+4%', icon: <TrendingUp className="w-5 h-5" /> },
+    { label: 'Unique Readers', value: analytics ? `${(analytics.uniqueVisitors / 1000).toFixed(1)}k` : '...', trend: '+18%', icon: <Users className="w-5 h-5" /> },
+    { label: 'Bounce Rate', value: analytics ? `${analytics.bounceRate}%` : '...', trend: '-2%', icon: <Globe className="w-5 h-5" /> }, // Replaced Global Reach with available metric
   ];
+
+  if (loading && !analytics) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-sky-600 font-bold">Loading analytics...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -25,7 +64,7 @@ export default function CMSAnalyticsPage() {
           </div>
           <div className="flex space-x-4">
             <button className="bg-white px-6 py-4 rounded-2xl border text-[10px] font-black text-[#2F4F4F] hover:border-[#87CEEB] transition-all uppercase tracking-widest flex items-center">
-              <Calendar className="w-4 h-4 mr-2" /> Custom Range
+              <Calendar className="w-4 h-4 mr-2" /> {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
             </button>
             <button className="sky-button flex items-center space-x-3 py-4 text-[10px] tracking-widest">
               <Download className="w-4 h-4" />
@@ -54,39 +93,38 @@ export default function CMSAnalyticsPage() {
                 <BarChart3 className="w-4 h-4 mr-3 text-[#87CEEB]" /> Views Over Time (Last 30 Days)
               </h3>
               <div className="h-64 flex items-end justify-between space-x-2">
-                {[30, 45, 25, 60, 80, 55, 70, 90, 40, 50, 65, 30, 90, 40, 55, 70, 35, 60, 45, 80, 55, 70, 40, 50, 65, 30, 90, 40, 55, 70].map((h, i) => (
-                  <div key={i} className="flex-1 bg-gray-100 rounded-t-lg hover:bg-[#87CEEB] transition-colors cursor-pointer group relative" style={{ height: `${h}%` }}>
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#2F4F4F] text-white text-[8px] px-2 py-1 rounded font-mono">
-                      {h}k
+                {analytics?.viewsByDay?.map((day, i) => (
+                  <div key={i} className="flex-1 bg-gray-100 rounded-t-lg hover:bg-[#87CEEB] transition-colors cursor-pointer group relative" style={{ height: `${Math.min(100, (day.views / (Math.max(...analytics.viewsByDay.map(d => d.views)) || 1)) * 100)}%` }}>
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-[#2F4F4F] text-white text-[8px] px-2 py-1 rounded font-mono whitespace-nowrap">
+                      {day.views} views ({new Date(day.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
                     </div>
                   </div>
                 ))}
               </div>
               <div className="flex justify-between mt-6 text-[9px] font-black text-gray-300 uppercase tracking-widest">
-                <span>May 01</span>
-                <span>May 15</span>
-                <span>Today</span>
+                {analytics?.viewsByDay?.length ? (
+                  <>
+                    <span>{new Date(analytics.viewsByDay[0].date).toLocaleDateString()}</span>
+                    <span>{new Date(analytics.viewsByDay[Math.floor(analytics.viewsByDay.length / 2)].date).toLocaleDateString()}</span>
+                    <span>{new Date(analytics.viewsByDay[analytics.viewsByDay.length - 1].date).toLocaleDateString()}</span>
+                  </>
+                ) : null}
               </div>
             </div>
           </div>
 
           <aside className="space-y-8">
             <div className="bg-[#2F4F4F] p-10 rounded-[3rem] text-white">
-              <h3 className="text-sm font-black uppercase tracking-widest mb-8 text-[#87CEEB]">Top Performing Tags</h3>
+              <h3 className="text-sm font-black uppercase tracking-widest mb-8 text-[#87CEEB]">Top Articles</h3>
               <div className="space-y-4">
-                {[
-                  { tag: 'Fixture Reports', share: '42%', color: 'bg-blue-500' },
-                  { tag: 'Player Spotlight', share: '28%', color: 'bg-purple-500' },
-                  { tag: 'Academy News', share: '18%', color: 'bg-green-500' },
-                  { tag: 'Club Updates', share: '12%', color: 'bg-amber-500' },
-                ].map((item, i) => (
+                {analytics?.topArticles?.map((item, i) => (
                   <div key={i} className="space-y-2">
                     <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
-                      <span>{item.tag}</span>
-                      <span>{item.share}</span>
+                      <span className="truncate max-w-[150px]">{item.title}</span>
+                      <span>{item.views}</span>
                     </div>
                     <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-                      <div className={`${item.color} h-full`} style={{ width: item.share }} />
+                      <div className={`bg-sky-400 h-full`} style={{ width: `${Math.min(100, (item.views / (analytics.topArticles[0]?.views || 1)) * 100)}%` }} />
                     </div>
                   </div>
                 ))}

@@ -8,3 +8,5 @@ export * from './FixtureService';
 export * from './PatronageService';
 export * from './AdvertisingService'; // Phase 4
 export * from './AnalyticsService';   // Phase 4
+export * from './LeagueService';
+export * from './ScoutService';

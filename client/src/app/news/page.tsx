@@ -22,7 +22,10 @@ const ArticleList: React.FC = () => {
   const limit = 10;
   const [page, setPage] = useState(1);
   const { data, loading, error } = useGet<PaginatedData<Article>>(
-    `${API_ROUTES.ARTICLES.PUBLISHED}/amafor?page=${page}&limit=${limit}`
+    API_ROUTES.ARTICLES.PUBLISHED,
+    {
+      params: { page, limit }
+    }
   );
 
   const articles = data?.data;
@@ -30,7 +33,7 @@ const ArticleList: React.FC = () => {
 
 
   const handleArticleClick = (id: number | string) => {
-    router.push(`/articles/${id}`);
+    router.push(`/news/${id}`);
   };
 
   if (loading) {

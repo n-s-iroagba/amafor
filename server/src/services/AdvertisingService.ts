@@ -197,4 +197,48 @@ export class AdvertisingService {
       console.error('Failed to track impression', error);
     }
   }
+
+  async trackClick(id: string): Promise<void> {
+    try {
+      const ad = await this.adRepository.findById(id);
+      if (ad) {
+        await this.adRepository.update(id, { currentClicks: (ad.currentClicks || 0) + 1 });
+        structuredLogger.business('AD_CLICKED', 0, ad.advertiserId, { campaignId: id });
+      }
+    } catch (error) {
+      console.error('Failed to track click', error);
+    }
+  }
+  async getAdvertiserReports(advertiserId: string): Promise<any> {
+    return tracer.startActiveSpan('service.AdvertisingService.getAdvertiserReports', async (span) => {
+      try {
+        const campaigns = await this.adRepository.findAll({
+          where: { advertiserId }
+        });
+
+        const totalSpend = campaigns.reduce((sum, c) => sum + Number(c.spent || 0), 0);
+        const totalViews = campaigns.reduce((sum, c) => sum + (c.viewsDelivered || 0), 0);
+
+        return {
+          summary: {
+            totalSpend,
+            totalViews
+          },
+          campaigns: campaigns.map(c => ({
+            id: c.id,
+            name: c.name,
+            date: c.createdAt,
+            views: c.viewsDelivered,
+            spend: c.spent,
+            status: c.status
+          }))
+        };
+      } catch (error: any) {
+        span.setStatus({ code: 2, message: error.message });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
 }

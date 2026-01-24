@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ArrowLeft, XCircle, ShieldAlert, Briefcase, ExternalLink, BadgeCheck, FileText, Globe, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useGet, usePost } from '@/shared/hooks/useApiQuery';
+import { useGet, usePatch } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 interface Advertiser {
@@ -25,14 +25,14 @@ export default function AdvertiserReviewDetail() {
     API_ROUTES.USERS.VIEW(id as string)
   );
 
-  const { post: approveUser } = usePost<{ approved: boolean }, void>(
-    API_ROUTES.USERS.APPROVE(id as string)
+  const { patch: verifyUser } = usePatch<{ status: string }, void>(
+    API_ROUTES.USERS.VERIFY(id as string)
   );
 
   const handleAction = async (type: 'authorizing' | 'denying') => {
     setProcessing(type);
     try {
-      await approveUser({ approved: type === 'authorizing' });
+      await verifyUser({ status: type === 'authorizing' ? 'active' : 'suspended' });
       router.push('/dashboard/admin/advertisers');
     } catch (error) {
       console.error('Action failed:', error);

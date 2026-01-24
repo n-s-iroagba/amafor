@@ -69,12 +69,13 @@ export default function NewCoach() {
       const result = await post({
         name,
         role,
+        category: 'coaching',
         bio: bio || null,
         imageUrl,
       });
 
       if (result) {
-        router.push('/sports-admin/coach');
+        router.push('/dashboard/admin/coaches');
       } else {
         console.error('Failed to create coach');
       }
@@ -166,10 +167,10 @@ export default function NewCoach() {
             <div
               onClick={() => imageInputRef.current?.click()}
               className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile
-                  ? 'border-green-300 bg-green-50'
-                  : errors.imageUrl
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-sky-300 bg-sky-50 hover:border-sky-400'
+                ? 'border-green-300 bg-green-50'
+                : errors.imageUrl
+                  ? 'border-red-300 bg-red-50'
+                  : 'border-sky-300 bg-sky-50 hover:border-sky-400'
                 }`}
             >
               <input

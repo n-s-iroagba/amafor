@@ -35,11 +35,15 @@ interface League {
 
 type TabType = 'all' | FixtureStatus;
 
+import { useParams } from 'next/navigation';
+
 export default function FixturesList() {
   const router = useRouter();
+  const params = useParams();
+  const leagueId = params.id as string;
 
   const [activeTab, setActiveTab] = useState<TabType>('all');
-  const [selectedLeague, setSelectedLeague] = useState<string>('all');
+  const [selectedLeague, setSelectedLeague] = useState<string>(leagueId || 'all');
   const [selectedSeason, setSelectedSeason] = useState<string>('all');
   const [showFilters, setShowFilters] = useState(false);
 
@@ -218,7 +222,7 @@ export default function FixturesList() {
             </div>
 
             <Link
-              href="/sports-admin/fixtures/new"
+              href="/dashboard/admin/fixtures/new"
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-xl shadow-lg hover:from-sky-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 font-medium"
             >
               <Plus className="w-5 h-5" />
@@ -389,7 +393,7 @@ export default function FixturesList() {
                           key={fixture.id}
                           className="hover:bg-sky-50 transition-colors group cursor-pointer"
                           onClick={() =>
-                            router.push(`/sports-admin/fixtures/${fixture.id}`)
+                            router.push(`/dashboard/admin/fixtures/${fixture.id}`)
                           }
                         >
                           <td className="px-6 py-4">
@@ -471,7 +475,7 @@ export default function FixturesList() {
                     key={fixture.id}
                     className="bg-white rounded-2xl shadow-lg border border-sky-100 overflow-hidden hover:shadow-xl transition-all duration-200 cursor-pointer"
                     onClick={() =>
-                      router.push(`/sports-admin/fixtures/${fixture.id}`)
+                      router.push(`/dashboard/admin/fixtures/${fixture.id}`)
                     }
                   >
                     <div className="p-6">
@@ -532,7 +536,7 @@ export default function FixturesList() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            router.push(`/sports-admin/fixtures/${fixture.id}`);
+                            router.push(`/dashboard/admin/fixtures/${fixture.id}`);
                           }}
                           className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sky-600 hover:text-sky-800 hover:bg-sky-50 rounded-lg transition-colors font-medium"
                         >

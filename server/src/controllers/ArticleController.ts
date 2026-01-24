@@ -354,6 +354,112 @@ export class ArticleController {
       }
     });
   }
+
+  /**
+   * Create new article
+   * @api POST /articles
+   * @apiName API-ARTICLE-007
+   */
+  async createArticle(req: Request, res: Response): Promise<void> {
+    return tracer.startActiveSpan('controller.Article.createArticle', async (span) => {
+      try {
+        // Basic validation - enhance with Zod later if needed
+        const { title, content, status } = req.body;
+        if (!title || !content) {
+          ApiResponse.error(res, {
+            message: 'Title and Content are required',
+            statusCode: 400
+          });
+          return;
+        }
+
+        const article = await this.articleService.createArticle(req.body);
+
+        ApiResponse.success(res, {
+          message: 'Article created successfully',
+          data: article,
+          statusCode: 201
+        });
+      } catch (error) {
+        logger.error('Error creating article', { error });
+        ApiResponse.error(res, { message: 'Failed to create article', statusCode: 500 });
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  /**
+ * Update article
+ * @api PATCH /articles/:id
+ * @apiName API-ARTICLE-008
+ */
+  async updateArticle(req: Request, res: Response): Promise<void> {
+    return tracer.startActiveSpan('controller.Article.updateArticle', async (span) => {
+      try {
+        const { id } = req.params;
+        const article = await this.articleService.updateArticle(id, req.body);
+
+        ApiResponse.success(res, {
+          message: 'Article updated successfully',
+          data: article
+        });
+      } catch (error) {
+        logger.error('Error updating article', { error });
+        ApiResponse.error(res, { message: 'Failed to update article', statusCode: 500 });
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  /**
+ * Delete article
+ * @api DELETE /articles/:id
+ * @apiName API-ARTICLE-009
+ */
+  async deleteArticle(req: Request, res: Response): Promise<void> {
+    return tracer.startActiveSpan('controller.Article.deleteArticle', async (span) => {
+      try {
+        const { id } = req.params;
+        await this.articleService.deleteArticle(id);
+
+        ApiResponse.success(res, {
+          message: 'Article deleted successfully'
+        });
+      } catch (error) {
+        logger.error('Error deleting article', { error });
+        ApiResponse.error(res, { message: 'Failed to delete article', statusCode: 500 });
+      } finally {
+        span.end();
+      }
+    });
+  }
+  /**
+   * Get article analytics
+   * @api GET /articles/analytics
+   * @apiName API-ARTICLE-010
+   */
+  async getAnalytics(req: Request, res: Response): Promise<void> {
+    return tracer.startActiveSpan('controller.Article.getAnalytics', async (span) => {
+      try {
+        const dateFrom = req.query.dateFrom ? new Date(req.query.dateFrom as string) : new Date(new Date().setDate(new Date().getDate() - 30));
+        const dateTo = req.query.dateTo ? new Date(req.query.dateTo as string) : new Date();
+
+        const analytics = await this.articleService.getAnalytics(dateFrom, dateTo);
+
+        ApiResponse.success(res, {
+          message: 'Analytics fetched successfully',
+          data: analytics
+        });
+      } catch (error) {
+        logger.error('Error fetching analytics', { error });
+        ApiResponse.error(res, { message: 'Failed to fetch analytics', statusCode: 500 });
+      } finally {
+        span.end();
+      }
+    });
+  }
 }
 
 export default new ArticleController();

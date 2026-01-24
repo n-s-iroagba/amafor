@@ -21,11 +21,12 @@ export interface AdCampaign {
   status: CampaignStatus;
   budget: number;
   spent: number;
-  targeting: string[];
+  targeting: string[]
   viewsDelivered: number;
+  currentClicks: number;
   uniqueViews: number;
+  targetViews: number;
   paymentStatus: PaymentStatus;
-  paymentReference?: string;
   cpv: number;
   startDate?: Date;
   endDate?: Date;
@@ -53,6 +54,11 @@ export interface AdCreative {
 
 export interface AdCreativeWithCampaign extends AdCreative {
   campaign: AdCampaign;
+}
+
+export interface AdCampaignWithAdCreatives extends AdCampaign {
+  creatives: AdCreative[]
+
 }
 
 export interface AdZone {

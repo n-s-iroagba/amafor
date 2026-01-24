@@ -76,7 +76,7 @@ export default function PlayersList() {
             Players
           </h1>
           <Link
-            href="/sports-admin/players/new"
+            href="/dashboard/admin/players/new"
             className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center"
           >
             Add New Player
@@ -106,7 +106,7 @@ export default function PlayersList() {
             </p>
             <div className="mt-4 sm:mt-6">
               <Link
-                href="/sports-admin/players/new"
+                href="/dashboard/admin/players/new"
                 className="inline-flex items-center justify-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base"
               >
                 <svg
@@ -222,7 +222,7 @@ export default function PlayersList() {
                       <td className="px-4 sm:px-6 py-4 text-right text-sm font-medium">
                         <div className="flex justify-end space-x-2 sm:space-x-3">
                           <Link
-                            href={`/sports-admin/players/${player.id}`}
+                            href={`/dashboard/admin/players/${player.id}`}
                             className="text-sky-600 hover:text-sky-900 transition-colors text-xs sm:text-sm"
                             title="View"
                           >
@@ -248,7 +248,7 @@ export default function PlayersList() {
                             </svg>
                           </Link>
                           <Link
-                            href={`/sports-admin/players/${player.id}/edit`}
+                            href={`/dashboard/admin/players/${player.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors text-xs sm:text-sm"
                             title="Edit"
                           >

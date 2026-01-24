@@ -62,19 +62,19 @@ export default function RssFeedDetail() {
   const getCategoryInfo = (category: RssFeedSourceCategory) => {
     return category === RssFeedSourceCategory.SPORTS
       ? {
-          icon: '⚽',
-          color: 'text-orange-600',
-          bg: 'bg-orange-50',
-          border: 'border-orange-200',
-          label: 'Sports',
-        }
+        icon: '⚽',
+        color: 'text-orange-600',
+        bg: 'bg-orange-50',
+        border: 'border-orange-200',
+        label: 'Sports',
+      }
       : {
-          icon: '📰',
-          color: 'text-blue-600',
-          bg: 'bg-blue-50',
-          border: 'border-blue-200',
-          label: 'General',
-        };
+        icon: '📰',
+        color: 'text-blue-600',
+        bg: 'bg-blue-50',
+        border: 'border-blue-200',
+        label: 'General',
+      };
   };
 
   const formatDate = (dateString: string | Date) => {
@@ -96,7 +96,7 @@ export default function RssFeedDetail() {
       // Show success message
       alert(`RSS feed source "${feed.name}" deleted successfully!`);
       // Navigate back to list
-      router.push('/sports-admin/rss-feeds');
+      router.push('/dashboard/admin/rss-feeds');
     } catch (err: any) {
       console.error('Delete failed:', err);
       alert('Failed to delete RSS feed source. Please try again.');
@@ -147,7 +147,7 @@ export default function RssFeedDetail() {
                   Try Again
                 </button>
                 <Link
-                  href="/sports-admin/rss-feeds"
+                  href="/dashboard/admin/rss-feeds"
                   className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 inline-flex items-center gap-2"
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -177,7 +177,7 @@ export default function RssFeedDetail() {
                 removed.
               </p>
               <Link
-                href="/sports-admin/rss-feeds"
+                href="/dashboard/admin/rss-feeds"
                 className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-200 inline-flex items-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -202,7 +202,7 @@ export default function RssFeedDetail() {
           className="mb-6"
         >
           <Link
-            href="/sports-admin/rss-feeds"
+            href="/dashboard/admin/rss-feeds"
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center gap-2 font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -241,7 +241,7 @@ export default function RssFeedDetail() {
 
               <div className="flex flex-wrap gap-3 w-full lg:w-auto">
                 <Link
-                  href={`/sports-admin/rss-feeds/${feed.id}/edit`}
+                  href={`/dashboard/admin/rss-feeds/${feed.id}/edit`}
                   className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-200 font-semibold border border-white/20"
                 >
                   <Edit className="w-4 h-4" />

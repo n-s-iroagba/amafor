@@ -28,10 +28,20 @@ import {
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { League } from '@/features/league/types';
 import { LeagueTableProps } from '@/features/league-statistics/types';
+import { API_ROUTES } from '@/config/routes';
+
+/**
+ * League Statistics Detail Page
+ * 
+ * Displays the league table, player statistics (top scorers, assists),
+ * and recent fixtures for a specific league.
+ * 
+ * @requirement REQ-PUB-03: Detailed statistics per competition/league.
+ */
 
 interface LeagueDetails extends League {
   logo?: string;
-  table: LeagueTableProps[];
+  table: Array<LeagueTableProps & { form: string[] }>;
   statistics: {
     topScorer: { name: string; team: string; goals: number };
     mostAssists: { name: string; team: string; assists: number };
@@ -39,13 +49,12 @@ interface LeagueDetails extends League {
     bestAttack: { team: string; goalsFor: number };
   };
   recentFixtures: Array<{
-    id: number;
+    id: string;
     homeTeam: string;
     awayTeam: string;
     homeScore: number;
     awayScore: number;
-    date: string;
-    matchDate?: string;
+    matchDate: string;
   }>;
 }
 
@@ -57,18 +66,14 @@ export default function LeagueTablePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<string>('position');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+
 
   // Fetch league details with table
   const {
     data: league,
     loading,
     error
-  } = useGet<LeagueDetails>(`/api/leagues/${leagueId}/table`, {
-    params: {
-      include: 'table,statistics,recentFixtures'
-    }
-  });
+  } = useGet<LeagueDetails>(API_ROUTES.LEAGUES.TABLE(leagueId));
 
   // Filter and sort table
   const filteredTable = league?.table?.filter(team =>
@@ -116,17 +121,14 @@ export default function LeagueTablePage() {
   // Get position color
   const getPositionColor = (position: number) => {
     if (position === 1) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-    if (position === 2) return 'bg-gray-100 text-gray-800 border-gray-200';
-    if (position === 3) return 'bg-orange-100 text-orange-800 border-orange-200';
     if (position <= 4) return 'bg-blue-100 text-blue-800 border-blue-200';
     if (position >= (league?.table?.length || 20) - 2) return 'bg-red-100 text-red-800 border-red-200';
     return 'bg-slate-100 text-slate-800 border-slate-200';
   };
 
-  // Get form indicator (mock data)
-  const getTeamForm = (teamName: string) => {
-    const forms = ['W', 'W', 'D', 'L', 'W']; // Mock recent form
-    return forms.map((result, index) => (
+  // Get form indicator
+  const renderTeamForm = (form: string[] = []) => {
+    return form.map((result, index) => (
       <span
         key={index}
         className={`inline-flex items-center justify-center w-6 h-6 rounded text-xs font-medium ${result === 'W' ? 'bg-green-100 text-green-800' :
@@ -550,7 +552,7 @@ export default function LeagueTablePage() {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex gap-1">
-                        {getTeamForm(team.team)}
+                        {renderTeamForm(team.form)}
                       </div>
                     </td>
                   </tr>

@@ -18,9 +18,11 @@ export default function BackupsPage() {
   const [creating, setCreating] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const { data: backups, loading: backupsLoading, refetch } = useGet<Backup[]>(
+  const { data: response, loading: backupsLoading, refetch } = useGet<any>(
     API_ROUTES.BACKUPS.LIST
   );
+
+  const backups: Backup[] = response?.data || [];
 
   const { post: createBackup } = usePost<{ type: string }, Backup>(
     API_ROUTES.BACKUPS.CREATE

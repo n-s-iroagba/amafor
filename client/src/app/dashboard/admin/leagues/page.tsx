@@ -17,11 +17,11 @@ export default function LeaguesList() {
   const [deletingId, setDeletingId] = useState<number>(0);
 
   const { data: leagues, loading: leaguesLoading, refetch } = useGet<League[]>(
-    `${API_ROUTES.LEAGUES.LIST}/all`
+    API_ROUTES.LEAGUES.LIST
   );
 
   const { delete: deleteLeague, isPending: deleteLoading } = useDelete(
-    API_ROUTES.LEAGUES.MUTATE
+    (id) => API_ROUTES.LEAGUES.MUTATE(Number(id))
   );
 
   const handleDeleteLeague = async () => {
@@ -37,8 +37,6 @@ export default function LeaguesList() {
       setDeleteConfirm(0);
     }
   };
-
-  console.log('LEAA', leagues);
 
   if (leaguesLoading) {
     return (
@@ -56,7 +54,7 @@ export default function LeaguesList() {
             Leagues
           </h1>
           <Link
-            href="/sports-admin/leagues/new"
+            href="/dashboard/admin/leagues/new"
             className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center"
           >
             Create New League
@@ -86,7 +84,7 @@ export default function LeaguesList() {
             </p>
             <div className="mt-4 sm:mt-6">
               <Link
-                href="/sports-admin/leagues/new"
+                href="/dashboard/admin/leagues/new"
                 className="inline-flex items-center justify-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base"
               >
                 <svg
@@ -177,7 +175,7 @@ export default function LeaguesList() {
                       <td className="px-4 sm:px-6 py-4 text-right text-sm font-medium">
                         <div className="flex justify-end space-x-2 sm:space-x-3">
                           <Link
-                            href={`/sports-admin/leagues/${league.id}`}
+                            href={`/dashboard/admin/leagues/${league.id}`}
                             className="text-sky-600 hover:text-sky-900 transition-colors text-xs sm:text-sm"
                             title="View"
                           >
@@ -190,7 +188,6 @@ export default function LeaguesList() {
                             >
                               <path
                                 strokeLinecap="round"
-                                strokeLinejoin="round"
                                 strokeWidth={2}
                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                               />
@@ -203,7 +200,7 @@ export default function LeaguesList() {
                             </svg>
                           </Link>
                           <Link
-                            href={`/sports-admin/leagues/${league.id}/edit`}
+                            href={`/dashboard/admin/leagues/${league.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors text-xs sm:text-sm"
                             title="Edit"
                           >

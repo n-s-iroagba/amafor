@@ -27,21 +27,35 @@ import {
 
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { FixtureWithLeague, FixtureStatus } from '@/features/fixture/types';
 import { Lineup } from '@/features/lineup/types';
 
 
+/**
+ * @requirements REQ-FIX-03
+ * @description Detailed fixture view showing lineups, statistics, and overview.
+ * Fetches data with rich relations (league, lineups, players, stats).
+ */
 interface FixtureDetails extends FixtureWithLeague {
   lineups?: Lineup[];
   stats?: {
-    possession: number;
-    shots: number;
-    shotsOnTarget: number;
-    corners: number;
-    fouls: number;
-    offsides: number;
-    yellowCards: number;
-    redCards: number;
+    homePossession: number;
+    awayPossession: number;
+    homeShots: number;
+    awayShots: number;
+    homeShotsOnTarget: number;
+    awayShotsOnTarget: number;
+    homeCorners: number;
+    awayCorners: number;
+    homeFouls: number;
+    awayFouls: number;
+    homeOffsides: number;
+    awayOffsides: number;
+    homeYellowCards: number;
+    awayYellowCards: number;
+    homeRedCards: number;
+    awayRedCards: number;
   };
 }
 
@@ -58,7 +72,7 @@ export default function FixtureDetailsPage() {
     data: fixture,
     loading,
     error
-  } = useGet<FixtureDetails>(`/api/fixtures/${fixtureId}`, {
+  } = useGet<FixtureDetails>(API_ROUTES.FIXTURES.VIEW(fixtureId), {
     params: {
       include: 'league,lineups.player,lineups.player.stats,stats'
     }
@@ -393,27 +407,27 @@ export default function FixtureDetailsPage() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
                       <div className="text-2xl font-bold text-slate-800 mb-1">
-                        {fixture.stats?.possession || '50'}%
+                        {fixture.stats?.homePossession || '50'}%
                       </div>
-                      <div className="text-sm text-slate-600">Possession</div>
+                      <div className="text-sm text-slate-600">Possession (Home)</div>
                     </div>
                     <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
                       <div className="text-2xl font-bold text-slate-800 mb-1">
-                        {fixture.stats?.shots || '0'}
+                        {fixture.stats?.homeShots || '0'}
                       </div>
-                      <div className="text-sm text-slate-600">Total Shots</div>
+                      <div className="text-sm text-slate-600">Total Shots (Home)</div>
                     </div>
                     <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
                       <div className="text-2xl font-bold text-slate-800 mb-1">
-                        {fixture.stats?.corners || '0'}
+                        {fixture.stats?.homeCorners || '0'}
                       </div>
-                      <div className="text-sm text-slate-600">Corners</div>
+                      <div className="text-sm text-slate-600">Corners (Home)</div>
                     </div>
                     <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
                       <div className="text-2xl font-bold text-slate-800 mb-1">
-                        {fixture.stats?.fouls || '0'}
+                        {fixture.stats?.homeFouls || '0'}
                       </div>
-                      <div className="text-sm text-slate-600">Fouls</div>
+                      <div className="text-sm text-slate-600">Fouls (Home)</div>
                     </div>
                   </div>
                 </div>
@@ -492,23 +506,23 @@ export default function FixtureDetailsPage() {
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Possession</span>
-                          <span className="font-semibold">{fixture.stats.possession}%</span>
+                          <span className="font-semibold">{fixture.stats.homePossession}%</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Shots</span>
-                          <span className="font-semibold">{fixture.stats.shots}</span>
+                          <span className="font-semibold">{fixture.stats.homeShots}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Shots on Target</span>
-                          <span className="font-semibold">{fixture.stats.shotsOnTarget}</span>
+                          <span className="font-semibold">{fixture.stats.homeShotsOnTarget}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Corners</span>
-                          <span className="font-semibold">{fixture.stats.corners}</span>
+                          <span className="font-semibold">{fixture.stats.homeCorners}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Fouls</span>
-                          <span className="font-semibold">{fixture.stats.fouls}</span>
+                          <span className="font-semibold">{fixture.stats.homeFouls}</span>
                         </div>
                       </div>
                     </div>
@@ -519,23 +533,23 @@ export default function FixtureDetailsPage() {
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Possession</span>
-                          <span className="font-semibold">{100 - fixture.stats.possession}%</span>
+                          <span className="font-semibold">{fixture.stats.awayPossession}%</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Shots</span>
-                          <span className="font-semibold">{Math.round(fixture.stats.shots * 0.7)}</span>
+                          <span className="font-semibold">{fixture.stats.awayShots}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Shots on Target</span>
-                          <span className="font-semibold">{Math.round(fixture.stats.shotsOnTarget * 0.7)}</span>
+                          <span className="font-semibold">{fixture.stats.awayShotsOnTarget}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Corners</span>
-                          <span className="font-semibold">{Math.round(fixture.stats.corners * 0.7)}</span>
+                          <span className="font-semibold">{fixture.stats.awayCorners}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-slate-600">Fouls</span>
-                          <span className="font-semibold">{Math.round(fixture.stats.fouls * 0.7)}</span>
+                          <span className="font-semibold">{fixture.stats.awayFouls}</span>
                         </div>
                       </div>
                     </div>

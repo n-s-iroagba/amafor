@@ -1,16 +1,35 @@
 import sequelize from '../config/database';
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
-import { PatronTier, SubscriptionFrequency, SubscriptionStatus } from './PatronSubscription';
 
+export enum PatronTier {
+  SPONSOR_GRAND_PATRON = 'sponsor_grand_patron',
+  PATRON = 'patron',
+  SUPPORTER = 'supporter',
+
+}
+
+export enum SubscriptionFrequency {
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly',
+  LIFETIME = 'lifetime'
+}
+
+export enum SubscriptionStatus {
+  ACTIVE = 'active',
+  CANCELLED = 'cancelled',
+  EXPIRED = 'expired',
+  PAYMENT_FAILED = 'payment_failed'
+}
 
 
 
 export interface PatronSubscriptionPackageAttributes {
   id: string;
-  patronId: string;
+  subscriptionId: string;
   tier: PatronTier;
   frequency: SubscriptionFrequency;
   miniumumAmount: number;
+  benefits:string[]
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
@@ -20,11 +39,11 @@ export interface PatronSubscriptionPackageCreationAttributes extends Optional<Pa
 
 export class PatronSubscriptionPackage extends Model<PatronSubscriptionPackageAttributes, PatronSubscriptionPackageCreationAttributes> implements PatronSubscriptionPackageAttributes {
   public id!: string;
-  public patronId!: string;
+  public subscriptionId!: string;
   public tier!: PatronTier;
   public frequency!: SubscriptionFrequency;
   public miniumumAmount!: number;
-
+  public benefits!: string[];
   public createdAt!: Date;
   public updatedAt!: Date;
   public deletedAt?: Date;
@@ -40,9 +59,12 @@ export class PatronSubscriptionPackage extends Model<PatronSubscriptionPackageAt
           defaultValue: DataTypes.UUIDV4,
           primaryKey: true
         },
-        patronId: {
+        subscriptionId: {
           type: DataTypes.UUID,
           allowNull: false
+        },
+        benefits:{
+          type:DataTypes.JSON,
         },
         tier: {
           type: DataTypes.ENUM(...Object.values(PatronTier)),
@@ -70,7 +92,7 @@ export class PatronSubscriptionPackage extends Model<PatronSubscriptionPackageAt
         timestamps: true,
         paranoid: true,
         indexes: [
-          { fields: ['patronId'] },
+          { fields: ['subscriptionId'] },
           { fields: ['tier'] },
           { fields: ['status'] },
           { fields: ['frequency'] },

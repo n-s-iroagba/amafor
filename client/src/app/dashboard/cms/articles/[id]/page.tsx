@@ -2,15 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import api from '@/shared/lib/axios';
+import { API_ROUTES } from '@/config/routes';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 import { cleanText } from '@/shared/utils';
 
- enum ArticleStatus {
+enum ArticleStatus {
   Draft = 'draft',
   Published = 'published',
 }
 
- interface Article {
+interface Article {
   id: number;
   title: string;
   content: string;
@@ -29,40 +30,19 @@ import { cleanText } from '@/shared/utils';
 export default function AdminArticlePage() {
   const router = useRouter();
   const { id } = useParams(); // article id from URL
-
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
-  useEffect(() => {
-    if (id) fetchArticle();
-  }, [id]);
+  const { data: article, loading, error } = useGet<Article>(API_ROUTES.ARTICLES.VIEW(id as string));
+  const { delete: deleteItem } = useDelete(API_ROUTES.ARTICLES.MUTATE(id as unknown as number));
 
-  const fetchArticle = async () => {
-    try {
-      setError('');
-      const res = await api.get(`/articles/${id}`);
-      setArticle(res.data);
-    } catch (err) {
-      console.error('Error fetching article:', err);
-      setError('Failed to load article.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async () => {
     try {
-      const res = await api.delete(`/articles/${id}`);
-      if (res.status === 200 || res.status === 204) {
-        router.push('/sports-admin/sport-articles'); // back to list
-      } else {
-        setError('Failed to delete article');
-      }
+      await deleteItem(id as unknown as number);
+      router.push('/dashboard/cms/articles'); // back to list
     } catch (err) {
       console.error('Error deleting article:', err);
-      setError('Error deleting article');
+      // Toast error handled by hook usually or add local handling
     }
   };
 
@@ -95,37 +75,36 @@ export default function AdminArticlePage() {
         </p>
 
         <span
-          className={`inline-block text-xs px-2 py-1 rounded-full mb-4 ${
-            article.status === ArticleStatus.Published
-              ? 'bg-green-100 text-green-700'
-              : 'bg-yellow-100 text-yellow-700'
-          }`}
+          className={`inline-block text-xs px-2 py-1 rounded-full mb-4 ${article.status === ArticleStatus.Published
+            ? 'bg-green-100 text-green-700'
+            : 'bg-yellow-100 text-yellow-700'
+            }`}
         >
           {article.status}
         </span>
 
-              {article.content?.includes('<img') && (
-                <div
-                  className="mb-3 sm:mb-4 rounded-lg overflow-hidden shadow-inner relative h-32 sm:h-40 md:h-48 w-full"
-                 
-                >
-                  <div
-                    className="w-full h-full bg-cover bg-center rounded-lg transition-transform duration-500 group-hover:scale-105"
-                    style={{
-                      backgroundImage: `url(${article.content.match(/<img.*?src=["'](.*?)["']/)?.[1]})`,
-                    }}
-                    aria-hidden="true"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              )}
- <p className="text-gray-700 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-3 flex-grow leading-relaxed">
-                   {cleanText(article.summary)}
-                   </p>
+        {article.content?.includes('<img') && (
+          <div
+            className="mb-3 sm:mb-4 rounded-lg overflow-hidden shadow-inner relative h-32 sm:h-40 md:h-48 w-full"
+
+          >
+            <div
+              className="w-full h-full bg-cover bg-center rounded-lg transition-transform duration-500 group-hover:scale-105"
+              style={{
+                backgroundImage: `url(${article.content.match(/<img.*?src=["'](.*?)["']/)?.[1]})`,
+              }}
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
+        )}
+        <p className="text-gray-700 text-xs sm:text-sm mb-4 sm:mb-6 line-clamp-3 flex-grow leading-relaxed">
+          {cleanText(article.summary)}
+        </p>
         <div className="flex gap-3">
           <button
             onClick={() =>
-              router.push(`/sports-admin/sport-articles/${article.id}/edit`)
+              router.push(`/dashboard/cms/articles/${article.id}/edit`)
             }
             className="px-4 py-2 border text-sky-600 rounded hover:bg-sky-50"
           >

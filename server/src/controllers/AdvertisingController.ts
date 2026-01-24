@@ -180,4 +180,24 @@ export class AdvertisingController {
       next(error);
     }
   };
+
+
+  /**
+   * Get advertiser reports
+   * @api GET /ads/reports
+   * @apiName API-AD-009
+   * @apiGroup Advertisements
+   * @srsRequirement REQ-ADV-05
+   */
+  public getAdvertiserReports = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = (req as any).user;
+      const advertiserId = user.id;
+
+      const reportData = await this.adService.getAdvertiserReports(advertiserId);
+      res.status(200).json({ success: true, data: reportData });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

@@ -11,15 +11,20 @@ import AdDisplay from '@/features/advertisement/component/AdDisplay';
 // import { API_ROUTES, useGet, AdDisplay } from '@/...';
 
 interface RSSItem {
-  id: number | string;
-  title?: string;
+  id: string;
+  title: string;
+  articleUrl?: string;
+  summary?: string;
+  content?: string;
+  publishedAt: string;
+  thumbnailUrl?: string; // Add this if backend sends it
+
+  // Legacy support if needed
+  guid?: string;
+  contentSnippet?: string;
+  isoDate?: string;
   article_url?: string;
   published_at?: string;
-  creator?: string;
-  content?: string;
-  contentSnippet?: string;
-  guid?: string;
-  isoDate?: string;
 }
 
 type RSSResponse = {
@@ -29,15 +34,15 @@ type RSSResponse = {
 
 
 
-const FeaturedNews =() => {
+const FeaturedNews = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  // Fetching data based on the type prop, but styling is now unified
+  // Fetching data
   const { data: data, loading, error } = useGet<RSSResponse>(
-    `${API_ROUTES.ARTICLES.PUBLISHED}`
+    API_ROUTES.FEATURED_NEWS.LIST
   );
-  
+
   const [totalPages, setTotalPages] = useState(0);
   const [items, setItems] = useState<RSSItem[]>([]);
 
@@ -238,11 +243,10 @@ const FeaturedNews =() => {
                   <motion.button
                     key={pageNum}
                     onClick={() => setPage(pageNum)}
-                    className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 ${config.focusRing} focus:ring-opacity-50 relative overflow-hidden text-sm sm:text-base min-w-[40px] ${
-                      page === pageNum
-                        ? `bg-gradient-to-r ${config.gradientFrom} ${config.gradientTo} text-white shadow-md`
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                    className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 ${config.focusRing} focus:ring-opacity-50 relative overflow-hidden text-sm sm:text-base min-w-[40px] ${page === pageNum
+                      ? `bg-gradient-to-r ${config.gradientFrom} ${config.gradientTo} text-white shadow-md`
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                     aria-current={page === pageNum ? 'page' : undefined}
                     aria-label={`Go to page ${pageNum}`}
                     whileHover={{ y: -2 }}

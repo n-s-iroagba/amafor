@@ -1,24 +1,11 @@
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { useMemo } from 'react';
+import { AdCreative, AdZone } from '../types';
 
 
-// --- Types ---
-export interface AdZone {
-  id: string;
-  name: string;
-  dimensions: string;
-  maxSize: string;
-}
 
-export interface AdCreative {
-  id: string;
-  name: string;
-  url: string;
-  destinationUrl: string;
-  type: 'image' | 'video';
-  format: string;
-  dimensions: { width: number; height: number };
-}
+
+
 
 export interface AdResponse {
   creative: AdCreative;

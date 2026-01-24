@@ -208,7 +208,7 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-SUP-001: Make One-Time Donation
 **Journey:** [UJ-SUP-001](./user-journeys.md#uj-sup-001-make-one-time-donation)  
 **User Type:** Donor  
-**Pages:** `/support`, `/support/donate/checkout`
+**Pages:** `/support`, `/patron/checkout`
 
 > As a **supporter**, I want to **make a one-time donation** so that I can **contribute to the club**.
 
@@ -224,7 +224,7 @@ Journey Reference: [user-journeys.md](./user-journeys.md)
 ### US-SUP-002: Subscribe as Patron
 **Journey:** [UJ-SUP-002](./user-journeys.md#uj-sup-002-become-a-patron)  
 **User Type:** Patron  
-**Pages:** `/support`, `/support/patron/checkout`, `/support/wall`
+**Pages:** `/support`, `/patron/checkout`, `/support/wall`
 
 > As a **supporter**, I want to **subscribe as a patron** so that I can **support the club regularly and get recognition**.
 

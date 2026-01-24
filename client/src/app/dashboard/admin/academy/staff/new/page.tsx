@@ -25,7 +25,7 @@ export default function NewStaff() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const { post, isPending: isSubmitting } = usePost(API_ROUTES.ACADEMY.STAFF.CREATE);
+  const { post, isPending: isSubmitting } = usePost(API_ROUTES.STAFF.CREATE);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -120,7 +120,7 @@ export default function NewStaff() {
       });
 
       if (response) {
-        router.push('/sports-admin/staff');
+        router.push('/dashboard/admin/academy/staff');
       }
     } catch (error) {
       console.error('Error creating staff:', error);
@@ -312,10 +312,10 @@ export default function NewStaff() {
               <div
                 onClick={() => imageInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile
-                    ? 'border-green-300 bg-green-50'
-                    : errors.imageUrl
-                      ? 'border-red-300 bg-red-50'
-                      : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
+                  ? 'border-green-300 bg-green-50'
+                  : errors.imageUrl
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
                   }`}
               >
                 <input

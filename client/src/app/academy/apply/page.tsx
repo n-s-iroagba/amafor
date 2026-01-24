@@ -5,6 +5,8 @@ import { Header } from '@/shared/components/Header';
 import { Footer } from '@/shared/components/Footer';
 import { ArrowLeft, Check, AlertCircle, Upload } from 'lucide-react';
 import Link from 'next/link';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 export default function TrialistApplication() {
     const [formData, setFormData] = useState({
@@ -35,14 +37,22 @@ export default function TrialistApplication() {
 
     const isMinor = calculateAge(formData.dob) < 18;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const { post, isPending } = usePost(API_ROUTES.TRIALISTS.CREATE);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (isMinor && !formData.guardianConsent) {
             alert('Guardian consent is required for applicants under 18.');
             return;
         }
-        // In production: Submit to backend
-        setSubmitted(true);
+
+        try {
+            await post(formData);
+            setSubmitted(true);
+        } catch (error) {
+            console.error('Failed to submit application:', error);
+            alert('Failed to submit application. Please try again.');
+        }
     }
 
     if (submitted) {
@@ -300,9 +310,10 @@ export default function TrialistApplication() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                                disabled={isPending}
+                                className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all"
                             >
-                                Submit Application
+                                {isPending ? 'Submitting...' : 'Submit Application'}
                             </button>
                         </form>
                     </div>

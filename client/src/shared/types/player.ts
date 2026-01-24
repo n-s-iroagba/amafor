@@ -39,5 +39,23 @@ export interface Player {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string;
+
+    // Stats
+    appearances?: number;
+    goals?: number;
+    assists?: number;
+    cleanSheets?: number;
+    yellowCards?: number;
+    redCards?: number;
+    minutesPlayed?: number;
+    rating?: number;
+
+    // Legacy nested support (optional if we migrate)
+    stats?: {
+        appearances: number;
+        goals: number;
+        assists: number;
+        minutesPlayed: number;
+    };
 }
 

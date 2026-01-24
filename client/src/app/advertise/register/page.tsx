@@ -5,6 +5,8 @@ import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
+import { usePost } from '@/shared/hooks/useApiQuery'
+import { API_ROUTES } from '@/config/routes'
 
 export default function AdvertiserRegistration() {
   const [businessName, setBusinessName] = useState('')
@@ -12,10 +14,26 @@ export default function AdvertiserRegistration() {
   const [phone, setPhone] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { post, isPending } = usePost(API_ROUTES.AUTH.SIGNUP); // Using generic signup, assuming backend handles type via body or specific route needed? 
+  // Actually, let's use a specific route if available or generic with type.
+  // Looking at AuthController, it had signupAdvertiser.
+  // I will check if I need to add ADVERTISERS_SIGNUP to routes.
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production, this would submit to backend
-    setSubmitted(true)
+
+    try {
+      await post({
+        businessName,
+        email,
+        phone,
+        userType: 'advertiser' // Explicitly set type to trigger correct backend flow if generic, or just data
+      });
+      setSubmitted(true)
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Registration failed. Please try again.');
+    }
   }
 
   if (submitted) {
@@ -121,10 +139,10 @@ export default function AdvertiserRegistration() {
 
               <button
                 type="submit"
-                disabled={!businessName || !email || !phone}
+                disabled={!businessName || !email || !phone || isPending}
                 className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-colors font-semibold"
               >
-                Submit Application
+                {isPending ? 'Submitting...' : 'Submit Application'}
               </button>
             </form>
           </div>

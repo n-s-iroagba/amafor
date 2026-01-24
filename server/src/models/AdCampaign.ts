@@ -29,16 +29,17 @@ export interface AdCampaignAttributes {
   id: string;
   name: string;
   advertiserId: string;
-  
+
   status: CampaignStatus;
   budget: number;
   spent: number;
-  targeting:string[]
+  targeting: string[]
   viewsDelivered: number;
+  currentClicks: number;
   uniqueViews: number;
-
+  targetViews: number;
   paymentStatus: PaymentStatus;
-  paymentReference?: string;
+
   cpv: number;
   startDate?: Date;
   endDate?: Date;
@@ -48,22 +49,23 @@ export interface AdCampaignAttributes {
   deletedAt?: Date;
 }
 
-export interface AdCampaignCreationAttributes extends Optional<AdCampaignAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'spent' | 'viewsDelivered' | 'uniqueViews' | 'paymentStatus' | 'cpv' | 'metadata'> {}
+export interface AdCampaignCreationAttributes extends Optional<AdCampaignAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'spent' | 'viewsDelivered' | 'uniqueViews' | 'paymentStatus' | 'cpv' | 'metadata'> { }
 
 export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAttributes> implements AdCampaignAttributes {
   public id!: string;
   public name!: string;
   public advertiserId!: string;
-
+  public targetViews!: number
   public status!: CampaignStatus;
   public budget!: number;
   public spent!: number;
 
   public viewsDelivered!: number;
+  public currentClicks!: number;
   public uniqueViews!: number;
-  public targeting!:string[]
+  public targeting!: string[]
   public paymentStatus!: PaymentStatus;
-  public paymentReference?: string;
+
   public cpv!: number;
   public startDate?: Date;
   public endDate?: Date;
@@ -73,104 +75,111 @@ export class AdCampaign extends Model<AdCampaignAttributes, AdCampaignCreationAt
   public deletedAt?: Date;
 
 
+}
+
+
+AdCampaign.init(
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    advertiserId: {
+      type: DataTypes.UUID,
+      allowNull: false
+    },
+
+    status: {
+      type: DataTypes.ENUM(...Object.values(CampaignStatus)),
+      allowNull: false,
+      defaultValue: CampaignStatus.DRAFT
+    },
+    budget: {
+      type: DataTypes.DECIMAL(12, 2),
+      allowNull: false,
+      defaultValue: 0
+    },
+    spent: {
+      type: DataTypes.DECIMAL(12, 2),
+      allowNull: false,
+      defaultValue: 0
+    },
+    viewsDelivered: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    currentClicks: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    uniqueViews: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    targetViews: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+
+
+    targeting: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    },
+    paymentStatus: {
+      type: DataTypes.ENUM(...Object.values(PaymentStatus)),
+      allowNull: false,
+      defaultValue: PaymentStatus.PENDING
+    },
+
+    cpv: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    metadata: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: {}
+    }, createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
+  },
+  {
+    sequelize,
+    tableName: 'ad_campaigns',
+    timestamps: true,
+    paranoid: true,
+    indexes: [
+      { fields: ['advertiserId'] },
+      { fields: ['status'] },
+
+      { fields: ['paymentStatus'] },
+      { fields: ['createdAt'] }
+    ]
   }
-
-
-    AdCampaign.init(
-      {
-        id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
-          primaryKey: true
-        },
-        name: {
-          type: DataTypes.STRING(200),
-          allowNull: false
-        },
-        advertiserId: {
-          type: DataTypes.UUID,
-          allowNull: false
-        },
-     
-        status: {
-          type: DataTypes.ENUM(...Object.values(CampaignStatus)),
-          allowNull: false,
-          defaultValue: CampaignStatus.DRAFT
-        },
-        budget: {
-          type: DataTypes.DECIMAL(12, 2),
-          allowNull: false,
-          defaultValue: 0
-        },
-        spent: {
-          type: DataTypes.DECIMAL(12, 2),
-          allowNull: false,
-          defaultValue: 0
-        },
-       viewsDelivered: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-        uniqueViews: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0
-        },
-     
-  
-        targeting: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        },
-        paymentStatus: {
-          type: DataTypes.ENUM(...Object.values(PaymentStatus)),
-          allowNull: false,
-          defaultValue: PaymentStatus.PENDING
-        },
-        paymentReference: {
-          type: DataTypes.STRING(100),
-          allowNull: true
-        },
-        cpv: {
-          type: DataTypes.DECIMAL(10, 2),
-          allowNull: false,
-          defaultValue: 0
-        },
-        startDate: {
-          type: DataTypes.DATE,
-          allowNull: true
-        },
-        endDate: {
-          type: DataTypes.DATE,
-          allowNull: true
-        },
-        metadata: {
-          type: DataTypes.JSON,
-          allowNull: false,
-          defaultValue: {}
-        }        ,createdAt: {
-          type:DataTypes.DATE
-        },
-        updatedAt: {
-          type:DataTypes.DATE
-        }
-      },
-      {
-        sequelize,
-        tableName: 'ad_campaigns',
-        timestamps: true,
-        paranoid: true,
-        indexes: [
-          { fields: ['advertiserId'] },
-          { fields: ['status'] },
-      
-          { fields: ['paymentStatus'] },
-          { fields: ['createdAt'] }
-        ]
-      }
-    );
+);
 
 
 export default AdCampaign;

@@ -27,22 +27,22 @@ export default function EditGoal() {
   const params = useParams();
   const goalId = params.goalId as string;
   const fixtureId = params.fixtureId as string;
+  const leagueId = params.id as string;
 
-  const { data: goal, loading: goalLoading } = useGet<Goal>(`/goals/${goalId}`);
-  const { data: fixtures, loading: fixturesLoading } = useGet<Fixture[]>('/fixtures');
-  const { put, isPending: isSubmitting } = usePut(`/goals/${goalId}`);
+  const { data: goal, loading: goalLoading } = useGet<Goal>(API_ROUTES.GOALS.VIEW(goalId));
+  // We don't necessarily need to fetch all fixtures here if we are just editing a goal for *this* fixture.
+  // The original code allowed changing the fixture, but in this nested route, the fixture is fixed by the URL.
+  // I will assume we stick to the current fixture or disable changing it.
 
-  const [selectedFixtureId, setSelectedFixtureId] = useState('');
+  const { put, isPending: isSubmitting } = usePut(API_ROUTES.GOALS.MUTATE(Number(goalId)));
+
   const [scorer, setScorer] = useState('');
   const [minute, setMinute] = useState('');
   const [isPenalty, setIsPenalty] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const isLoading = goalLoading || fixturesLoading;
-
   useEffect(() => {
     if (goal) {
-      setSelectedFixtureId(goal.fixtureId.toString());
       setScorer(goal.scorer);
       setMinute(goal.minute.toString());
       setIsPenalty(goal.isPenalty);
@@ -52,7 +52,6 @@ export default function EditGoal() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!selectedFixtureId) newErrors.fixtureId = 'Fixture is required';
     if (!scorer.trim()) newErrors.scorer = 'Scorer is required';
     if (!minute.trim()) newErrors.minute = 'Minute is required';
     else if (parseInt(minute) < 1 || parseInt(minute) > 120)
@@ -69,19 +68,19 @@ export default function EditGoal() {
 
     try {
       await put({
-        fixtureId: parseInt(selectedFixtureId),
+        fixtureId: parseInt(fixtureId), // Keep the same fixture
         scorer,
         minute: parseInt(minute),
         isPenalty,
       });
 
-      router.push('/goals');
+      router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}/goals`);
     } catch (error) {
       console.error('Error updating goal:', error);
     }
   };
 
-  if (isLoading) {
+  if (goalLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 flex items-center justify-center">
         <div className="text-sky-700">Loading...</div>
@@ -102,32 +101,6 @@ export default function EditGoal() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-          <div>
-            <label
-              htmlFor="fixtureId"
-              className="block text-sm font-medium text-sky-700"
-            >
-              Fixture *
-            </label>
-            <select
-              id="fixtureId"
-              value={selectedFixtureId}
-              onChange={(e) => setSelectedFixtureId(e.target.value)}
-              className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.fixtureId ? 'border-red-500' : 'border-sky-300'
-                } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
-            >
-              <option value="">Select a fixture</option>
-              {fixtures?.map((fixture) => (
-                <option key={fixture.id} value={fixture.id}>
-                  {fixture.homeTeam} vs {fixture.awayTeam} -{' '}
-                  {new Date(fixture.date || fixture.matchDate || '').toLocaleDateString()}
-                </option>
-              ))}
-            </select>
-            {errors.fixtureId && (
-              <p className="mt-1 text-sm text-red-600">{errors.fixtureId}</p>
-            )}
-          </div>
 
           <div>
             <label

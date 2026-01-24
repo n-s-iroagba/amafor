@@ -26,8 +26,13 @@ export const trialistController = {
       dob: new Date(req.body.dob),
       height: req.body.height ? parseInt(req.body.height) : undefined,
       weight: req.body.weight ? parseInt(req.body.weight) : undefined,
-      videourl: req.body.videourl
-
+      videoUrl: req.body.videoUrl, // Correction: lowercase 'videourl' was in original file, standardizing to camelCase
+      guardianName: req.body.guardianName,
+      guardianPhone: req.body.guardianPhone,
+      guardianEmail: req.body.guardianEmail,
+      consentEmail: req.body.consentEmail,
+      consentSmsWhatsapp: req.body.consentSmsWhatsapp,
+      guardianConsent: req.body.guardianConsent
     };
 
     const trialist = await trialistService.createTrialist(trialistData);

@@ -23,7 +23,13 @@ router.get('/published', articleLimiter, articleController.fetchAllPublishedArti
 router.get('/tag/:tag', articleLimiter, articleController.getArticlesByTag.bind(articleController));
 router.get('/search', articleLimiter, articleController.searchArticles.bind(articleController));
 router.get('/popular-tags', articleLimiter, articleController.getPopularTags.bind(articleController));
+router.get('/analytics', articleLimiter, articleController.getAnalytics.bind(articleController));
 router.get('/:id', articleLimiter, articleController.getArticleById.bind(articleController));
+
+// Protected Routes (To be implemented with proper middleware later)
+router.post('/', articleLimiter, articleController.createArticle.bind(articleController));
+router.patch('/:id', articleLimiter, articleController.updateArticle.bind(articleController));
+router.delete('/:id', articleLimiter, articleController.deleteArticle.bind(articleController));
 
 // // Admin routes (protected)
 // router.post(

@@ -278,6 +278,76 @@ export class ArticleService {
       logger.error('Error warming up article cache', { error });
     }
   }
+  // Get analytics
+  async getAnalytics(dateFrom: Date, dateTo: Date): Promise<any> {
+    return tracer.startActiveSpan('service.Article.getAnalytics', async (span) => {
+      try {
+        const analytics = await this.articleRepository.getAnalytics(dateFrom, dateTo);
+        return analytics;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
+        logger.error('Error fetching analytics', { error });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  // Create article
+  async createArticle(data: any): Promise<Article> {
+    return tracer.startActiveSpan('service.Article.createArticle', async (span) => {
+      try {
+        const article = await this.articleRepository.create(data);
+        await this.invalidateArticleCache();
+        return article;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
+        logger.error('Error creating article', { error });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  // Update article
+  async updateArticle(id: string, data: any): Promise<Article | null> {
+    return tracer.startActiveSpan('service.Article.updateArticle', async (span) => {
+      try {
+        const article = await this.articleRepository.update(id, data);
+        await this.invalidateArticleCache(id);
+        return article;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
+        logger.error(`Error updating article ${id}`, { error });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  // Delete article
+  async deleteArticle(id: string): Promise<boolean> {
+    return tracer.startActiveSpan('service.Article.deleteArticle', async (span) => {
+      try {
+        await this.articleRepository.delete(id);
+        await this.invalidateArticleCache(id);
+        return true;
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        span.setStatus({ code: 2, message: errorMessage });
+        logger.error(`Error deleting article ${id}`, { error });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
 }
 
 export default new ArticleService();

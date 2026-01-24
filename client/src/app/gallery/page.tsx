@@ -19,6 +19,7 @@ import {
 
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { FixtureStatus, FixtureWithLeague, FixtureImage } from '@/features/fixture/types';
 
 
@@ -34,7 +35,7 @@ export default function GalleryPage() {
     loading,
     error,
     refetch
-  } = useGet<FixtureWithLeague[]>('/api/fixtures/gallery', {
+  } = useGet<FixtureWithLeague[]>(API_ROUTES.FIXTURES.GALLERY, {
     params: {
       include: 'league,images',
       limit: 50,
@@ -86,15 +87,10 @@ export default function GalleryPage() {
     return acc;
   }, {} as Record<string, FixtureWithLeague[]>);
 
-  // Mock images for each fixture (in real app, this would come from API)
-  const getMockImages = (fixtureId: number): FixtureImage[] => {
-    const imageCount = Math.floor(Math.random() * 8) + 1; // 1-8 images
-    return Array.from({ length: imageCount }, (_, i) => ({
-      id: `${fixtureId}-${i}`,
-      fixtureId: fixtureId.toString(),
-      url: `https://images.unsplash.com/photo-${Date.now()}-${i}?auto=format&fit=crop&w=800&q=80`,
-      description: `Fixture action ${i + 1}`
-    }));
+  // Helper to get images safely
+  const getFixtureImages = (fixture: FixtureWithLeague): FixtureImage[] => {
+    // Assuming fixture.images is populated by the API include
+    return (fixture as any).images || [];
   };
 
   const getStatusColor = (status: FixtureStatus) => {
@@ -290,7 +286,7 @@ export default function GalleryPage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {fixtures.map((fixture) => {
-                  const fixtureImages = getMockImages(Number(fixture.id));
+                  const fixtureImages = getFixtureImages(fixture);
                   const firstImage = fixtureImages[0];
 
                   return (

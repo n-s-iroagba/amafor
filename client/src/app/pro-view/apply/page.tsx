@@ -1,183 +1,246 @@
-'use client'
+'use client';
+import Link from 'next/link';
+import { ArrowLeft, CheckCircle, Shield, Briefcase, Mail, Globe, MessageSquare, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
+import { API_ROUTES } from '@/config/routes';
+import { usePost } from '@/shared/hooks/useApiQuery';
+import { Footer } from '@/shared/components/Footer';
+import { Header } from '@/shared/components/Header';
 
-import Link from 'next/link'
-import { ArrowLeft, CheckCircle } from 'lucide-react'
-import { useState } from 'react'
-import { Footer } from '@/shared/components/Footer'
-import { Header } from '@/shared/components/Header'
+/**
+ * Pro-View Application Page
+ * 
+ * Allows professional scouts and agents to apply for access to 
+ * restricted player performance data and video archives.
+ * 
+ * @requirement REQ-SCT-01: Scout application form.
+ */
 
 export default function ProViewApplication() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [socialUrl, setSocialUrl] = useState('')
-  const [organization, setOrganization] = useState('')
-  const [reason, setReason] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    organization: '',
+    socialUrl: '',
+    reason: '',
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitted(true)
-  }
+  const { post, isPending: loading, isSuccess: success, error } = usePost(API_ROUTES.SCOUT.APPLY);
 
-  if (submitted) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await post(formData);
+  };
+
+  if (success) {
     return (
-      <>
+      <div className="flex flex-col min-h-screen">
         <Header />
-        <main className="py-16 bg-slate-50 min-h-screen">
+        <main className="flex-grow py-24 bg-slate-50">
           <div className="container mx-auto px-4 max-w-2xl">
-            <div className="bg-white border border-slate-200 p-12 rounded-lg shadow-card text-center">
-              <div className="w-20 h-20 bg-sky-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-12 h-12 text-sky-700" />
+            <div className="bg-white p-12 rounded-[2.5rem] shadow-xl border border-slate-100 text-center relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-sky-400 to-indigo-500" />
+
+              <div className="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8 animate-bounce">
+                <CheckCircle className="w-12 h-12 text-emerald-500" />
               </div>
-              <h1 className="text-3xl font-heading text-sky-500 mb-4">Application Submitted Successfully!</h1>
-              <p className="text-slate-600 mb-8 leading-relaxed">
-                Thank you for applying for Pro View access. Your application is now{' '}
-                <span className="font-semibold text-sky-700">pending manual review</span>.
+
+              <h1 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tight">Application Transmitted</h1>
+              <p className="text-slate-600 mb-10 text-lg leading-relaxed">
+                Thank you for applying for Pro View access. Your credentials are now{' '}
+                <span className="font-black text-slate-900 px-2 py-1 bg-sky-100 rounded-lg">Under Verification</span>.
               </p>
-              <div className="bg-slate-50 p-6 mb-8 rounded-lg text-left">
-                <h3 className="font-heading text-sky-500 mb-4">What happens next?</h3>
-                <ul className="space-y-3 text-slate-600">
-                  <li className="flex gap-3">
-                    <span className="text-sky-700 font-bold">✓</span>
-                    <span>Our team will review your credentials within 24-48 hours</span>
+
+              <div className="bg-slate-900 text-white p-8 mb-10 rounded-3xl text-left shadow-2xl">
+                <h3 className="font-black text-sky-400 uppercase tracking-widest text-xs mb-6 flex items-center">
+                  <Shield className="w-4 h-4 mr-2" /> Next Operations
+                </h3>
+                <ul className="space-y-4 text-sm font-bold">
+                  <li className="flex gap-4 items-start">
+                    <span className="text-sky-400">01</span>
+                    <span className="text-slate-300">Identity verification within 24-48 standard business hours.</span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="text-sky-700 font-bold">✓</span>
-                    <span>You'll receive an email notification with the decision</span>
+                  <li className="flex gap-4 items-start">
+                    <span className="text-sky-400">02</span>
+                    <span className="text-slate-300">Email notification containing the final access protocol.</span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="text-sky-700 font-bold">✓</span>
-                    <span>If approved, login credentials will be sent to your email</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className="text-sky-700 font-bold">✓</span>
-                    <span>You can then access the Pro View portal immediately</span>
+                  <li className="flex gap-4 items-start">
+                    <span className="text-sky-400">03</span>
+                    <span className="text-slate-300">Direct biometric and performance log integration for approved profiles.</span>
                   </li>
                 </ul>
               </div>
-              <div className="text-slate-600 mb-8">
-                <p>A confirmation email has been sent to:</p>
-                <p className="font-semibold text-sky-500 mt-1">{email}</p>
+
+              <div className="text-slate-400 text-sm font-bold mb-10">
+                Confirmation protocol dispatched to:<br />
+                <span className="text-sky-500 font-black">{formData.email}</span>
               </div>
-              <Link 
+
+              <Link
                 href="/"
-                className="inline-block bg-sky-900 hover:bg-sky-900/90 text-white px-8 py-3 rounded-lg transition-colors font-semibold"
+                className="inline-flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-900 px-10 py-4 rounded-2xl transition-all font-black text-xs uppercase tracking-widest active:scale-95 duration-200"
               >
-                Return to Homepage
+                Terminate Session
               </Link>
             </div>
           </div>
         </main>
         <Footer />
-      </>
-    )
+      </div>
+    );
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      
-      <main className="py-16 bg-slate-50 min-h-screen">
-        <div className="container mx-auto px-4 max-w-2xl">
-          <Link href="/pro-view" className="inline-flex items-center gap-2 text-sky-500 hover:text-sky-700 mb-8 font-semibold transition-colors">
-            <ArrowLeft className="w-5 h-5" />
-            Back to Pro View Info
+
+      <main className="flex-grow py-24 bg-slate-50 relative overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-sky-400/5 -skew-x-12 transform origin-top-right pointer-events-none" />
+
+        <div className="container mx-auto px-4 max-w-3xl relative z-10">
+          <Link
+            href="/pro-view"
+            className="inline-flex items-center gap-3 text-slate-400 hover:text-sky-500 mb-12 font-black text-[10px] uppercase tracking-[0.2em] transition-all group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Intelligence Info
           </Link>
 
-          <div className="bg-white border border-slate-200 p-8 rounded-lg shadow-card">
-            <h1 className="text-3xl font-heading text-sky-500 mb-2">Apply for Pro View Access</h1>
-            <div className="h-1 w-16 bg-sky-700 mb-6"></div>
-            <p className="text-slate-600 mb-8 leading-relaxed">
-              Complete the application below. Our team will review your credentials and respond within 24-48 hours.
-            </p>
+          <div className="bg-white p-10 md:p-16 rounded-[3rem] shadow-2xl border border-slate-100 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-slate-900" />
 
-            <form onSubmit={handleSubmit}>
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-sky-500 mb-2">
-                  Full Name <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
-                  required
-                />
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+              <div>
+                <h1 className="text-4xl font-black text-slate-900 mb-3 uppercase tracking-tight">Pro access protocol</h1>
+                <p className="text-slate-400 font-bold uppercase text-[10px] tracking-[0.3em]">Credentials verification required for biometric data</p>
+              </div>
+              <div className="hidden md:flex w-20 h-20 bg-slate-50 rounded-3xl items-center justify-center border border-slate-100 italic font-black text-slate-200 text-3xl">
+                AGFC
+              </div>
+            </div>
+
+            {error && (
+              <div className="mb-10 p-6 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-4 text-rose-600 font-bold text-sm">
+                <Shield className="w-6 h-6 flex-shrink-0" />
+                <p>Security Alert: {typeof error === 'string' ? error : 'Failed to transmit application. Please verify connection.'}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                    <Shield className="w-3.5 h-3.5 mr-2 text-sky-400" /> Full Name
+                  </label>
+                  <input
+                    name="name"
+                    type="text"
+                    placeholder="IDENTIFIED OPERATOR"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                    <Mail className="w-3.5 h-3.5 mr-2 text-sky-400" /> Professional Email
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="OPERATOR@AGENCY.PRO"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-sky-500 mb-2">
-                  Professional Email <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
-                  required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                    <Briefcase className="w-3.5 h-3.5 mr-2 text-sky-400" /> Organization
+                  </label>
+                  <input
+                    name="organization"
+                    type="text"
+                    placeholder="SQUAD/INSTITUTION"
+                    value={formData.organization}
+                    onChange={handleChange}
+                    className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                    <Globe className="w-3.5 h-3.5 mr-2 text-sky-400" /> Profile URL
+                  </label>
+                  <input
+                    name="socialUrl"
+                    type="url"
+                    placeholder="HTTPS://LINKEDIN.COM/IN/..."
+                    value={formData.socialUrl}
+                    onChange={handleChange}
+                    className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-sky-500 mb-2">
-                  Organization <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Club, Agency, or Organization Name"
-                  value={organization}
-                  onChange={(e) => setOrganization(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
-                  required
-                />
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-sky-500 mb-2">
-                  Professional Social Media Profile URL <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://linkedin.com/in/yourprofile or https://twitter.com/yourprofile"
-                  value={socialUrl}
-                  onChange={(e) => setSocialUrl(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
-                  required
-                />
-                <p className="text-sm text-slate-500 mt-2">
-                  We use this to verify your professional credentials
-                </p>
-              </div>
-
-              <div className="mb-8">
-                <label className="block text-sm font-semibold text-sky-500 mb-2">
-                  Reason for Application <span className="text-red-600">*</span>
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center">
+                  <MessageSquare className="w-3.5 h-3.5 mr-2 text-sky-400" /> Intent / Mission Briefing
                 </label>
                 <textarea
-                  placeholder="Briefly describe your role and why you need access to Pro View"
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 min-h-32"
+                  name="reason"
+                  placeholder="OBJECTIVE FOR BIOMETRIC ACCESS..."
+                  value={formData.reason}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200 min-h-[160px] resize-none"
                   required
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={!name || !email || !organization || !socialUrl || !reason}
-                className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-colors font-semibold"
-              >
-                Submit Application
-              </button>
+              <div className="pt-6">
+                <button
+                  type="submit"
+                  disabled={loading || !formData.name || !formData.email || !formData.organization || !formData.socialUrl || !formData.reason}
+                  className="w-full bg-slate-900 hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 text-white px-10 py-5 rounded-[1.5rem] transition-all font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-slate-900/20 active:scale-[0.98] duration-200 flex items-center justify-center gap-3"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
+                      Transmitting...
+                    </>
+                  ) : (
+                    <>
+                      Submit Application
+                      <ArrowLeft className="w-4 h-4 rotate-180" />
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
+          </div>
+
+          <div className="mt-12 text-center text-slate-400 font-bold text-[10px] uppercase tracking-widest opacity-50">
+            Encrypted Transmission Secure &copy; AGFC Protocol 2025
           </div>
         </div>
       </main>
 
       <Footer />
-    </>
-  )
+    </div>
+  );
 }

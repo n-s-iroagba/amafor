@@ -152,7 +152,7 @@ export default function RssFeedList() {
             </div>
           </div>
           <Link
-            href="/sports-admin/rss-feeds/new"
+            href="/dashboard/admin/rss-feeds/new"
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-sky-500 to-sky-600 text-white rounded-xl hover:from-sky-600 hover:to-sky-700 transition-all duration-200 shadow-sm hover:shadow-md font-semibold"
           >
             <Plus className="w-4 h-4" />
@@ -260,7 +260,7 @@ export default function RssFeedList() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
-                  href="/sports-admin/rss-feeds/new"
+                  href="/dashboard/admin/rss-feeds/new"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-500 to-sky-600 text-white rounded-xl hover:from-sky-600 hover:to-sky-700 transition-all duration-200 shadow-sm hover:shadow-md font-semibold"
                 >
                   <Plus className="w-4 h-4" />
@@ -327,14 +327,14 @@ export default function RssFeedList() {
 
                       <div className="flex justify-end space-x-3">
                         <Link
-                          href={`/sports-admin/rss-feeds/${feed.id}`}
+                          href={`/dashboard/admin/rss-feeds/${feed.id}`}
                           className="inline-flex items-center gap-1 text-sky-600 hover:text-sky-800 transition-colors text-sm font-medium"
                         >
                           <Eye className="w-4 h-4" />
                           View
                         </Link>
                         <Link
-                          href={`/sports-admin/rss-feeds/${feed.id}/edit`}
+                          href={`/dashboard/admin/rss-feeds/${feed.id}/edit`}
                           className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 transition-colors text-sm font-medium"
                         >
                           <Edit className="w-4 h-4" />
@@ -443,14 +443,14 @@ export default function RssFeedList() {
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <div className="flex justify-end items-center space-x-3 relative">
                             <Link
-                              href={`/sports-admin/rss-feeds/${feed.id}`}
+                              href={`/dashboard/admin/rss-feeds/${feed.id}`}
                               className="inline-flex items-center gap-1 text-sky-600 hover:text-sky-800 transition-colors font-medium"
                             >
                               <Eye className="w-4 h-4" />
                               View
                             </Link>
                             <Link
-                              href={`/sports-admin/rss-feeds/${feed.id}/edit`}
+                              href={`/dashboard/admin/rss-feeds/${feed.id}/edit`}
                               className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 transition-colors font-medium"
                             >
                               <Edit className="w-4 h-4" />

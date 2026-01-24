@@ -1,17 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Save, AlertCircle, Clock, Archive, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { Save, AlertCircle, Clock, Archive, Trash2, ArrowLeft } from 'lucide-react';
 
 export default function RetentionSettings() {
-    const [retentionDays, setRetentionDays] = useState({
-        auditLogs: 365, // BR-SEC-09: 1 year
-        applicationData: 90, // BR-SEC-09: 3 months
-        inactiveAccounts: 730, // 2 years
-    });
+
 
     const [anonymizationEnabled, setAnonymizationEnabled] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const [retentionDays, setRetentionDays] = useState({
+        auditLogs: 365,
+        applicationData: 90
+    });
 
     const handleSave = () => {
         setIsSaving(true);
@@ -22,6 +23,9 @@ export default function RetentionSettings() {
     return (
         <div className="max-w-4xl mx-auto py-8 px-4">
             <header className="mb-8">
+                <Link href="/dashboard/admin/settings" className="inline-flex items-center text-slate-400 font-bold text-xs mb-6 hover:text-blue-500 uppercase tracking-widest transition-colors">
+                    <ArrowLeft className="w-3 h-3 mr-2" /> Back to Settings
+                </Link>
                 <h1 className="text-3xl font-bold text-slate-800 mb-2">Data Retention & Anonymization</h1>
                 <p className="text-slate-600">Configure automated data lifecycle policies per BR-SEC-09.</p>
             </header>

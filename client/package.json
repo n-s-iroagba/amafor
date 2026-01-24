@@ -26,6 +26,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.22.7",
     "@tanstack/react-query": "^5.90.16",
     "@tanstack/react-query-devtools": "^5.91.2",
     "@testing-library/react": "^16.3.1",

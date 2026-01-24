@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 interface Goal {
   id: number;
@@ -28,13 +28,23 @@ interface Goal {
 export default function GoalDetail() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
-  const { data: goal, loading: isLoading } = useGet<any>(API_ROUTES.GOALS.VIEW(id))
+  const goalId = params.goalId as string; // Corrected from params.id
+  const fixtureId = params.fixtureId as string;
+  const leagueId = params.id as string;
+
+  const { data: goal, loading: isLoading } = useGet<Goal>(API_ROUTES.GOALS.VIEW(goalId));
+  const { delete: deleteGoal, isPending: isDeleting } = useDelete((id) => API_ROUTES.GOALS.MUTATE(Number(id)));
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-
-
+  const handleDelete = async () => {
+    try {
+      await deleteGoal(Number(goalId));
+      router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}/goals`);
+    } catch (error) {
+      console.error('Error deleting goal:', error);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -57,7 +67,7 @@ export default function GoalDetail() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-4 sm:mb-6">
           <Link
-            href="/goals"
+            href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}/goals`}
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
           >
             <svg
@@ -94,7 +104,7 @@ export default function GoalDetail() {
               </div>
               <div className="flex space-x-2">
                 <Link
-                  href={`/goals/${goal.id}/edit`}
+                  href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}/goals/${goalId}/edit`}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap"
                 >
                   Edit
@@ -151,27 +161,22 @@ export default function GoalDetail() {
                   <label className="block text-sm font-medium text-sky-700">
                     Fixture
                   </label>
-                  <p className="mt-1 text-sm text-sky-900">
-                    {goal.fixture.homeTeam} vs {goal.fixture.awayTeam}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-sky-700">
-                    Date
-                  </label>
-                  <p className="mt-1 text-sm text-sky-900">
-                    {new Date(goal.fixture.matchDate).toLocaleDateString()}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-sky-700">
-                    Venue
-                  </label>
-                  <p className="mt-1 text-sm text-sky-900">
-                    {goal.fixture.venue}
-                  </p>
+                  {/* Handle optional fixture details safely */}
+                  {goal.fixture ? (
+                    <>
+                      <p className="mt-1 text-sm text-sky-900">
+                        {goal.fixture.homeTeam} vs {goal.fixture.awayTeam}
+                      </p>
+                      <p className="mt-1 text-sm text-sky-900">
+                        {goal.fixture.date ? new Date(goal.fixture.date).toLocaleDateString() : 'Date N/A'}
+                      </p>
+                      <p className="mt-1 text-sm text-sky-900">
+                        {goal.fixture.venue || 'Venue N/A'}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-sm text-gray-500">Fixture details unavailable</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -186,16 +191,7 @@ export default function GoalDetail() {
                   Created
                 </label>
                 <p className="mt-1 text-sm text-sky-900">
-                  {new Date(goal.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-sky-700">
-                  Last Updated
-                </label>
-                <p className="mt-1 text-sm text-sky-900">
-                  {new Date(goal.updatedAt).toLocaleDateString()}
+                  {goal.createdAt ? new Date(goal.createdAt).toLocaleDateString() : 'N/A'}
                 </p>
               </div>
             </div>
@@ -219,12 +215,13 @@ export default function GoalDetail() {
                 >
                   Cancel
                 </button>
-                {/* <button
+                <button
                   onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  disabled={isDeleting}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center justify-center"
                 >
-                {deleting?'Deleting':'Delete'}
-                </button> */}
+                  {isDeleting ? 'Deleting...' : 'Delete'}
+                </button>
               </div>
             </div>
           </div>

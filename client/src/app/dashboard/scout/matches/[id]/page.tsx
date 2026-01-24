@@ -4,19 +4,40 @@ import React, { useState } from 'react';
 import { Play, Pause, SkipBack, SkipForward, ArrowLeft, Shield, Video, Clock, MessageSquare, Plus, Download, BarChart2 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 
 // Changed params to optional to resolve TS error in index.tsx
 export default function FixtureAnalysisPlayer({ params }: { params?: { id: string } }) {
   const urlParams = useParams();
-  const matchId = params?.id || urlParams.id;
+  const matchId = params?.id || (urlParams.id as string);
+
+  const { data: video, loading } = useGet<any>(API_ROUTES.VIDEOS.VIEW(matchId));
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState('34:12');
+  const [currentTime, setCurrentTime] = useState('00:00');
 
   const logs = [
     { time: '12:04', player: 'K. Amadi (#9)', event: 'Shot on Goal (Target)', note: 'Excellent movement off the ball.' },
     { time: '28:45', player: 'C. Okafor (#8)', event: 'Key Pass', note: 'Split defense with low driven ball.' },
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#1a2e2e] flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#87CEEB]/20 border-t-[#87CEEB] rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!video) {
+    return (
+      <div className="min-h-screen bg-[#1a2e2e] flex flex-col items-center justify-center text-white">
+        <h2 className="text-2xl font-black uppercase mb-4">Archive Not Found</h2>
+        <Link href="/dashboard/scout/matches" className="text-[#87CEEB] text-xs font-black uppercase tracking-widest hover:underline">Return to Library</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#1a2e2e] text-white">
@@ -28,7 +49,7 @@ export default function FixtureAnalysisPlayer({ params }: { params?: { id: strin
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="text-2xl font-black uppercase tracking-tight">GLADIATORS VS PORT HARCOURT ({matchId})</h1>
+              <h1 className="text-2xl font-black uppercase tracking-tight">{video.title}</h1>
               <div className="flex items-center space-x-4">
                 <span className="text-[10px] font-black text-[#87CEEB] uppercase tracking-widest">ISO 27001 PROTECTED STREAM</span>
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">1080P | 60FPS</span>
@@ -46,7 +67,7 @@ export default function FixtureAnalysisPlayer({ params }: { params?: { id: strin
           {/* Main Player Area */}
           <div className="flex-1 flex flex-col min-w-0">
             <div className="flex-1 bg-black rounded-[2rem] overflow-hidden relative group">
-              <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80" className="w-full h-full object-cover opacity-60" />
+              <img src={video.thumbnail || "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80"} className="w-full h-full object-cover opacity-60" alt={video.title} />
               <div className="absolute inset-0 flex items-center justify-center">
                 <button onClick={() => setIsPlaying(!isPlaying)} className="w-24 h-24 bg-[#87CEEB] rounded-full flex items-center justify-center text-[#2F4F4F] shadow-2xl hover:scale-110 transition-transform">
                   {isPlaying ? <Pause className="w-10 h-10" /> : <Play className="w-10 h-10 ml-2" />}
@@ -57,10 +78,10 @@ export default function FixtureAnalysisPlayer({ params }: { params?: { id: strin
                 <div className="flex items-center space-x-6 mb-4">
                   <span className="font-mono text-2xl font-black text-[#87CEEB]">{currentTime}</span>
                   <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden relative group/seek">
-                    <div className="absolute left-0 top-0 h-full bg-[#87CEEB]" style={{ width: '38%' }} />
-                    <div className="absolute left-[38%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-xl opacity-0 group-hover/seek:opacity-100 transition-opacity" />
+                    <div className="absolute left-0 top-0 h-full bg-[#87CEEB]" style={{ width: '0%' }} />
+                    <div className="absolute left-[0%] top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-xl opacity-0 group-hover/seek:opacity-100 transition-opacity" />
                   </div>
-                  <span className="font-mono text-gray-500">94:00</span>
+                  <span className="font-mono text-gray-500">{video.duration || '00:00'}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-8">

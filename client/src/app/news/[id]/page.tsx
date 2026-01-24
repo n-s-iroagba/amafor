@@ -2,42 +2,34 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Article} from '@/features/articles/types';
+import { Article } from '@/features/articles/types';
 import { cleanText } from '@/features/articles/utils';
-import api from '@/shared/lib/axios';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
-
-export default function ArticlesPage() {
-  const { id } = useParams();
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+/**
+ * @requirements REQ-PUB-03
+ * @description News detail page showing full article content.
+ * Fetches data using useGet and project-standard routes.
+ */
+export default function NewsDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    if (id) fetchArticle();
-  }, [id]);
+  const {
+    data: article,
+    loading,
+    error,
+    refetch,
+  } = useGet<Article>(API_ROUTES.ARTICLES.VIEW(id));
 
-  const fetchArticle = async () => {
-    try {
-      setError(null);
-      const res = await api.get(`/articles/${id}`);
-      setArticle(res.data);
-    } catch (err) {
-      console.error('Error fetching article:', err);
-      setError('Failed to load article. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  };
   const removeImageTags = (content: string) => {
     return content.replace(/<img[^>]*>/gi, '');
   };
 
 
 
-  console.log(article);
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100">
@@ -77,8 +69,7 @@ export default function ArticlesPage() {
             {error && (
               <button
                 onClick={() => {
-                  setLoading(true);
-                  fetchArticle();
+                  refetch();
                 }}
                 className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors duration-200"
               >
@@ -96,11 +87,11 @@ export default function ArticlesPage() {
       <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
         <div className="max-w-4xl mx-auto">
           {/* Article Title */}
-             
+
           <h1 className="text-cetext-3xl sm:text-4xl lg:text-5xl font-bold text-sky-800 leading-tight break-words mb-6 min-h-[3rem]">
-           {cleanText(article.title)}
+            {cleanText(article.title)}
           </h1>
-         
+
           <div
             className="w-full h-full bg-cover bg-center rounded-lg transition-transform duration-500 group-hover:scale-105"
             style={{
@@ -127,7 +118,7 @@ export default function ArticlesPage() {
                 />
               </div>
 
-            
+
             </div>
           </article>
 

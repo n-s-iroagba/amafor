@@ -308,7 +308,7 @@
 
 ### S-023: Donation Checkout
 - **Screen ID**: S-023
-- **File Path**: `/support/donate/checkout/page.tsx`
+- **File Path**: `/patron/checkout/page.tsx`
 - **Screen Type**: Form
 - **User Role/Persona**: Supporters
 - **Primary Action**: Complete donation
@@ -322,7 +322,7 @@
 
 ### S-024: Patron Checkout
 - **Screen ID**: S-024
-- **File Path**: `/support/patron/checkout/page.tsx`
+- **File Path**: `/patron/checkout/page.tsx`
 - **Screen Type**: Form
 - **User Role/Persona**: Supporters
 - **Primary Action**: Become a patron (recurring support)

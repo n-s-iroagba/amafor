@@ -45,7 +45,9 @@ export default function NewGoal() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const { post, isPending: isSubmitting } = usePost(`/goals/${fixtureId}`);
+  const { post, isPending: isSubmitting } = usePost(
+    API_ROUTES.GOALS.CREATE(fixtureId as string)
+  );
 
   const {
     data: amaforPlayers,
@@ -124,8 +126,9 @@ export default function NewGoal() {
             : null,
       });
 
-      // ✅ now router is actually used
-      router.push(`/sports-admin/goals/details/${response.id}`);
+      const leagueId = params.id as string;
+      const fId = params.fixtureId as string;
+      router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fId}/goals`);
     } catch (error) {
       console.error('Error creating goal:', error);
     }

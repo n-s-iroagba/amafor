@@ -1,12 +1,15 @@
 import { Router } from 'express';
 import { AdvertisingController } from '../controllers/AdvertisingController';
 import { validate } from '../middleware/validate';
+import { validate } from '../middleware/validate';
 import { authenticate, authorize } from '../middleware/auth';
 import { advertisementSchema } from '../validation-schema/advertisementSchema';
+import { AdCreativeController } from '../controllers/AdCreativeController';
 import { asyncHandler } from '../middleware/asyncHandler';
 
 const router = Router();
 const controller = new AdvertisingController();
+const creativeController = new AdCreativeController();
 
 // Create Campaign
 router.post(
@@ -34,6 +37,14 @@ router.delete(
     asyncHandler(controller.deleteCampaign)
 );
 
+// Get Campaign Creatives
+router.get(
+    '/campaigns/:id/creatives',
+    authenticate,
+    authorize(['advertiser', 'admin', 'commercial_manager']),
+    asyncHandler(creativeController.getCreativesByCampaign.bind(creativeController))
+);
+
 // Get Active Campaigns
 router.get(
     '/campaigns/active',
@@ -56,6 +67,14 @@ router.get(
     authenticate,
     authorize(['advertiser', 'admin', 'commercial_manager']),
     asyncHandler(controller.getExpiredCampaigns)
+);
+
+// Get Advertiser Reports
+router.get(
+    '/reports',
+    authenticate,
+    authorize(['advertiser', 'admin', 'commercial_manager']),
+    asyncHandler(controller.getAdvertiserReports)
 );
 
 // Ad Serving (Public)

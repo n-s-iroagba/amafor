@@ -38,10 +38,19 @@ export interface PlayerAttributes {
   updatedById: string;
   createdAt: Date;
   updatedAt: Date;
+  // Stats
+  appearances: number;
+  goals: number;
+  assists: number;
+  cleanSheets: number;
+  yellowCards: number;
+  redCards: number;
+  minutesPlayed: number;
+
   deletedAt?: Date;
 }
 
-export interface PlayerCreationAttributes extends Optional<PlayerAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'previousClubs' | 'metadata'> {}
+export interface PlayerCreationAttributes extends Optional<PlayerAttributes, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'previousClubs' | 'metadata'> { }
 
 export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> implements PlayerAttributes {
   public id!: string;
@@ -65,6 +74,15 @@ export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> im
   public updatedById!: string;
   public createdAt!: Date;
   public updatedAt!: Date;
+  // Stats
+  public appearances!: number;
+  public goals!: number;
+  public assists!: number;
+  public cleanSheets!: number;
+  public yellowCards!: number;
+  public redCards!: number;
+  public minutesPlayed!: number;
+
   public deletedAt?: Date;
 }
 
@@ -119,7 +137,7 @@ Player.init(
       type: DataTypes.ENUM(...Object.values(PlayerStatus)),
       allowNull: false,
       defaultValue: PlayerStatus.ACTIVE
-    }, 
+    },
     joinedDate: {
       type: DataTypes.DATEONLY,
       allowNull: true
@@ -164,19 +182,55 @@ Player.init(
     },
     updatedById: {
       type: DataTypes.UUID
+    },
+    // Stats
+    appearances: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    goals: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    assists: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    cleanSheets: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    yellowCards: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    redCards: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    minutesPlayed: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     }
   },
   {
     sequelize,
     tableName: 'players',
     timestamps: true,
-     paranoid: true,
-        indexes: [
-          { fields: ['name'] },
-          { fields: ['position'] },
-          { fields: ['status'] },
-          { fields: ['createdAt'] }
-        ]
+    paranoid: true,
+    indexes: [
+      { fields: ['name'] },
+      { fields: ['position'] },
+      { fields: ['status'] },
+      { fields: ['createdAt'] }
+    ]
   }
 );
 

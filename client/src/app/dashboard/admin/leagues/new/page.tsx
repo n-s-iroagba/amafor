@@ -37,7 +37,7 @@ export default function NewLeague() {
         isFriendly,
       });
 
-      router.push('/sports-admin/leagues');
+      router.push('/dashboard/admin/leagues');
     } catch (error) {
       console.error('Error creating league:', error);
     }

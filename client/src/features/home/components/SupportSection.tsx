@@ -1,15 +1,15 @@
 'use client';
 
 import Link from 'next/link'
-import { SupporterWithTier } from '@/features/supporter/types';
+import { SupporterWithTier } from '@/features/patron/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
 export default function SupportSection() {
   const { data: topPatrons, loading } = useGet<SupporterWithTier[]>(
     '/api/supporters/top',
-    { 
+    {
       params: { limit: 4 },
-      enabled: true 
+      enabled: true
     }
   )
 
@@ -41,19 +41,19 @@ export default function SupportSection() {
             Your contribution helps develop young talent, improve facilities, and serve our community
           </p>
         </div>
-        
+
         {/* Top Patrons Grid */}
         {topPatrons && topPatrons.length > 0 && (
           <div className="mb-12 sm:mb-14 lg:mb-16">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
               {topPatrons.map((patron) => (
-                <div 
-                  key={patron.id} 
+                <div
+                  key={patron.id}
                   className="group relative"
                 >
                   {/* Glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
-                  
+
                   {/* Card */}
                   <div className="relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 group-hover:border-sky-500 group-hover:-translate-y-2">
                     {/* Avatar */}
@@ -65,28 +65,28 @@ export default function SupportSection() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Badge */}
                     <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
                       <div className="bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-md">
                         ⭐
                       </div>
                     </div>
-                    
+
                     {/* Name */}
                     <h3 className="font-black text-gray-900 text-sm sm:text-base lg:text-lg mb-1 text-center group-hover:text-sky-600 transition-colors truncate px-1">
                       {patron.name}
                     </h3>
-                    
+
                     {/* Tier */}
                     <div className="flex items-center justify-center gap-1.5 sm:gap-2">
                       <div className="h-px w-3 sm:w-4 bg-sky-500"></div>
                       <p className="text-xs sm:text-sm text-sky-600 font-bold uppercase tracking-wider truncate">
-                        {patron.tier.name}
+                        {patron.subscription.tier.replace(/_/g, ' ')}
                       </p>
                       <div className="h-px w-3 sm:w-4 bg-sky-500"></div>
                     </div>
-                    
+
                     {/* Decorative corner */}
                     <div className="absolute bottom-0 right-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-tl from-sky-500/10 to-transparent rounded-tl-full"></div>
                   </div>
@@ -95,7 +95,7 @@ export default function SupportSection() {
             </div>
           </div>
         )}
-        
+
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 px-4">
           <Link

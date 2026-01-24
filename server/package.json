@@ -1,7 +1,7 @@
 {
-  "name": "amafor-gladiators-api",
+  "name": "amafor-gladiators-server",
   "version": "1.0.0",
-  "description": "Amafor Gladiators Digital Ecosystem API",
+  "description": "Amafor Gladiators Digital Ecosystem Server",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
@@ -35,10 +35,8 @@
     "express-rate-limit": "^6.10.0",
     "helmet": "^7.0.0",
     "ioredis": "^5.9.2",
-    "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
-    "multer": "^1.4.5-lts.1",
     "mysql2": "^3.16.0",
     "opentelemetry": "^0.1.0",
     "paystack": "^2.0.1",
@@ -71,6 +69,6 @@
     "tsc-alias": "^1.8.16",
     "typescript": "^5.2.2"
   },
-  "author": "",
+  "author": "Nnamdi Solomon Iroagba",
   "license": "ISC"
 }

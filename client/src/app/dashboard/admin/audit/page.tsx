@@ -28,9 +28,11 @@ export default function AuditTrailDashboard() {
   const [dateTo, setDateTo] = useState('');
   const [exporting, setExporting] = useState(false);
 
-  const { data: logs, loading: logsLoading } = useGet<AuditLog[]>(
+  const { data: response, loading: logsLoading } = useGet<any>(
     API_ROUTES.AUDIT.LIST
   );
+
+  const logs: AuditLog[] = response?.data || [];
 
   const { post: exportLogs } = usePost<{ dateFrom: string; dateTo: string; format: string }, Blob>(
     API_ROUTES.AUDIT.EXPORT
@@ -39,7 +41,7 @@ export default function AuditTrailDashboard() {
   // Calculate stats from logs
   const totalLogs = logs?.length || 0;
   const today = new Date().toISOString().split('T')[0];
-  const todayLogs = logs?.filter(log => log.timestamp.startsWith(today)).length || 0;
+  const todayLogs = logs?.filter((log: AuditLog) => log.timestamp.startsWith(today)).length || 0;
   const avgLogsPerDay = totalLogs > 0 ? Math.round(totalLogs / 30) : 0;
 
   const stats = [

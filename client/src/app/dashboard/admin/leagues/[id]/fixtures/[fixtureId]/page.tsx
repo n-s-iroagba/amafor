@@ -3,44 +3,32 @@
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { Lineup } from '@/features/lineup/types';
-import api from '@/shared/lib/axios';
-import { Loader2, Trash2 } from 'lucide-react';
+import { Loader2, Trash2, ArrowLeft, Calendar, MapPin, Trophy, Edit3 } from 'lucide-react';
+import Image from 'next/image';
+import LineupList from '@/features/lineup/components/LineupList';
+import LineupForm from '@/features/lineup/components/LineupForm';
+import { Fixture, FixtureStatus } from '@/types';
 
-
-interface Fixture {
-  id: number;
-  leagueId: number;
-  date: string;
-  homeTeam: string;
-  awayTeam: string;
-  homeTeamLogo: string;
-  awayTeamLogo: string;
-  venue: string;
-  status: 'scheduled' | 'played' | 'cancelled';
-  createdAt: string;
-  updatedAt: string;
+interface Goal {
+  id: string;
+  scorer: string;
+  isPenalty: boolean;
+}
+export interface FixtureDetail extends Fixture {
+  goals: Goal[];
   league: {
     name: string;
     season: string;
     isFriendly: boolean;
   };
-  goals: Goal[];
-  matchSummary?: {
-    id: number;
-    summary: string;
-  };
   images?: FixtureImage[];
-  lineup: Lineup[];
-}
-interface Goal {
-  isPenalty: boolean
 }
 
 interface FixtureImage {
-  id: number;
+  id: string;
   imageUrl: string;
   caption?: string;
 }
@@ -49,14 +37,26 @@ export default function FixtureDetail() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
+  const fixtureId = params.fixtureId as string;
+  const leagueId = params.id as string;
 
   const [activeTab, setActiveTab] = useState<
     'overview' | 'goals' | 'summary' | 'gallery' | 'lineup'
   >('overview');
-  const [isDeleting, setIsDeleting] = useState(false);
+
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const { data: fixture, loading, refetch } = useGet<Fixture>(
-    API_ROUTES.FIXTURES.VIEW(id as string)
+
+  // Note: API_ROUTES.FIXTURES.VIEW uses /fixtures/one/${id}
+  const { data: fixture, loading, refetch } = useGet<FixtureDetail>(
+    API_ROUTES.FIXTURES.VIEW(fixtureId)
+  );
+
+  const { delete: deleteFixture, isPending: isDeleting } = useDelete(
+    (id) => API_ROUTES.FIXTURES.DELETE(Number(id))
+  );
+
+  const { data: lineup, loading: lineupLoading } = useGet<Lineup[]>(
+    fixture ? API_ROUTES.LINEUP.BY_FIXTURE(fixture.id) : ''
   );
 
   const getStatusColor = (status: string) => {
@@ -82,16 +82,14 @@ export default function FixtureDetail() {
   const handleDelete = async () => {
     if (!fixture) return;
 
-    setIsDeleting(true);
     try {
-      await api.delete(API_ROUTES.FIXTURES.DELETE(fixture.id));
-      router.push('/sports-admin/fixtures');
+      await deleteFixture(fixture.id);
+      router.push(`/dashboard/admin/leagues/${leagueId}/fixtures`);
       router.refresh();
     } catch (error) {
       console.error('Error deleting fixture:', error);
       alert('Failed to delete fixture. Please try again.');
     } finally {
-      setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
   };
@@ -104,21 +102,28 @@ export default function FixtureDetail() {
     }
   };
 
+  // Lineup Handlers
+  const [editingPlayer, setEditingPlayer] = useState<Lineup | null>(null);
+  const handleEdit = (player: Lineup) => setEditingPlayer(player);
+  const handleDeleteLineup = (player: Lineup) => { /* Implement delete logic if needed or pass to component */ };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 flex items-center justify-center">
-        <div className="text-sky-700">Loading fixture details...</div>
+        <div className="flex items-center gap-2 text-sky-700 font-medium">
+          <Loader2 className="w-5 h-5 animate-spin" /> Loading fixture details...
+        </div>
       </div>
     );
   }
 
   if (!fixture) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 flex items-center justify-center">
-        <div className="text-sky-700">Fixture not found</div>
+      <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 flex flex-col items-center justify-center">
+        <div className="text-sky-700 font-medium mb-4">Fixture not found</div>
         <Link
-          href="/sports-admin/fixtures"
-          className="mt-4 text-sky-600 hover:text-sky-800"
+          href={`/dashboard/admin/leagues/${leagueId}/fixtures`}
+          className="px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
         >
           Back to fixtures
         </Link>
@@ -142,7 +147,7 @@ export default function FixtureDetail() {
     },
     {
       key: 'lineup',
-      label: `Lineup (${fixture.lineup?.length || 0})`,
+      label: `Lineup (${lineup?.length || 0})`,
       alwaysShow: true
     },
     {
@@ -157,45 +162,28 @@ export default function FixtureDetail() {
     }
   ];
 
-  // Filter tabs based on conditions
-  const visibleTabs = tabs.filter(tab =>
-    tab.alwaysShow
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 py-4 sm:py-8 px-3 sm:px-4">
       <div className="max-w-6xl mx-auto">
         {/* Back link */}
         <div className="mb-4 sm:mb-6">
           <Link
-            href="/sports-admin/fixtures"
-            className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
+            href={`/dashboard/admin/leagues/${leagueId}/fixtures`}
+            className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base group"
           >
-            <svg
-              className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
+            <ArrowLeft className="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" />
             Back to fixtures
           </Link>
         </div>
 
         {/* Fixture card */}
         <div className="bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden mb-6">
-          <div className="p-4 sm:p-6 border-b border-sky-200 flex justify-between items-start">
+          <div className="p-4 sm:p-6 border-b border-sky-200 flex flex-col sm:flex-row justify-between items-start gap-4">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
                 Fixture Details
               </h2>
-              <div className="flex items-center mt-2 space-x-2 flex-wrap">
+              <div className="flex items-center mt-2 space-x-2 flex-wrap gap-y-2">
                 <span
                   className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(fixture.status)}`}
                 >
@@ -215,12 +203,10 @@ export default function FixtureDetail() {
             {/* Action Buttons */}
             <div className="flex gap-2">
               <Link
-                href={`/sports-admin/fixtures/${fixture.id}/edit`}
+                href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}/edit`}
                 className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base flex items-center gap-2"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
+                <Edit3 className="w-4 h-4" />
                 Edit
               </Link>
 
@@ -259,94 +245,155 @@ export default function FixtureDetail() {
           </div>
 
           {/* Teams and score */}
-          {/* <div className="p-6 sm:p-8 bg-sky-50 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4 flex-1">
-              <Image
-                height={50}
-                width={50}
-                unoptimized
-                src={fixture.homeTeamLogo}
-                alt={fixture.homeTeam}
-                className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
-              />
-              <h3 className="text-lg sm:text-xl font-bold text-sky-900">
+          <div className="p-6 sm:p-8 bg-sky-50 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col items-center gap-2 flex-1">
+              {fixture.homeTeamLogo && (
+                <Image
+                  height={80}
+                  width={80}
+                  unoptimized
+                  src={fixture.homeTeamLogo}
+                  alt={fixture.homeTeam}
+                  className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
+                />
+              )}
+              <h3 className="text-lg sm:text-xl font-bold text-sky-900 text-center">
                 {fixture.homeTeam}
               </h3>
             </div>
-            <div className="text-center">
-              {fixture.status === 'played' ? (
-                <div className="text-3xl sm:text-4xl font-bold text-sky-900">
+
+            <div className="text-center px-4">
+              {fixture.status === FixtureStatus.COMPLETED ? (
+                <div className="text-3xl sm:text-4xl ont-bold text-sky-900 mb-2">
                   {score.home} - {score.away}
                 </div>
               ) : (
-                <div className="text-lg sm:text-xl font-semibold text-sky-700">
+                <div className="text-xl sm:text-2xl font-bold text-sky-400 mb-2">
                   VS
                 </div>
               )}
-              <div className="text-sm text-sky-600 mt-1">
-                {new Date(fixture.matchDate).toLocaleString()}
+              <div className="flex flex-col items-center gap-1 text-sm text-sky-700">
+                <div className="flex items-center gap-1">
+                  <Calendar className="w-4 h-4" />
+                  {new Date(fixture.matchDate).toLocaleString()}
+                </div>
+                {fixture.venue && (
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-4 h-4" />
+                    {fixture.venue}
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex items-center gap-4 flex-1 justify-end">
-                  <Image
-                height={50}
-                width={50}
-                unoptimized
-                src={fixture.awayTeamLogo}
-                alt={fixture.awayTeam}
-                className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
-              />
-              <h3 className="text-lg sm:text-xl font-bold text-sky-900">
+
+            <div className="flex flex-col items-center gap-2 flex-1">
+              {fixture.awayTeamLogo && (
+                <Image
+                  height={80}
+                  width={80}
+                  unoptimized
+                  src={fixture.awayTeamLogo}
+                  alt={fixture.awayTeam}
+                  className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
+                />
+              )}
+              <h3 className="text-lg sm:text-xl font-bold text-sky-900 text-center">
                 {fixture.awayTeam}
               </h3>
-          
             </div>
-          </div> */}
+          </div>
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden">
+        <div className="bg-white rounded-lg sm:rounded-xl shadow-md sm:shadow-lg overflow-hidden min-h-[400px]">
           <div className="border-b border-sky-200 flex overflow-x-auto">
-            {visibleTabs.map((tab) => (
+            {tabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key as any)}
-                className={`py-4 px-6 text-sm font-medium border-b-2 whitespace-nowrap ${activeTab === tab.key
-                  ? 'border-sky-500 text-sky-600'
-                  : 'border-transparent text-sky-500 hover:text-sky-600 hover:border-sky-300'
+                className={`py-4 px-6 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${activeTab === tab.key
+                  ? 'border-sky-500 text-sky-600 bg-sky-50'
+                  : 'border-transparent text-sky-500 hover:text-sky-600 hover:bg-sky-50'
                   }`}
               >
                 {tab.label}
               </button>
             ))}
           </div>
-          {/* 
+
           <div className="p-4 sm:p-6">
             {activeTab === 'overview' && (
-              <div>
-                <h3 className="text-lg font-medium text-sky-800">
-                  Venue:
-                </h3>
-                <p className="text-sm text-sky-700 mt-2">{fixture.venue}</p>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-sky-50 p-6 rounded-xl">
+                  <h3 className="font-semibold text-sky-900 mb-4 flex items-center gap-2">
+                    <MapPin className="w-5 h-5" /> Venue Details
+                  </h3>
+                  <p className="text-sky-800">{fixture.venue || 'No venue specified'}</p>
+                </div>
+                <div className="bg-sky-50 p-6 rounded-xl">
+                  <h3 className="font-semibold text-sky-900 mb-4 flex items-center gap-2">
+                    <Trophy className="w-5 h-5" /> Match Info
+                  </h3>
+                  <p className="text-sky-800">League: {fixture.league.name} ({fixture.league.season})</p>
+                  <p className="text-sky-800 mt-2">Status: <span className="capitalize">{fixture.status}</span></p>
+                </div>
               </div>
             )}
 
-            {activeTab === 'goals' && <GoalsList fixture={fixture} />}
-            
-            {activeTab === 'lineup' && <FixtureLineup fixtureId={Number(id)} />}
-            
+            {activeTab === 'goals' && (
+              <div className="text-center py-12 text-gray-500">
+                <Trophy className="w-12 h-12 mx-auto text-gray-300 mb-3" />
+                <p>Goals management coming soon</p>
+              </div>
+            )}
+
+            {activeTab === 'lineup' && (
+              <div>
+                {lineup && fixture && (
+                  <div className="space-y-6">
+                    <LineupList
+                      lineup={lineup}
+                      fixture={fixture}
+                      onEdit={handleEdit}
+                      onDelete={handleDeleteLineup}
+                    />
+                    {editingPlayer && (
+                      <div className="mt-8 pt-8 border-t border-gray-100">
+                        <h3 className="font-bold text-lg mb-4">Edit Player</h3>
+                        <LineupForm fixtureId={fixture.id} activeForm="edit" />
+                      </div>
+                    )}
+                  </div>
+                )}
+                {(!lineup || lineup.length === 0) && (
+                  <div className="max-w-xl mx-auto">
+                    <LineupForm fixtureId={fixture?.id} activeForm="bulk" />
+                  </div>
+                )}
+              </div>
+            )}
+
             {activeTab === 'summary' && (
-             (
-                <AdminFixtureSummary fixtureId={fixture.id} />
-              )
+              <div className="text-center py-12 text-gray-500">
+                <Edit3 className="w-12 h-12 mx-auto text-gray-300 mb-3" />
+                <p>Match summary management coming soon</p>
+              </div>
             )}
- 
+
             {activeTab === 'gallery' && (
-           (
-                <FixtureImagesList fixtureId={fixture.id} />
-              ) 
+              <div className="text-center py-12 text-gray-500">
+                <Image
+                  width={48}
+                  height={48}
+                  src="/placeholder.png"
+                  alt=""
+                  className="w-12 h-12 mx-auto opacity-20 mb-3"
+                  unoptimized
+                />
+                <p>Gallery management coming soon</p>
+              </div>
             )}
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

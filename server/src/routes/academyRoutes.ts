@@ -1,17 +1,10 @@
-import { Router } from 'express';
-import { AcademyController } from '../controllers/AcademyController';
-import { authMiddleware, rbacMiddleware } from '../middlewares';
+import express from 'express';
 
-const router = Router();
-const controller = new AcademyController();
+const router = express.Router();
 
-// Public
-router.get('/news', controller.getAcademyNews);
-router.post('/register', controller.registerTrialist);
-
-// Protected
-router.use(authMiddleware);
-router.get('/applications', rbacMiddleware(['admin', 'academy_manager']), controller.listApplications);
-router.patch('/applications/:id', rbacMiddleware(['admin', 'academy_manager']), controller.updateApplicationStatus);
+// Placeholder routes
+router.get('/', (req, res) => {
+    res.json({ message: 'Academy routes working' });
+});
 
 export default router;

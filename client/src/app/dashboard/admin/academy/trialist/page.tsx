@@ -39,10 +39,10 @@ export default function TrialistsList() {
   const [deletingId, setDeletingId] = useState<string>('');
 
   const { data, refetch, loading } = useGet<TrialistResponse>(
-    API_ROUTES.COACHES.LIST
+    API_ROUTES.TRIALISTS.LIST
   );
   const { delete: deleteTrialist, isPending: deleteLoading } = useDelete(
-    API_ROUTES.TRIALISTS.MUTATE(deletingId)
+    API_ROUTES.TRIALISTS.LIST
   );
 
   const trialists = data?.data;
@@ -190,7 +190,7 @@ export default function TrialistsList() {
 
         {/* Add Trialist Button */}
         <Link
-          href="/sports-admin/trialist/new"
+          href="/dashboard/admin/academy/trialist/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-green-700 text-white font-medium rounded-lg shadow hover:from-emerald-700 hover:to-green-800 transition-all duration-300"
         >
           <Plus className="w-5 h-5" />
@@ -257,14 +257,14 @@ export default function TrialistsList() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <Link
-                          href={`/trialists/${trialist.id}`}
+                          href={`/dashboard/admin/academy/trialist/${trialist.id}`}
                           className="inline-flex items-center gap-1 px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition"
                         >
                           <Eye className="w-3 h-3" />
                           View
                         </Link>
                         <Link
-                          href={`/sports-admin/trialist/${trialist.id}/edit`}
+                          href={`/dashboard/admin/academy/trialist/${trialist.id}/edit`}
                           className="inline-flex items-center gap-1 px-3 py-1 text-xs bg-emerald-100 text-emerald-700 rounded-md hover:bg-emerald-200 transition"
                         >
                           <Edit className="w-3 h-3" />
@@ -305,7 +305,7 @@ export default function TrialistsList() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             {!(searchTerm || statusFilter !== 'all' || positionFilter !== 'all') && (
               <Link
-                href="/sports-admin/trialist/new"
+                href="/dashboard/admin/academy/trialist/new"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition-colors"
               >
                 <Plus className="w-5 h-5" />

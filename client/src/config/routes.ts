@@ -104,6 +104,7 @@ export const API_ROUTES = {
       DELETE: (id: string | number) => `/ads/creatives/${id}`,
     },
     ZONES: {
+      LIST: '/ads/zones',
       ADS_FOR_ZONE: (zoneIdentifier: string) =>
         `/ads/zones/${zoneIdentifier}/ads`,
     },
@@ -129,7 +130,9 @@ export const API_ROUTES = {
     UN_PUBLISHED: '/articles/unpublished',
     TAG: (tag: string) => `/articles/tag/${tag}`,
     SEARCH: '/articles/search',
-    POPULAR_TAGS: '/articles/popular-tags'
+
+    POPULAR_TAGS: '/articles/popular-tags',
+    ANALYTICS: '/articles/analytics',
   },
   FEEDS: {
     CREATE: `/feeds`,
@@ -137,12 +140,17 @@ export const API_ROUTES = {
     LIST: `/feeds`,
     VIEW: (id: string) => `/feeds/${id}`,
   },
+  FEATURED_NEWS: {
+    HOME_PAGE: '/featured-news/homepage',
+    LIST: '/featured-news',
+  },
 
   COACHES: {
-    CREATE: `/coaches`,
-    MUTATE: (id: string | number) => `/coaches/${id}`,
-    LIST: `/coaches`,
-    VIEW: (id: string) => `/coaches/${id}`,
+    CREATE: `/academy-staff`,
+    MUTATE: (id: string | number) => `/academy-staff/${id}`,
+    LIST: `/academy-staff`,
+    VIEW: (id: string) => `/academy-staff/${id}`,
+    DELETE: (id: string | number) => `/academy-staff/${id}`,
   },
 
   STAFF: {
@@ -155,7 +163,9 @@ export const API_ROUTES = {
   LEAGUES: {
     CREATE: `/leagues`,
     MUTATE: (id: number | null) => `/leagues/${id}`,
-    LIST: `/leagues/all-leagues`,
+    LIST: `/leagues`,
+    TABLES: `/leagues/tables`,
+    TABLE: (id: string | number) => `/leagues/${id}/table`,
     VIEW: (id: string) => `/leagues/${id}`,
     STATISTICS: (id: string) => `/leagues/${id}/statistics`,
   },
@@ -163,7 +173,7 @@ export const API_ROUTES = {
   GOALS: {
     CREATE: (fixtureId: string | number) => `/goals/${fixtureId}`,
     MUTATE: (id: number | null) => `/goals/${id}`,
-    LIST: (fixtureId: string) => `/goals/${fixtureId}`,
+    LIST: (fixtureId: string) => `/goals/fixture/${fixtureId}`,
     VIEW: (id: string) => `/goals/${id}`,
   },
   PLAYERS: {
@@ -185,8 +195,8 @@ export const API_ROUTES = {
     DELETE: (id: string | number) => `/users/${id}`,
     LIST: `/users`,
     VIEW: (id: string | number) => `/users/${id}`,
-    PENDING_ADVERTISERS: `/users/pending-advertisers`,
-    APPROVE: (id: string | number) => `/users/${id}/approve`,
+    PENDING_ADVERTISERS: '/users/pending-advertisers',
+    VERIFY: (id: string | number) => `/users/${id}/verify`,
   },
   MATCH_SUMMARY: {
     CREATE: (fixtureId: string) => `/match-summary/${fixtureId}`,
@@ -208,6 +218,7 @@ export const API_ROUTES = {
     UPDATE: (id: number) => `/patrons/${id}`,
     DELETE: (id: number) => `/patrons/${id}`,
     BY_POSITION: (position: number) => `/patrons/position/${position}`,
+    PACKAGES: '/patrons/packages',
   },
 
   FIXTURES: {
@@ -222,6 +233,7 @@ export const API_ROUTES = {
     UPDATE: (id: string | number) => `/fixtures/${id}`, // PUT update
     UPDATE_STATUS: (id: string | number) => `/fixtures/${id}/status`, // PATCH update status
     DELETE: (id: string | number) => `/fixtures/${id}`,
+    GALLERY: '/fixtures/gallery', // Custom endpoint for gallery view
 
   },
 
@@ -268,6 +280,7 @@ export const API_ROUTES = {
       VIEW: (id: string | number) => `/advertiser/campaigns/${id}`,
       UPDATE: (id: string | number) => `/advertiser/campaigns/${id}`,
       DELETE: (id: string | number) => `/advertiser/campaigns/${id}`,
+      CREATIVES: (id: string | number) => `/advertiser/campaigns/${id}/creatives`,
     },
     DISPUTES: {
       CREATE: '/advertiser/disputes',
@@ -275,7 +288,9 @@ export const API_ROUTES = {
       VIEW: (id: string | number) => `/advertiser/disputes/${id}`,
       UPDATE: (id: string | number) => `/advertiser/disputes/${id}`,
     },
+    REPORTS: '/ads/reports',
   },
+  REPORTS: '/ads/reports',
 
   ANALYTICS: {
     DASHBOARD: '/analytics/dashboard',
@@ -283,17 +298,17 @@ export const API_ROUTES = {
   },
 
   AUDIT: {
-    LIST: '/audit-logs',
-    EXPORT: '/audit-logs/export',
+    LIST: '/system/audit',
+    EXPORT: '/system/audit/export',
     ENTITY_HISTORY: (entityType: string, entityId: string) =>
-      `/audit-logs/${entityType}/${entityId}`,
+      `/system/audit/${entityType}/${entityId}`,
   },
 
   BACKUPS: {
-    LIST: '/backups',
-    CREATE: '/backups',
-    DOWNLOAD: (id: string | number) => `/backups/${id}/download`,
-    DELETE: (id: string | number) => `/backups/${id}`,
+    LIST: '/system/backups',
+    CREATE: '/system/backups',
+    DOWNLOAD: (id: string | number) => `/system/backups/${id}/download`,
+    DELETE: (id: string | number) => `/system/backups/${id}`,
   },
 
   NOTIFICATIONS: {
@@ -306,5 +321,12 @@ export const API_ROUTES = {
     REPORTS: '/scout/reports',
     RECENT_VIEWS: '/scout/recent-views',
     PLAYER_VIEW: (id: string | number) => `/scout/view/${id}`,
+    APPLY: '/scout/applications',
+  },
+  HEALTH: {
+    STATUS: '/system/health',
+    DIAGNOSTIC: '/system/diagnostic',
+    DB: '/system/health/db',
+    REDIS: '/system/health/redis',
   },
 };

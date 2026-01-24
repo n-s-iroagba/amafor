@@ -109,7 +109,7 @@ export default function NewTrialist() {
       });
 
       if (response) {
-        router.push('/sports-admin/trialist');
+        router.push('/dashboard/admin/academy/trialist');
       }
     } catch (error) {
       console.error('Error creating trialist:', error);

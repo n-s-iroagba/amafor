@@ -4,19 +4,19 @@
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useDelete, useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import api from '@/shared/lib/axios';
-import { 
-  Calendar, 
-  Users, 
-  Trophy, 
-  Edit3, 
-  Trash2, 
-  ArrowLeft, 
-  Loader2, 
-  Shield, 
-  Clock, 
+import {
+  Calendar,
+  Users,
+  Trophy,
+  Edit3,
+  Trash2,
+  ArrowLeft,
+  Loader2,
+  Shield,
+  Clock,
   AlertCircle,
   BarChart3,
   Gamepad2,
@@ -39,26 +39,27 @@ export default function LeagueDetail() {
   const params = useParams();
   const id = params.id as string;
 
-  const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  
+
   const { data: league, loading } = useGet<League>(
     API_ROUTES.LEAGUES.VIEW(id)
+  );
+
+  const { delete: deleteLeague, isPending: isDeleting } = useDelete(
+    (id) => API_ROUTES.LEAGUES.MUTATE(Number(id))
   );
 
   const handleDelete = async () => {
     if (!league) return;
 
-    setIsDeleting(true);
     try {
-      await api.delete(API_ROUTES.LEAGUES.MUTATE(league.id));
-      router.push('/sports-admin/leagues');
+      await deleteLeague(league.id);
+      router.push('/dashboard/admin/leagues');
       router.refresh();
     } catch (error) {
       console.error('Error deleting league:', error);
       alert('Failed to delete league. Please try again.');
     } finally {
-      setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
   };
@@ -68,7 +69,6 @@ export default function LeagueDetail() {
       `Are you sure you want to delete the "${league?.name}" league? This action cannot be undone and will remove all associated fixtures and data.`
     )) {
       handleDelete();
-      window.location.reload()
     }
   };
 
@@ -130,13 +130,13 @@ export default function LeagueDetail() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex-1">
               <Link
-                href="/sports-admin/leagues"
+                href="/dashboard/admin/leagues"
                 className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors group mb-4"
               >
                 <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" />
                 <span className="font-medium">Back to Leagues</span>
               </Link>
-              
+
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
                   <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
@@ -146,11 +146,11 @@ export default function LeagueDetail() {
                     Season {league.season} • {league.isFriendly ? 'Friendly League' : 'Competitive League'}
                   </p>
                 </div>
-                
+
                 {/* Mobile Actions */}
                 <div className="flex sm:hidden gap-3">
                   <Link
-                    href={`/sports-admin/leagues/${league.id}/edit`}
+                    href={`/dashboard/admin/leagues/${league.id}/edit`}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
                   >
                     <Edit3 className="w-4 h-4" />
@@ -170,7 +170,7 @@ export default function LeagueDetail() {
             {/* Desktop Actions */}
             <div className="hidden sm:flex gap-3">
               <Link
-                href={`/sports-admin/leagues/${league.id}/edit`}
+                href={`/dashboard/admin/leagues/${league.id}/edit`}
                 className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md font-medium"
               >
                 <Edit3 className="w-4 h-4" />
@@ -216,7 +216,7 @@ export default function LeagueDetail() {
                         <p className="text-gray-900 font-semibold">{formatDate(league.createdAt)}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
                       <div className="p-2 bg-white rounded-lg shadow-sm">
                         <Shield className="w-5 h-5 text-green-600" />
@@ -241,7 +241,7 @@ export default function LeagueDetail() {
                         <p className="text-gray-900 font-semibold">{formatDate(league.updatedAt)}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl border border-orange-100">
                       <div className="p-2 bg-white rounded-lg shadow-sm">
                         <Users className="w-5 h-5 text-orange-600" />
@@ -257,7 +257,7 @@ export default function LeagueDetail() {
                 {/* Statistics Link */}
                 <div className="mt-6 pt-6 border-t border-gray-100">
                   <Link
-                    href={`/sports-admin/league-stats/${league.id}`}
+                    href={`/dashboard/admin/leagues/${league.id}/league-statstics`}
                     className="inline-flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-gray-50 to-blue-50 text-blue-700 rounded-xl hover:from-blue-50 hover:to-blue-100 transition-all duration-300 border border-blue-200 hover:border-blue-300 font-medium group"
                   >
                     <BarChart3 className="w-5 h-5 transform group-hover:scale-110 transition-transform" />
@@ -273,7 +273,7 @@ export default function LeagueDetail() {
                 <Settings className="w-6 h-6 text-gray-700" />
                 <h3 className="text-xl font-semibold text-gray-900">Quick Actions</h3>
               </div>
-              
+
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Link
                   href={`/sports-admin/fixtures`}
@@ -291,8 +291,8 @@ export default function LeagueDetail() {
                     Browse all matches in this league
                   </p>
                 </Link>
-                
- 
+
+
 
                 <Link
                   href={`/sports-admin/lineups?league=${league.id}`}
@@ -322,10 +322,10 @@ export default function LeagueDetail() {
                 <Settings className="w-5 h-5 text-gray-600" />
                 League Management
               </h3>
-              
+
               <div className="space-y-3">
                 <Link
-                  href={`/sports-admin/leagues/${league.id}/edit`}
+                  href={`/dashboard/admin/leagues/${league.id}/edit`}
                   className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-sm hover:shadow-md font-medium group"
                 >
                   <Edit3 className="w-4 h-4 transform group-hover:scale-110 transition-transform" />
@@ -376,7 +376,7 @@ export default function LeagueDetail() {
                 <Trophy className="w-5 h-5 text-gray-600" />
                 League Information
               </h3>
-              
+
               <div className="space-y-3">
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">
                   <span className="text-sm text-gray-600">League ID</span>
@@ -388,11 +388,10 @@ export default function LeagueDetail() {
                 </div>
                 <div className="flex justify-between items-center py-3">
                   <span className="text-sm text-gray-600">Competition Type</span>
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                    league.isFriendly 
-                      ? 'bg-purple-100 text-purple-800' 
-                      : 'bg-green-100 text-green-800'
-                  }`}>
+                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${league.isFriendly
+                    ? 'bg-purple-100 text-purple-800'
+                    : 'bg-green-100 text-green-800'
+                    }`}>
                     {league.isFriendly ? 'Friendly' : 'Competitive'}
                   </span>
                 </div>

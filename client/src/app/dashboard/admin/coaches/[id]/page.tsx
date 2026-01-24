@@ -14,10 +14,12 @@ export default function CoachDetail() {
   const router = useRouter();
   const id = params.id;
   const {
-    data: coach,
+    data, // Wrapper object
     loading,
     error,
-  } = useGet<Coach>(API_ROUTES.COACHES.MUTATE(id as string));
+  } = useGet<any>(API_ROUTES.COACHES.VIEW(id as string));
+
+  const coach: Coach = data?.data; // Extract coach from data property
 
   if (loading) {
     return (
@@ -47,7 +49,7 @@ export default function CoachDetail() {
         {/* Back link */}
         <div className="mb-6">
           <Link
-            href="/coaches"
+            href="/dashboard/admin/coaches"
             className="text-sky-600 hover:text-sky-800 flex items-center text-sm sm:text-base"
           >
             <svg

@@ -1,10 +1,55 @@
 'use client';
+
 import React, { useState } from 'react';
-import { Settings, Shield, Globe, Lock, Sliders, Save, ArrowLeft, RefreshCw, Zap, Database } from 'lucide-react';
+import { Settings, Lock, Save, ArrowLeft, RefreshCw, Zap, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { API_ROUTES } from '@/config/routes';
+import { useGet, usePut } from '@/shared/hooks/useApiQuery';
+
+interface SystemStatus {
+  maintenanceMode: boolean;
+  scoutRegistration: boolean;
+  rateLimit: number;
+  sessionTimeout: number;
+}
 
 export default function PlatformSettingsPage() {
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
+  const { data: status, loading, refetch } = useGet<SystemStatus>(API_ROUTES.ADMIN.SYSTEM_STATUS);
+  const { put, isPending: isSaving } = usePut(API_ROUTES.ADMIN.SYSTEM_STATUS);
+
+  const [localStatus, setLocalStatus] = useState<SystemStatus>({
+    maintenanceMode: false,
+    scoutRegistration: true,
+    rateLimit: 300,
+    sessionTimeout: 60,
+  });
+
+  React.useEffect(() => {
+    if (status) {
+      setLocalStatus(status);
+    }
+  }, [status]);
+
+  const handleToggle = (key: keyof SystemStatus) => {
+    setLocalStatus(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleChange = (key: keyof SystemStatus, value: number) => {
+    setLocalStatus(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleSave = async () => {
+    try {
+      await put(localStatus);
+      alert('System settings updated successfully.');
+      refetch();
+    } catch (error) {
+      console.error(error);
+      alert('Failed to update settings.');
+    }
+  };
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin w-8 h-8 text-[#87CEEB]" /></div>;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -29,18 +74,18 @@ export default function PlatformSettingsPage() {
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-10 flex items-center">
               <Zap className="w-4 h-4 mr-2 text-[#87CEEB]" /> Operational Controls
             </h3>
-            
+
             <div className="space-y-10">
               <div className="flex items-center justify-between">
                 <div className="max-w-md">
                   <h4 className="text-lg font-black text-[#2F4F4F] uppercase tracking-tight">Maintenance Mode</h4>
                   <p className="text-xs text-gray-400 leading-relaxed font-bold uppercase mt-1">Restrict public access while performing core infrastructure updates.</p>
                 </div>
-                <button 
-                  onClick={() => setMaintenanceMode(!maintenanceMode)}
-                  className={`w-16 h-8 rounded-full p-1 transition-all duration-500 ${maintenanceMode ? 'bg-[#87CEEB]' : 'bg-gray-200'}`}
+                <button
+                  onClick={() => handleToggle('maintenanceMode')}
+                  className={`w-16 h-8 rounded-full p-1 transition-all duration-500 ${localStatus.maintenanceMode ? 'bg-[#87CEEB]' : 'bg-gray-200'}`}
                 >
-                  <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-500 transform ${maintenanceMode ? 'translate-x-8' : 'translate-x-0'}`} />
+                  <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-500 transform ${localStatus.maintenanceMode ? 'translate-x-8' : 'translate-x-0'}`} />
                 </button>
               </div>
 
@@ -49,8 +94,11 @@ export default function PlatformSettingsPage() {
                   <h4 className="text-lg font-black text-[#2F4F4F] uppercase tracking-tight">Scout Self-Registration</h4>
                   <p className="text-xs text-gray-400 leading-relaxed font-bold uppercase mt-1">Enable or disable the public onboarding path for professional scouts.</p>
                 </div>
-                <button className="w-16 h-8 bg-[#87CEEB] rounded-full p-1">
-                  <div className="w-6 h-6 bg-white rounded-full translate-x-8" />
+                <button
+                  onClick={() => handleToggle('scoutRegistration')}
+                  className={`w-16 h-8 rounded-full p-1 transition-all duration-500 ${localStatus.scoutRegistration ? 'bg-[#87CEEB]' : 'bg-gray-200'}`}
+                >
+                  <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-500 transform ${localStatus.scoutRegistration ? 'translate-x-8' : 'translate-x-0'}`} />
                 </button>
               </div>
             </div>
@@ -61,15 +109,25 @@ export default function PlatformSettingsPage() {
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-10 flex items-center">
               <Lock className="w-4 h-4 mr-2 text-red-500" /> Security Thresholds
             </h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <label className="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3">Rate Limit (Req/Min)</label>
-                <input type="number" defaultValue={300} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none font-black text-lg focus:ring-2 focus:ring-[#87CEEB] outline-none" />
+                <input
+                  type="number"
+                  value={localStatus.rateLimit}
+                  onChange={(e) => handleChange('rateLimit', parseInt(e.target.value))}
+                  className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none font-black text-lg focus:ring-2 focus:ring-[#87CEEB] outline-none"
+                />
               </div>
               <div>
                 <label className="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3">Session Timeout (Mins)</label>
-                <input type="number" defaultValue={60} className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none font-black text-lg focus:ring-2 focus:ring-[#87CEEB] outline-none" />
+                <input
+                  type="number"
+                  value={localStatus.sessionTimeout}
+                  onChange={(e) => handleChange('sessionTimeout', parseInt(e.target.value))}
+                  className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none font-black text-lg focus:ring-2 focus:ring-[#87CEEB] outline-none"
+                />
               </div>
             </div>
           </section>
@@ -79,7 +137,7 @@ export default function PlatformSettingsPage() {
             <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-10 flex items-center">
               <RefreshCw className="w-4 h-4 mr-2 text-green-500" /> External API Endpoints
             </h3>
-            
+
             <div className="space-y-6">
               <div className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl">
                 <div className="flex items-center space-x-4">
@@ -97,9 +155,13 @@ export default function PlatformSettingsPage() {
           </section>
 
           <div className="flex justify-end pt-8">
-            <button className="sky-button px-12 py-5 text-sm uppercase tracking-[0.2em] flex items-center group shadow-2xl shadow-[#87CEEB]/20">
+            <button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="sky-button px-12 py-5 text-sm uppercase tracking-[0.2em] flex items-center group shadow-2xl shadow-[#87CEEB]/20 disabled:opacity-50"
+            >
               <Save className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-              COMMIT CHANGES
+              {isSaving ? 'SAVING...' : 'COMMIT CHANGES'}
             </button>
           </div>
         </div>

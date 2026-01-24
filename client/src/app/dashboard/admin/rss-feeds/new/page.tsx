@@ -106,7 +106,7 @@ export default function NewRssFeedSource() {
       });
 
       alert(`RSS feed source "${name}" created successfully!`);
-      router.push('/sports-admin/rss-feeds');
+      router.push('/dashboard/admin/rss-feeds');
     } catch (error: any) {
       console.error('Error creating RSS feed source:', error);
       setErrors({
@@ -286,8 +286,8 @@ export default function NewRssFeedSource() {
                   value={name}
                   onChange={(e) => handleFieldChange('name', e.target.value)}
                   className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.name
-                      ? 'border-red-300 bg-red-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                    ? 'border-red-300 bg-red-50'
+                    : 'border-gray-300 hover:border-gray-400'
                     }`}
                   placeholder="Enter a descriptive name for this RSS feed source"
                   maxLength={255}
@@ -328,8 +328,8 @@ export default function NewRssFeedSource() {
                 value={feedUrl}
                 onChange={(e) => handleFieldChange('feedUrl', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.feedUrl
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-gray-300 hover:border-gray-400'
+                  ? 'border-red-300 bg-red-50'
+                  : 'border-gray-300 hover:border-gray-400'
                   }`}
                 placeholder="https://example.com/rss.xml"
               />
@@ -368,8 +368,8 @@ export default function NewRssFeedSource() {
                       type="button"
                       onClick={() => setCategory(cat)}
                       className={`relative p-4 rounded-xl border-2 transition-all duration-200 text-left hover:shadow-sm ${isSelected
-                          ? `${categoryInfo.border} ${categoryInfo.bg} shadow-sm`
-                          : 'border-gray-200 hover:border-gray-300 bg-white'
+                        ? `${categoryInfo.border} ${categoryInfo.bg} shadow-sm`
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
                         }`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

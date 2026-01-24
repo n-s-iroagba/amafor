@@ -14,7 +14,7 @@ import {
   Award,
   Briefcase,
   Calendar,
- 
+
   Users,
   BookOpen,
   Shield,
@@ -32,19 +32,21 @@ import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 import { AcademyStaff } from '@/features/academy/types';
 
 
+import { API_ROUTES } from '@/config/routes';
+
 export default function StaffDetailsPage() {
   const params = useParams();
   const router = useRouter();
   const staffId = params.id as string;
-  
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Fetch staff details
-  const { 
-    data: staff, 
-    loading, 
-    error 
-  } = useGet<AcademyStaff>(`/api/academy/staff/${staffId}`, {
+  const {
+    data: staff,
+    loading,
+    error
+  } = useGet<AcademyStaff>(API_ROUTES.STAFF.VIEW(staffId), {
     params: {
       include: 'reports,achievements'
     }
@@ -100,7 +102,7 @@ export default function StaffDetailsPage() {
             <ChevronLeft className="h-5 w-5" />
             Back to Staff
           </button>
-          
+
           <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-red-800 mb-2">
@@ -110,7 +112,7 @@ export default function StaffDetailsPage() {
               {error || 'The requested staff member could not be found.'}
             </p>
             <button
-              onClick={() => router.push('/academy/staff')}
+              onClick={() => router.push('/dashboard/admin/academy/staff')}
               className="px-6 py-3 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors font-medium"
             >
               Browse All Staff
@@ -136,7 +138,7 @@ export default function StaffDetailsPage() {
             </button>
             <div className="flex items-center gap-3">
               <Link
-                href={`/academy/staff/${staffId}/edit`}
+                href={`/dashboard/admin/academy/staff/${staffId}/edit`}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center gap-2"
               >
                 <Edit className="h-4 w-4" />
@@ -181,9 +183,9 @@ export default function StaffDetailsPage() {
                   {staff.category || 'General'}
                 </span>
               </div>
-              
+
               <h2 className="text-xl text-slate-300 mb-4">{staff.role}</h2>
-              
+
               <div className="flex flex-wrap items-center gap-4 text-slate-300">
                 {staff.yearsOfExperience && (
                   <div className="flex items-center gap-2">
@@ -254,7 +256,7 @@ export default function StaffDetailsPage() {
                     </div>
                     <div className="text-3xl font-bold text-sky-700">{staff.yearsOfExperience} years</div>
                   </div>
-                  
+
                   {/* Mock experience items */}
                   <div className="border-l-2 border-sky-500 ml-6 space-y-6">
                     <div className="relative pl-6">
@@ -292,7 +294,7 @@ export default function StaffDetailsPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
@@ -304,7 +306,7 @@ export default function StaffDetailsPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
@@ -330,7 +332,7 @@ export default function StaffDetailsPage() {
                   <Edit className="h-4 w-4" />
                   Edit Staff Details
                 </Link>
-                
+
                 <button
                   onClick={() => setShowDeleteModal(true)}
                   className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
@@ -338,7 +340,7 @@ export default function StaffDetailsPage() {
                   <Trash2 className="h-4 w-4" />
                   Delete Staff Member
                 </button>
-                
+
                 <div className="grid grid-cols-2 gap-3">
                   <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm">
                     <Download className="h-4 w-4" />
@@ -371,7 +373,7 @@ export default function StaffDetailsPage() {
                   </div>
                   <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
                 </Link>
-                
+
                 <Link
                   href="/academy/staff"
                   className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
@@ -393,7 +395,7 @@ export default function StaffDetailsPage() {
         </div>
       </div>
 
- 
+
     </div>
   );
 }

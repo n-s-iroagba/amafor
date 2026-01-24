@@ -2,15 +2,16 @@
 'use client';
 import { useState } from 'react';
 
-import { Shield, ArrowLeft, FileText, Download, BarChart2, Award, Zap, Loader2, Link } from 'lucide-react';
+import { Shield, ArrowLeft, FileText, Download, BarChart2, Award, Zap, Loader2 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { useParams } from 'next/navigation';
+import { API_ROUTES } from '@/config/routes';
+import Link from 'next/link';
 
 
 export default function ScoutPlayerDetail() {
-  const { data: players } = useGet('')
   const { id } = useParams();
-  const player = players.find(p => p.id === id) || players[0];
+  const { data: player, loading } = useGet<any>(API_ROUTES.PLAYERS.VIEW(id as string));
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportReady, setReportReady] = useState(false);
 
@@ -22,6 +23,25 @@ export default function ScoutPlayerDetail() {
     }, 2000);
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#87CEEB]/20 border-t-[#87CEEB] rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!player) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-black uppercase mb-4">Talent Not Found</h2>
+        <Link href="/dashboard/scout/players" className="text-[#87CEEB] text-xs font-black uppercase tracking-widest hover:underline">Return to Directory</Link>
+      </div>
+    );
+  }
+
+  const age = player.dateOfBirth ? new Date().getFullYear() - new Date(player.dateOfBirth).getFullYear() : 'N/A';
+
   return (
     <div className="bg-white min-h-screen">
       <div className="bg-[#2F4F4F] text-white py-12">
@@ -31,7 +51,7 @@ export default function ScoutPlayerDetail() {
           </Link>
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
             <div className="flex items-center space-x-8">
-              <div className="text-8xl font-black text-[#87CEEB] opacity-50 select-none">#{player.jerseyNumber}</div>
+              <div className="text-8xl font-black text-[#87CEEB] opacity-50 select-none">#{player.jerseyNumber || '??'}</div>
               <div>
                 <h1 className="text-5xl md:text-7xl mb-2 tracking-tighter">{player.name}</h1>
                 <div className="flex items-center space-x-4">
@@ -82,16 +102,16 @@ export default function ScoutPlayerDetail() {
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
-                  { label: 'Fixture Fitness', value: '94%', trend: '+2%' },
-                  { label: 'Passing Accuracy', value: '82%', trend: '-1%' },
-                  { label: 'Top Speed', value: '33.2 km/h', trend: '+0.4' },
-                  { label: 'Tackles Won', value: '68%', trend: '+5%' }
+                  { label: 'Goals', value: player.stats?.goals || 0, trend: '-' },
+                  { label: 'Assists', value: player.stats?.assists || 0, trend: '-' },
+                  { label: 'Minutes', value: player.stats?.minutesPlayed || 0, trend: '-' },
+                  { label: 'Cards', value: (player.stats?.yellowCards || 0) + (player.stats?.redCards || 0), trend: '-' }
                 ].map((stat, i) => (
                   <div key={i} className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
                     <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-2">{stat.label}</div>
                     <div className="text-2xl font-black text-[#2F4F4F] mb-2">{stat.value}</div>
-                    <div className={`text-[10px] font-bold ${stat.trend.startsWith('+') ? 'text-green-500' : 'text-red-500'}`}>
-                      {stat.trend} <span className="text-gray-400 ml-1">v. Avg</span>
+                    <div className="text-[10px] font-bold text-gray-400">
+                      Season Aggregate
                     </div>
                   </div>
                 ))}
@@ -100,37 +120,47 @@ export default function ScoutPlayerDetail() {
 
             <section>
               <h2 className="text-sm font-black text-gray-400 mb-8 uppercase tracking-[0.2em] flex items-center">
-                <Award className="w-5 h-5 mr-3 text-[#87CEEB]" /> Career Highlights
+                <Award className="w-5 h-5 mr-3 text-[#87CEEB]" /> Career Stats Summary
               </h2>
-              <div className="space-y-6">
-                {[
-                  { title: 'National League Debut', date: 'March 2024', desc: 'Played full 90 mins, provided 1 assist.' },
-                  { title: 'MOTM Award v. Lagos City', date: 'Feb 2024', desc: 'Highest rated player on pitch (8.4/10).' },
-                  { title: 'Academy Graduate', date: 'Jan 2024', desc: 'Promoted to first team after 3 years.' }
-                ].map((item, i) => (
-                  <div key={i} className="flex space-x-6 group">
-                    <div className="flex-none w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center border border-gray-100 group-hover:bg-[#87CEEB] transition-colors">
-                      <Zap className="w-6 h-6 text-[#2F4F4F]" />
-                    </div>
-                    <div className="flex-1 pb-6 border-b border-gray-100">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-bold text-[#2F4F4F] uppercase tracking-tight">{item.title}</h4>
-                        <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">{item.date}</span>
+              <div className="bg-gray-50 p-10 rounded-[3rem] border border-gray-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div>
+                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Physical Profile</h4>
+                    <div className="space-y-4">
+                      <div className="flex justify-between border-b pb-2">
+                        <span className="text-xs font-bold uppercase">Height</span>
+                        <span className="text-xs font-black">{player.height || 'N/A'}m</span>
                       </div>
-                      <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                      <div className="flex justify-between border-b pb-2">
+                        <span className="text-xs font-bold uppercase">Age</span>
+                        <span className="text-xs font-black">{age}</span>
+                      </div>
                     </div>
                   </div>
-                ))}
+                  <div>
+                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Professional Status</h4>
+                    <div className="space-y-4">
+                      <div className="flex justify-between border-b pb-2">
+                        <span className="text-xs font-bold uppercase">Nationality</span>
+                        <span className="text-xs font-black">{player.nationality || 'N/A'}</span>
+                      </div>
+                      <div className="flex justify-between border-b pb-2">
+                        <span className="text-xs font-bold uppercase">Squad Status</span>
+                        <span className="text-xs font-black uppercase text-green-500">{player.status}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
           </div>
 
           <aside className="space-y-8">
-            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white sticky top-32 relative">
-              <img src={player.imageUrl} className="w-full h-full object-cover" alt={player.name} />
+            <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white sticky top-32">
+              <img src={player.imageUrl || "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80"} className="w-full h-full object-cover" alt={player.name} />
               <div className="absolute inset-x-0 bottom-0 p-10 bg-gradient-to-t from-black via-black/40 to-transparent">
                 <h3 className="text-2xl text-white font-black mb-2 uppercase tracking-tight">{player.name}</h3>
-                <p className="text-[#87CEEB] text-xs font-black uppercase tracking-widest">{player.position} | #{player.jerseyNumber}</p>
+                <p className="text-[#87CEEB] text-xs font-black uppercase tracking-widest">{player.position} | #{player.jerseyNumber || '??'}</p>
               </div>
             </div>
           </aside>

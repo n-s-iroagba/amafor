@@ -3,13 +3,17 @@
 import React, { useState } from 'react';
 import { Search, Filter, Download, ArrowLeft, Shield, UserCheck } from 'lucide-react';
 import Link from 'next/link';
+import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 
 export default function ScoutPlayerDirectory() {
   const [filter, setFilter] = useState('ALL');
-  const players =[]
 
-  const filteredPlayers = filter === 'ALL' 
+  const { data: playersData, loading } = useGet<any[]>(API_ROUTES.PLAYERS.LIST);
+  const players = playersData || [];
+
+  const filteredPlayers = filter === 'ALL'
     ? players : players.filter(p => p.position === filter);
 
   const handleExport = () => {
@@ -37,7 +41,7 @@ export default function ScoutPlayerDirectory() {
             <p className="text-gray-500 text-sm">Access verified bio-data and performance tracking for the active roster.</p>
           </div>
           <div className="flex items-center space-x-4">
-            <button 
+            <button
               onClick={handleExport}
               className="flex items-center space-x-2 bg-white px-6 py-3 rounded-2xl border text-xs font-black text-[#2F4F4F] hover:border-[#87CEEB] shadow-sm transition-all"
             >
@@ -54,8 +58,8 @@ export default function ScoutPlayerDirectory() {
         <div className="bg-white p-6 rounded-[2rem] shadow-sm mb-12 flex flex-wrap items-center gap-6">
           <div className="relative flex-1 min-w-[300px]">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Search by name, position, or squad number..."
               className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm"
             />
@@ -65,9 +69,8 @@ export default function ScoutPlayerDirectory() {
               <button
                 key={pos}
                 onClick={() => setFilter(pos)}
-                className={`px-6 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${
-                  filter === pos ? 'bg-[#2F4F4F] text-[#87CEEB]' : 'bg-gray-50 text-gray-400 hover:text-[#2F4F4F]'
-                }`}
+                className={`px-6 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${filter === pos ? 'bg-[#2F4F4F] text-[#87CEEB]' : 'bg-gray-50 text-gray-400 hover:text-[#2F4F4F]'
+                  }`}
               >
                 {pos}
               </button>
@@ -78,8 +81,8 @@ export default function ScoutPlayerDirectory() {
         {/* Player Grid (PV-02) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredPlayers.map(player => (
-            <Link 
-              href={`/dashboard/scout/players/${player.id}`} 
+            <Link
+              href={`/dashboard/scout/players/${player.id}`}
               key={player.id}
               className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-transparent hover:border-[#87CEEB]/30 relative"
             >

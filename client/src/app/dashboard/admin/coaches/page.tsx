@@ -10,14 +10,16 @@ import Image from 'next/image';
 import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
 interface Coach {
-  id: number;
+  id: string;
   name: string;
   role: string;
   imageUrl: string;
   bio: string;
+  category: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
+
 interface CoachResponse {
   data: Coach[];
 }
@@ -25,13 +27,18 @@ interface CoachResponse {
 export default function CoachesList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
-  const [deletingId, setDeletingId] = useState<number>(0);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const { data, refetch, loading } = useGet<CoachResponse>(
-    API_ROUTES.COACHES.LIST
+    API_ROUTES.COACHES.LIST,
+    {
+      params: {
+        category: 'coaching'
+      }
+    }
   );
-  const {mutate: deleteCoach, isPending: deleteLoading } = useDelete(
-    API_ROUTES.COACHES.MUTATE(deletingId)
+  const { delete: deleteCoach, isPending: deleteLoading } = useDelete(
+    (id) => API_ROUTES.COACHES.DELETE(String(id))
   );
 
   const coaches = data?.data;
@@ -44,7 +51,7 @@ export default function CoachesList() {
     return matchesSearch && matchesRole;
   });
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (
       !confirm(
         'Are you sure you want to delete this coach? This action cannot be undone.'
@@ -54,12 +61,12 @@ export default function CoachesList() {
     }
     setDeletingId(id);
     try {
-      await deleteCoach('');
+      await deleteCoach(id);
       await refetch();
     } catch (err) {
       console.error('Error deleting coach:', err);
     } finally {
-      setDeletingId(0);
+      setDeletingId(null);
     }
   };
 
@@ -158,7 +165,7 @@ export default function CoachesList() {
 
         {/* Add Coach Button */}
         <Link
-          href="/sports-admin/coach/new"
+          href="/dashboard/admin/coaches/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 text-white font-medium rounded-lg shadow hover:from-sky-700 hover:to-blue-800 transition-all duration-300"
         >
           <Plus className="w-5 h-5" />
@@ -207,7 +214,7 @@ export default function CoachesList() {
               {/* Actions */}
               <div className="flex gap-3 mt-4">
                 <Link
-                  href={`/sports-admin/coach/${coach.id}/edit`}
+                  href={`/dashboard/admin/coaches/${coach.id}`}
                   className="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-sky-100 text-sky-700 rounded-md hover:bg-sky-200 transition"
                 >
                   <Edit className="w-4 h-4" />
@@ -244,8 +251,9 @@ export default function CoachesList() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             {!(searchTerm || roleFilter !== 'all') && (
               <Link
-                href="/sports-admin/coach/new"
+                href="/dashboard/admin/coaches/new"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-sky-600 text-white rounded-lg shadow hover:bg-sky-700 transition-colors"
+                title="Add Coach"
               >
                 <Plus className="w-5 h-5" />
                 Add Coach

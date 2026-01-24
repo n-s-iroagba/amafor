@@ -101,7 +101,7 @@ export default function NewPatronPage() {
         imageUrl: finalImageUrl || null,
       });
 
-      router.push('/admin/patrons');
+      router.push('/dashboard/admin/patrons');
     } catch (error) {
       console.error('Failed to create patron:', error);
       setUploadError('Failed to create patron. Please try again.');
@@ -265,7 +265,7 @@ export default function NewPatronPage() {
         <div className="flex gap-4 pt-4">
           <button
             type="button"
-            onClick={() => router.push('/admin/patrons')}
+            onClick={() => router.push('/dashboard/admin/patrons')}
             className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
           >
             Cancel

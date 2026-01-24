@@ -29,10 +29,10 @@ export default function InfrastructureHealthPage() {
   const [isRunningDiagnostic, setIsRunningDiagnostic] = useState(false);
 
   const { data: healthData, loading, refetch } = useGet<HealthData>(
-    '/system/health'
+    API_ROUTES.HEALTH.STATUS
   );
 
-  const { post: runDiagnostic } = usePost<void, void>('/system/diagnostic');
+  const { post: runDiagnostic } = usePost<void, void>(API_ROUTES.HEALTH.DIAGNOSTIC);
 
   const triggerDiagnostic = async () => {
     setIsRunningDiagnostic(true);

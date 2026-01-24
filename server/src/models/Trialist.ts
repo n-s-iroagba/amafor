@@ -18,12 +18,21 @@ export interface TrialistAttributes {
   cvUrl?: string; // Link to resume
   status: 'PENDING' | 'REVIEWED' | 'INVITED' | 'REJECTED';
   notes?: string; // Internal scout notes
+
+  // Guardian & Consent Info
+  guardianName?: string;
+  guardianPhone?: string;
+  guardianEmail?: string;
+  consentEmail: boolean;
+  consentSmsWhatsapp: boolean;
+  guardianConsent: boolean;
+
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 // Define creation attributes (id is optional as it's auto-generated)
-export interface TrialistCreationAttributes extends Optional<TrialistAttributes, 'id' | 'status' | 'notes'> {}
+export interface TrialistCreationAttributes extends Optional<TrialistAttributes, 'id' | 'status' | 'notes'> { }
 
 export class Trialist extends Model<TrialistAttributes, TrialistCreationAttributes> implements TrialistAttributes {
   public id!: string;
@@ -41,6 +50,14 @@ export class Trialist extends Model<TrialistAttributes, TrialistCreationAttribut
   public cvUrl?: string;
   public status!: 'PENDING' | 'REVIEWED' | 'INVITED' | 'REJECTED';
   public notes?: string;
+
+  // Guardian & Consent Info
+  public guardianName?: string;
+  public guardianPhone?: string;
+  public guardianEmail?: string;
+  public consentEmail!: boolean;
+  public consentSmsWhatsapp!: boolean;
+  public guardianConsent!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -103,6 +120,30 @@ Trialist.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    guardianName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    guardianPhone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    guardianEmail: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    consentEmail: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    consentSmsWhatsapp: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    guardianConsent: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     status: {
       type: DataTypes.ENUM('PENDING', 'REVIEWED', 'INVITED', 'REJECTED'),
       defaultValue: 'PENDING',
@@ -117,4 +158,4 @@ Trialist.init(
     tableName: 'trialists',
   }
 );
-export default  Trialist
+export default Trialist

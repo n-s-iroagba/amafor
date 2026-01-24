@@ -61,4 +61,59 @@ export class UserController {
       next(error);
     }
   };
+
+  /**
+   * Get pending advertisers
+   * @api GET /users/pending-advertisers
+   * @apiName API-USER-004
+   * @apiGroup Users
+   * @srsRequirement REQ-ADM-06
+   */
+  public getPendingAdvertisers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await this.userService.getPendingAdvertisers();
+      res.status(200).json({ success: true, data: users });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public listUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const users = await this.userService.getAllUsers(req.query);
+      res.status(200).json({ success: true, data: users });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const user = await this.userService.getUserById(id);
+      res.status(200).json({ success: true, data: user });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public createUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = await this.userService.createUser(req.body);
+      res.status(201).json({ success: true, data: user });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const adminId = (req as any).user.id;
+      await this.userService.deleteUser(id, adminId);
+      res.status(200).json({ success: true, message: 'User deleted successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

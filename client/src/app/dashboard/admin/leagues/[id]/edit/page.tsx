@@ -57,7 +57,7 @@ export default function EditLeague() {
         isFriendly,
       });
 
-      router.push('/sports-admin/leagues');
+      router.push('/dashboard/admin/leagues');
     } catch (error) {
       console.error('Error updating league:', error);
     }
@@ -81,7 +81,7 @@ export default function EditLeague() {
           <h2 className="text-2xl font-bold text-sky-800 mb-2">League Not Found</h2>
           <p className="text-sky-600 mb-6">The league you're trying to edit doesn't exist.</p>
           <button
-            onClick={() => router.push('/sports-admin/leagues')}
+            onClick={() => router.push('/dashboard/admin/leagues')}
             className="bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700 transition-colors"
           >
             Back to Leagues

@@ -27,10 +27,10 @@ const ArticleList: React.FC = () => {
 
   const url =
     activeTab === 'all'
-      ? '/articles/amafor'
+      ? API_ROUTES.ARTICLES.LIST // Default list
       : activeTab === ArticleStatus.Draft
-        ? `${API_ROUTES.ARTICLES.UN_PUBLISHED}/amafor`
-        : `${API_ROUTES.ARTICLES.PUBLISHED}/amafor`; // Fixed: should be PUBLISHED for published articles
+        ? API_ROUTES.ARTICLES.UN_PUBLISHED
+        : API_ROUTES.ARTICLES.PUBLISHED;
 
   const { data, loading, error } = useGet<PaginatedData<Article>>(url);
   const articles = data?.data;
@@ -64,7 +64,7 @@ const ArticleList: React.FC = () => {
 
 
   const handleArticleClick = (id: number | string) => {
-    router.push(`/sports-admin/sport-articles/${id}`);
+    router.push(`/dashboard/cms/articles/${id}`);
   };
 
   const handleTabChange = (tabId: TabType) => {
@@ -134,7 +134,7 @@ const ArticleList: React.FC = () => {
           className="mt-6 flex justify-center sm:justify-start"
         >
           <button
-            onClick={() => router.push('/sports-admin/sport-articles/new')}
+            onClick={() => router.push('/dashboard/cms/articles/new')}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-700 text-white font-medium shadow-lg hover:from-sky-700 hover:to-blue-800 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-xl"
           >
             <svg

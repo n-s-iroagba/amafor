@@ -13,15 +13,25 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 // import AdDisplay from '@/...';
 
 interface RSSItem {
-  id: number | string;
-  title?: string;
-  article_url?: string;
-  published_at?: string;
-  creator?: string;
-  content?: string;
-  contentSnippet?: string;
-  guid?: string;
-  isoDate?: string;
+  id: string;
+  title: string;
+  articleUrl?: string; // Using model field? Model has 'originalId' which might be URL or id? 
+  // Checking FeaturedNews model: it has 'originalId' and 'title', 'summary', 'content', 'publishedAt', 'thumbnailUrl'.
+  // The backend service returns FeaturedNews[].
+  // Let's adapt this interface to match what the frontend expects vs what backend sends.
+  // Backend Model: title, content, publishedAt, thumbnailUrl.
+
+  // Mapping for frontend display:
+  summary?: string | null;
+  content?: string | null;
+  publishedAt: string;
+  thumbnailUrl?: string | null;
+
+  // For compatibility with existing code:
+  guid?: string; // originalId from model
+  contentSnippet?: string; // summary from model
+  isoDate?: string; // publishedAt
+  article_url?: string; // originalId might be the URL?
 }
 
 type RSSResponse = {
@@ -40,9 +50,9 @@ const FeaturedNews: React.FC = () => {
     loading,
     error,
   } = useGet<RSSResponse>(
-    API_ROUTES.ARTICLES.HOME_PAGE,{params:{
-      limit:'3'
-    }}
+    // Manually setting to match the backend route we created. 
+    // Ideally add to API_ROUTES but for now hardcode or assume it's there
+    '/featured-news/homepage'
   );
 
   const [totalPages, setTotalPages] = useState(0);
@@ -52,18 +62,18 @@ const FeaturedNews: React.FC = () => {
   useEffect(() => {
     if (data?.data) {
       setTotalPages(data.totalPages);
-      
+
       setItems((prevItems) => {
         // If it's the first page, replace items. Otherwise, append.
         if (page === 1) return data.data;
-        
+
         // Simple de-duplication to be safe
         const newItems = data.data.filter(
           (newItem) => !prevItems.some((prev) => prev.guid === newItem.guid)
         );
         return [...prevItems, ...newItems];
       });
-      
+
       setIsLoadingMore(false);
     }
   }, [data, page]);
@@ -116,7 +126,7 @@ const FeaturedNews: React.FC = () => {
   return (
     <>
       {/* Optional: Keep or remove AdDisplay depending on home page layout needs */}
-   
+
 
       <section className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 overflow-hidden">
         {/* Header */}
@@ -150,7 +160,7 @@ const FeaturedNews: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {items.map((item, index) => (
               <motion.article
-                key={`${item.guid}-${index}`}
+                key={`${item.id}-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -160,7 +170,14 @@ const FeaturedNews: React.FC = () => {
               >
                 {/* Image Section */}
                 <div className="relative h-48 sm:h-56 overflow-hidden bg-gray-100">
-                  {item.content?.includes('<img') ? (
+                  {item.thumbnailUrl ? (
+                    <div
+                      className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                      style={{
+                        backgroundImage: `url(${item.thumbnailUrl})`, // Use direct thumbnail URL from backend
+                      }}
+                    />
+                  ) : item.content?.includes('<img') ? (
                     <div
                       className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                       style={{
@@ -174,7 +191,7 @@ const FeaturedNews: React.FC = () => {
                   )}
                   {/* Overlay Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
-                  
+
                   {/* Category/Date Badge on Image */}
                   <div className="absolute top-4 left-4">
                     <span className="bg-white/90 backdrop-blur-sm text-sky-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
@@ -186,12 +203,12 @@ const FeaturedNews: React.FC = () => {
                 {/* Content Section */}
                 <div className="p-5 flex flex-col flex-grow">
                   <div className="text-xs text-gray-400 mb-2 flex items-center gap-1">
-                    <span>{formatDate(item.published_at ?? item.isoDate)}</span>
+                    <span>{formatDate(item.publishedAt)}</span>
                   </div>
 
                   <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-sky-600 transition-colors">
                     <a
-                      href={item.article_url}
+                      href={`/news/${item.id}`} // Link to internal news page or external? Assuming internal for now or use originalId if external
                       target="_blank"
                       rel="noopener noreferrer"
                       className="block"
@@ -201,7 +218,7 @@ const FeaturedNews: React.FC = () => {
                   </h3>
 
                   <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
-                    {item.contentSnippet}
+                    {item.summary || item.contentSnippet}
                   </p>
 
                   <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
@@ -209,9 +226,7 @@ const FeaturedNews: React.FC = () => {
                       Read Article
                     </span>
                     <a
-                      href={item.article_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={`/news/${item.id}`}
                       className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center text-sky-600 group-hover:bg-sky-500 group-hover:text-white transition-all duration-300"
                     >
                       <ArrowRight className="w-4 h-4" />

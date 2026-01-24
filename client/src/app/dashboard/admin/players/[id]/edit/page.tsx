@@ -188,7 +188,7 @@ export default function EditPlayer() {
       });
 
       if (result) {
-        router.push('/sports-admin/players');
+        router.push('/dashboard/admin/players');
         router.refresh();
       } else {
         console.error('Failed to update player');

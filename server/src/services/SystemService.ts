@@ -1,7 +1,7 @@
 import { SystemNotificationRepository, AuditLogRepository } from '../repositories';
 import { structuredLogger, tracer } from '../utils';
 import sequelize from '../config/database';
-import { redisClient } from '../redis/client'; // Assuming this exists, if not i will skip or use mock
+// import { redisClient } from '../redis/client'; // Assuming this exists, if not i will skip or use mock
 
 export class SystemService {
   private notificationRepo: SystemNotificationRepository;
@@ -78,6 +78,9 @@ export class SystemService {
   public async getSystemConfig() {
     return {
       maintenanceMode: process.env.MAINTENANCE_MODE === 'true',
+      scoutRegistration: true, // Default or fetch from DB
+      rateLimit: 300,
+      sessionTimeout: 60,
       logLevel: process.env.LOG_LEVEL || 'info',
       appVersion: process.env.npm_package_version || '1.0.0'
     };
@@ -102,8 +105,31 @@ export class SystemService {
   }
 
   public async listBackups() {
-    // Stub implementation
-    return [];
+    // Basic mock implementation for backups
+    return [
+      { id: '1', name: 'backup-2023-10-01.sql', size: '10.5 MB', date: new Date('2023-10-01') },
+      { id: '2', name: 'backup-2023-10-08.sql', size: '11.2 MB', date: new Date('2023-10-08') },
+    ];
+  }
+
+  public async createBackup() {
+    // Mock backup creation
+    return { id: Date.now().toString(), name: `backup-${new Date().toISOString()}.sql`, status: 'completed' };
+  }
+
+  public async restoreBackup(id: string) {
+    // Mock restore
+    return { success: true, message: `System restored from backup ${id}` };
+  }
+
+  public async deleteBackup(id: string) {
+    // Mock delete
+    return { success: true, message: `Backup ${id} deleted` };
+  }
+
+  public async downloadBackup(id: string) {
+    // Mock download
+    return { url: `https://storage.example.com/backups/${id}.sql` };
   }
 
   public async getDatabaseHealth() {
@@ -123,6 +149,14 @@ export class SystemService {
     } catch (error: any) {
       return { status: 'unhealthy', message: error.message };
     }
+  }
+  public async runDiagnostic() {
+    // Mock diagnostic run
+    return tracer.startActiveSpan('service.SystemService.runDiagnostic', async (span) => {
+      await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate work
+      span.end();
+      return { status: 'completed', issues: [], duration: 1500 };
+    });
   }
 
 

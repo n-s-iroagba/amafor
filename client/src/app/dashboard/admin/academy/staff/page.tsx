@@ -28,6 +28,7 @@ import {
 import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 import { AcademyStaff, PaginatedData } from '@/shared/types';
 import { DeletionConfirmationModal } from '@/shared/components/DeleteModal';
+import { API_ROUTES } from '@/config/routes';
 
 
 export default function AcademyStaffPage() {
@@ -44,7 +45,7 @@ export default function AcademyStaffPage() {
     loading,
     error,
     refetch
-  } = useGet<PaginatedData<AcademyStaff>>('/api/academy/staff', {
+  } = useGet<PaginatedData<AcademyStaff>>(API_ROUTES.STAFF.LIST, {
     params: {
       sort: 'name',
       limit: 100
@@ -56,8 +57,10 @@ export default function AcademyStaffPage() {
     delete: deleteStaff,
     isPending: deleting,
     error: deleteError
-  } = useDelete<AcademyStaff>('/api/academy/staff');
-  const staffData = data.data
+  } = useDelete<AcademyStaff>(API_ROUTES.STAFF.LIST); // Base URL for deletion, ID will be appended
+
+  const staffData = data?.data || [];
+
   // Filter and sort staff
   const filteredStaff = staffData.filter(staff => {
     const matchesSearch =
@@ -138,11 +141,11 @@ export default function AcademyStaffPage() {
   };
 
   const handleEdit = (staff: AcademyStaff) => {
-    router.push(`/academy/staff/${staff.id}/edit`);
+    router.push(`/dashboard/admin/academy/staff/${staff.id}/edit`);
   };
 
   const handleViewDetails = (staff: AcademyStaff) => {
-    router.push(`/academy/staff/${staff.id}`);
+    router.push(`/dashboard/admin/academy/staff/${staff.id}`);
   };
 
   if (loading) {
@@ -203,7 +206,7 @@ export default function AcademyStaffPage() {
                 Refresh
               </button>
               <Link
-                href="/academy/staff/new"
+                href="/dashboard/admin/academy/staff/new"
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-medium flex items-center gap-2"
               >
                 <UserPlus className="h-4 w-4" />
@@ -452,7 +455,7 @@ export default function AcademyStaffPage() {
             </p>
             {staffData?.length === 0 && (
               <Link
-                href="/academy/staff/new"
+                href="/dashboard/admin/academy/staff/new"
                 className="inline-block px-6 py-3 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium"
               >
                 Add First Staff Member
@@ -463,16 +466,16 @@ export default function AcademyStaffPage() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      <DeletionConfirmationModal error={''}
+      {showDeleteModal && <DeletionConfirmationModal
+
+
         onClose={() => {
           setShowDeleteModal(false);
           setSelectedStaff(null);
         }}
         handleDelete={confirmDelete}
-
-        message={`Are you sure you want to delete ${selectedStaff?.name}? This action cannot be undone.`} isDeleting={false}
-
-      />
+        isDeleting={deleting}
+        message={`Are you sure you want to delete ${selectedStaff?.name}? This action cannot be undone.`} error={''} />}
     </div>
   );
 }

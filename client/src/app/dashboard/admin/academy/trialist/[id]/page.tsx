@@ -22,7 +22,7 @@ export default function TrialistDetail() {
     data: trialist,
     loading,
     error,
-  } = useGet<Trialist>(API_ROUTES.ARTICLES.MUTATE(Number(id)));
+  } = useGet<Trialist>(API_ROUTES.TRIALISTS.VIEW(Number(id)));
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -85,7 +85,7 @@ export default function TrialistDetail() {
         {/* Back link */}
         <div className="mb-6">
           <Link
-            href="/sports-admin/trialist"
+            href="/dashboard/admin/academy/trialist"
             className="text-emerald-600 hover:text-emerald-800 flex items-center text-sm sm:text-base"
           >
             <svg
@@ -129,7 +129,7 @@ export default function TrialistDetail() {
               </div>
               <div className="mt-4 md:mt-0">
                 <Link
-                  href={`/sports-admin/trialist/${trialist.id}/edit`}
+                  href={`/dashboard/admin/academy/trialist/${trialist.id}/edit`}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
                 >
                   Edit Trialist

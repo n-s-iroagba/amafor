@@ -55,7 +55,7 @@ export default function SystemNotificationsPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link href="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/admin" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors mb-6">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Dashboard
         </Link>
 

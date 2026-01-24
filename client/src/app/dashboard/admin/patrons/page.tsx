@@ -148,7 +148,7 @@ export default function PatronListPage() {
         </div>
 
         <Link
-          href="/admin/patrons/new"
+          href="/dashboard/admin/patrons/new"
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
         >
           <Plus className="w-4 h-4" />
@@ -191,7 +191,7 @@ export default function PatronListPage() {
             </p>
             {!searchTerm && (
               <Link
-                href="/admin/patrons/new"
+                href="/dashboard/admin/patrons/new"
                 className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <Plus className="w-4 h-4" />
@@ -238,7 +238,7 @@ export default function PatronListPage() {
                 {/* Actions */}
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <Link
-                    href={`/admin/patrons/${patron.id}`}
+                    href={`/dashboard/admin/patrons/${patron.id}`}
                     className="flex items-center gap-1 px-3 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   >
                     <Eye className="w-4 h-4" />
@@ -246,7 +246,7 @@ export default function PatronListPage() {
                   </Link>
 
                   <Link
-                    href={`/admin/patrons/${patron.id}/edit`}
+                    href={`/dashboard/admin/patrons/${patron.id}/edit`}
                     className="flex items-center gap-1 px-3 py-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />

@@ -23,6 +23,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { League } from '@/features/league/types';
 import { LeagueTableProps } from '@/features/league-statistics/types';
 
@@ -46,7 +47,7 @@ export default function LeagueStatisticsPage() {
     loading,
     error,
     refetch
-  } = useGet<LeagueWithTable[]>('/api/leagues/tables', {
+  } = useGet<LeagueWithTable[]>(API_ROUTES.LEAGUES.TABLES, {
     params: {
       include: 'table',
       limit: 50
@@ -400,8 +401,8 @@ export default function LeagueStatisticsPage() {
                               <tr
                                 key={team.team}
                                 className={`border-b border-slate-100 last:border-b-0 ${team.team === 'Amafor Gladiators'
-                                    ? 'bg-blue-50'
-                                    : 'hover:bg-slate-50'
+                                  ? 'bg-blue-50'
+                                  : 'hover:bg-slate-50'
                                   }`}
                               >
                                 <td className="py-3 px-4">
@@ -425,10 +426,10 @@ export default function LeagueStatisticsPage() {
                                 <td className="py-3 px-4 text-slate-700">{team.goalsAgainst}</td>
                                 <td className="py-3 px-4">
                                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${team.goalDifference > 0
-                                      ? 'bg-green-100 text-green-800'
-                                      : team.goalDifference < 0
-                                        ? 'bg-red-100 text-red-800'
-                                        : 'bg-yellow-100 text-yellow-800'
+                                    ? 'bg-green-100 text-green-800'
+                                    : team.goalDifference < 0
+                                      ? 'bg-red-100 text-red-800'
+                                      : 'bg-yellow-100 text-yellow-800'
                                     }`}>
                                     {team.goalDifference > 0 ? '+' : ''}{team.goalDifference}
                                   </span>

@@ -131,7 +131,7 @@ export default function EditPatronPage() {
         imageUrl: finalImageUrl || null,
       });
 
-      router.push('/admin/patrons');
+      router.push('/dashboard/admin/patrons');
     } catch (error) {
       console.error('Failed to update patron:', error);
       setUploadError('Failed to update patron. Please try again.');
@@ -170,7 +170,7 @@ export default function EditPatronPage() {
             The patron you&apos;re looking for doesn&apos;t exist.
           </p>
           <button
-            onClick={() => router.push('/admin/patrons')}
+            onClick={() => router.push('/dashboard/admin/patrons')}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Back to Patrons
@@ -329,7 +329,7 @@ export default function EditPatronPage() {
         <div className="flex gap-4 pt-4">
           <button
             type="button"
-            onClick={() => router.push('/admin/patrons')}
+            onClick={() => router.push('/dashboard/admin/patrons')}
             className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
           >
             Cancel

@@ -1,13 +1,17 @@
 import { PatronSubscriptionRepository, PatronFilterOptions } from '../repositories/PatronSubscriptionRepository';
-import { PatronSubscription, PatronSubscriptionAttributes, PatronTier, SubscriptionStatus } from '../models/PatronSubscription';
+import { PatronSubscriptionPackageRepository } from '../repositories/PatronSubscriptionPackageRepository';
+import { PatronSubscription, PatronSubscriptionAttributes } from '../models/PatronSubscription';
+import { PatronSubscriptionPackage, PatronTier, SubscriptionStatus, SubscriptionFrequency } from '../models/PatronSubscriptionPackage';
 import { AppError, NotFoundError } from '../utils/errors';
 import { structuredLogger } from '../utils';
 
 export class PatronageService {
     private repository: PatronSubscriptionRepository;
+    private packageRepository: PatronSubscriptionPackageRepository;
 
     constructor() {
         this.repository = new PatronSubscriptionRepository();
+        this.packageRepository = new PatronSubscriptionPackageRepository();
     }
 
     async subscribeUser(userId: string, tier: PatronTier, amount: number): Promise<PatronSubscription> {
@@ -77,5 +81,9 @@ export class PatronageService {
 
     async checkSubscriptionStatus(userId: string): Promise<PatronSubscription | null> {
         return await this.repository.findActiveByPatronId(userId);
+    }
+
+    async getSubscriptionPackages(): Promise<PatronSubscriptionPackage[]> {
+        return await this.packageRepository.findAll();
     }
 }

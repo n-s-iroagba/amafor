@@ -189,10 +189,10 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 ### UJ-SUP-001: Make One-Time Donation
 **User Types:** Donor  
 **BRD Requirements:** BR-AO-02  
-**Entry Point:** `/support/donate`  
+**Entry Point:** `/patron`  
 **Pages Involved:**
 - `/support` - Support options overview
-- `/support/donate/checkout` - Donation checkout flow
+- `/patron/checkout` - Donation checkout flow
 
 **Steps:**
 1. User navigates to support page
@@ -209,10 +209,10 @@ This document defines the user journeys accomplished by the pages in the Amafor 
 ### UJ-SUP-002: Become a Patron
 **User Types:** Patron  
 **BRD Requirements:** BR-PP-01, BR-PP-02, BR-PP-03  
-**Entry Point:** `/support/patron`  
+**Entry Point:** `/patron`  
 **Pages Involved:**
 - `/support` - Support options overview
-- `/support/patron/checkout` - Patron subscription checkout
+- `/patron/checkout` - Patron subscription checkout
 - `/support/wall` - Patron recognition wall
 
 **Steps:**

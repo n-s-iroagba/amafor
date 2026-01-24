@@ -217,8 +217,7 @@ export default function NewFixture() {
         status: formData.status,
       });
 
-      router.push('/sports-admin/fixtures');
-      router.refresh();
+      router.push(`/dashboard/admin/leagues/${formData.leagueId}/fixtures`);
     } catch (error: any) {
       console.error('Error creating fixture:', error);
       setErrors(prev => ({

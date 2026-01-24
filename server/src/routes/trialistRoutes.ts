@@ -1,18 +1,16 @@
 import express from 'express';
-import { trialistController, uploadTrialistFiles } from '../controllers/trialist.controller';
-import { 
-  validate, 
-  validateFileUpload, 
-  trialistValidationSchemas 
-} from '../validations/trialist.validation';
+import { trialistController } from '../controllers/TrialistController';
+import { trialistValidationSchemas } from '../validation-schema/trialistSchema';
+import { validate } from '@middleware/validate';
+
+
 
 const router = express.Router();
 
 // Create trialist (with file upload)
 router.post(
   '/',
-  uploadTrialistFiles,
-  validateFileUpload,
+
   validate(trialistValidationSchemas.createTrialist),
   trialistController.createTrialist
 );
@@ -34,8 +32,7 @@ router.get(
 // Update trialist
 router.put(
   '/:id',
-  uploadTrialistFiles,
-  validateFileUpload,
+
   validate(trialistValidationSchemas.updateTrialist),
   trialistController.updateTrialist
 );

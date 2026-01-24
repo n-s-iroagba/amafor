@@ -37,6 +37,8 @@ import AdCampaign from './AdCampaign';
 import AdCreative from './AdCreative';
 import AuditLog from './AuditLog';
 import SystemNotification from './SystemNotification';
+import ScoutReport from './ScoutReport';
+import ScoutApplication from './ScoutApplication';
 
 export async function setupAssociations(): Promise<void> {
 

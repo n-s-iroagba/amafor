@@ -126,8 +126,8 @@ This SRS details functional and non-functional requirements for the Amafor Gladi
 ### 3.7 Patronage (US-SUP-001..003, UJ-SUP-001..003)
 | REQ ID | BRD | Description | Backend | Frontend |
 |---|---|---|---|---|
-| REQ-SUP-01 | BR-AO-02 | One-time donations with custom amount | `paymentRoutes` | `/support/donate/checkout` |
-| REQ-SUP-02 | BR-PP-01 | Recurring patron subscriptions | `patronageRoutes` | `/support/patron/checkout` |
+| REQ-SUP-01 | BR-AO-02 | One-time donations with custom amount | `paymentRoutes` | `/patron/checkout` |
+| REQ-SUP-02 | BR-PP-01 | Recurring patron subscriptions | `patronageRoutes` | `/patron/checkout` |
 | REQ-SUP-03 | BR-PP-03 | Patron wall display | `patronageRoutes` | `/support/wall` |
 
 ---

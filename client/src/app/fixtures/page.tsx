@@ -25,10 +25,16 @@ import {
   Eye
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { FixtureStatus, FixtureWithLeague } from '@/features/fixture/types';
 import { League } from '@/features/league/types';
 
 
+/**
+ * @requirements REQ-FIX-01, REQ-FIX-02
+ * @description Public-facing fixtures page showing upcoming and past match schedules.
+ * Provides filtering by status, league, and date, as well as search functionality.
+ */
 export default function FixturesPage() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,7 +50,7 @@ export default function FixturesPage() {
     loading,
     error,
     refetch
-  } = useGet<FixtureWithLeague[]>('/api/fixtures', {
+  } = useGet<FixtureWithLeague[]>(API_ROUTES.FIXTURES.LIST, {
     params: {
       include: 'league',
       limit: 100,
@@ -53,7 +59,7 @@ export default function FixturesPage() {
   });
 
   // Fetch leagues for filter
-  const { data: leaguesData } = useGet<League[]>('/api/leagues');
+  const { data: leaguesData } = useGet<League[]>(API_ROUTES.LEAGUES.LIST);
 
   // Filter and sort fixtures
   const filteredFixtures = useMemo(() => {
@@ -257,12 +263,6 @@ export default function FixturesPage() {
                 <RefreshCw className="h-4 w-4" />
                 Refresh
               </button>
-              <button
-                onClick={() => router.push('/fixtures/add')}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-medium"
-              >
-                Add Fixture
-              </button>
             </div>
           </div>
         </div>
@@ -379,7 +379,7 @@ export default function FixturesPage() {
                 <option value="all">All Dates</option>
                 <option value="today">Today</option>
                 <option value="upcoming">Upcoming</option>
-                <option value="past">Past Fixturees</option>
+                <option value="past">Past Fixtures</option>
               </select>
             </div>
           </div>
@@ -534,14 +534,6 @@ export default function FixturesPage() {
                   ? "No fixtures have been scheduled yet."
                   : "Try adjusting your filters to see more results."}
               </p>
-              {fixturesData?.length === 0 && (
-                <button
-                  onClick={() => router.push('/fixtures/add')}
-                  className="px-6 py-3 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium"
-                >
-                  Schedule First Fixture
-                </button>
-              )}
             </div>
           )}
         </div>

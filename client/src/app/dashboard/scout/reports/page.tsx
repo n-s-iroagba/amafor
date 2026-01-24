@@ -1,21 +1,26 @@
 'use client';
 import React, { useState } from 'react';
-import { FileText, Download, Trash2, Search, ArrowLeft, Shield, Eye, Filter, Loader2, AlertCircle, Link } from 'lucide-react';
+import { FileText, Download, Trash2, Search, ArrowLeft, Shield, Eye, Filter, Loader2, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useGet } from '@/shared/hooks/useApiQuery';
 
 
 export default function ScoutReportsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const [reports, setReports] = useState([
-    { id: 'R-9921', player: 'Kelechi Amadi', date: 'May 19, 2024', type: 'Full Dossier', size: '4.2 MB' },
-    { id: 'R-9844', player: 'Chinedu Okafor', date: 'May 15, 2024', type: 'Fixture Summary', size: '1.1 MB' },
-  ]);
+  const { data: reportsData, loading, refetch } = useGet<any[]>('/scout/reports');
+  const reports = reportsData || [];
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     setIsDeleting(id);
-    setTimeout(() => {
-      setReports(prev => prev.filter(r => r.id !== id));
-      setIsDeleting(null);
-    }, 1500);
+    // In a real implementation, call useDelete hook or API
+    // For now we just simulate local removal update after API call
+    try {
+      await fetch(`/api/scout/reports/${id}`, { method: 'DELETE' });
+      refetch();
+    } catch (e) {
+      console.error(e);
+    }
+    setIsDeleting(null);
   };
 
   return (
@@ -46,7 +51,7 @@ export default function ScoutReportsPage() {
 
         <div className="space-y-4">
           {reports.map(report => (
-            <div key={report.id} className={`bg-white rounded-[2rem] p-8 border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-8 hover:shadow-xl transition-all group ${isDeleting === report.id ? 'opacity-50 grayscale' : ''}`}>
+            <div key={report.id} className={`bg - white rounded - [2rem] p - 8 border border - gray - 100 flex flex - col md: flex - row items - center justify - between gap - 8 hover: shadow - xl transition - all group ${isDeleting === report.id ? 'opacity-50 grayscale' : ''}`}>
               <div className="flex items-center space-x-6">
                 <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-[#2F4F4F] group-hover:bg-[#87CEEB] transition-colors">
                   <FileText className="w-6 h-6" />
