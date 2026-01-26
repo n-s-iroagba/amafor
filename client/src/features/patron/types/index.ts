@@ -1,7 +1,6 @@
 
 export interface PatronSubscriptionPackage {
   id: string;
-  patronId: string;
   tier: PatronTier;
   frequency: SubscriptionFrequency;
   miniumumAmount: number;
@@ -9,6 +8,17 @@ export interface PatronSubscriptionPackage {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
+}
+
+export interface PatronSubscription {
+  id: string;
+  patronId: string;
+  tier: PatronTier;
+  frequency: SubscriptionFrequency;
+  amount: number;
+  status: SubscriptionStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export enum PatronTier {
@@ -41,7 +51,5 @@ export interface Patron {
   updatedAt?: Date;
 }
 export interface PatronWithSubscription extends Patron {
-  subscription: PatronSubscriptionPackage
+  subscription: PatronSubscription
 }
-
-export type SupporterWithTier = PatronWithSubscription;

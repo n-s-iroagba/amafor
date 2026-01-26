@@ -174,36 +174,7 @@ export default function SupportDonate() {
             )}
           </section>
 
-          {/* Impact Stats */}
-          <section className="bg-slate-900 rounded-[3.5rem] p-12 md:p-20 relative overflow-hidden mb-24 shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-400/10 via-transparent to-transparent pointer-events-none" />
-            <div className="relative z-10">
-              <h2 className="text-center text-sky-400 font-black text-xs uppercase tracking-[0.4em] mb-16">Global Impact Dashboard</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
-                <div className="text-center">
-                  <div className="inline-flex p-4 bg-sky-400/10 rounded-3xl mb-6">
-                    <Star className="w-8 h-8 text-sky-400" />
-                  </div>
-                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">150+</div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Athletes Supported</div>
-                </div>
-                <div className="text-center">
-                  <div className="inline-flex p-4 bg-sky-400/10 rounded-3xl mb-6">
-                    <Shield className="w-8 h-8 text-sky-400" />
-                  </div>
-                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">₦15M</div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Facility Investment</div>
-                </div>
-                <div className="text-center">
-                  <div className="inline-flex p-4 bg-sky-400/10 rounded-3xl mb-6">
-                    <Users className="w-8 h-8 text-sky-400" />
-                  </div>
-                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">5</div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Social Programs</div>
-                </div>
-              </div>
-            </div>
-          </section>
+
         </div>
       </main>
 

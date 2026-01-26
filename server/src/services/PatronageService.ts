@@ -44,6 +44,10 @@ export class PatronageService {
         return await this.repository.findActivePatrons(filters);
     }
 
+    async getTopPatrons(limit: number): Promise<PatronSubscription[]> {
+        return await this.repository.getTopPatrons(limit);
+    }
+
     async getPatronById(id: string): Promise<PatronSubscription> {
         const patron = await this.repository.findById(id);
         if (!patron) {
@@ -85,5 +89,32 @@ export class PatronageService {
 
     async getSubscriptionPackages(): Promise<PatronSubscriptionPackage[]> {
         return await this.packageRepository.findAll();
+    }
+
+    async getSubscriptionPackage(id: string): Promise<PatronSubscriptionPackage> {
+        const pkg = await this.packageRepository.findById(id);
+        if (!pkg) {
+            throw new NotFoundError(`Subscription package not found`);
+        }
+        return pkg;
+    }
+
+    async createSubscriptionPackage(data: Partial<PatronSubscriptionPackage>): Promise<PatronSubscriptionPackage> {
+        return await this.packageRepository.create(data as any);
+    }
+
+    async updateSubscriptionPackage(id: string, data: Partial<PatronSubscriptionPackage>): Promise<PatronSubscriptionPackage> {
+        const [count, rows] = await this.packageRepository.update(id, data as any);
+        if (count === 0) {
+            throw new NotFoundError(`Subscription package not found`);
+        }
+        return rows[0];
+    }
+
+    async deleteSubscriptionPackage(id: string): Promise<void> {
+        const deleted = await this.packageRepository.delete(id);
+        if (!deleted) {
+            throw new NotFoundError(`Subscription package not found`);
+        }
     }
 }

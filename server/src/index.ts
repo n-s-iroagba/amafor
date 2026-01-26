@@ -1,8 +1,8 @@
-// server.ts
 import sequelize from '@config/database';
 import app from './app';
 import dotenv from 'dotenv';
 import { syncDatabase } from './models';
+import FeaturedNewsService from '@services/FeaturedNewsService';
 
 
 
@@ -15,15 +15,15 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // Graceful shutdown handlers
 const gracefulShutdown = async (signal: string) => {
   console.log(`\n${signal} received. Starting graceful shutdown...`);
-  
+
   server.close(async () => {
     console.log('HTTP server closed');
-    
+
     try {
       // Close database connections
       await sequelize.close();
       console.log('Database connection closed');
-      
+
       console.log('Graceful shutdown completed');
       process.exit(0);
     } catch (error) {
@@ -31,7 +31,7 @@ const gracefulShutdown = async (signal: string) => {
       process.exit(1);
     }
   });
-  
+
   // Force shutdown after 10 seconds
   setTimeout(() => {
     console.error('Forced shutdown after timeout');
@@ -42,17 +42,22 @@ const gracefulShutdown = async (signal: string) => {
 // Initialize database and start server
 const startServer = async () => {
   try {
-  
+
     await syncDatabase(false)
     console.log('Database synchronized');
-    
+
+    // Warm up cache and fetch RSS feeds
+    FeaturedNewsService.warmCache().catch(err => {
+      console.error('Failed to warm up FeaturedNews cache:', err);
+    });
+
     // Start server
     server = app.listen(PORT, () => {
       console.log(`Server running in ${NODE_ENV} mode on port ${PORT}`);
       console.log(`Health check: http://localhost:${PORT}/health`);
       console.log(`API endpoint: http://localhost:${PORT}/api/v1`);
     });
-    
+
   } catch (error) {
     console.error('Unable to start server:', error);
     process.exit(1);

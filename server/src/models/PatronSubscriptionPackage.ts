@@ -85,13 +85,12 @@ PatronSubscriptionPackage.init(
   },
   {
     sequelize,
-    tableName: 'patron_subscriptions',
+    tableName: 'patron_subscription_packages',
     timestamps: true,
     paranoid: true,
     indexes: [
 
       { fields: ['tier'] },
-      { fields: ['status'] },
       { fields: ['frequency'] },
       { fields: ['createdAt'] }
     ]

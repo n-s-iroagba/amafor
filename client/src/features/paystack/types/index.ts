@@ -4,7 +4,16 @@ export interface InitializePaymentResponse {
     authorizationUrl: string
 }
 
+export interface PaymentPayload {
+    email: string;
+    amount: string; // Amount in kobo/cents as string
+    currency?: string;
+    metadata?: Record<string, any>;
+    callback_url?: string;
+    channels?: string[];
+}
+
 export enum PaymentType {
     SUBSCRIPTION = 'subscription',
-    ADVERTISMENT = 'advertisment'
+    DONATION = 'donation'
 }

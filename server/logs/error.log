@@ -56,3 +56,14 @@
 {"error":{},"level":"error","message":"Error finding all PatronSubscription","service":"amafor-gladiators-api","timestamp":"2026-01-24 22:48:01"}
 {"error":{},"filters":{"limit":4,"sort":"-amount","status":"active"},"level":"error","message":"Error finding active patrons","service":"amafor-gladiators-api","timestamp":"2026-01-24 22:48:01"}
 {"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-24 22:48:44"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-24 22:49:03"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-24 22:49:10"}
+{"error":{"code":"EDNS","command":"CONN","errno":-3001,"hostname":"smtp.gmail.com","syscall":"getaddrinfo"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 13:32:12"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 15:12:22"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 15:25:46"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 16:24:27"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 16:25:08"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 16:33:43"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-25 19:23:50"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-26 11:24:52"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-26 11:31:20"}

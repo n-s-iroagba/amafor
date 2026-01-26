@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link'
-import { SupporterWithTier } from '@/features/patron/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
+import { PatronWithSubscription } from '@/features/patron/types';
 
 export default function SupportSection() {
-  const { data: topPatrons, loading } = useGet<SupporterWithTier[]>(
+  const { data: topPatrons, loading } = useGet<PatronWithSubscription[]>(
     API_ROUTES.PATRONS.TOP,
     {
       params: { limit: 4 },
@@ -100,13 +100,13 @@ export default function SupportSection() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 px-4">
           <Link
-            href="/support"
+            href="/patron"
             className="bg-sky-500 hover:bg-sky-600 text-white px-8 sm:px-10 lg:px-12 py-3.5 sm:py-4 lg:py-5 font-bold text-base sm:text-lg transition-all text-center rounded-lg sm:rounded-none shadow-lg hover:shadow-xl"
           >
             DONATE NOW
           </Link>
           <Link
-            href="/support/wall"
+            href="/patron/wall"
             className="border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-8 sm:px-10 lg:px-12 py-3.5 sm:py-4 lg:py-5 font-bold text-base sm:text-lg transition-all text-center rounded-lg sm:rounded-none shadow-lg hover:shadow-xl"
           >
             SUPPORTER WALL

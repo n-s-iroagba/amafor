@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Heart, Loader2, AlertCircle } from 'lucide-react'
 import { useGet } from '@/shared/hooks/useApiQuery'
 import { PatronTier, PatronWithSubscription } from '@/features/patron/types'
+import { API_ROUTES } from '@/config/routes'
 
 
 /**
@@ -18,7 +19,7 @@ import { PatronTier, PatronWithSubscription } from '@/features/patron/types'
  * Hook: useGet('/api/supporters')
  */
 export default function SupporterWall() {
-  const { data: supporters, loading, error } = useGet<PatronWithSubscription[]>('/api/supporters')
+  const { data: supporters, loading, error } = useGet<PatronWithSubscription[]>(API_ROUTES.PATRONS.LIST)
 
   const sortedSupporters = supporters?.length ? [...supporters].sort((a, b) => {
     const aLastName = a.name.split(' ').pop() || ''

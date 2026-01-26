@@ -13,6 +13,7 @@ import { VideoSeeder } from "./video-seeder";
 import { TrialistSeeder } from "./trialist-seeder";
 import { AcademyStaffSeeder } from "./academy-staff-seeder";
 import { CoachSeeder } from "./coach-seeder";
+import { PatronSubscriptionPackageSeeder } from "./patronsubscriptionpackage-seeder";
 
 // 2. First-Level Dependencies (Depend on Base Entities)
 import { PlayerSeeder } from "./player-seeder"; // Depends on User (createdById)
@@ -51,6 +52,7 @@ export const initializeSeeders = (): SeedRunner => {
   runner.register('trialists', new TrialistSeeder());
   runner.register('academyStaff', new AcademyStaffSeeder());
   runner.register('coaches', new CoachSeeder());
+  runner.register('patronSubscriptionPackages', new PatronSubscriptionPackageSeeder());
 
   // ==================== LEVEL 2: FIRST TIER DEPENDENCIES ====================
   // These depend on Level 1 entities

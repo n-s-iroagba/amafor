@@ -163,11 +163,16 @@ export const API_ROUTES = {
     LIST: '/patrons',
     TOP: '/patrons/top',
     CREATE: '/patrons',
-    DETAIL: (id: number) => `/patrons/${id}`,
-    UPDATE: (id: number) => `/patrons/${id}`,
-    DELETE: (id: number) => `/patrons/${id}`,
-    BY_POSITION: (position: number) => `/patrons/position/${position}`,
     PACKAGES: '/patrons/packages',
+    PACKAGES_MGMT: {
+      CREATE: '/patrons/packages',
+      UPDATE: (id: string | number) => `/patrons/packages/${id}`,
+      DELETE: (id: string | number) => `/patrons/packages/${id}`,
+      DETAIL: (id: string | number) => `/patrons/packages/${id}`,
+    },
+    DETAIL: (id: string | number) => `/patrons/${id}`,
+    UPDATE: (id: string | number) => `/patrons/${id}`,
+    DELETE: (id: string | number) => `/patrons/${id}`,
   },
 
   FIXTURES: {
