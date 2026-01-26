@@ -19,12 +19,12 @@ export interface Video {
 }
 
 const VideoSection = () => {
-  const { data:videos } = useGet<Video[]>(
-    API_ROUTES.VIDEOS.LIST,{
-      params:{
-        limit:3
-      }
+  const { data: videos } = useGet<Video[]>(
+    API_ROUTES.VIDEOS.LIST, {
+    params: {
+      limit: 3
     }
+  }
   );
 
 
@@ -54,7 +54,7 @@ const VideoSection = () => {
               Exclusive Content
             </span>
           </h2>
-          <p className="text-xl text-sky-200 max-w-2xl mx-auto font-light">
+          <p className="text-xl text-black w-2xl mx-auto font-light">
             Immerse yourself in premium behind-the-scenes footage and exclusive
             interviews
           </p>
@@ -71,13 +71,12 @@ const VideoSection = () => {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900">
                 <div className="mb-3 p-4 pb-0">
                   <span
-                    className={`inline-block px-3 py-1 text-xs font-semibold rounded-full backdrop-blur-sm ${
-                      index % 3 === 0
+                    className={`inline-block px-3 py-1 text-xs font-semibold rounded-full backdrop-blur-sm ${index % 3 === 0
                         ? 'bg-sky-500/80'
                         : index % 3 === 1
                           ? 'bg-cyan-500/80'
                           : 'bg-blue-500/80'
-                    }`}
+                      }`}
                   >
                     {video.excerpt}
                   </span>

@@ -46,7 +46,7 @@ export default function SupportSection() {
         {/* Top Patrons Grid */}
         {topPatrons && topPatrons.length > 0 && (
           <div className="mb-12 sm:mb-14 lg:mb-16">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
               {topPatrons.map((patron) => (
                 <div
                   key={patron.id}
@@ -56,40 +56,49 @@ export default function SupportSection() {
                   <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
 
                   {/* Card */}
-                  <div className="relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 group-hover:border-sky-500 group-hover:-translate-y-2">
+                  <div className="relative bg-white rounded-xl sm:rounded-2xl p-6 sm:p-5 lg:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 group-hover:border-sky-500 group-hover:-translate-y-2">
                     {/* Avatar */}
-                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 mx-auto mb-3 sm:mb-4">
+                    <div className="relative w-32 h-32 sm:w-28 sm:h-28 lg:w-32 lg:h-32 mx-auto mb-6 sm:mb-6">
                       <div className="absolute inset-0 bg-gradient-to-br from-sky-400 to-sky-600 rounded-full animate-pulse"></div>
-                      <div className="absolute inset-0.5 sm:inset-1 bg-white rounded-full flex items-center justify-center">
-                        <div className="w-14 h-14 sm:w-18 sm:h-18 lg:w-20 lg:h-20 bg-gradient-to-br from-sky-500 to-sky-600 rounded-full flex items-center justify-center text-white font-black text-xl sm:text-2xl lg:text-3xl shadow-inner">
-                          {patron.name.charAt(0)}
-                        </div>
+                      <div className="absolute inset-1 bg-white rounded-full flex items-center justify-center">
+                        {patron.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={patron.imageUrl}
+                            alt={patron.name}
+                            className="w-full h-full rounded-full object-cover p-1"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-sky-500 to-sky-600 rounded-full flex items-center justify-center text-white font-black text-4xl sm:text-3xl lg:text-4xl shadow-inner">
+                            {patron.name.charAt(0)}
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     {/* Badge */}
-                    <div className="absolute top-2 right-2 sm:top-3 sm:right-3">
-                      <div className="bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full shadow-md">
+                    <div className="absolute top-4 right-4 sm:top-3 sm:right-3">
+                      <div className="bg-gradient-to-r from-amber-400 to-amber-500 text-white text-sm font-bold px-2 py-1 rounded-full shadow-md">
                         ⭐
                       </div>
                     </div>
 
                     {/* Name */}
-                    <h3 className="font-black text-gray-900 text-sm sm:text-base lg:text-lg mb-1 text-center group-hover:text-sky-600 transition-colors truncate px-1">
+                    <h3 className="font-black text-gray-900 text-xl sm:text-lg lg:text-xl mb-2 text-center group-hover:text-sky-600 transition-colors truncate px-1">
                       {patron.name}
                     </h3>
 
                     {/* Tier */}
-                    <div className="flex items-center justify-center gap-1.5 sm:gap-2">
-                      <div className="h-px w-3 sm:w-4 bg-sky-500"></div>
-                      <p className="text-xs sm:text-sm text-sky-600 font-bold uppercase tracking-wider truncate">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="h-px w-6 sm:w-4 bg-sky-500"></div>
+                      <p className="text-sm sm:text-xs lg:text-sm text-sky-600 font-bold uppercase tracking-wider truncate">
                         {patron.subscription.tier.replace(/_/g, ' ')}
                       </p>
-                      <div className="h-px w-3 sm:w-4 bg-sky-500"></div>
+                      <div className="h-px w-6 sm:w-4 bg-sky-500"></div>
                     </div>
 
                     {/* Decorative corner */}
-                    <div className="absolute bottom-0 right-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-tl from-sky-500/10 to-transparent rounded-tl-full"></div>
+                    <div className="absolute bottom-0 right-0 w-16 h-16 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-tl from-sky-500/10 to-transparent rounded-tl-full"></div>
                   </div>
                 </div>
               ))}
