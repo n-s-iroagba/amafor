@@ -28,7 +28,7 @@ export default function TeamSquad() {
     data: coaches,
     loading: coachesLoading,
     error: coachesError,
-  } = useGet<Coach[]>(API_ROUTES.COACHES.LIST);
+  } = useGet<{ data: Coach[] }>(API_ROUTES.COACHES.LIST);
 
   const {
     data: players,
@@ -69,7 +69,7 @@ export default function TeamSquad() {
   }
 
   const playersData = players ?? [];
-  const coachesData = coaches ?? [];
+  const coachesData = coaches.data ?? [];
 
   const MemberCard = ({ member, type }: { member: Player | Coach; type: 'player' | 'coach' }) => {
     const isPlayer = type === 'player';

@@ -17,7 +17,7 @@ const NAVIGATION_ITEMS = [
   { name: 'Fixtures', href: '/fixtures' },
   { name: 'Team', href: '/team' },
   { name: 'Academy', href: '/academy' },
-  { name: 'Support', href: '/support' },
+  { name: 'Support', href: '/patron' },
   { name: 'Advertise', href: '/advertise' },
   { name: 'Pro View', href: '/pro-view' },
 ] as const;

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useObservability } from '../lib/observability/hooks/useObservability';
 import { useUserActions } from '../lib/user_action/hooks/useUserActions';
+import { useRouter } from 'next/navigation';
 
 // Error constants
 export const HEADER_ERRORS = {
@@ -25,6 +26,8 @@ export function useHeaderLogic(pathname: string | null) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const router = useRouter()
   
   const observability = useObservability()
   const { trackClick, trackNavigation } = useUserActions()
@@ -82,7 +85,7 @@ export function useHeaderLogic(pathname: string | null) {
         previousPath: pathname,
         userId: 'anonymous'
       })
-
+      router.push(href)
       // Close mobile menu if open
       if (mobileMenuOpen) {
         setMobileMenuOpen(false)

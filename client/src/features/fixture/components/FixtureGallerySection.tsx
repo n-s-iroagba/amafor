@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import { Calendar, ImageIcon, ArrowRight } from 'lucide-react'
 import { useGet } from '@/shared/hooks/useApiQuery';
-import { FixtureWithLeague, FixtureImage } from '../types';
+import { FixtureWithLeague, FixtureImage, FixtureStatus } from '../types';
 import { formatDate } from '@/shared/utils';
-
+import { API_ROUTES } from '@/config/routes';
 
 
 export interface FixtureGallery extends FixtureWithLeague {
@@ -14,9 +14,12 @@ export interface FixtureGallery extends FixtureWithLeague {
 
 export default function FixtureGallerySection() {
   const { data: matchGalleries, loading: galleriesLoading } = useGet<FixtureGallery[]>(
-    '/api/fixtures/galleries',
+    API_ROUTES.FIXTURES.GALLERY,
     {
-      params: { limit: 6 },
+      params: {
+        limit: 6,
+        status: FixtureStatus.COMPLETED
+      },
       enabled: true
     }
   )

@@ -41,9 +41,9 @@ export class FeaturedNews
 
 // 4️⃣ Initialize the model
 FeaturedNews.init(
-  
-     {
-     id: {
+
+  {
+    id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true

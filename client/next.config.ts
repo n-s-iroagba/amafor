@@ -60,6 +60,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'example.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placeholder.png',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
       }
     ],
     qualities: [75, 85],

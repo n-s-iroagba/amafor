@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Target, BookOpen, Users, TrendingUp, Loader2 } from 'lucide-react'
 import { AcademyStaff } from '@/features/academy/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 
 
 /**
@@ -27,7 +28,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
     error: staffError,
     refetch: refetchStaff
   } = useGet<AcademyStaff[]>(
-    activeSection === 'staff' ? '/api/academy/staff' : null,
+    activeSection === 'staff' ? API_ROUTES.STAFF.LIST : null,
     {
       params: {
         category: 'coaching', // Optional: filter by category
@@ -38,11 +39,9 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
   )
 
   const sections = [
-    { id: 'overview', name: 'Overview', icon: Target },
-    { id: 'philosophy', name: 'Philosophy', icon: BookOpen },
-    { id: 'curriculum', name: 'Curriculum', icon: BookOpen },
-    { id: 'staff', name: 'Staff', icon: Users },
-    { id: 'pathway', name: 'Player Pathway', icon: TrendingUp }
+    { id: '/academy', name: 'Overview', icon: Target },
+
+    { id: '/academy/apply', name: 'Apply', icon: TrendingUp }
   ]
 
   // Helper function to get initials from name
@@ -70,10 +69,10 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
               return (
                 <Link
                   key={sec.id}
-                  href={`/academy/${sec.id}`}
+                  href={`${sec.id}`}
                   className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${activeSection === sec.id
-                      ? 'bg-sky-700 text-white font-medium'
-                      : 'bg-white text-slate-700 hover:bg-slate-100'
+                    ? 'bg-sky-700 text-white font-medium'
+                    : 'bg-white text-slate-700 hover:bg-slate-100'
                     }`}
                   aria-current={activeSection === sec.id ? 'page' : undefined}
                 >

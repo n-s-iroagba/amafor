@@ -399,14 +399,14 @@ export async function setupAssociations(): Promise<void> {
 
   // ==================== CONTENT ASSOCIATIONS ====================
   RssFeedSource.hasMany(FeaturedNews, {
-    foreignKey: 'sourceId',
+    foreignKey: 'rssFeedSourceId',
     as: 'articles',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });
 
   FeaturedNews.belongsTo(RssFeedSource, {
-    foreignKey: 'sourceId',
+    foreignKey: 'rssFeedSourceId',
     as: 'source',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'

@@ -13,24 +13,40 @@ const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Graceful shutdown handlers
+let isShuttingDown = false;
+
 const gracefulShutdown = async (signal: string) => {
+  if (isShuttingDown) {
+    console.log(`Shutdown already in progress (${signal} received). Ignoring.`);
+    return;
+  }
+  isShuttingDown = true;
   console.log(`\n${signal} received. Starting graceful shutdown...`);
 
-  server.close(async () => {
-    console.log('HTTP server closed');
+  if (server) {
+    server.close(async () => {
+      console.log('HTTP server closed');
 
+      try {
+        // Close database connections
+        await sequelize.close();
+        console.log('Database connection closed');
+
+        console.log('Graceful shutdown completed');
+        process.exit(0);
+      } catch (error) {
+        console.error('Error during shutdown:', error);
+        process.exit(1);
+      }
+    });
+  } else {
+    // If server hasn't started yet
     try {
-      // Close database connections
       await sequelize.close();
       console.log('Database connection closed');
-
-      console.log('Graceful shutdown completed');
-      process.exit(0);
-    } catch (error) {
-      console.error('Error during shutdown:', error);
-      process.exit(1);
-    }
-  });
+    } catch (e) { console.error('Error closing DB', e) }
+    process.exit(0);
+  }
 
   // Force shutdown after 10 seconds
   setTimeout(() => {
