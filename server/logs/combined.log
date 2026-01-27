@@ -769,3 +769,138 @@
 {"level":"info","message":"Running seeder: users","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:16"}
 {"level":"info","message":"Starting user seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:17"}
 {"level":"info","message":"Loading user data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:17"}
+{"level":"info","message":"Successfully seeded 3 user records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:20"}
+{"level":"info","message":"Running seeder: patrons","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:20"}
+{"level":"info","message":"Starting patron seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:20"}
+{"level":"info","message":"Loading patron data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:20"}
+{"level":"info","message":"Successfully seeded 4 patron records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:21"}
+{"level":"info","message":"Running seeder: advertisers","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:21"}
+{"level":"info","message":"Starting advertiser seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:21"}
+{"level":"info","message":"Loading advertiser data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:21"}
+{"level":"info","message":"Successfully seeded 3 advertiser records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:27"}
+{"level":"info","message":"Running seeder: adZones","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:27"}
+{"level":"info","message":"Skipping ad-zones seeder - 4 zones already exist","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Running seeder: leagues","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Starting league seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Loading league data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Successfully seeded 2 league records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Running seeder: rssFeedSources","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Starting rssfeedsource seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Loading rssfeedsource data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:28"}
+{"level":"info","message":"Successfully seeded 3 rssfeedsource records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Running seeder: videos","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Starting video seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Loading video data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Successfully seeded 4 video records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Running seeder: trialists","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Starting trialist seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Loading trialist data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:30"}
+{"level":"info","message":"Successfully seeded 2 trialist records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:31"}
+{"level":"info","message":"Running seeder: academyStaff","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:31"}
+{"level":"info","message":"Starting academy-staff seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:31"}
+{"level":"info","message":"Loading academy-staff data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:31"}
+{"level":"info","message":"Successfully seeded 3 academy-staff records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Running seeder: coaches","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Starting coach seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Loading coach data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Successfully seeded 3 coach records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Running seeder: patronSubscriptionPackages","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Starting patronsubscriptionpackage seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Loading patronsubscriptionpackage data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:33"}
+{"level":"info","message":"Successfully seeded 6 patronsubscriptionpackage records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:34"}
+{"level":"info","message":"Running seeder: players","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:34"}
+{"level":"info","message":"Starting player seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:34"}
+{"level":"info","message":"Loading player data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:34"}
+{"level":"info","message":"Successfully seeded 2 player records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Running seeder: patronSubscriptions","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Starting patronsubscription seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Loading patronsubscription data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Successfully seeded 4 patronsubscription records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Running seeder: adCampaigns","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Starting adcampaign seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Loading adcampaign data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:35"}
+{"level":"info","message":"Successfully seeded 2 adcampaign records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Running seeder: fixtures","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Starting fixture seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Loading fixture data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Successfully seeded 2 fixture records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Running seeder: featuredNewss","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Starting third_party_article seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Loading third_party_article data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"warn","message":"No data to seed for third_party_article in development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Running seeder: articles","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Starting article seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Loading article data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Successfully seeded 2 article records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Running seeder: systemNotifications","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Starting systemnotification seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Loading systemnotification data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Successfully seeded 3 systemnotification records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Running seeder: auditLogs","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Starting auditlog seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Loading auditlog data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Successfully seeded 2 auditlog records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Running seeder: goals","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Starting goal seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Loading goal data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:36"}
+{"level":"info","message":"Successfully seeded 3 goal records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Running seeder: lineups","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Starting lineup seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Loading lineup data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Successfully seeded 2 lineup records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Running seeder: fixtureImages","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Starting matchimage seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Loading matchimage data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Successfully seeded 2 matchimage records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Running seeder: fixtureStatistics","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Starting fixture_statistics seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Loading fixture_statistics data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Successfully seeded 1 fixture_statistics records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Running seeder: adCreatives","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Starting adcreative seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Loading adcreative data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:37"}
+{"level":"info","message":"Successfully seeded 3 adcreative records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Running seeder: payments","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Starting Payment seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Loading Payment data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Successfully seeded 2 Payment records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Running seeder: leagueStatistics","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Starting leaguestatistics seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Loading leaguestatistics data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:38"}
+{"level":"info","message":"Successfully seeded 2 leaguestatistics records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:39"}
+{"level":"info","message":"Running seeder: playerLeagueStatistics","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:39"}
+{"level":"info","message":"Starting player_league_statistics seeder for development environment...","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:39"}
+{"level":"info","message":"Loading player_league_statistics data for development environment","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:39"}
+{"level":"info","message":"Successfully seeded 1 player_league_statistics records","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:54:39"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:31:25"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:32:28"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:47:28"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:47:46"}
+{"level":"info","message":"Warming up FeaturedNews cache...","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:47:59"}
+{"level":"info","message":"RssFeedSource updated: 1","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:10"}
+{"level":"info","message":"RssFeedSource updated: 1","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:10"}
+{"level":"info","message":"RssFeedSource updated: 2","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:20"}
+{"level":"info","message":"RssFeedSource updated: 2","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:20"}
+{"level":"info","message":"RssFeedSource updated: 3","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:30"}
+{"level":"info","message":"RssFeedSource updated: 3","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:30"}
+{"level":"info","message":"FeaturedNews cache warmed up successfully","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:48:37"}
+{"email":"admin@academy.com","level":"warn","message":"Login failed - bad password","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:49:24","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:49:24"}
+{"email":"admin@academy.com","level":"warn","message":"Login failed - bad password","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:51:51","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:51:51"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:02:29","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:02:31"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:04:51","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:04:53"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:08","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:14"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:24","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:25"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:41","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:45"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:55","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:05:57"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:07:40","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:07:41"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:08:04","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:08:04"}

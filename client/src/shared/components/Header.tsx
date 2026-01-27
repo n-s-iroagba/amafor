@@ -15,6 +15,7 @@ import Logo from './Logo';
 const NAVIGATION_ITEMS = [
   { name: 'News', href: '/news' },
   { name: 'Fixtures', href: '/fixtures' },
+  { name: 'Results', href: '/league-statistics' },
   { name: 'Team', href: '/team' },
   { name: 'Academy', href: '/academy' },
   { name: 'Support', href: '/patron' },

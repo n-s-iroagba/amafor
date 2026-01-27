@@ -57,6 +57,26 @@ export default function LoginPage() {
   const router = useRouter();
   const { setUser } = useAuthContext();
 
+  // Redirect on success
+  React.useEffect(() => {
+    if (loginSuccess && successUser) {
+      console.log('Login Success! User:', successUser); // DEBUG
+      const timer = setTimeout(() => {
+        // Determine dashboard Based on role
+        if (successUser.userType === 'super_admin' || successUser.roles.includes('admin')) {
+          router.push('/dashboard/admin');
+        } else if (successUser.roles.includes('scout')) {
+          router.push('/dashboard/scout');
+        } else if (successUser.roles.includes('advertiser')) {
+          router.push('/dashboard/advertiser');
+        } else {
+          router.push('/dashboard');
+        }
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [loginSuccess, successUser, router]);
+
   // Use the usePost hook for login
   const {
     post: loginPost,

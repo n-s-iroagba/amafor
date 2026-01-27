@@ -89,3 +89,7 @@
 {"error":{"name":"SequelizeConnectionError","original":{"code":"ETIMEDOUT","errorno":"ETIMEDOUT","fatal":true,"syscall":"connect"},"parent":{"code":"ETIMEDOUT","errorno":"ETIMEDOUT","fatal":true,"syscall":"connect"}},"filters":{},"level":"error","limit":10,"message":"Error fetching published FeaturedNewss","page":1,"service":"amafor-gladiators-api","sort":{},"timestamp":"2026-01-26 23:32:15"}
 {"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:52:13"}
 {"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-26 23:53:15"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:32:28"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:47:46"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:49:24"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:51:51"}
