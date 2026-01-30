@@ -1,6 +1,9 @@
 {
   "name": "amafor-gladiators-server",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "description": "Amafor Gladiators Digital Ecosystem Server",
   "main": "dist/index.js",
   "scripts": {

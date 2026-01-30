@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -7,7 +7,7 @@ RUN npm ci --include=dev
 COPY . .
 RUN npm run build
 
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /app
 
 RUN addgroup -g 1001 -S nodejs

@@ -2,6 +2,9 @@
   "name": "amafor-gladiators",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "workspaces": [
     "client",
     "server"
@@ -19,6 +22,10 @@
     "rss-parser": "^3.13.0"
   },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.8.1"
   }
 }
