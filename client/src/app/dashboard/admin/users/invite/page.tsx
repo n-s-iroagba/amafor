@@ -64,6 +64,7 @@ export default function InviteUserPage() {
                 placeholder="official@gladiators.ng"
                 className="w-full pl-14 pr-6 py-5 bg-gray-50 rounded-2xl border outline-none focus:border-[#87CEEB] font-bold"
                 required
+                data-testid="input-user-email"
               />
             </div>
           </div>
@@ -77,6 +78,7 @@ export default function InviteUserPage() {
                   type="button"
                   onClick={() => setRole(r)}
                   className={`p-4 border-2 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${role === r ? 'border-[#87CEEB] text-[#2F4F4F] bg-sky-50' : 'border-gray-100 text-gray-400 hover:border-[#87CEEB] hover:text-[#2F4F4F]'}`}
+                  data-testid={`radio-role-${r.toLowerCase()}`}
                 >
                   {r}
                 </button>
@@ -97,6 +99,7 @@ export default function InviteUserPage() {
             type="submit"
             disabled={isPending}
             className="w-full sky-button py-5 uppercase tracking-[0.2em] flex items-center justify-center disabled:opacity-50"
+            data-testid="btn-send-invite"
           >
             {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5 ml-3" />}
             <span className="ml-3">{isPending ? 'SENDING...' : 'GENERATE SECURE LINK'}</span>

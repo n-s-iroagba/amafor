@@ -97,6 +97,7 @@ export default function TrialistDetail() {
           <Link
             href="/dashboard/admin/academy/trialist"
             className="text-emerald-600 hover:text-emerald-800 flex items-center text-sm sm:text-base"
+            data-testid="btn-back-trialist"
           >
             <svg
               className="w-4 h-4 mr-1"
@@ -125,14 +126,14 @@ export default function TrialistDetail() {
                     <User className="h-10 w-10 text-emerald-600" />
                   </div>
                   <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900" data-testid="trialist-name">
                       {trialist.firstName} {trialist.lastName}
                     </h1>
                     <div className="flex items-center gap-4 mt-2">
-                      <span className="px-3 py-1 text-sm font-medium rounded-full border ${getStatusColor(trialist.status)}">
+                      <span className="px-3 py-1 text-sm font-medium rounded-full border ${getStatusColor(trialist.status)}" data-testid="trialist-status">
                         {trialist.status}
                       </span>
-                      <span className="text-emerald-600 font-medium">{trialist.position}</span>
+                      <span className="text-emerald-600 font-medium" data-testid="trialist-position">{trialist.position}</span>
                     </div>
                   </div>
                 </div>
@@ -141,6 +142,7 @@ export default function TrialistDetail() {
                 <Link
                   href={`/dashboard/admin/academy/trialist/${trialist.id}/edit`}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                  data-testid="btn-edit-trialist"
                 >
                   Edit Trialist
                 </Link>
@@ -149,6 +151,7 @@ export default function TrialistDetail() {
                   <button
                     onClick={() => alert('Promote to Player flow initiated. Requires Academy Head approval per BR-TP-09.')}
                     className="ml-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+                    data-testid="btn-promote-player"
                   >
                     <User className="w-4 h-4" />
                     Promote to Player
@@ -174,11 +177,11 @@ export default function TrialistDetail() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Mail className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{trialist.email}</span>
+                      <span className="text-gray-900" data-testid="trialist-email">{trialist.email}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Phone className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{trialist.phone}</span>
+                      <span className="text-gray-900" data-testid="trialist-phone">{trialist.phone}</span>
                     </div>
                   </div>
                 </div>
@@ -187,22 +190,22 @@ export default function TrialistDetail() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Calendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">
+                      <span className="text-gray-900" data-testid="trialist-dob">
                         {trialist.dob ? new Date(trialist.dob).toLocaleDateString() : 'N/A'}
                         {trialist.dob && ` (${calculateAge(trialist.dob)} years)`}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Ruler className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{trialist.height ? `${trialist.height} cm` : 'N/A'}</span>
+                      <span className="text-gray-900" data-testid="trialist-height">{trialist.height ? `${trialist.height} cm` : 'N/A'}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Weight className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{trialist.weight ? `${trialist.weight} kg` : 'N/A'}</span>
+                      <span className="text-gray-900" data-testid="trialist-weight">{trialist.weight ? `${trialist.weight} kg` : 'N/A'}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Footprints className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-900">{getFootLabel(trialist.preferredFoot)}</span>
+                      <span className="text-gray-900" data-testid="trialist-foot">{getFootLabel(trialist.preferredFoot)}</span>
                     </div>
                   </div>
                 </div>
@@ -218,7 +221,7 @@ export default function TrialistDetail() {
                 </h2>
                 <div className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-gray-400" />
-                  <span className="text-gray-900">{trialist.previousClub}</span>
+                  <span className="text-gray-900" data-testid="trialist-club">{trialist.previousClub}</span>
                 </div>
               </div>
             )}
@@ -227,7 +230,7 @@ export default function TrialistDetail() {
             {trialist.notes && (
               <div className="bg-white rounded-xl shadow-lg p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Scout Notes</h2>
-                <div className="text-gray-700 whitespace-pre-wrap bg-gray-50 p-4 rounded-lg">
+                <div className="text-gray-700 whitespace-pre-wrap bg-gray-50 p-4 rounded-lg" data-testid="section-notes">
                   {trialist.notes}
                 </div>
               </div>

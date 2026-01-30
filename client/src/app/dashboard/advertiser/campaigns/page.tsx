@@ -37,7 +37,7 @@ export default function CampaignsPage() {
             <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight font-black">Campaigns</h1>
             <p className="text-gray-500 text-sm">Manage and monitor your advertising campaigns.</p>
           </div>
-          <Link href="/dashboard/advertiser/campaigns/new" className="sky-button flex items-center justify-center space-x-2 text-xs tracking-widest">
+          <Link href="/dashboard/advertiser/campaigns/new" className="sky-button flex items-center justify-center space-x-2 text-xs tracking-widest" data-testid="btn-create-campaign">
             <Plus className="w-4 h-4" />
             <span>NEW CAMPAIGN</span>
           </Link>
@@ -53,6 +53,7 @@ export default function CampaignsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-12 pr-6 py-3 bg-gray-50 rounded-xl text-sm border-none outline-none focus:ring-2 focus:ring-[#87CEEB] transition-all"
+              data-testid="input-search-campaigns"
             />
           </div>
           <div className="flex items-center space-x-3 overflow-x-auto pb-2 md:pb-0">
@@ -63,6 +64,7 @@ export default function CampaignsPage() {
                 onClick={() => setFilter(f)}
                 className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === f ? 'bg-[#2F4F4F] text-white' : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
                   }`}
+                data-testid={`filter-btn-${f}`}
               >
                 {f}
               </button>
@@ -79,7 +81,7 @@ export default function CampaignsPage() {
         ) : filteredCampaigns.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCampaigns.map(campaign => (
-              <Link href={`/dashboard/advertiser/campaigns/${campaign.id}`} key={campaign.id} className="group bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
+              <Link href={`/dashboard/advertiser/campaigns/${campaign.id}`} key={campaign.id} className="group bg-white rounded-[2.5rem] p-8 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 hover:-translate-y-1" data-testid={`campaign-card-${campaign.id}`}>
                 <div className="flex items-start justify-between mb-8">
                   <div className="bg-[#87CEEB]/10 p-4 rounded-2xl group-hover:bg-[#87CEEB] transition-colors duration-500">
                     <Megaphone className="w-6 h-6 text-[#87CEEB] group-hover:text-white transition-colors duration-500" />

@@ -105,7 +105,9 @@ export default function CreateCampaignPage() {
               <React.Fragment key={s.id}>
                 <div className={`flex items-center space-x-2 ${step >= s.id ? 'text-[#2F4F4F]' : 'text-gray-300'}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${step === s.id ? 'bg-[#87CEEB] border-[#87CEEB] text-[#2F4F4F]' : step > s.id ? 'bg-green-500 border-green-500 text-white' : 'border-gray-200'
-                    }`}>
+                    }`}
+                    data-testid={`step-indicator-${s.id}`}
+                  >
                     {step > s.id ? <Check className="w-4 h-4" /> : s.icon}
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline">{s.label}</span>
@@ -127,6 +129,7 @@ export default function CreateCampaignPage() {
                     onClick={() => setSelectedZone(z)}
                     className={`p-8 rounded-[2rem] border-2 text-left transition-all ${selectedZone?.id === z.id ? 'border-[#87CEEB] bg-[#87CEEB]/5 shadow-inner' : 'border-gray-100 hover:border-[#87CEEB]/30'
                       }`}
+                    data-testid={`zone-option-${z.id}`}
                   >
                     <div className="text-[10px] font-black text-[#87CEEB] mb-2 uppercase tracking-widest">{z.pricePerView} / VIEW</div>
                     <h3 className="text-lg font-bold mb-1 text-[#2F4F4F]">{z.name}</h3>
@@ -146,8 +149,9 @@ export default function CreateCampaignPage() {
                 onDrop={handleCreativeDrop}
                 onDragOver={(e) => e.preventDefault()}
                 onClick={() => document.getElementById('file-upload')?.click()}
+                data-testid="dropzone-creative"
               >
-                <input id="file-upload" type="file" className="hidden" onChange={handleFileSelect} accept="image/*,video/*" />
+                <input id="file-upload" type="file" className="hidden" onChange={handleFileSelect} accept="image/*,video/*" data-testid="input-upload-creative" />
                 {creativeFile ? (
                   <div>
                     <Check className="w-16 h-16 text-green-500 mx-auto mb-6" />
@@ -183,7 +187,9 @@ export default function CreateCampaignPage() {
                         key={tag}
                         onClick={() => toggleTargeting(tag)}
                         className={`px-6 py-4 rounded-2xl border text-[10px] font-black transition-all uppercase tracking-widest text-center ${targeting.includes(tag) ? 'bg-[#2F4F4F] text-white border-[#2F4F4F]' : 'border-gray-100 text-gray-500 hover:border-[#87CEEB] hover:text-[#2F4F4F]'
-                          }`}>
+                          }`}
+                        data-testid={`tag-option-${tag}`}
+                      >
                         {tag}
                       </button>
                     ))}
@@ -205,6 +211,7 @@ export default function CreateCampaignPage() {
                       value={targetViews}
                       onChange={(e) => setTargetViews(parseInt(e.target.value) || 0)}
                       className="w-full px-8 py-5 bg-gray-50 border border-gray-100 rounded-[2rem] text-2xl font-black text-[#2F4F4F] focus:border-[#87CEEB] outline-none"
+                      data-testid="input-target-views"
                     />
                     <p className="text-[10px] text-gray-400 mt-2 font-bold uppercase tracking-tight">Min. 1,000 views required per campaign.</p>
                   </div>
@@ -228,6 +235,7 @@ export default function CreateCampaignPage() {
                       onClick={handleCreateCampaign}
                       disabled={isPending || targetViews < 1000}
                       className="w-full p-6 rounded-xl bg-[#87CEEB] text-[#2F4F4F] font-black uppercase tracking-widest hover:bg-[#87CEEB]/90 disabled:opacity-50 transition-all"
+                      data-testid="btn-submit-campaign"
                     >
                       {isPending ? 'Creating...' : 'Create Campaign'}
                     </button>

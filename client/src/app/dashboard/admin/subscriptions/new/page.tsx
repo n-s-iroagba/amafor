@@ -88,6 +88,7 @@ export default function NewSubscriptionPackagePage() {
                                 value={formData.tier}
                                 onChange={(e) => setFormData({ ...formData, tier: e.target.value as PatronTier })}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                data-testid="select-subscription-tier"
                             >
                                 {Object.values(PatronTier).map((tier) => (
                                     <option key={tier} value={tier} className="capitalize">
@@ -106,6 +107,7 @@ export default function NewSubscriptionPackagePage() {
                                 value={formData.frequency}
                                 onChange={(e) => setFormData({ ...formData, frequency: e.target.value as SubscriptionFrequency })}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                data-testid="select-subscription-frequency"
                             >
                                 {Object.values(SubscriptionFrequency).map((freq) => (
                                     <option key={freq} value={freq} className="capitalize">
@@ -131,6 +133,7 @@ export default function NewSubscriptionPackagePage() {
                                     className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     placeholder="0.00"
                                     required
+                                    data-testid="input-subscription-amount"
                                 />
                             </div>
                             <p className="text-sm text-gray-500 mt-1">
@@ -148,6 +151,7 @@ export default function NewSubscriptionPackagePage() {
                                 type="button"
                                 onClick={addBenefit}
                                 className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+                                data-testid="btn-add-benefit"
                             >
                                 <Plus className="w-4 h-4" />
                                 Add Benefit
@@ -163,12 +167,14 @@ export default function NewSubscriptionPackagePage() {
                                         onChange={(e) => handleBenefitChange(index, e.target.value)}
                                         placeholder="e.g. Access to exclusive content"
                                         className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        data-testid={`input-benefit-${index}`}
                                     />
                                     {formData.benefits.length > 1 && (
                                         <button
                                             type="button"
                                             onClick={() => removeBenefit(index)}
                                             className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                                            data-testid={`btn-remove-benefit-${index}`}
                                         >
                                             <Trash2 className="w-5 h-5" />
                                         </button>
@@ -190,6 +196,7 @@ export default function NewSubscriptionPackagePage() {
                         type="submit"
                         disabled={isPending}
                         className="flex items-center gap-2 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+                        data-testid="btn-save-subscription"
                     >
                         {isPending ? (
                             <Loader2 className="w-4 h-4 animate-spin" />

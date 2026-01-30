@@ -126,6 +126,7 @@ export default function EditGoal() {
               className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.scorer ? 'border-red-500' : 'border-sky-300'
                 } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter scorer name"
+              data-testid="input-scorer-name"
             />
             {errors.scorer && (
               <p className="mt-1 text-sm text-red-600">{errors.scorer}</p>
@@ -149,6 +150,7 @@ export default function EditGoal() {
               className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.minute ? 'border-red-500' : 'border-sky-300'
                 } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter minute of goal"
+              data-testid="input-goal-minute"
             />
             {errors.minute && (
               <p className="mt-1 text-sm text-red-600">{errors.minute}</p>
@@ -162,6 +164,7 @@ export default function EditGoal() {
               checked={isPenalty}
               onChange={(e) => setIsPenalty(e.target.checked)}
               className="h-4 w-4 text-sky-600 focus:ring-sky-500 border-sky-300 rounded"
+              data-testid="checkbox-is-penalty"
             />
             <label
               htmlFor="isPenalty"
@@ -176,6 +179,7 @@ export default function EditGoal() {
               type="button"
               onClick={() => router.back()}
               className="px-4 py-2 border border-sky-300 rounded-md shadow-sm text-sm font-medium text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 mt-2 sm:mt-0"
+              data-testid="btn-cancel"
             >
               Cancel
             </button>
@@ -183,6 +187,7 @@ export default function EditGoal() {
               type="submit"
               disabled={isSubmitting}
               className="px-4 py-2 bg-sky-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-75"
+              data-testid="btn-update-goal"
             >
               {isSubmitting ? 'Updating...' : 'Update Goal'}
             </button>

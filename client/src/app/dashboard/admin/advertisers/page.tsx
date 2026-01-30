@@ -59,7 +59,7 @@ export default function AdvertiserVerificationQueue() {
         ) : (
           <div className="grid grid-cols-1 gap-6">
             {queue.map(item => (
-              <div key={item.id} className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm flex flex-col lg:flex-row gap-12 transition-all hover:shadow-2xl group">
+              <div key={item.id} className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm flex flex-col lg:flex-row gap-12 transition-all hover:shadow-2xl group" data-testid="advertiser-app-card">
                 <div className="flex-1 space-y-8">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-6">
@@ -95,7 +95,7 @@ export default function AdvertiserVerificationQueue() {
                 </div>
 
                 <div className="lg:w-80 flex flex-col justify-center space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-12">
-                  <Link href={`/dashboard/admin/advertisers/${item.id}`} className="w-full py-5 bg-[#2F4F4F] text-[#87CEEB] rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all shadow-lg">
+                  <Link href={`/dashboard/admin/advertisers/${item.id}`} className="w-full py-5 bg-[#2F4F4F] text-[#87CEEB] rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all shadow-lg" data-testid="link-view-ad-dossier">
                     REVIEW PARTNERSHIP <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
                   <div className="grid grid-cols-2 gap-3">

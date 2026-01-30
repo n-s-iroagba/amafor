@@ -29,7 +29,49 @@ describe('Admin Dashboard - Patron Management', () => {
     });
 
     it('should navigate to add patron page', () => {
-        cy.get('a[href="/dashboard/admin/patrons/new"]').click();
+        // Use a more specific selector or force/multiple if needed, but better to be specific.
+        // Assuming the button has text "Add Patron" or "Plus" icon
+        cy.contains('a', 'Add Patron').click();
         cy.url().should('include', '/dashboard/admin/patrons/new');
+    });
+
+    it('should create a new patron', () => {
+        cy.visit('/dashboard/admin/patrons/new');
+
+        cy.intercept('POST', '**/patrons', {
+            statusCode: 201,
+            body: { success: true }
+        }).as('createPatron');
+
+        cy.get('[data-testid="input-patron-name"]').type('John Doe');
+        cy.get('[data-testid="input-patron-email"]').type('john@example.com');
+        cy.get('[data-testid="btn-save-patron"]').click();
+
+        cy.wait('@createPatron');
+        cy.url().should('include', '/dashboard/admin/patrons');
+    });
+
+    it('should view and edit patron', () => {
+        cy.intercept('GET', '**/patrons/1', {
+            statusCode: 200,
+            body: { success: true, data: { id: 1, name: 'John Doe', email: 'john@example.com' } }
+        }).as('getPatron');
+
+        cy.visit('/dashboard/admin/patrons/1');
+        cy.wait('@getPatron');
+        cy.contains('John Doe').should('be.visible');
+
+        // Edit
+        cy.get('[data-testid="btn-edit-patron"]').click();
+        cy.url().should('include', '/edit');
+
+        cy.intercept('PUT', '**/patrons/1', {
+            statusCode: 200,
+            body: { success: true }
+        }).as('updatePatron');
+
+        cy.get('[data-testid="input-patron-name"]').clear().type('Jane Doe');
+        cy.get('[data-testid="btn-save-patron"]').click();
+        cy.wait('@updatePatron');
     });
 });

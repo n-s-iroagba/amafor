@@ -121,6 +121,7 @@ const PlayerDetailsPage = () => {
             <Link
               href={`/dashboard/admin/players/${playerId}/edit`}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              data-testid="btn-edit-player"
             >
               Edit Player
             </Link>
@@ -128,6 +129,7 @@ const PlayerDetailsPage = () => {
               onClick={handleDeleteClick}
               disabled={deleting}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-testid="btn-delete-player"
             >
               {deleting ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -162,7 +164,7 @@ const PlayerDetailsPage = () => {
         <div className="bg-white shadow overflow-hidden sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6 flex justify-between items-start">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">{player.name}</h2>
+              <h2 className="text-2xl font-bold text-gray-900" data-testid="player-detail-name">{player.name}</h2>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
                 Player information and details
               </p>
@@ -177,7 +179,7 @@ const PlayerDetailsPage = () => {
               {/* Profile section with image */}
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Profile</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" data-testid="player-profile-section">
                   <div className="flex items-center space-x-4">
                     {player.imageUrl ? (
                       <Image

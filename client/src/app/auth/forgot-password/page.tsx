@@ -139,6 +139,7 @@ export default function ForgotPasswordPage() {
                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
                     placeholder="you@example.com"
                     disabled={submitting}
+                    data-testid="email-input"
                   />
                 </div>
               </div>
@@ -147,6 +148,7 @@ export default function ForgotPasswordPage() {
                 type="submit"
                 disabled={submitting || !form.email}
                 className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+                data-testid="send-reset-btn"
               >
                 {submitting ? (
                   <>

@@ -26,7 +26,7 @@ export default function FixtureArchivesLibrary() {
   return (
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
+        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest" data-testid="link-back-dashboard">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Dashboard
         </Link>
 
@@ -42,12 +42,12 @@ export default function FixtureArchivesLibrary() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {archives.map((match) => (
-              <div key={match.id} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-transparent hover:border-[#87CEEB]/20">
+              <div key={match.id} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-transparent hover:border-[#87CEEB]/20" data-testid={`match-card-${match.id}`}>
                 <div className="aspect-video relative overflow-hidden bg-[#2F4F4F]">
                   {match.thumbnail ? (
                     <>
                       <img src={match.thumbnail} className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" alt={match.title} />
-                      <Link href={`/dashboard/scout/matches/${match.id}`} className="absolute inset-0 flex items-center justify-center">
+                      <Link href={`/dashboard/scout/matches/${match.id}`} className="absolute inset-0 flex items-center justify-center" data-testid={`btn-play-match-${match.id}`}>
                         <div className="bg-[#87CEEB] w-16 h-16 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
                           <Play className="w-6 h-6 text-[#2F4F4F] ml-1" />
                         </div>

@@ -78,6 +78,7 @@ export default function GoalDetailPage() {
           <Link
             href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}/goals`}
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
+            data-testid="link-back-goals"
           >
             <svg
               className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -115,12 +116,14 @@ export default function GoalDetailPage() {
                 <Link
                   href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}/goals/${goalId}/edit`}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap"
+                  data-testid="btn-edit-goal"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base whitespace-nowrap"
+                  data-testid="btn-delete-goal"
                 >
                   Delete
                 </button>
@@ -221,6 +224,7 @@ export default function GoalDetailPage() {
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
                   className="px-4 py-2 bg-sky-100 text-sky-700 rounded-md hover:bg-sky-200 transition-colors"
+                  data-testid="btn-confirm-cancel"
                 >
                   Cancel
                 </button>
@@ -228,6 +232,7 @@ export default function GoalDetailPage() {
                   onClick={handleDelete}
                   disabled={isDeleting}
                   className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors flex items-center justify-center"
+                  data-testid="btn-confirm-delete"
                 >
                   {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
@@ -236,6 +241,6 @@ export default function GoalDetailPage() {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }

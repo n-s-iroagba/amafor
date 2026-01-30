@@ -158,6 +158,7 @@ export default function FeedDetailPage() {
                 <Link
                   href="/dashboard/admin/rss-feeds"
                   className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 inline-flex items-center gap-2"
+                  data-testid="btn-error-back-feeds"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to Feeds
@@ -213,6 +214,7 @@ export default function FeedDetailPage() {
           <Link
             href="/dashboard/admin/rss-feeds"
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center gap-2 font-medium"
+            data-testid="btn-back-feeds"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to RSS Feeds
@@ -252,6 +254,7 @@ export default function FeedDetailPage() {
                 <Link
                   href={`/dashboard/admin/rss-feeds/${feed.id}/edit`}
                   className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white/20 backdrop-blur-sm text-white rounded-xl hover:bg-white/30 transition-all duration-200 font-semibold border border-white/20"
+                  data-testid="btn-edit-feed"
                 >
                   <Edit className="w-4 h-4" />
                   Edit Feed
@@ -259,6 +262,7 @@ export default function FeedDetailPage() {
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
                   className="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/20 backdrop-blur-sm text-white rounded-xl hover:bg-red-500/30 transition-all duration-200 font-semibold border border-red-300/20"
+                  data-testid="btn-delete-feed"
                 >
                   <Trash2 className="w-4 h-4" />
                   Delete
@@ -373,6 +377,7 @@ export default function FeedDetailPage() {
                 <button
                   onClick={handleRefresh}
                   className="inline-flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200 font-medium"
+                  data-testid="btn-refresh-feed"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Refresh Data
@@ -428,16 +433,10 @@ export default function FeedDetailPage() {
                       disabled={deleting}
                       className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
                     >
-                      {deleting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Deleting...
-                        </>
-                      ) : (
-                        <>
-                          <Trash2 className="w-4 h-4" />
-                          Delete Feed
-                        </>
+                      <>
+                        <Trash2 className="w-4 h-4" />
+                        Delete Feed
+                      </>
                       )}
                     </button>
                     <button

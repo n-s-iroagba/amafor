@@ -38,7 +38,8 @@ export default function ScoutDetailPage() {
     try {
       const newStatus = action === 'approve' ? 'Active' : 'Rejected';
       await put({ ...scout, status: newStatus });
-      alert(`Scout application ${action}d successfully.`);
+      const actionText = action === 'approve' ? 'approved' : 'rejected';
+      alert(`Scout application ${actionText} successfully.`);
       router.push('/dashboard/admin/scouts');
     } catch (err) {
       console.error(err);

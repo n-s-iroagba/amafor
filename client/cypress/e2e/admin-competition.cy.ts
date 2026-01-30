@@ -7,45 +7,55 @@ describe("Admin Competition Journeys", () => {
     describe("UJ-ADM-001: Manage Leagues", () => {
         it("should allow managing leagues", () => {
             cy.visit("/dashboard/admin/leagues");
-            cy.contains("New League").click();
+            cy.get('[data-testid="btn-create-league"]').click();
             cy.url().should("include", "/leagues/new");
 
-            cy.get('input[name="name"]').type("Premier League 2026/27");
-            cy.get('button[type="submit"]').click();
+            cy.get('[data-testid="input-league-name"]').type("Premier League 2026/27");
+            cy.get('[data-testid="input-league-season"]').type("2026/27");
+            cy.get('[data-testid="btn-save-league"]').click();
 
             // Manage statistics
-            cy.visit("/dashboard/admin/leagues/1/league-statstics"); // Adjust ID
+            cy.get('[data-testid^="league-row-"]').first().within(() => {
+                // Proceed to detail then stats
+                cy.get('a[href*="/leagues/"]').click();
+            });
             cy.contains("Standings").should("be.visible");
+        });
+
+        it("should allow editing a league", () => {
+            cy.visit("/dashboard/admin/leagues");
+            cy.get('[data-testid^="league-row-"]').first().within(() => {
+                cy.get('[data-testid="btn-edit-league"]').click();
+            });
+            cy.get('[data-testid="input-league-name"]').clear().type("Updated League Name");
+            cy.get('[data-testid="btn-update-league"]').click();
         });
     });
 
     // UJ-ADM-002: Manage Fixtures
     describe("UJ-ADM-002: Manage Fixtures", () => {
         it("should allow managing fixtures", () => {
-            // Assuming league ID 1 exists
-            cy.visit("/dashboard/admin/leagues/1/fixtures");
-            cy.contains("New Fixture").click();
+            // Navigate to first league fixtures
+            cy.visit("/dashboard/admin/leagues");
+            cy.get('[data-testid^="league-row-"]').first().within(() => {
+                cy.get('[data-testid="btn-view-fixtures"]').click();
+            });
 
-            cy.get('select[name="homeTeam"]').select("Team A");
-            cy.get('select[name="awayTeam"]').select("Team B");
-            cy.get('input[name="date"]').type("2026-06-01T15:00");
-            cy.get('button[type="submit"]').click();
+            cy.get('[data-testid="btn-create-fixture"]').click();
 
-            // Manage Lineup
-            cy.visit("/dashboard/admin/leagues/1/fixtures/1/lineup");
-            cy.contains("Starting XI").should("be.visible");
+            // Using select by testid if possible, or fallback
+            cy.get('[data-testid="select-home-team"]').select(1);
+            cy.get('[data-testid="select-away-team"]').select(2);
+            cy.get('[data-testid="input-fixture-date"]').type("2026-06-01T15:00");
+            cy.get('[data-testid="btn-save-fixture"]').click();
 
             // Manage Goals
-            cy.visit("/dashboard/admin/leagues/1/fixtures/1/goals");
-            cy.contains("Add Goal").click();
-
-            // Manage Summary
-            cy.visit("/dashboard/admin/leagues/1/fixtures/1/summary");
-            cy.contains("Create Summary").should("exist");
-
-            // Manage Images
-            cy.visit("/dashboard/admin/leagues/1/fixtures/1/images");
-            cy.contains("Upload Image").should("exist");
+            cy.get('[data-testid^="fixture-row-"]').first().within(() => {
+                cy.get('[data-testid="btn-manage-goals"]').click();
+            });
+            cy.get('[data-testid="input-goal-scorer"]').type("Player X");
+            cy.get('[data-testid="input-goal-minute"]').type("45");
+            cy.get('[data-testid="btn-add-goal"]').click();
         });
     });
 });

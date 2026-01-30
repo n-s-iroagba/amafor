@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Search, Filter, UserPlus, ArrowLeft, Mail, Clock, Edit2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
@@ -27,9 +27,26 @@ interface User {
  */
 export default function UserManagementPage() {
   const { data: usersData, loading, error } = useGet<User[]>(API_ROUTES.USERS.LIST);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [roleFilter, setRoleFilter] = useState('All Roles');
 
   // Fallback to empty array if data isn't in expected format or null
   const users = Array.isArray(usersData) ? usersData : [];
+
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      const matchesSearch =
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesRole = roleFilter === 'All Roles' ||
+        (roleFilter === 'Admins' && user.role === 'Admin') ||
+        (roleFilter === 'Scouts' && user.role === 'Scout') ||
+        (roleFilter === 'Advertisers' && user.role === 'Advertiser');
+
+      return matchesSearch && matchesRole;
+    });
+  }, [users, searchTerm, roleFilter]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -43,7 +60,7 @@ export default function UserManagementPage() {
             <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight">User Management (ADM-02)</h1>
             <p className="text-gray-500 text-sm">Control platform access, assign roles, and manage verification states.</p>
           </div>
-          <Link href="/dashboard/admin/users/invite" className="sky-button flex items-center space-x-3 py-4">
+          <Link href="/dashboard/admin/users/invite" className="sky-button flex items-center space-x-3 py-4" data-testid="btn-invite-user">
             <UserPlus className="w-5 h-5" />
             <span>INVITE SYSTEM USER</span>
           </Link>
@@ -52,11 +69,23 @@ export default function UserManagementPage() {
         <div className="bg-white p-8 rounded-[2.5rem] shadow-sm mb-12 flex flex-wrap items-center gap-8 border border-gray-100">
           <div className="flex-1 min-w-[300px] relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
-            <input type="text" placeholder="Search by name, email, or role..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm font-bold" />
+            <input
+              type="text"
+              placeholder="Search by name, email, or role..."
+              className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm font-bold"
+              data-testid="input-search-users"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
           <div className="flex items-center space-x-3">
             <Filter className="w-4 h-4 text-gray-400" />
-            <select className="bg-gray-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-[#2F4F4F] outline-none border-none">
+            <select
+              className="bg-gray-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-[#2F4F4F] outline-none border-none"
+              data-testid="select-role-filter"
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+            >
               <option>All Roles</option>
               <option>Scouts</option>
               <option>Advertisers</option>
@@ -80,8 +109,8 @@ export default function UserManagementPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {users.map(user => (
-                  <tr key={user.id} className="group hover:bg-gray-50 transition-colors">
+                {filteredUsers.map(user => (
+                  <tr key={user.id} className="group hover:bg-gray-50 transition-colors" data-testid="user-row">
                     <td className="px-10 py-8">
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 rounded-2xl bg-[#87CEEB]/10 flex items-center justify-center text-[#2F4F4F] font-black text-lg shadow-inner">
@@ -119,7 +148,7 @@ export default function UserManagementPage() {
                     </td>
                   </tr>
                 ))}
-                {users.length === 0 && (
+                {filteredUsers.length === 0 && (
                   <tr>
                     <td colSpan={5} className="px-10 py-8 text-center text-gray-500 font-bold">No users found.</td>
                   </tr>

@@ -336,6 +336,7 @@ export default function FixturesPage() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                  data-testid="search-fixtures"
                 />
               </div>
             </div>
@@ -346,6 +347,7 @@ export default function FixturesPage() {
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as FixtureStatus | 'all')}
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                data-testid="status-filter"
               >
                 <option value="all">All Status</option>
                 <option value={FixtureStatus.SCHEDULED}>Scheduled</option>
@@ -363,6 +365,7 @@ export default function FixturesPage() {
                 value={leagueFilter}
                 onChange={(e) => setLeagueFilter(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                data-testid="league-filter"
               >
                 <option value="all">All Leagues</option>
                 {leaguesData?.map(league => (
@@ -379,6 +382,7 @@ export default function FixturesPage() {
                 value={dateFilter}
                 onChange={(e) => setDateFilter(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                data-testid="date-filter"
               >
                 <option value="all">All Dates</option>
                 <option value="today">Today</option>

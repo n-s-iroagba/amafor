@@ -172,6 +172,7 @@ export default function TrialistsList() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+              data-testid="input-search-trialists"
             />
           </div>
           <select
@@ -202,6 +203,7 @@ export default function TrialistsList() {
         <Link
           href="/dashboard/admin/academy/trialist/new"
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-green-700 text-white font-medium rounded-lg shadow hover:from-emerald-700 hover:to-green-800 transition-all duration-300"
+          data-testid="btn-add-trialist"
         >
           <Plus className="w-5 h-5" />
           Add Trialist
@@ -234,7 +236,7 @@ export default function TrialistsList() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredTrialists.map((trialist) => (
-                  <tr key={trialist.id} className="hover:bg-gray-50">
+                  <tr key={trialist.id} className="hover:bg-gray-50" data-testid={`trialist-row-${trialist.id}`}>
                     <td className="px-6 py-4">
                       <div>
                         <div className="font-medium text-gray-900">

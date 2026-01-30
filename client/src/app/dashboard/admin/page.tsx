@@ -88,6 +88,7 @@ export default function AdminDashboard() {
               href={item.path}
               className={`flex items-center space-x-3 p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${pathname === item.path ? 'bg-[#87CEEB] text-[#2F4F4F]' : 'text-white/50 hover:text-white hover:bg-white/5'
                 }`}
+              data-testid={`admin-nav-link-${item.name.toLowerCase().replace(/ /g, '-')}`}
             >
               {item.icon} <span>{item.name}</span>
             </Link>
@@ -118,7 +119,7 @@ export default function AdminDashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-2 space-y-12">
-            <section className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm">
+            <section className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm" data-testid="stat-card-revenue">
               <div className="flex items-center justify-between mb-10">
                 <h2 className="text-sm font-black text-[#2F4F4F] uppercase tracking-widest flex items-center">
                   <BarChart2 className="w-5 h-5 mr-3 text-[#87CEEB]" /> Revenue by Source
@@ -158,7 +159,7 @@ export default function AdminDashboard() {
               </div>
             </section>
 
-            <section className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm">
+            <section className="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm" data-testid="stat-card-infrastructure">
               <h2 className="text-sm font-black text-[#2F4F4F] uppercase tracking-widest mb-10">Infrastructure Health (ADM-17)</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="space-y-2">

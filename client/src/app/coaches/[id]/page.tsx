@@ -60,6 +60,7 @@ export default function CoachDetail() {
           <Link
             href="/coaches"
             className="text-sky-600 hover:text-sky-800 flex items-center text-sm sm:text-base"
+            data-testid="back-link"
           >
             <svg
               className="w-4 h-4 mr-1"
@@ -87,9 +88,10 @@ export default function CoachDetail() {
                   src={coach.imageUrl}
                   alt={coach.name}
                   className="h-48 w-48 object-cover rounded-full border-4 border-sky-200"
+                  data-testid="coach-image"
                 />
               ) : (
-                <div className="h-48 w-48 flex items-center justify-center rounded-full bg-gray-200 text-gray-400 text-xl">
+                <div className="h-48 w-48 flex items-center justify-center rounded-full bg-gray-200 text-gray-400 text-xl" data-testid="coach-image-placeholder">
                   No Image
                 </div>
               )}
@@ -97,19 +99,19 @@ export default function CoachDetail() {
 
             <div className="md:w-2/3 p-6 flex flex-col justify-between">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-sky-800">
+                <h2 className="text-2xl sm:text-3xl font-bold text-sky-800" data-testid="coach-name">
                   {coach.name}
                 </h2>
-                <p className="text-sky-600 text-sm sm:text-base mb-4">
+                <p className="text-sky-600 text-sm sm:text-base mb-4" data-testid="coach-role">
                   {coach.role}
                 </p>
 
                 {coach.bio ? (
-                  <div className="text-sky-900 text-sm sm:text-base whitespace-pre-wrap">
+                  <div className="text-sky-900 text-sm sm:text-base whitespace-pre-wrap" data-testid="coach-bio">
                     {coach.bio}
                   </div>
                 ) : (
-                  <div className="text-gray-500 text-sm sm:text-base italic">
+                  <div className="text-gray-500 text-sm sm:text-base italic" data-testid="coach-bio-empty">
                     No biography available.
                   </div>
                 )}

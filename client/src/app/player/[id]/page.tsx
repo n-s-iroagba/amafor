@@ -86,7 +86,7 @@ const PlayerPage: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-sky-400 text-slate-900 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shadow-lg">
+              <div className="absolute -bottom-4 -right-4 bg-sky-400 text-slate-900 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shadow-lg" data-testid="player-jersey">
                 #{player.jerseyNumber || '??'}
               </div>
             </div>
@@ -95,7 +95,7 @@ const PlayerPage: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-400/10 border border-sky-400/20 text-sky-400 text-xs font-bold uppercase tracking-widest mb-6">
                 <Shield className="w-3.5 h-3.5" /> Verified Athlete
               </div>
-              <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter uppercase whitespace-pre-wrap">{player.name}</h1>
+              <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter uppercase whitespace-pre-wrap" data-testid="player-name">{player.name}</h1>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-slate-400">
                 <div className="flex items-center gap-2">
                   <Shirt className="h-5 w-5 text-sky-400" />
@@ -120,7 +120,7 @@ const PlayerPage: React.FC = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-testid="player-stats-grid">
               {performanceStats.map((stat, i) => (
                 <div key={i} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
                   <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
@@ -209,6 +209,7 @@ const PlayerPage: React.FC = () => {
                 <div
                   onClick={() => window.location.href = '/pro-view'}
                   className="inline-flex items-center gap-2 bg-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 cursor-pointer transition-colors"
+                  data-testid="pro-view-cta"
                 >
                   Apply for Access
                 </div>

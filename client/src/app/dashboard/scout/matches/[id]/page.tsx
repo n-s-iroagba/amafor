@@ -54,7 +54,7 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
 
         <header className="flex items-center justify-between mb-8 flex-none">
           <div className="flex items-center space-x-6">
-            <Link href="/dashboard/scout/matches" className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-all">
+            <Link href="/dashboard/scout/matches" className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition-all" data-testid="link-back-matches">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
@@ -66,7 +66,7 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="bg-[#87CEEB] text-[#2F4F4F] px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition-all">
+            <button className="bg-[#87CEEB] text-[#2F4F4F] px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition-all" data-testid="btn-download-clips">
               DOWNLOAD CLIPS
             </button>
           </div>
@@ -78,7 +78,7 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
             <div className="flex-1 bg-black rounded-[2rem] overflow-hidden relative group">
               <img src={video.thumbnail || "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80"} className="w-full h-full object-cover opacity-60" alt={video.title} />
               <div className="absolute inset-0 flex items-center justify-center">
-                <button onClick={() => setIsPlaying(!isPlaying)} className="w-24 h-24 bg-[#87CEEB] rounded-full flex items-center justify-center text-[#2F4F4F] shadow-2xl hover:scale-110 transition-transform">
+                <button onClick={() => setIsPlaying(!isPlaying)} className="w-24 h-24 bg-[#87CEEB] rounded-full flex items-center justify-center text-[#2F4F4F] shadow-2xl hover:scale-110 transition-transform" data-testid="btn-play-pause">
                   {isPlaying ? <Pause className="w-10 h-10" /> : <Play className="w-10 h-10 ml-2" />}
                 </button>
               </div>
@@ -94,9 +94,9 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-8">
-                    <SkipBack className="w-6 h-6 text-gray-400 hover:text-white cursor-pointer" />
-                    <SkipForward className="w-6 h-6 text-gray-400 hover:text-white cursor-pointer" />
-                    <BarChart2 className="w-6 h-6 text-[#87CEEB] cursor-pointer" />
+                    <SkipBack className="w-6 h-6 text-gray-400 hover:text-white cursor-pointer" data-testid="btn-skip-back" />
+                    <SkipForward className="w-6 h-6 text-gray-400 hover:text-white cursor-pointer" data-testid="btn-skip-forward" />
+                    <BarChart2 className="w-6 h-6 text-[#87CEEB] cursor-pointer" data-testid="btn-view-stats" />
                   </div>
                   <div className="flex items-center space-x-4">
                     <Video className="w-5 h-5 text-gray-500" />
@@ -127,7 +127,7 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
                   </div>
                 ))}
               </div>
-              <button className="w-full mt-8 py-4 bg-white/10 hover:bg-[#87CEEB] hover:text-[#2F4F4F] rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center">
+              <button className="w-full mt-8 py-4 bg-white/10 hover:bg-[#87CEEB] hover:text-[#2F4F4F] rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center" data-testid="btn-tag-timestamp">
                 <Plus className="w-4 h-4 mr-2" /> TAG CURRENT TIMESTAMP
               </button>
             </div>
@@ -139,6 +139,7 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
               <textarea
                 placeholder="Enter tactical observations..."
                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-xs font-bold outline-none focus:border-[#87CEEB] h-32 resize-none"
+                data-testid="textarea-analyst-notes"
               />
             </div>
           </aside>

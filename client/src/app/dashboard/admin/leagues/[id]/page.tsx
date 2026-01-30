@@ -162,6 +162,7 @@ export default function LeagueDetail() {
                   <Link
                     href={`/dashboard/admin/leagues/${league.id}/edit`}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+                    data-testid="btn-edit-league-mobile"
                   >
                     <Edit3 className="w-4 h-4" />
                     Edit
@@ -169,6 +170,7 @@ export default function LeagueDetail() {
                   <button
                     onClick={() => setShowDeleteConfirm(true)}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-medium"
+                    data-testid="btn-delete-league-mobile"
                   >
                     <Trash2 className="w-4 h-4" />
                     Delete
@@ -182,6 +184,7 @@ export default function LeagueDetail() {
               <Link
                 href={`/dashboard/admin/leagues/${league.id}/edit`}
                 className="flex items-center gap-2 px-6 py-3 bg-white text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md font-medium"
+                data-testid="btn-edit-league"
               >
                 <Edit3 className="w-4 h-4" />
                 Edit League
@@ -189,6 +192,7 @@ export default function LeagueDetail() {
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all duration-300 shadow-sm hover:shadow-md font-medium"
+                data-testid="btn-delete-league"
               >
                 <Trash2 className="w-4 h-4" />
                 Delete
@@ -269,6 +273,7 @@ export default function LeagueDetail() {
                   <Link
                     href={`/dashboard/admin/leagues/${league.id}/league-statstics`}
                     className="inline-flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-gray-50 to-blue-50 text-blue-700 rounded-xl hover:from-blue-50 hover:to-blue-100 transition-all duration-300 border border-blue-200 hover:border-blue-300 font-medium group"
+                    data-testid="link-league-stats"
                   >
                     <BarChart3 className="w-5 h-5 transform group-hover:scale-110 transition-transform" />
                     View Detailed League Statistics
@@ -337,6 +342,7 @@ export default function LeagueDetail() {
                 <Link
                   href={`/dashboard/admin/leagues/${league.id}/edit`}
                   className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-sm hover:shadow-md font-medium group"
+                  data-testid="btn-edit-league-details"
                 >
                   <Edit3 className="w-4 h-4 transform group-hover:scale-110 transition-transform" />
                   Edit League Details
@@ -352,6 +358,7 @@ export default function LeagueDetail() {
                         onClick={handleDelete}
                         disabled={isDeleting}
                         className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                        data-testid="btn-confirm-delete"
                       >
                         {isDeleting ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -421,6 +428,7 @@ export default function LeagueDetail() {
                 onClick={confirmDelete}
                 disabled={isDeleting}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all duration-300 shadow-sm hover:shadow-md font-medium disabled:opacity-50 disabled:cursor-not-allowed group"
+                data-testid="btn-delete-league-permanent"
               >
                 {isDeleting ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

@@ -44,5 +44,31 @@ describe("Authentication Journeys", () => {
 
             cy.contains("link has been sent").should("be.visible");
         });
+
+        it("should allow resetting password with a token", () => {
+            const mockToken = "mock-reset-token";
+            cy.visit(`/auth/reset-password/${mockToken}`);
+            cy.get('[data-testid="password-input"]').type("NewPassword123!");
+            cy.get('[data-testid="confirmPassword-input"]').type("NewPassword123!");
+            cy.get('[data-testid="reset-password-btn"]').click();
+            // Expect redirect or success message - dependent on mock backend or intercept
+        });
+    });
+
+    // UJ-AUTH-004: Email Verification
+    describe("UJ-AUTH-004: Email Verification", () => {
+        it("should allow verifying email with code", () => {
+            const mockToken = "mock-verify-token";
+            cy.visit(`/auth/verify-email/${mockToken}`);
+
+            // Type code 123456
+            const code = "123456";
+            code.split('').forEach((digit, index) => {
+                cy.get(`[data-testid="verify-code-input-${index}"]`).type(digit);
+            });
+
+            cy.get('[data-testid="verify-email-btn"]').click();
+            // Expect redirect or success
+        });
     });
 });

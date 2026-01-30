@@ -5,7 +5,7 @@ import { Lock, ArrowLeft, Save, Mail, Trash2, ShieldAlert, Key, Loader2 } from '
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
-import { useGet, usePut, useDelete } from '@/shared/hooks/useApiQuery';
+import { useGet, usePut, useDelete, usePost } from '@/shared/hooks/useApiQuery';
 
 interface UserData {
   id: number;
@@ -74,6 +74,21 @@ export default function UserDetailPage() {
     }
   };
 
+  const { post: postReset, isPending: isResetting } = usePost(API_ROUTES.AUTH.FORGOT_PASSWORD);
+
+  const handleForceReset = async () => {
+    if (!user) return;
+    if (!confirm(`Send password reset instruction to ${user.email}?`)) return;
+
+    try {
+      await postReset({ email: user.email });
+      alert('Password reset link has been sent to the user.');
+    } catch (err) {
+      console.error('Failed to send reset link:', err);
+      alert('Failed to initiate password reset.');
+    }
+  };
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin w-8 h-8 text-[#87CEEB]" /></div>;
   }
@@ -100,13 +115,13 @@ export default function UserDetailPage() {
               {user.name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-3xl text-[#2F4F4F] font-black uppercase tracking-tight">{user.name}</h1>
+              <h1 className="text-3xl text-[#2F4F4F] font-black uppercase tracking-tight" data-testid="user-info-name">{user.name}</h1>
               <div className="flex items-center space-x-4 mt-1">
                 <div className="flex items-center text-[10px] font-black text-gray-400 uppercase tracking-widest">
                   <Mail className="w-3 h-3 mr-1.5" /> {user.email}
                 </div>
                 <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                <span className="text-[10px] font-black text-[#87CEEB] uppercase tracking-widest">{user.role}</span>
+                <span className="text-[10px] font-black text-[#87CEEB] uppercase tracking-widest" data-testid="role-badge">{user.role}</span>
               </div>
             </div>
           </div>
@@ -115,6 +130,7 @@ export default function UserDetailPage() {
               onClick={handleDelete}
               disabled={isDeleting}
               className="px-6 py-4 bg-white border border-red-100 text-red-500 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-50 transition-all flex items-center disabled:opacity-50"
+              data-testid="btn-delete-user"
             >
               {isDeleting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Trash2 className="w-4 h-4 mr-2" />}
               {isDeleting ? 'DELETING...' : 'DEACTIVATE USER'}
@@ -123,6 +139,7 @@ export default function UserDetailPage() {
               onClick={handleSave}
               disabled={isSaving}
               className="sky-button flex items-center space-x-3 py-4 px-10 disabled:opacity-50"
+              data-testid="btn-save-permissions"
             >
               {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
               <span>{isSaving ? 'UPDATING...' : 'SAVE PERMISSIONS'}</span>
@@ -150,6 +167,7 @@ export default function UserDetailPage() {
                           checked={localRole === role}
                           onChange={() => setLocalRole(role)}
                           className="w-5 h-5 accent-[#87CEEB]"
+                          data-testid={`radio-role-${role}`}
                         />
                       </label>
                     ))}
@@ -167,10 +185,13 @@ export default function UserDetailPage() {
                 Role changes trigger a password reset for the target user and log an entry in the system audit trail (ADM-02).
               </p>
               <button
-                onClick={() => alert("Password reset initiated. Feature coming soon.")}
-                className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-[#2F4F4F] rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center"
+                onClick={handleForceReset}
+                disabled={isResetting}
+                className="w-full py-4 bg-white/10 hover:bg-white text-white hover:text-[#2F4F4F] rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center disabled:opacity-50"
+                data-testid="btn-force-reset"
               >
-                <Key className="w-4 h-4 mr-2" /> FORCE PWD RESET
+                {isResetting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Key className="w-4 h-4 mr-2" />}
+                {isResetting ? 'SENDING LINK...' : 'FORCE PWD RESET'}
               </button>
             </div>
           </aside>

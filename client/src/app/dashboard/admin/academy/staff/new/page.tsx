@@ -174,6 +174,7 @@ export default function NewStaff() {
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.name ? 'border-red-500' : 'border-indigo-300'}`}
                   placeholder="John Doe"
+                  data-testid="input-staff-name"
                 />
                 {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name}</p>}
               </div>
@@ -189,6 +190,7 @@ export default function NewStaff() {
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.role ? 'border-red-500' : 'border-indigo-300'}`}
                   placeholder="Head Coach"
+                  data-testid="input-staff-role"
                 />
                 {errors.role && <p className="text-sm text-red-600 mt-1">{errors.role}</p>}
               </div>
@@ -205,6 +207,7 @@ export default function NewStaff() {
                   className="w-full rounded-md border border-indigo-300 p-2"
                   placeholder="JD"
                   maxLength={5}
+                  data-testid="input-staff-initials"
                 />
                 <p className="text-xs text-gray-500 mt-1">Max 5 characters (used for avatar if no image)</p>
               </div>
@@ -218,6 +221,7 @@ export default function NewStaff() {
                   value={formData.category}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.category ? 'border-red-500' : 'border-indigo-300'}`}
+                  data-testid="select-staff-category"
                 >
                   <option value="">Select category</option>
                   {categories.map(cat => (
@@ -242,6 +246,7 @@ export default function NewStaff() {
                   min="0"
                   max="50"
                   placeholder="5"
+                  data-testid="input-staff-experience"
                 />
               </div>
             </div>
@@ -261,6 +266,7 @@ export default function NewStaff() {
                 rows={5}
                 className="w-full rounded-md border border-indigo-300 p-2"
                 placeholder="Tell us about this staff member's background, expertise, and contributions..."
+                data-testid="textarea-staff-bio"
               />
               <p className="text-xs text-gray-500 mt-1">
                 Provide a detailed description of the staff member's role, experience, and achievements
@@ -279,6 +285,7 @@ export default function NewStaff() {
                 type="button"
                 onClick={addQualification}
                 className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
+                data-testid="btn-add-qualification"
               >
                 + Add another
               </button>
@@ -293,6 +300,7 @@ export default function NewStaff() {
                     onChange={(e) => handleQualificationChange(index, e.target.value)}
                     className={`flex-1 rounded-md border p-2 ${errors.qualifications && index === 0 ? 'border-red-500' : 'border-indigo-300'}`}
                     placeholder="e.g., UEFA Pro License, First Aid Certificate"
+                    data-testid={`input-staff-qualification-${index}`}
                   />
                   {formData.qualifications.length > 1 && (
                     <button
@@ -419,6 +427,7 @@ export default function NewStaff() {
               type="submit"
               disabled={isSubmitting}
               className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+              data-testid="btn-save-staff"
             >
               {isSubmitting && <Upload className="w-4 h-4 animate-spin" />}
               {isSubmitting ? 'Creating...' : 'Create Staff Member'}

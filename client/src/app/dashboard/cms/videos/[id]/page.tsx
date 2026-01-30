@@ -96,8 +96,9 @@ export default function VideoDetail() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-4 sm:mb-6">
           <Link
-            href="/videos"
+            href="/sports-admin/videos"
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
+            data-testid="link-back-videos"
           >
             <svg
               className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -120,7 +121,7 @@ export default function VideoDetail() {
           <div className="p-4 sm:p-6 border-b border-sky-200">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-sky-800">
+                <h2 className="text-xl sm:text-2xl font-bold text-sky-800" data-testid="video-title">
                   {video.title}
                 </h2>
                 <div className="flex items-center mt-2 space-x-4">
@@ -133,12 +134,14 @@ export default function VideoDetail() {
                 <Link
                   href={`/videos/${video.id}/edit`}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap"
+                  data-testid="btn-edit-video"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base whitespace-nowrap"
+                  data-testid="btn-delete-video"
                 >
                   Delete
                 </button>
@@ -165,7 +168,7 @@ export default function VideoDetail() {
                 <h3 className="text-lg font-medium text-sky-800 mb-2">
                   Description
                 </h3>
-                <p className="text-sm text-sky-900 leading-relaxed">
+                <p className="text-sm text-sky-900 leading-relaxed" data-testid="text-video-description">
                   {video.excerpt}
                 </p>
               </div>
@@ -255,12 +258,14 @@ export default function VideoDetail() {
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
                   className="px-4 py-2 bg-sky-100 text-sky-700 rounded-md hover:bg-sky-200 transition-colors"
+                  data-testid="btn-confirm-cancel"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                  data-testid="btn-confirm-delete"
                 >
                   Delete
                 </button>

@@ -75,6 +75,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                     : 'bg-white text-slate-700 hover:bg-slate-100'
                     }`}
                   aria-current={activeSection === sec.id ? 'page' : undefined}
+                  data-testid={`nav-item-${sec.id.replace('/', '').replace('/', '-')}`}
                 >
                   <Icon className="w-5 h-5" />
                   {sec.name}
@@ -113,6 +114,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                   <button
                     onClick={() => refetchStaff()}
                     className="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                    data-testid="btn-refresh-staff"
                   >
                     Refresh Staff
                   </button>
@@ -131,6 +133,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                     <button
                       onClick={() => refetchStaff()}
                       className="mt-2 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded transition-colors"
+                      data-testid="btn-retry-staff"
                     >
                       Try Again
                     </button>
@@ -144,6 +147,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                         <div
                           key={staff.id}
                           className="bg-slate-50 p-6 rounded-lg shadow-card hover:shadow-lg transition-shadow"
+                          data-testid={`staff-card-${staff.id}`}
                         >
                           <div className="w-20 h-20 bg-gradient-to-br from-sky-600 to-sky-800 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
                             {staff.initials || getInitials(staff.name)}
@@ -219,7 +223,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                 Contact us to learn more about trial dates and enrollment information.
               </p>
               <div className="flex gap-4">
-                <Link href="/help" className="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-lg transition-colors font-medium">
+                <Link href="/help" className="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-lg transition-colors font-medium" data-testid="link-contact-us">
                   Contact Us
                 </Link>
                 <button
@@ -229,6 +233,7 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
                   }}
                   className="border border-sky-700 text-sky-700 hover:bg-sky-50 px-6 py-3 rounded-lg transition-colors font-medium"
+                  data-testid="btn-whatsapp"
                 >
                   WhatsApp Us
                 </button>

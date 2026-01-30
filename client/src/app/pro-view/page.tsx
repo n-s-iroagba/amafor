@@ -35,6 +35,7 @@ export default function ProViewAccess() {
             <Link
               href="/pro-view/apply"
               className="inline-flex items-center gap-2 bg-sky-700 hover:bg-sky-800 text-white px-10 py-4 rounded-lg transition-colors font-semibold text-lg"
+              data-testid="apply-btn"
             >
               Apply for Access
               <ChevronRight className="w-5 h-5" />
@@ -173,6 +174,7 @@ export default function ProViewAccess() {
             <Link
               href="/pro-view/apply"
               className="inline-flex items-center gap-2 bg-sky-900 hover:bg-sky-900/90 text-white px-10 py-4 rounded-lg transition-colors font-semibold text-lg mb-8"
+              data-testid="apply-btn-bottom"
             >
               Apply for Pro View Access
               <ArrowRight className="w-5 h-5" />

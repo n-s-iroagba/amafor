@@ -37,6 +37,15 @@ export class DisputeController {
         }
     };
 
+    public getAllDisputes = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const disputes = await this.disputeService.getAllDisputes();
+            res.status(200).json({ success: true, data: disputes });
+        } catch (error: any) {
+            next(error);
+        }
+    };
+
     public getDispute = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params;
@@ -49,5 +58,23 @@ export class DisputeController {
         } catch (error: any) {
             next(error);
         }
+    };
+
+    public resolveDispute = async (req: Request, res: Response, next: NextFunction) => {
+        return tracer.startActiveSpan('controller.DisputeController.resolveDispute', async (span) => {
+            try {
+                const { id } = req.params;
+                const { adminResponse, status } = req.body;
+
+                const dispute = await this.disputeService.resolveDispute(id, adminResponse, status);
+
+                res.status(200).json({ success: true, data: dispute });
+            } catch (error: any) {
+                span.setStatus({ code: 2, message: error.message });
+                next(error);
+            } finally {
+                span.end();
+            }
+        });
     };
 }

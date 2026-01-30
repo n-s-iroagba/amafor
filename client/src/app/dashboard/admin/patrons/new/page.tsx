@@ -150,6 +150,7 @@ export default function NewPatronPage() {
             value={form.name}
             onChange={handleChange}
             required
+            data-testid="input-patron-name"
           />
         </div>
 
@@ -170,6 +171,7 @@ export default function NewPatronPage() {
             value={form.position}
             onChange={handleChange}
             required
+            data-testid="input-patron-position"
           />
         </div>
 
@@ -232,6 +234,7 @@ export default function NewPatronPage() {
               accept="image/jpeg,image/jpg,image/png,image/webp"
               onChange={handleFileChange}
               className="hidden"
+              data-testid="input-patron-image"
             />
             <span className="text-sm text-gray-500">
               {imageFile ? imageFile.name : 'No file chosen'}
@@ -260,6 +263,7 @@ export default function NewPatronPage() {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={form.bio}
             onChange={handleChange}
+            data-testid="input-patron-bio"
           />
         </div>
 
@@ -283,6 +287,7 @@ export default function NewPatronPage() {
             type="submit"
             disabled={isUploading}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            data-testid="btn-save-patron"
           >
             {isUploading ? 'Creating...' : 'Create Patron'}
           </button>

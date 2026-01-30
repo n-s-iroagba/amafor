@@ -66,6 +66,7 @@ export default function LeaguesList() {
           <Link
             href="/dashboard/admin/leagues/new"
             className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center"
+            data-testid="btn-create-league"
           >
             Create New League
           </Link>
@@ -157,6 +158,7 @@ export default function LeaguesList() {
                     <tr
                       key={league.id}
                       className="hover:bg-sky-50 transition-colors"
+                      data-testid="league-row"
                     >
                       <td className="px-4 sm:px-6 py-4">
                         <div className="min-w-0">
@@ -213,6 +215,7 @@ export default function LeaguesList() {
                             href={`/dashboard/admin/leagues/${league.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors text-xs sm:text-sm"
                             title="Edit"
+                            data-testid="btn-edit-league"
                           >
                             <span className="sr-only sm:not-sr-only">Edit</span>
                             <svg
@@ -233,6 +236,7 @@ export default function LeaguesList() {
                             onClick={() => setDeleteConfirm(Number(league.id))}
                             className="text-red-600 hover:text-red-900 transition-colors text-xs sm:text-sm"
                             title="Delete"
+                            data-testid="btn-delete-league"
                           >
                             <span className="sr-only sm:not-sr-only">
                               Delete

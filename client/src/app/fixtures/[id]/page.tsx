@@ -283,6 +283,7 @@ export default function FixtureDetailsPage() {
           <button
             onClick={() => router.back()}
             className="flex items-center gap-2 text-slate-300 hover:text-white mb-6 transition-colors"
+            data-testid="back-button"
           >
             <ChevronLeft className="h-5 w-5" />
             Back to Fixtures

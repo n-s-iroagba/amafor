@@ -28,9 +28,11 @@ interface Dispute {
  * Hook: useGet(API_ROUTES.ADVERTISER.DISPUTES.LIST)
  */
 export default function AdvertiserDisputeListPage() {
-  const { data: disputes, loading } = useGet<Dispute[]>(
+  const { data: response, loading } = useGet<{ success: boolean; data: Dispute[] }>(
     API_ROUTES.ADVERTISER.DISPUTES.LIST
   );
+
+  const disputes = response?.data || [];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-GB', {
@@ -49,7 +51,7 @@ export default function AdvertiserDisputeListPage() {
             <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight font-black">Support & Disputes</h1>
             <p className="text-gray-500 text-sm">Review status and chat history for campaign discrepancy reports.</p>
           </div>
-          <Link href="/dashboard/advertiser/disputes/new" className="sky-button flex items-center space-x-3 py-4">
+          <Link href="/dashboard/advertiser/disputes/new" className="sky-button flex items-center space-x-3 py-4" data-testid="btn-open-dispute">
             <AlertCircle className="w-5 h-5" />
             <span>OPEN NEW DISPUTE</span>
           </Link>
@@ -58,11 +60,11 @@ export default function AdvertiserDisputeListPage() {
         <div className="bg-white p-8 rounded-[2.5rem] shadow-sm mb-8 border border-gray-100 flex flex-wrap items-center gap-8">
           <div className="flex-1 min-w-[300px] relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input type="text" placeholder="Search by case ID or subject..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm" />
+            <input type="text" placeholder="Search by case ID or subject..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm" data-testid="input-search-disputes" />
           </div>
           <div className="flex items-center space-x-3">
             <Filter className="w-4 h-4 text-gray-400" />
-            <select className="bg-gray-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none">
+            <select className="bg-gray-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none" data-testid="select-filter-disputes">
               <option>All Disputes</option>
               <option>Active</option>
               <option>Resolved</option>
@@ -93,7 +95,7 @@ export default function AdvertiserDisputeListPage() {
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {disputes.map(d => (
-                  <tr key={d.id} className="group hover:bg-gray-50 transition-colors">
+                  <tr key={d.id} className="group hover:bg-gray-50 transition-colors" data-testid={`dispute-row-${d.id}`}>
                     <td className="px-10 py-8">
                       <div>
                         <div className="font-bold text-[#2F4F4F] text-lg mb-1 group-hover:text-[#87CEEB] transition-colors">{d.subject}</div>

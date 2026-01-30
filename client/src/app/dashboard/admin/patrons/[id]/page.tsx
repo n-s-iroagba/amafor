@@ -77,11 +77,12 @@ export default function PatronDetailsPage() {
           <button
             onClick={() => window.history.back()}
             className="px-6 py-3 bg-sky-500 text-white rounded-xl hover:bg-sky-600 transition-colors font-medium"
+            data-testid="btn-error-go-back"
           >
             Go Back
           </button>
         </div>
-      </div>
+      </div >
     );
   }
 
@@ -148,7 +149,7 @@ export default function PatronDetailsPage() {
 
               {/* Basic Info */}
               <div className="text-center md:text-left flex-1">
-                <h2 className="text-2xl font-bold text-white mb-2">
+                <h2 className="text-2xl font-bold text-white mb-2" data-testid="patron-detail-name">
                   {patron.name}
                 </h2>
                 <p className="text-sky-100 text-lg font-medium mb-4">

@@ -61,6 +61,7 @@ export default function RetentionSettings() {
                                 value={retentionDays.auditLogs}
                                 onChange={(e) => setRetentionDays({ ...retentionDays, auditLogs: parseInt(e.target.value) })}
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                data-testid="input-retention-audit"
                             />
                             <p className="text-xs text-slate-500 mt-2">Recommended: 365 days (BR-SEC-09)</p>
                         </div>
@@ -71,6 +72,7 @@ export default function RetentionSettings() {
                                 value={retentionDays.applicationData}
                                 onChange={(e) => setRetentionDays({ ...retentionDays, applicationData: parseInt(e.target.value) })}
                                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                data-testid="input-retention-app"
                             />
                             <p className="text-xs text-slate-500 mt-2">Recommended: 90 days</p>
                         </div>
@@ -87,6 +89,7 @@ export default function RetentionSettings() {
                                 checked={anonymizationEnabled}
                                 onChange={(e) => setAnonymizationEnabled(e.target.checked)}
                                 className="w-5 h-5 text-yellow-600 rounded border-gray-300 focus:ring-yellow-600"
+                                data-testid="chk-anonymize"
                             />
                             <span className="text-yellow-800">
                                 Automatically anonymize user data upon account deletion instead of hard delete (BR-DSR-03).
@@ -99,6 +102,7 @@ export default function RetentionSettings() {
                             onClick={handleSave}
                             disabled={isSaving}
                             className="flex items-center gap-2 bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                            data-testid="btn-save-retention"
                         >
                             <Save className="w-4 h-4" />
                             {isSaving ? 'Saving Policy...' : 'Save Policy Changes'}

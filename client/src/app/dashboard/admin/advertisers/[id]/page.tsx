@@ -74,7 +74,7 @@ export default function AdvertiserReviewDetail() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Link href="/dashboard/admin/advertisers" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/admin/advertisers" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors" data-testid="btn-back-advertisers">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Queue
         </Link>
 
@@ -98,6 +98,7 @@ export default function AdvertiserReviewDetail() {
               onClick={() => handleAction('denying')}
               disabled={!!processing}
               className="bg-white border-2 border-red-100 text-red-500 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-red-50 transition-all flex items-center disabled:opacity-50"
+              data-testid="btn-deny-advertiser"
             >
               {processing === 'denying' ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <XCircle className="w-4 h-4 mr-2" />}
               DENY ACCESS
@@ -106,6 +107,7 @@ export default function AdvertiserReviewDetail() {
               onClick={() => handleAction('authorizing')}
               disabled={!!processing}
               className="sky-button flex items-center space-x-3 py-4 px-10 disabled:opacity-50 shadow-xl"
+              data-testid="btn-authorize-advertiser"
             >
               {processing === 'authorizing' ? <Loader2 className="w-5 h-5 animate-spin" /> : <BadgeCheck className="w-5 h-5" />}
               <span>{processing === 'authorizing' ? 'AUTHORIZING...' : 'AUTHORIZE PARTNER'}</span>
@@ -145,7 +147,7 @@ export default function AdvertiserReviewDetail() {
                     <span className="font-bold text-[#2F4F4F]">{company.website}</span>
                   </div>
                 </div>
-                <button className="w-full md:w-auto px-8 py-3 bg-white rounded-xl text-[10px] font-black text-[#87CEEB] uppercase tracking-widest hover:bg-[#2F4F4F] hover:text-white transition-all shadow-sm flex items-center justify-center">
+                <button className="w-full md:w-auto px-8 py-3 bg-white rounded-xl text-[10px] font-black text-[#87CEEB] uppercase tracking-widest hover:bg-[#2F4F4F] hover:text-white transition-all shadow-sm flex items-center justify-center" data-testid="btn-verify-whois">
                   EXECUTE WHOIS VERIFICATION <ExternalLink className="w-3 h-3 ml-2" />
                 </button>
               </div>

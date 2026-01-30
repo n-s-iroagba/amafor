@@ -92,7 +92,7 @@ export default function NewsDetailPage() {
         <div className="max-w-4xl mx-auto">
           {/* Article Title */}
 
-          <h1 className="text-cetext-3xl sm:text-4xl lg:text-5xl font-bold text-sky-800 leading-tight break-words mb-6 min-h-[3rem]">
+          <h1 className="text-cetext-3xl sm:text-4xl lg:text-5xl font-bold text-sky-800 leading-tight break-words mb-6 min-h-[3rem]" data-testid="article-title">
             {cleanText(article.title)}
           </h1>
 
@@ -108,13 +108,13 @@ export default function NewsDetailPage() {
             <div className="p-6 sm:p-8">
               {/* Summary */}
               {article.excerpt && (
-                <p className="text-sky-600 italic border-l-4 border-sky-200 pl-4 mb-6 min-h-[3rem]">
+                <p className="text-sky-600 italic border-l-4 border-sky-200 pl-4 mb-6 min-h-[3rem]" data-testid="article-excerpt">
                   {article.excerpt}
                 </p>
               )}
 
               {/* Content */}
-              <div className="prose prose-sky max-w-none min-h-[10rem] break-words">
+              <div className="prose prose-sky max-w-none min-h-[10rem] break-words" data-testid="article-content">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: removeImageTags(article.content),
@@ -131,6 +131,7 @@ export default function NewsDetailPage() {
             <button
               onClick={() => window.history.back()}
               className="inline-flex items-center text-sm sm:text-base text-sky-600 hover:text-sky-800 transition-all duration-200 hover:translate-x-1"
+              data-testid="back-button"
             >
               <svg
                 className="w-4 h-4 mr-2"

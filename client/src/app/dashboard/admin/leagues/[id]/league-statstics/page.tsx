@@ -57,6 +57,7 @@ export default function LeagueStatisticsPage() {
                 <button
                     onClick={() => router.back()}
                     className="mt-4 text-blue-600 hover:underline"
+                    data-testid="btn-error-go-back"
                 >
                     Go Back
                 </button>

@@ -111,7 +111,7 @@ export default function EditCoach() {
         imageUrl,
       });
 
-      router.push('/sports-admin/coach');
+      router.push('/dashboard/admin/coaches');
     } catch (error) {
       console.error('Error updating coach:', error);
     } finally {
@@ -145,6 +145,7 @@ export default function EditCoach() {
                 onChange={(e) => setName(e.target.value)}
                 className={`mt-1 block w-full rounded-md border p-2 ${errors.name ? 'border-red-500' : 'border-sky-300'
                   }`}
+                data-testid="input-coach-name"
               />
               {errors.name && (
                 <p className="text-sm text-red-600">{errors.name}</p>
@@ -161,6 +162,7 @@ export default function EditCoach() {
                 onChange={(e) => setRole(e.target.value)}
                 className={`mt-1 block w-full rounded-md border p-2 ${errors.role ? 'border-red-500' : 'border-sky-300'
                   }`}
+                data-testid="input-coach-role"
               />
               {errors.role && (
                 <p className="text-sm text-red-600">{errors.role}</p>
@@ -178,6 +180,7 @@ export default function EditCoach() {
               onChange={(e) => setBio(e.target.value)}
               rows={4}
               className="mt-1 block w-full rounded-md border border-sky-300 p-2"
+              data-testid="textarea-coach-bio"
             />
           </div>
 
@@ -272,6 +275,7 @@ export default function EditCoach() {
               type="submit"
               disabled={isSubmitting || !imageUrl}
               className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 disabled:opacity-50 flex items-center"
+              data-testid="btn-update-coach"
             >
               {isSubmitting ? (
                 <Upload className="w-4 h-4 mr-2 animate-spin" />

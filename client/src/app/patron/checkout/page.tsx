@@ -131,6 +131,7 @@ export default function PatronCheckout() {
                         ? 'bg-white text-sky-700 shadow-md transform scale-[1.02]'
                         : 'text-slate-500 hover:text-slate-700'
                         }`}
+                      data-testid="type-toggle-subscription"
                     >
                       <Trophy className="w-4 h-4" />
                       Recurring Support
@@ -141,6 +142,7 @@ export default function PatronCheckout() {
                         ? 'bg-white text-sky-700 shadow-md transform scale-[1.02]'
                         : 'text-slate-500 hover:text-slate-700'
                         }`}
+                      data-testid="type-toggle-donation"
                     >
                       <Heart className="w-4 h-4" />
                       One-time Donation
@@ -162,12 +164,14 @@ export default function PatronCheckout() {
                             <button
                               onClick={() => setSelectedFrequency('monthly')}
                               className={`px-3 py-1.5 rounded-md transition-all ${selectedFrequency === 'monthly' ? 'bg-white shadow text-sky-700' : 'text-slate-500'}`}
+                              data-testid="frequency-monthly"
                             >
                               MONTHLY
                             </button>
                             <button
                               onClick={() => setSelectedFrequency('yearly')}
                               className={`px-3 py-1.5 rounded-md transition-all ${selectedFrequency === 'yearly' ? 'bg-white shadow text-sky-700' : 'text-slate-500'}`}
+                              data-testid="frequency-yearly"
                             >
                               YEARLY
                             </button>
@@ -188,6 +192,7 @@ export default function PatronCheckout() {
                                   ? 'border-sky-600 bg-sky-50 shadow-md'
                                   : 'border-slate-100 hover:border-sky-200 hover:bg-slate-50'
                                   }`}
+                                data-testid="tier-selection-btn"
                               >
                                 <div className="flex justify-between items-center">
                                   <div>
@@ -222,6 +227,7 @@ export default function PatronCheckout() {
                             onChange={(e) => setCustomAmount(e.target.value)}
                             placeholder="5,000"
                             className="w-full pl-10 pr-4 py-4 rounded-lg border-2 border-sky-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-100 outline-none text-2xl font-bold text-slate-800 placeholder:text-slate-300 bg-white"
+                            data-testid="custom-amount-input"
                           />
                         </div>
                         <p className="text-sm text-sky-700 mt-2 font-medium">Minimum donation: ₦1,000</p>
@@ -241,6 +247,7 @@ export default function PatronCheckout() {
                           onChange={(e) => setName(e.target.value)}
                           className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
                           placeholder="John Doe"
+                          data-testid="checkout-name"
                         />
                       </div>
                       <div>
@@ -251,6 +258,7 @@ export default function PatronCheckout() {
                           onChange={(e) => setEmail(e.target.value)}
                           className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
                           placeholder="john@example.com"
+                          data-testid="checkout-email"
                         />
                       </div>
                       <div>
@@ -261,6 +269,7 @@ export default function PatronCheckout() {
                           onChange={(e) => setPhone(e.target.value)}
                           className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
                           placeholder="+234..."
+                          data-testid="checkout-phone"
                         />
                       </div>
                     </div>

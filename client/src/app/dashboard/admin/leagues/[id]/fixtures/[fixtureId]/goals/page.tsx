@@ -97,6 +97,7 @@ export default function GoalsPage() {
                     <button
                         onClick={() => router.back()}
                         className="flex items-center gap-2 text-sky-600 hover:text-sky-700 mb-2 transition-colors text-sm"
+                        data-testid="btn-back-fixture-details"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Back to details
@@ -118,6 +119,7 @@ export default function GoalsPage() {
                             onChange={(e) => setNewGoal({ ...newGoal, scorer: e.target.value })}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
                             placeholder="e.g. John Doe"
+                            data-testid="input-goal-scorer"
                         />
                     </div>
                     <div className="w-24">
@@ -131,6 +133,7 @@ export default function GoalsPage() {
                             onChange={(e) => setNewGoal({ ...newGoal, minute: e.target.value })}
                             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500"
                             placeholder="Min"
+                            data-testid="input-goal-minute"
                         />
                     </div>
                     <div className="flex items-center gap-2 pb-2">
@@ -140,6 +143,7 @@ export default function GoalsPage() {
                             checked={newGoal.isPenalty}
                             onChange={(e) => setNewGoal({ ...newGoal, isPenalty: e.target.checked })}
                             className="w-4 h-4 text-sky-600 rounded focus:ring-sky-500"
+                            data-testid="checkbox-goal-penalty"
                         />
                         <label htmlFor="penalty" className="text-sm text-gray-700">Penalty Goal</label>
                     </div>
@@ -147,6 +151,7 @@ export default function GoalsPage() {
                         type="submit"
                         disabled={isPending}
                         className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 disabled:opacity-50 flex items-center gap-2"
+                        data-testid="btn-add-goal"
                     >
                         {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
                         Add Goal
@@ -193,6 +198,7 @@ export default function GoalsPage() {
                                             onClick={() => handleDelete(goal.id)}
                                             disabled={isDeleting}
                                             className="text-red-600 hover:text-red-900"
+                                            data-testid={`btn-delete-goal-${goal.id}`}
                                         >
                                             <Trash2 className="w-4 h-4" />
                                         </button>

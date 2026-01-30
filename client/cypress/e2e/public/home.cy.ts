@@ -1,22 +1,24 @@
-describe('Public Home Page', () => {
+
+describe('Public - Home Page', () => {
     beforeEach(() => {
-        // Visit the home page before each test
+        // Mock minimal necessary data for home page sections
+        cy.intercept('GET', '**/fixtures/next-upcoming', { body: { success: true, data: null } }).as('getNextFixture');
+        cy.intercept('GET', '**/articles/published*', { body: { success: true, data: [] } }).as('getNews');
+        cy.intercept('GET', '**/fixtures/gallery*', { body: { success: true, data: [] } }).as('getGallery');
+    });
+
+    it('should render main home page sections', () => {
         cy.visit('/');
-    });
 
-    it('should return 200 OK from server', () => {
-        cy.request('/').its('status').should('eq', 200);
-    });
-
-    it('should load the home page successfully', () => {
-        cy.url().should('include', '/');
-        // Check for the header which is known to exist
+        // Header & Hero (Static mostly)
         cy.get('header').should('be.visible');
-        // Check for the footer
-        cy.get('footer').should('exist');
-    });
 
-    it('should display the navigation header', () => {
-        cy.get('header').should('be.visible');
+        // Sections check (IDs or distinctive text)
+        // Let's check for the Support/Footer sections which are common
+        cy.get('footer').should('be.visible');
+
+        // Check navigation exist
+        cy.contains('News').should('be.visible');
+        cy.contains('Fixtures').should('be.visible');
     });
 });

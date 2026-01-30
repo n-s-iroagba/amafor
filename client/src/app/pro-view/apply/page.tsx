@@ -58,7 +58,7 @@ export default function ProViewApplication() {
                 <CheckCircle className="w-12 h-12 text-emerald-500" />
               </div>
 
-              <h1 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tight">Application Transmitted</h1>
+              <h1 className="text-4xl font-black text-slate-900 mb-6 uppercase tracking-tight" data-testid="success-message">Application Transmitted</h1>
               <p className="text-slate-600 mb-10 text-lg leading-relaxed">
                 Your application has been submitted. Thank you for applying for Pro View access. Your credentials are now{' '}
                 <span className="font-black text-slate-900 px-2 py-1 bg-sky-100 rounded-lg">Under Verification</span>.
@@ -154,6 +154,7 @@ export default function ProViewApplication() {
                     onChange={handleChange}
                     className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
                     required
+                    data-testid="apply-name"
                   />
                 </div>
 
@@ -169,6 +170,7 @@ export default function ProViewApplication() {
                     onChange={handleChange}
                     className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
                     required
+                    data-testid="apply-email"
                   />
                 </div>
               </div>
@@ -186,6 +188,7 @@ export default function ProViewApplication() {
                     onChange={handleChange}
                     className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
                     required
+                    data-testid="apply-org"
                   />
                 </div>
 
@@ -201,6 +204,7 @@ export default function ProViewApplication() {
                     onChange={handleChange}
                     className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200"
                     required
+                    data-testid="apply-url"
                   />
                 </div>
               </div>
@@ -216,6 +220,7 @@ export default function ProViewApplication() {
                   onChange={handleChange}
                   className="w-full px-6 py-4 bg-slate-50 border-transparent focus:border-sky-400 focus:bg-white rounded-2xl outline-none transition-all font-bold text-slate-900 placeholder:text-slate-200 min-h-[160px] resize-none"
                   required
+                  data-testid="apply-reason"
                 />
               </div>
 
@@ -224,6 +229,7 @@ export default function ProViewApplication() {
                   type="submit"
                   disabled={loading || !formData.fullName || !formData.email || !formData.organization || !formData.socialUrl || !formData.reason}
                   className="w-full bg-slate-900 hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 text-white px-10 py-5 rounded-[1.5rem] transition-all font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-slate-900/20 active:scale-[0.98] duration-200 flex items-center justify-center gap-3"
+                  data-testid="submit-apply-btn"
                 >
                   {loading ? (
                     <>

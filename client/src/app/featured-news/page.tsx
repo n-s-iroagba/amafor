@@ -164,6 +164,7 @@ const FeaturedNews = () => {
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                   whileHover={{ y: -5 }}
                   className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 flex flex-col h-full hover:shadow-lg transition-all duration-300 border border-gray-100 relative overflow-hidden group w-full"
+                  data-testid="featured-news-item"
                 >
                   {/* Premium badge - Standardized */}
                   {index < 2 && (
@@ -227,6 +228,7 @@ const FeaturedNews = () => {
                       aria-label={`Read more about ${item.title}`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      data-testid="read-more-link"
                     >
                       <span className="whitespace-nowrap">Read More</span>
                       <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/button:translate-x-1 flex-shrink-0" />
@@ -261,6 +263,7 @@ const FeaturedNews = () => {
                     aria-label={`Go to page ${pageNum}`}
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
+                    data-testid={`pagination-page-${pageNum}`}
                   >
                     {page === pageNum && (
                       <motion.span

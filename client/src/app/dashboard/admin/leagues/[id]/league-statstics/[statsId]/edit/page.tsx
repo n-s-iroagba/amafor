@@ -148,6 +148,7 @@ export default function EditLeagueStats() {
               onChange={(e) => setSelectedLeagueId(e.target.value)}
               className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.leagueId ? 'border-red-500' : 'border-sky-300'
                 } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              data-testid="select-league"
             >
               <option value="">Select a league</option>
               {leagues?.map((league) => (
@@ -178,6 +179,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.position ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="League position"
+                data-testid="input-position"
               />
               {errors.position && (
                 <p className="mt-1 text-sm text-red-600">{errors.position}</p>
@@ -200,6 +202,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.points ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Total points"
+                data-testid="input-points"
               />
               {errors.points && (
                 <p className="mt-1 text-sm text-red-600">{errors.points}</p>
@@ -224,6 +227,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.goalsFor ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Goals scored"
+                data-testid="input-goals-for"
               />
               {errors.goalsFor && (
                 <p className="mt-1 text-sm text-red-600">{errors.goalsFor}</p>
@@ -246,6 +250,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.goalsAgainst ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Goals conceded"
+                data-testid="input-goals-against"
               />
               {errors.goalsAgainst && (
                 <p className="mt-1 text-sm text-red-600">
@@ -272,6 +277,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.wins ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Wins"
+                data-testid="input-wins"
               />
               {errors.wins && (
                 <p className="mt-1 text-sm text-red-600">{errors.wins}</p>
@@ -294,6 +300,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.draws ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Draws"
+                data-testid="input-draws"
               />
               {errors.draws && (
                 <p className="mt-1 text-sm text-red-600">{errors.draws}</p>
@@ -316,6 +323,7 @@ export default function EditLeagueStats() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.losses ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Losses"
+                data-testid="input-losses"
               />
               {errors.losses && (
                 <p className="mt-1 text-sm text-red-600">{errors.losses}</p>
@@ -328,6 +336,7 @@ export default function EditLeagueStats() {
               type="button"
               onClick={() => router.back()}
               className="px-4 py-2 border border-sky-300 rounded-md shadow-sm text-sm font-medium text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 mt-2 sm:mt-0"
+              data-testid="btn-cancel"
             >
               Cancel
             </button>
@@ -335,6 +344,7 @@ export default function EditLeagueStats() {
               type="submit"
               disabled={isSubmitting}
               className="px-4 py-2 bg-sky-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-75"
+              data-testid="btn-update-stats"
             >
               {isSubmitting ? 'Updating...' : 'Update Statistics'}
             </button>

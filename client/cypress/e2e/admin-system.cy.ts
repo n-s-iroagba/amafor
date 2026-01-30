@@ -7,12 +7,12 @@ describe("Admin System Journeys", () => {
     describe("UJ-ADM-007: Manage Users & Permissions", () => {
         it("should allow managing users", () => {
             cy.visit("/dashboard/admin/users");
-            cy.contains("Invite User").click();
+            cy.get('[data-testid="btn-invite-user"]').click();
             cy.url().should("include", "/invite");
 
-            cy.get('input[name="email"]').type(`newuser-${Date.now()}@example.com`);
-            cy.get('select[name="role"]').select("scout");
-            cy.get('button[type="submit"]').click();
+            cy.get('[data-testid="input-user-email"]').type(`newuser-${Date.now()}@example.com`);
+            cy.get('[data-testid^="radio-role-"]').first().click();
+            cy.get('[data-testid="btn-send-invite"]').click();
         });
     });
 
@@ -20,10 +20,19 @@ describe("Admin System Journeys", () => {
     describe("UJ-ADM-008: Manage RSS Feeds", () => {
         it("should allow managing RSS feeds", () => {
             cy.visit("/dashboard/admin/rss-feeds");
-            cy.contains("New Feed").click();
+            cy.get('[data-testid="btn-add-feed"]').click();
 
-            cy.get('input[name="url"]').type("https://news.bbc.co.uk/rss.xml");
-            cy.get('button[type="submit"]').click();
+            cy.get('[data-testid="input-feed-name"]').type("BBC News");
+            cy.get('[data-testid="input-feed-url"]').type("https://news.bbc.co.uk/rss.xml");
+            // Select category
+            cy.get('[data-testid^="btn-category-"]').first().click();
+            cy.get('[data-testid="btn-save-feed"]').click();
+
+            // Verify and Edit
+            cy.get('[data-testid="feed-item"]').first().click();
+            cy.get('[data-testid="btn-edit-feed"]').click();
+            cy.get('[data-testid="input-feed-name"]').clear().type("BBC News Updated");
+            cy.get('[data-testid="btn-update-feed"]').click();
         });
     });
 

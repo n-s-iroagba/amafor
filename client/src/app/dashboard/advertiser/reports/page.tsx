@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 // Added Megaphone to the lucide-react import list to resolve the "Cannot find name 'Megaphone'" error
 import { Calendar, Download, Search, ArrowLeft, BarChart3, FileText, ChevronRight, Megaphone } from 'lucide-react';
 import Link from 'next/link';
@@ -15,16 +15,24 @@ import { API_ROUTES } from '@/config/routes';
  * Hook: useGet(API_ROUTES.ADVERTISER.REPORTS)
  */
 export default function HistoricalReportsPage() {
+  const [searchTerm, setSearchTerm] = useState('');
   const [dateRange, setDateRange] = useState('Last 30 Days');
 
   const { data: reportData, loading } = useGet<any>(API_ROUTES.ADVERTISER.REPORTS);
   const history = reportData?.campaigns || [];
   const summary = reportData?.summary || { totalSpend: 0, totalViews: 0 };
 
+  const filteredHistory = useMemo(() => {
+    return history.filter((item: any) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.id.toString().includes(searchTerm)
+    );
+  }, [history, searchTerm]);
+
   return (
     <div className="bg-gray-50 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link href="/dashboard/advertiser" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
+        <Link href="/dashboard/advertiser" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest translation-colors" data-testid="link-back-dashboard">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Dashboard
         </Link>
 
@@ -33,7 +41,7 @@ export default function HistoricalReportsPage() {
             <h1 className="text-4xl text-[#2F4F4F] mb-2 uppercase tracking-tight">Historical Reports</h1>
             <p className="text-gray-500 text-sm">Analyze and export performance data for all past campaigns.</p>
           </div>
-          <button className="sky-button flex items-center space-x-3 text-xs tracking-widest">
+          <button className="sky-button flex items-center space-x-3 text-xs tracking-widest" data-testid="btn-export-reports">
             <Download className="w-4 h-4" />
             <span>EXPORT ALL DATA (CSV)</span>
           </button>
@@ -47,6 +55,9 @@ export default function HistoricalReportsPage() {
               type="text"
               placeholder="Search by campaign name or ID..."
               className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm"
+              data-testid="input-search-reports"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="flex items-center space-x-3">
@@ -55,6 +66,7 @@ export default function HistoricalReportsPage() {
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
               className="bg-gray-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest text-[#2F4F4F] outline-none border-none focus:ring-2 focus:ring-[#87CEEB]"
+              data-testid="select-date-range"
             >
               <option>Last 30 Days</option>
               <option>Last Quarter</option>
@@ -81,8 +93,8 @@ export default function HistoricalReportsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {history.map((item: any) => (
-                  <tr key={item.id} className="group hover:bg-gray-50 transition-colors">
+                {filteredHistory.map((item: any) => (
+                  <tr key={item.id} className="group hover:bg-gray-50 transition-colors" data-testid={`report-row-${item.id}`}>
                     <td className="px-10 py-8">
                       <div className="flex items-center space-x-4">
                         <div className="p-3 bg-gray-100 rounded-xl">
@@ -107,7 +119,7 @@ export default function HistoricalReportsPage() {
                     </td>
                   </tr>
                 ))}
-                {history.length === 0 && (
+                {filteredHistory.length === 0 && (
                   <tr>
                     <td colSpan={6} className="px-10 py-8 text-center text-gray-500">No reports found via API.</td>
                   </tr>

@@ -88,6 +88,7 @@ export default function PlayersList() {
           <Link
             href="/dashboard/admin/players/new"
             className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center"
+            data-testid="btn-add-player"
           >
             Add New Player
           </Link>
@@ -185,6 +186,7 @@ export default function PlayersList() {
                     <tr
                       key={player.id}
                       className="hover:bg-sky-50 transition-colors"
+                      data-testid="player-row"
                     >
                       <td className="px-4 sm:px-6 py-4">
                         <div className="flex items-center">
@@ -235,6 +237,7 @@ export default function PlayersList() {
                             href={`/dashboard/admin/players/${player.id}`}
                             className="text-sky-600 hover:text-sky-900 transition-colors text-xs sm:text-sm"
                             title="View"
+                            data-testid="btn-view-player"
                           >
                             <span className="sr-only sm:not-sr-only">View</span>
                             <svg
@@ -261,6 +264,7 @@ export default function PlayersList() {
                             href={`/dashboard/admin/players/${player.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors text-xs sm:text-sm"
                             title="Edit"
+                            data-testid="btn-edit-player"
                           >
                             <span className="sr-only sm:not-sr-only">Edit</span>
                             <svg
@@ -281,6 +285,7 @@ export default function PlayersList() {
                             onClick={() => setDeleteConfirm(player.id)}
                             className="text-red-600 hover:text-red-900 transition-colors text-xs sm:text-sm"
                             title="Delete"
+                            data-testid="btn-delete-player"
                           >
                             <span className="sr-only sm:not-sr-only">
                               Delete

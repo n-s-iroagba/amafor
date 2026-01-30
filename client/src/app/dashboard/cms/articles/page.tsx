@@ -146,6 +146,7 @@ const ArticleList: React.FC = () => {
           <button
             onClick={() => router.push('/dashboard/cms/articles/new')}
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-blue-700 text-white font-medium shadow-lg hover:from-sky-700 hover:to-blue-800 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-xl"
+            data-testid="btn-add-article"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -194,6 +195,7 @@ const ArticleList: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 aria-pressed={isActive}
                 aria-label={`Filter by ${tab.label}`}
+                data-testid={`tab-${tab.id}`}
               >
                 {isActive && (
                   <motion.div
@@ -278,6 +280,7 @@ const ArticleList: React.FC = () => {
               whileHover={{ y: -5 }}
               className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 flex flex-col h-full hover:shadow-lg transition-all duration-300 border border-gray-100 relative overflow-hidden group w-full cursor-pointer"
               onClick={() => handleArticleClick(article.id)}
+              data-testid={`article-card-${article.id}`}
             >
               {/* Status badge */}
               <div

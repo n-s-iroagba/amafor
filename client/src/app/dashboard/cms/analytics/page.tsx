@@ -72,10 +72,10 @@ export default function AnalyticsPage() {
             <p className="text-gray-500 text-sm">Deep-dive engagement metrics for the Gladiators digital feed.</p>
           </div>
           <div className="flex space-x-4">
-            <button className="bg-white px-6 py-4 rounded-2xl border text-[10px] font-black text-[#2F4F4F] hover:border-[#87CEEB] transition-all uppercase tracking-widest flex items-center">
+            <button className="bg-white px-6 py-4 rounded-2xl border text-[10px] font-black text-[#2F4F4F] hover:border-[#87CEEB] transition-all uppercase tracking-widest flex items-center" data-testid="btn-date-range">
               <Calendar className="w-4 h-4 mr-2" /> {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
             </button>
-            <button className="sky-button flex items-center space-x-3 py-4 text-[10px] tracking-widest">
+            <button className="sky-button flex items-center space-x-3 py-4 text-[10px] tracking-widest" data-testid="btn-export-analytics">
               <Download className="w-4 h-4" />
               <span>EXPORT PDF REPORT</span>
             </button>
@@ -125,7 +125,7 @@ export default function AnalyticsPage() {
           <aside className="space-y-8">
             <div className="bg-[#2F4F4F] p-10 rounded-[3rem] text-white">
               <h3 className="text-sm font-black uppercase tracking-widest mb-8 text-[#87CEEB]">Top Articles</h3>
-              <div className="space-y-4">
+              <div className="space-y-4" data-testid="list-top-articles">
                 {analytics?.topArticles?.map((item, i) => (
                   <div key={i} className="space-y-2">
                     <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">

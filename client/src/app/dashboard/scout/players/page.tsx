@@ -39,7 +39,7 @@ export default function PlayerScoutingPage() {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
+        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest" data-testid="link-back-dashboard">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Dashboard
         </Link>
 
@@ -52,11 +52,12 @@ export default function PlayerScoutingPage() {
             <button
               onClick={handleExport}
               className="flex items-center space-x-2 bg-white px-6 py-3 rounded-2xl border text-xs font-black text-[#2F4F4F] hover:border-[#87CEEB] shadow-sm transition-all"
+              data-testid="btn-export-csv"
             >
               <Download className="w-4 h-4" />
               <span>EXPORT TO CSV</span>
             </button>
-            <Link href="/dashboard/scout/matches" className="sky-button text-xs py-3.5 uppercase tracking-widest">
+            <Link href="/dashboard/scout/matches" className="sky-button text-xs py-3.5 uppercase tracking-widest" data-testid="link-view-match-archive">
               VIEW MATCH ARCHIVE
             </Link>
           </div>
@@ -70,6 +71,7 @@ export default function PlayerScoutingPage() {
               type="text"
               placeholder="Search by name, position, or squad number..."
               className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-2 focus:ring-[#87CEEB] text-sm"
+              data-testid="input-search-players"
             />
           </div>
           <div className="flex items-center space-x-2">
@@ -79,6 +81,7 @@ export default function PlayerScoutingPage() {
                 onClick={() => setFilter(pos)}
                 className={`px-6 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${filter === pos ? 'bg-[#2F4F4F] text-[#87CEEB]' : 'bg-gray-50 text-gray-400 hover:text-[#2F4F4F]'
                   }`}
+                data-testid={`filter-position-${pos}`}
               >
                 {pos}
               </button>
@@ -93,6 +96,7 @@ export default function PlayerScoutingPage() {
               href={`/dashboard/scout/players/${player.id}`}
               key={player.id}
               className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all border border-transparent hover:border-[#87CEEB]/30 relative"
+              data-testid={`player-card-${player.id}`}
             >
               <div className="absolute top-6 right-6 z-10">
                 <div className="bg-white/90 backdrop-blur-md p-2 rounded-xl shadow-sm border border-white/50">

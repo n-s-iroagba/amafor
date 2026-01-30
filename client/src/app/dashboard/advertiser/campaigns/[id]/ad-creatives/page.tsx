@@ -84,7 +84,7 @@ export default function CreativesListPage() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
                             {creatives.map((creative) => (
-                                <div key={creative.id} className="group bg-gray-50 rounded-[2rem] overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300">
+                                <div key={creative.id} className="group bg-gray-50 rounded-[2rem] overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300" data-testid={`creative-card-${creative.id}`}>
                                     <div className="aspect-video bg-gray-200 relative overflow-hidden">
                                         {creative.type === 'video' ? (
                                             <video src={creative.url} className="w-full h-full object-cover" />
@@ -92,7 +92,12 @@ export default function CreativesListPage() {
                                             <img src={creative.url} alt={creative.name} className="w-full h-full object-cover" />
                                         )}
                                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-4">
-                                            <button onClick={() => handleDelete(creative.id)} disabled={isDeleting} className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors">
+                                            <button
+                                                onClick={() => handleDelete(creative.id)}
+                                                disabled={isDeleting}
+                                                className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                                                data-testid={`btn-delete-creative-${creative.id}`}
+                                            >
                                                 <Trash2 className="w-5 h-5" />
                                             </button>
                                         </div>

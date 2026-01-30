@@ -94,6 +94,7 @@ export default function PlatformSettingsPage() {
                 <button
                   onClick={() => handleToggle('maintenanceMode')}
                   className={`w-16 h-8 rounded-full p-1 transition-all duration-500 ${localStatus.maintenanceMode ? 'bg-[#87CEEB]' : 'bg-gray-200'}`}
+                  data-testid="toggle-maintenance"
                 >
                   <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-500 transform ${localStatus.maintenanceMode ? 'translate-x-8' : 'translate-x-0'}`} />
                 </button>
@@ -107,6 +108,7 @@ export default function PlatformSettingsPage() {
                 <button
                   onClick={() => handleToggle('scoutRegistration')}
                   className={`w-16 h-8 rounded-full p-1 transition-all duration-500 ${localStatus.scoutRegistration ? 'bg-[#87CEEB]' : 'bg-gray-200'}`}
+                  data-testid="toggle-scout-reg"
                 >
                   <div className={`w-6 h-6 bg-white rounded-full shadow-lg transition-all duration-500 transform ${localStatus.scoutRegistration ? 'translate-x-8' : 'translate-x-0'}`} />
                 </button>
@@ -128,6 +130,7 @@ export default function PlatformSettingsPage() {
                   value={localStatus.rateLimit}
                   onChange={(e) => handleChange('rateLimit', parseInt(e.target.value))}
                   className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none font-black text-lg focus:ring-2 focus:ring-[#87CEEB] outline-none"
+                  data-testid="input-rate-limit"
                 />
               </div>
               <div>
@@ -137,6 +140,7 @@ export default function PlatformSettingsPage() {
                   value={localStatus.sessionTimeout}
                   onChange={(e) => handleChange('sessionTimeout', parseInt(e.target.value))}
                   className="w-full px-6 py-4 bg-gray-50 rounded-2xl border-none font-black text-lg focus:ring-2 focus:ring-[#87CEEB] outline-none"
+                  data-testid="input-session-timeout"
                 />
               </div>
             </div>
@@ -169,6 +173,7 @@ export default function PlatformSettingsPage() {
               onClick={handleSave}
               disabled={isSaving}
               className="sky-button px-12 py-5 text-sm uppercase tracking-[0.2em] flex items-center group shadow-2xl shadow-[#87CEEB]/20 disabled:opacity-50"
+              data-testid="btn-save-settings"
             >
               <Save className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
               {isSaving ? 'SAVING...' : 'COMMIT CHANGES'}

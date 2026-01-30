@@ -362,6 +362,7 @@ export default function EditFixture() {
                 onChange={(e) => handleInputChange('leagueId', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.leagueId ? 'border-red-300' : 'border-gray-300'
                   }`}
+                data-testid="input-edit-fixture-league"
               >
                 <option value="">Select a league</option>
                 {leagues?.map((league) => (
@@ -387,6 +388,7 @@ export default function EditFixture() {
                 onChange={(e) => handleInputChange('date', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.date ? 'border-red-300' : 'border-gray-300'
                   }`}
+                data-testid="input-edit-fixture-date"
               />
               {errors.date && (
                 <p className="mt-1 text-sm text-red-600">{errors.date}</p>
@@ -407,6 +409,7 @@ export default function EditFixture() {
                   placeholder="Enter home team name"
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.homeTeam ? 'border-red-300' : 'border-gray-300'
                     }`}
+                  data-testid="input-edit-fixture-hometeam"
                 />
                 {errors.homeTeam && (
                   <p className="mt-1 text-sm text-red-600">{errors.homeTeam}</p>
@@ -471,6 +474,7 @@ export default function EditFixture() {
                   placeholder="Enter away team name"
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.awayTeam ? 'border-red-300' : 'border-gray-300'
                     }`}
+                  data-testid="input-edit-fixture-awayteam"
                 />
                 {errors.awayTeam && (
                   <p className="mt-1 text-sm text-red-600">{errors.awayTeam}</p>
@@ -537,6 +541,7 @@ export default function EditFixture() {
                 placeholder="Enter match venue"
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.venue ? 'border-red-300' : 'border-gray-300'
                   }`}
+                data-testid="input-edit-fixture-venue"
               />
               {errors.venue && (
                 <p className="mt-1 text-sm text-red-600">{errors.venue}</p>
@@ -563,6 +568,7 @@ export default function EditFixture() {
                 value={formData.status}
                 onChange={(e) => handleInputChange('status', e.target.value as FixtureStatus)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                data-testid="select-edit-fixture-status"
               >
                 {Object.entries(FixtureStatus).map(([key, value]) => {
                   const config = statusConfig[value];
@@ -615,6 +621,7 @@ export default function EditFixture() {
                 type="submit"
                 disabled={isSubmitting}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-lg hover:from-sky-700 hover:to-blue-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                data-testid="btn-update-fixture"
               >
                 {isSubmitting ? (
                   <>

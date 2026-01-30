@@ -110,6 +110,7 @@ export default function HelpContact() {
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
                     required
+                    data-testid="input-name"
                   />
                 </div>
 
@@ -121,6 +122,7 @@ export default function HelpContact() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
                     required
+                    data-testid="input-email"
                   />
                 </div>
 
@@ -132,6 +134,7 @@ export default function HelpContact() {
                     onChange={(e) => setSubject(e.target.value)}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
                     required
+                    data-testid="input-subject"
                   />
                 </div>
 
@@ -142,6 +145,7 @@ export default function HelpContact() {
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 min-h-32"
                     required
+                    data-testid="textarea-message"
                   />
                 </div>
 
@@ -149,6 +153,7 @@ export default function HelpContact() {
                   type="submit"
                   disabled={!name || !email || !subject || !message}
                   className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg transition-colors font-semibold"
+                  data-testid="btn-send-message"
                 >
                   Send Message
                 </button>

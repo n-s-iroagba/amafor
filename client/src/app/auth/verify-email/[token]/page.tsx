@@ -336,10 +336,11 @@ const VerifyEmail = () => {
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onFocus={(e) => e.target.select()}
                 className={`w-12 h-12 text-center text-lg font-semibold text-slate-800 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all ${digit
-                    ? 'border-slate-300 bg-white'
-                    : 'border-slate-200 bg-slate-50'
+                  ? 'border-slate-300 bg-white'
+                  : 'border-slate-200 bg-slate-50'
                   } ${verifying ? 'opacity-50' : ''}`}
                 disabled={verifying}
+                data-testid={`verify-code-input-${index}`}
               />
             ))}
           </div>
@@ -349,6 +350,7 @@ const VerifyEmail = () => {
             type="submit"
             disabled={verifying || code.join('').length !== 6}
             className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+            data-testid="verify-email-btn"
           >
             {verifying ? (
               <>
@@ -384,8 +386,8 @@ const VerifyEmail = () => {
               onClick={handleResendCode}
               disabled={!canResend || resending}
               className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${canResend && !resending
-                  ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-800 shadow-sm hover:shadow'
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-800 shadow-sm hover:shadow'
+                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}
             >
               {resending ? (

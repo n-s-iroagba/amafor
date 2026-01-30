@@ -93,3 +93,18 @@
 {"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:47:46"}
 {"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:49:24"}
 {"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 00:51:51"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:09:16"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:09:59"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:10:09"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:36"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:36"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:52:53"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:20:28"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:21:43"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:23:05"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:23:30"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:26:40"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:27:11"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:28:07"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:29:35"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:30:57"}

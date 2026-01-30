@@ -82,7 +82,7 @@ export default function TrialistApplication() {
                                 We will contact you via WhatsApp, Email, or SMS (in that priority order) if you are selected for a trial.
                                 Standard review time is 72 business hours (BR-TP-04).
                             </p>
-                            <Link href="/academy" className="inline-block bg-sky-700 text-white px-8 py-3 rounded-lg hover:bg-sky-800 transition-colors">
+                            <Link href="/academy" className="inline-block bg-sky-700 text-white px-8 py-3 rounded-lg hover:bg-sky-800 transition-colors" data-testid="link-back-academy">
                                 Return to Academy Hub
                             </Link>
                         </div>
@@ -128,6 +128,7 @@ export default function TrialistApplication() {
                                             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             value={formData.firstName}
                                             onChange={e => setFormData({ ...formData, firstName: e.target.value })}
+                                            data-testid="input-first-name"
                                         />
                                     </div>
                                     <div>
@@ -138,6 +139,7 @@ export default function TrialistApplication() {
                                             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             value={formData.lastName}
                                             onChange={e => setFormData({ ...formData, lastName: e.target.value })}
+                                            data-testid="input-last-name"
                                         />
                                     </div>
                                     <div>
@@ -148,6 +150,7 @@ export default function TrialistApplication() {
                                             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             value={formData.dob}
                                             onChange={e => setFormData({ ...formData, dob: e.target.value })}
+                                            data-testid="input-dob"
                                         />
                                     </div>
                                     <div>
@@ -157,6 +160,7 @@ export default function TrialistApplication() {
                                             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             value={formData.position}
                                             onChange={e => setFormData({ ...formData, position: e.target.value })}
+                                            data-testid="select-position"
                                         >
                                             <option value="">Select Position</option>
                                             <option value="Goalkeeper">Goalkeeper</option>
@@ -180,6 +184,7 @@ export default function TrialistApplication() {
                                             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             value={formData.email}
                                             onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                            data-testid="input-email"
                                         />
                                     </div>
                                     <div>
@@ -191,6 +196,7 @@ export default function TrialistApplication() {
                                             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             value={formData.phone}
                                             onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                            data-testid="input-phone"
                                         />
                                     </div>
                                 </div>
@@ -322,6 +328,7 @@ export default function TrialistApplication() {
                                 type="submit"
                                 disabled={isPending}
                                 className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                                data-testid="btn-submit-application"
                             >
                                 {isPending ? 'Submitting...' : 'Submit Application'}
                             </button>

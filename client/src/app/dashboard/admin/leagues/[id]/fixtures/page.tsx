@@ -272,6 +272,7 @@ export default function FixturesList() {
                       value={selectedLeague}
                       onChange={(e) => setSelectedLeague(e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 bg-white appearance-none pr-10"
+                      data-testid="select-filter-league"
                     >
                       <option value="all">All Leagues</option>
                       {leagues?.map((league) => (
@@ -293,6 +294,7 @@ export default function FixturesList() {
                       value={selectedSeason}
                       onChange={(e) => setSelectedSeason(e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 bg-white appearance-none pr-10"
+                      data-testid="select-filter-season"
                     >
                       <option value="all">All Seasons</option>
                       {availableSeasons.map((season) => (
@@ -316,6 +318,7 @@ export default function FixturesList() {
                         ? 'bg-sky-600 text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
+                      data-testid="btn-filter-status-all"
                     >
                       All
                     </button>
@@ -329,6 +332,7 @@ export default function FixturesList() {
                             ? 'bg-sky-600 text-white shadow-lg'
                             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
+                          data-testid={`btn-filter-status-${status.toLowerCase()}`}
                         >
                           {status}{' '}
                           {tabCounts[status] ? `(${tabCounts[status]})` : ''}
@@ -405,6 +409,7 @@ export default function FixturesList() {
                           onClick={() =>
                             router.push(`/dashboard/admin/fixtures/${fixture.id}`)
                           }
+                          data-testid={`row-fixture-${fixture.id}`}
                         >
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-3">
@@ -463,6 +468,7 @@ export default function FixturesList() {
                                 );
                               }}
                               className="inline-flex items-center gap-1 px-3 py-1 text-sm text-sky-600 hover:text-sky-800 hover:bg-sky-50 rounded-lg transition-colors"
+                              data-testid={`btn-view-fixture-${fixture.id}`}
                             >
                               <Eye className="w-4 h-4" />
                               View

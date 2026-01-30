@@ -286,6 +286,7 @@ export default function NewFixture() {
                 onChange={(e) => handleInputChange('leagueId', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.leagueId ? 'border-red-300' : 'border-gray-300'
                   }`}
+                data-testid="select-fixture-league"
               >
                 <option value="">Select a league</option>
                 {leagues?.map((league) => (
@@ -311,6 +312,7 @@ export default function NewFixture() {
                 onChange={(e) => handleInputChange('date', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.date ? 'border-red-300' : 'border-gray-300'
                   }`}
+                data-testid="input-fixture-date"
               />
               {errors.date && (
                 <p className="mt-1 text-sm text-red-600">{errors.date}</p>
@@ -331,6 +333,7 @@ export default function NewFixture() {
                   placeholder="Enter home team name"
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.homeTeam ? 'border-red-300' : 'border-gray-300'
                     }`}
+                  data-testid="input-fixture-hometeam"
                 />
                 {errors.homeTeam && (
                   <p className="mt-1 text-sm text-red-600">{errors.homeTeam}</p>
@@ -371,6 +374,7 @@ export default function NewFixture() {
                           accept="image/*"
                           onChange={(e) => handleFileChange('home', e.target.files?.[0] || null)}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          data-testid="input-fixture-file-home"
                         />
                       </div>
                     )}
@@ -393,6 +397,7 @@ export default function NewFixture() {
                   placeholder="Enter away team name"
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.awayTeam ? 'border-red-300' : 'border-gray-300'
                     }`}
+                  data-testid="input-fixture-awayteam"
                 />
                 {errors.awayTeam && (
                   <p className="mt-1 text-sm text-red-600">{errors.awayTeam}</p>
@@ -433,6 +438,7 @@ export default function NewFixture() {
                           accept="image/*"
                           onChange={(e) => handleFileChange('away', e.target.files?.[0] || null)}
                           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          data-testid="input-fixture-file-away"
                         />
                       </div>
                     )}
@@ -463,6 +469,7 @@ export default function NewFixture() {
                 placeholder="Enter match venue"
                 className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors ${errors.venue ? 'border-red-300' : 'border-gray-300'
                   }`}
+                data-testid="input-fixture-venue"
               />
               {errors.venue && (
                 <p className="mt-1 text-sm text-red-600">{errors.venue}</p>
@@ -489,6 +496,7 @@ export default function NewFixture() {
                 value={formData.status}
                 onChange={(e) => handleInputChange('status', e.target.value as FixtureStatus)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+                data-testid="select-fixture-status"
               >
                 {Object.entries(FixtureStatus).map(([key, value]) => {
                   const config = statusConfig[value];
@@ -541,6 +549,7 @@ export default function NewFixture() {
                 type="submit"
                 disabled={isSubmitting}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-lg hover:from-sky-700 hover:to-blue-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                data-testid="btn-create-fixture"
               >
                 {isSubmitting ? (
                   <>

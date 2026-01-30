@@ -34,6 +34,7 @@ export default function AdvertiseInfo() {
             <Link
               href="/advertise/register"
               className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-10 py-4 rounded-lg transition-colors font-semibold text-lg"
+              data-testid="hero-register-btn"
             >
               Register as an Advertiser
               <ChevronRight className="w-5 h-5" />
@@ -75,7 +76,7 @@ export default function AdvertiseInfo() {
             <h2 className="text-4xl font-heading text-sky-500 text-center mb-12">Available Ad Zones</h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {adZones.map((zone) => (
-                <div key={zone.id} className="bg-white border border-slate-200 p-8 rounded-lg shadow-card">
+                <div key={zone.id} className="bg-white border border-slate-200 p-8 rounded-lg shadow-card" data-testid={`ad-zone-${zone.id}`}>
                   <h3 className="text-2xl font-heading text-sky-500 mb-4">{zone.name}</h3>
                   <p className="text-slate-600 mb-6 leading-relaxed">{zone.description}</p>
 
@@ -190,6 +191,7 @@ export default function AdvertiseInfo() {
               <Link
                 href="/advertise/register"
                 className="inline-flex items-center gap-2 bg-sky-900 hover:bg-sky-900/90 text-white px-10 py-4 rounded-lg transition-colors font-semibold text-lg mb-8"
+                data-testid="cta-register-btn"
               >
                 Register Now
                 <ArrowRight className="w-5 h-5" />

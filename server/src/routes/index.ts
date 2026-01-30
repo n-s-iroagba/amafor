@@ -39,7 +39,7 @@ router.use('/fixtures', fixtureRoutes);
 router.use('/ad-creatives', adCreativeRoutes);
 router.use('/ads/zones', adZoneRoutes);
 router.use('/ads', advertisingRoutes);
-router.use('/advertiser/disputes', disputeRoutes);
+router.use('/disputes', disputeRoutes);
 router.use('/videos', videoRoutes);
 router.use('/auth', authRoutes);
 

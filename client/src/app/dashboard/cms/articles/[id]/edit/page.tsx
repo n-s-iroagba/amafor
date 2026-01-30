@@ -345,6 +345,7 @@ export default function EditArticlePage() {
                     : 'border-gray-300 hover:border-gray-400'
                     }`}
                   maxLength={200}
+                  data-testid="input-article-title"
                 />
                 <div className="absolute right-3 top-3 text-xs text-gray-400">
                   {title.length}/200
@@ -372,6 +373,7 @@ export default function EditArticlePage() {
                   type="button"
                   onClick={() => setShowStatusDropdown(!showStatusDropdown)}
                   className="w-full sm:w-auto min-w-[200px] px-4 py-3 border border-gray-300 rounded-xl bg-white text-left hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 flex items-center justify-between gap-3"
+                  data-testid="dropdown-status-trigger"
                 >
                   <div className="flex items-center gap-2">
                     <SelectedIcon
@@ -409,6 +411,7 @@ export default function EditArticlePage() {
                             ? 'bg-sky-50 border-r-2 border-sky-500'
                             : ''
                             }`}
+                          data-testid={`option-status-${option.value}`}
                         >
                           <IconComponent
                             className={`w-5 h-5 ${option.color} flex-shrink-0 mt-0.5`}
@@ -453,6 +456,7 @@ export default function EditArticlePage() {
                   }}
                   placeholder="Update your article content..."
                   readOnly={false}
+                  data-testid="editor-content"
                 />
               </div>
               {errors.content && (
@@ -482,6 +486,7 @@ export default function EditArticlePage() {
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 whileHover={{ scale: updating || !hasChanges ? 1 : 1.02 }}
                 whileTap={{ scale: updating || !hasChanges ? 1 : 0.98 }}
+                data-testid="btn-update-article"
               >
                 {updating ? (
                   <>
@@ -502,6 +507,7 @@ export default function EditArticlePage() {
                   onClick={handleReset}
                   disabled={updating}
                   className="px-6 py-3 border border-amber-300 rounded-xl font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  data-testid="btn-reset-changes"
                 >
                   <RefreshCw className="w-4 h-4" />
                   Reset Changes
@@ -513,6 +519,7 @@ export default function EditArticlePage() {
                 onClick={() => router.back()}
                 disabled={updating}
                 className="px-6 py-3 border border-gray-300 rounded-xl font-semibold text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                data-testid="btn-cancel"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Cancel

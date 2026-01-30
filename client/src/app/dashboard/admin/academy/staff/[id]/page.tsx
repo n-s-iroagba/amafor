@@ -142,6 +142,7 @@ export default function StaffDetailsPage() {
             <button
               onClick={() => router.back()}
               className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
+              data-testid="btn-back-staff"
             >
               <ChevronLeft className="h-5 w-5" />
               Back to Staff
@@ -150,6 +151,7 @@ export default function StaffDetailsPage() {
               <Link
                 href={`/dashboard/admin/academy/staff/${staffId}/edit`}
                 className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors flex items-center gap-2"
+                data-testid="btn-edit-staff"
               >
                 <Edit className="h-4 w-4" />
                 Edit
@@ -157,6 +159,7 @@ export default function StaffDetailsPage() {
               <button
                 onClick={() => setShowDeleteModal(true)}
                 className="px-4 py-2 bg-red-600/90 hover:bg-red-700 rounded-lg transition-colors flex items-center gap-2"
+                data-testid="btn-delete-staff"
               >
                 <Trash2 className="h-4 w-4" />
                 Delete
@@ -187,14 +190,14 @@ export default function StaffDetailsPage() {
             {/* Staff Info */}
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-4">
-                <h1 className="text-3xl md:text-4xl font-bold">{staff.name}</h1>
+                <h1 className="text-3xl md:text-4xl font-bold" data-testid="staff-name">{staff.name}</h1>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getCategoryColor(staff.category)}`}>
                   {getCategoryIcon(staff.category)}
                   {staff.category || 'General'}
                 </span>
               </div>
 
-              <h2 className="text-xl text-slate-300 mb-4">{staff.role}</h2>
+              <h2 className="text-xl text-slate-300 mb-4" data-testid="staff-role">{staff.role}</h2>
 
               <div className="flex flex-wrap items-center gap-4 text-slate-300">
                 {staff.yearsOfExperience && (
@@ -210,202 +213,201 @@ export default function StaffDetailsPage() {
               </div>
             </div>
           </div>
+
+
+          <div className="container mx-auto max-w-7xl px-4 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Left Column - Bio & Details */}
+              <div className="lg:col-span-2 space-y-8">
+                {/* Bio */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                    <BookOpen className="h-5 w-5 text-slate-600" />
+                    Biography
+                  </h3>
+                  <div className="prose max-w-none" data-testid="section-bio">
+                    <p className="text-slate-700 whitespace-pre-line">{staff.bio}</p>
+                  </div>
+                </div>
+
+                {/* Qualifications */}
+                {staff.qualifications && staff.qualifications.length > 0 && (
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                      <Award className="h-5 w-5 text-slate-600" />
+                      Qualifications & Certifications
+                    </h3>
+                    <div className="space-y-3">
+                      {staff.qualifications.map((qualification, index) => (
+                        <div key={index} className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                          <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
+                            <Award className="h-4 w-4 text-sky-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-medium text-slate-800">{qualification}</h4>
+                            <p className="text-sm text-slate-600 mt-1">Professional Certification</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Experience Timeline */}
+                {staff.yearsOfExperience && (
+                  <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                      <TrendingUp className="h-5 w-5 text-slate-600" />
+                      Professional Experience
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-4 bg-sky-50 rounded-lg">
+                        <div>
+                          <h4 className="font-semibold text-slate-800">Total Experience</h4>
+                          <p className="text-slate-600">Years in football and coaching</p>
+                        </div>
+                        <div className="text-3xl font-bold text-sky-700">{staff.yearsOfExperience} years</div>
+                      </div>
+
+                      {/* Mock experience items */}
+                      <div className="border-l-2 border-sky-500 ml-6 space-y-6">
+                        <div className="relative pl-6">
+                          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-sky-500 border-2 border-white"></div>
+                          <h4 className="font-semibold text-slate-800">Current Role</h4>
+                          <p className="text-slate-700">{staff.role}</p>
+                          <p className="text-sm text-slate-600 mt-1">Amafor Gladiators FC Academy</p>
+                        </div>
+                        <div className="relative pl-6">
+                          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-sky-300 border-2 border-white"></div>
+                          <h4 className="font-semibold text-slate-800">Previous Experience</h4>
+                          <p className="text-slate-700">Senior Coach</p>
+                          <p className="text-sm text-slate-600 mt-1">Various football academies</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Column - Stats & Actions */}
+              <div className="space-y-8">
+                {/* Quick Stats */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Staff Overview</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Target className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-slate-800">Specialization</div>
+                          <div className="text-sm text-slate-600">{staff.category || 'General'}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                          <Calendar className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-slate-800">Experience</div>
+                          <div className="text-sm text-slate-600">{staff.yearsOfExperience || 'N/A'} years</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                          <FileText className="h-5 w-5 text-purple-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-slate-800">Qualifications</div>
+                          <div className="text-sm text-slate-600">{staff.qualifications?.length || 0} certifications</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Actions</h3>
+                  <div className="space-y-3">
+                    <Link
+                      href={`/academy/staff/${staffId}/edit`}
+                      className="w-full px-4 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
+                    >
+                      <Edit className="h-4 w-4" />
+                      Edit Staff Details
+                    </Link>
+
+                    <button
+                      onClick={() => setShowDeleteModal(true)}
+                      className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Delete Staff Member
+                    </button>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <Download className="h-4 w-4" />
+                        Export
+                      </button>
+                      <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm">
+                        <Share2 className="h-4 w-4" />
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Related Resources */}
+                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Related</h3>
+                  <div className="space-y-3">
+                    <Link
+                      href="/academy"
+                      className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
+                          <Users className="h-5 w-5 text-sky-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-slate-800">Academy Overview</div>
+                          <div className="text-sm text-slate-600">View all academy sections</div>
+                        </div>
+                      </div>
+                      <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+                    </Link>
+
+                    <Link
+                      href="/academy/staff"
+                      className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                          <Briefcase className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-slate-800">All Staff</div>
+                          <div className="text-sm text-slate-600">View all academy staff</div>
+                        </div>
+                      </div>
+                      <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="container mx-auto max-w-7xl px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Bio & Details */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Bio */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-slate-600" />
-                Biography
-              </h3>
-              <div className="prose max-w-none">
-                <p className="text-slate-700 whitespace-pre-line">{staff.bio}</p>
-              </div>
-            </div>
-
-            {/* Qualifications */}
-            {staff.qualifications && staff.qualifications.length > 0 && (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                  <Award className="h-5 w-5 text-slate-600" />
-                  Qualifications & Certifications
-                </h3>
-                <div className="space-y-3">
-                  {staff.qualifications.map((qualification, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                      <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
-                        <Award className="h-4 w-4 text-sky-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-slate-800">{qualification}</h4>
-                        <p className="text-sm text-slate-600 mt-1">Professional Certification</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Experience Timeline */}
-            {staff.yearsOfExperience && (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h3 className="text-xl font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-slate-600" />
-                  Professional Experience
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-sky-50 rounded-lg">
-                    <div>
-                      <h4 className="font-semibold text-slate-800">Total Experience</h4>
-                      <p className="text-slate-600">Years in football and coaching</p>
-                    </div>
-                    <div className="text-3xl font-bold text-sky-700">{staff.yearsOfExperience} years</div>
-                  </div>
-
-                  {/* Mock experience items */}
-                  <div className="border-l-2 border-sky-500 ml-6 space-y-6">
-                    <div className="relative pl-6">
-                      <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-sky-500 border-2 border-white"></div>
-                      <h4 className="font-semibold text-slate-800">Current Role</h4>
-                      <p className="text-slate-700">{staff.role}</p>
-                      <p className="text-sm text-slate-600 mt-1">Amafor Gladiators FC Academy</p>
-                    </div>
-                    <div className="relative pl-6">
-                      <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-sky-300 border-2 border-white"></div>
-                      <h4 className="font-semibold text-slate-800">Previous Experience</h4>
-                      <p className="text-slate-700">Senior Coach</p>
-                      <p className="text-sm text-slate-600 mt-1">Various football academies</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Stats & Actions */}
-          <div className="space-y-8">
-            {/* Quick Stats */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">Staff Overview</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Target className="h-5 w-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-slate-800">Specialization</div>
-                      <div className="text-sm text-slate-600">{staff.category || 'General'}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                      <Calendar className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-slate-800">Experience</div>
-                      <div className="text-sm text-slate-600">{staff.yearsOfExperience || 'N/A'} years</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <FileText className="h-5 w-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-slate-800">Qualifications</div>
-                      <div className="text-sm text-slate-600">{staff.qualifications?.length || 0} certifications</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">Actions</h3>
-              <div className="space-y-3">
-                <Link
-                  href={`/academy/staff/${staffId}/edit`}
-                  className="w-full px-4 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
-                >
-                  <Edit className="h-4 w-4" />
-                  Edit Staff Details
-                </Link>
-
-                <button
-                  onClick={() => setShowDeleteModal(true)}
-                  className="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2 font-medium"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete Staff Member
-                </button>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm">
-                    <Download className="h-4 w-4" />
-                    Export
-                  </button>
-                  <button className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-sm">
-                    <Share2 className="h-4 w-4" />
-                    Share
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Related Resources */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">Related</h3>
-              <div className="space-y-3">
-                <Link
-                  href="/academy"
-                  className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
-                      <Users className="h-5 w-5 text-sky-600" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-slate-800">Academy Overview</div>
-                      <div className="text-sm text-slate-600">View all academy sections</div>
-                    </div>
-                  </div>
-                  <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
-                </Link>
-
-                <Link
-                  href="/academy/staff"
-                  className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                      <Briefcase className="h-5 w-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-slate-800">All Staff</div>
-                      <div className="text-sm text-slate-600">View all academy staff</div>
-                    </div>
-                  </div>
-                  <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
     </div>
   );
 }

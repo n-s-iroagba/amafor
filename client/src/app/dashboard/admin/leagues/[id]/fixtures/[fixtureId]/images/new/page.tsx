@@ -174,6 +174,7 @@ export default function BulkUploadFixtureImages() {
               onChange={handleFileChange}
               className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.files ? 'border-red-500' : 'border-sky-300'
                 } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+              data-testid="input-fixture-images"
             />
             {errors.files && (
               <p className="mt-1 text-sm text-red-600">{errors.files}</p>
@@ -231,6 +232,7 @@ export default function BulkUploadFixtureImages() {
                         onClick={() => removeFile(file.name)}
                         disabled={isSubmitting}
                         className="text-red-500 hover:text-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        data-testid={`btn-remove-image-${file.name}`}
                       >
                         <svg
                           className="w-4 h-4"
@@ -270,6 +272,7 @@ export default function BulkUploadFixtureImages() {
                         disabled={isSubmitting}
                         className="w-full rounded-md border border-sky-300 p-2 text-sm focus:border-sky-500 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="Enter caption..."
+                        data-testid={`input-caption-${file.name}`}
                       />
                     </div>
                   </div>
@@ -291,6 +294,7 @@ export default function BulkUploadFixtureImages() {
               onClick={() => router.back()}
               disabled={isSubmitting}
               className="px-4 py-2 border border-sky-300 rounded-md shadow-sm text-sm font-medium text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 mt-2 sm:mt-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-testid="btn-cancel"
             >
               Cancel
             </button>
@@ -298,6 +302,7 @@ export default function BulkUploadFixtureImages() {
               type="submit"
               disabled={isSubmitting || files.length === 0}
               className="px-4 py-2 bg-sky-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-75 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              data-testid="btn-upload-images"
             >
               {isSubmitting ? (
                 <>

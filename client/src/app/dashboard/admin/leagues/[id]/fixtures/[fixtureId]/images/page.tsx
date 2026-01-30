@@ -145,6 +145,7 @@ export default function ImageGalleryPage() {
                     <button
                         onClick={() => router.back()}
                         className="flex items-center gap-2 text-sky-600 hover:text-sky-700 mb-2 transition-colors text-sm"
+                        data-testid="btn-back-details"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Back to details
@@ -172,6 +173,7 @@ export default function ImageGalleryPage() {
                             onChange={handleFileChange}
                             className="hidden"
                             id="image-upload"
+                            data-testid="input-upload-image"
                         />
                         <label
                             htmlFor="image-upload"
@@ -189,6 +191,7 @@ export default function ImageGalleryPage() {
                             <button
                                 onClick={clearSelection}
                                 className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                                data-testid="btn-clear-selection"
                             >
                                 <X className="w-4 h-4" />
                             </button>
@@ -199,11 +202,13 @@ export default function ImageGalleryPage() {
                             value={caption}
                             onChange={(e) => setCaption(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md"
+                            data-testid="input-caption"
                         />
                         <button
                             onClick={handleUpload}
                             disabled={isUploading}
                             className="w-full py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 disabled:opacity-50 flex justify-center items-center gap-2"
+                            data-testid="btn-upload-image"
                         >
                             {isUploading ? (
                                 <>
@@ -239,6 +244,7 @@ export default function ImageGalleryPage() {
                                 onClick={() => handleDelete(img.id)}
                                 disabled={isDeleting}
                                 className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700"
+                                data-testid={`btn-delete-image-${img.id}`}
                             >
                                 <Trash2 className="w-5 h-5" />
                             </button>

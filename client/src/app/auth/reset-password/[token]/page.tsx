@@ -160,6 +160,7 @@ export default function ResetPasswordPage() {
                     ? 'border-red-300'
                     : 'border-slate-100'
                     } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
+                  data-testid={`${name}-input`}
                 />
               </div>
             ))}
@@ -168,6 +169,7 @@ export default function ResetPasswordPage() {
               type="submit"
               disabled={resetLoading}
               className="w-full py-3 bg-slate-700 text-white rounded-xl hover:bg-slate-800 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              data-testid="reset-password-btn"
             >
               {resetLoading ? (
                 <>

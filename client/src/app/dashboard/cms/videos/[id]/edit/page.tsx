@@ -378,6 +378,7 @@ export default function EditVideo() {
                     }`}
                   placeholder="Enter a descriptive title for your video"
                   maxLength={200}
+                  data-testid="input-video-title"
                 />
                 {errors.title && (
                   <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
@@ -410,6 +411,7 @@ export default function EditVideo() {
                     }`}
                   placeholder="Describe what your video is about..."
                   maxLength={500}
+                  data-testid="textarea-video-description"
                 />
                 {errors.excerpt && (
                   <p className="text-red-600 text-sm mt-2 flex items-center gap-1">
@@ -473,6 +475,7 @@ export default function EditVideo() {
                   onChange={handleVideoSelect}
                   accept="video/mp4,video/webm,video/ogg,video/quicktime"
                   className="hidden"
+                  data-testid="input-file-video"
                 />
 
                 {!selectedVideo ? (
@@ -540,6 +543,7 @@ export default function EditVideo() {
                   onChange={handleThumbnailSelect}
                   accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
                   className="hidden"
+                  data-testid="input-file-thumbnail"
                 />
 
                 {/* Current Thumbnail */}
@@ -652,6 +656,7 @@ export default function EditVideo() {
                 className="w-full py-4 bg-gradient-to-r from-sky-500 to-sky-600 text-white rounded-xl font-semibold shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                data-testid="btn-update-video"
               >
                 {isSubmitting || isUploading ? (
                   <>

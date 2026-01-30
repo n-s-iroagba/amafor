@@ -17,7 +17,12 @@ export const API_ROUTES = {
 
   ADMIN: {
     METRICS: '/api/admin/metrics',
+    METRICS: '/api/admin/metrics',
     SYSTEM_STATUS: '/api/admin/system-status',
+    DISPUTES: {
+      LIST: '/disputes/admin/all',
+      RESOLVE: (id: string | number) => `/disputes/admin/${id}/resolve`
+    },
   },
   ADS: {
     PLANS: {
@@ -138,6 +143,7 @@ export const API_ROUTES = {
   },
   USERS: {
     PENDING_ADVERTISERS: '/users/pending-advertisers',
+    CREATE: '/users',
     LIST: '/users',
     VIEW: (id: string | number) => `/users/${id}`,
     VERIFY: (id: string | number) => `/users/${id}/verify`,
@@ -156,6 +162,11 @@ export const API_ROUTES = {
     MUTATE: (id: number | string) => `/match-summaries/${id}`,
     VIEW: (id: string | number) => `/match-summaries/${id}`,
     BY_FIXTURE: (fixtureId: string | number) => `/match-summaries/fixture/${fixtureId}`,
+  },
+  MATCH_GALLERY: {
+    CREATE: (fixtureId: string | number) => `/match-gallery/${fixtureId}`,
+    LIST: (fixtureId: string | number) => `/match-gallery/${fixtureId}`,
+    MUTATE: (id: string | number) => `/match-gallery/${id}`,
   },
 
 
@@ -227,10 +238,10 @@ export const API_ROUTES = {
       CREATIVES: (id: string | number) => `/advertiser/campaigns/${id}/creatives`,
     },
     DISPUTES: {
-      CREATE: '/advertiser/disputes',
-      LIST: '/advertiser/disputes',
-      VIEW: (id: string | number) => `/advertiser/disputes/${id}`,
-      UPDATE: (id: string | number) => `/advertiser/disputes/${id}`,
+      CREATE: '/disputes',
+      LIST: '/disputes',
+      VIEW: (id: string | number) => `/disputes/${id}`,
+      UPDATE: (id: string | number) => `/disputes/${id}`,
     },
     REPORTS: '/ads/reports',
   },

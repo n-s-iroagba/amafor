@@ -175,6 +175,7 @@ const ArticleList: React.FC = () => {
                       e.stopPropagation();
                       handleArticleClick(article.id);
                     }}
+                    data-testid={`btn-view-article-${article.id}`}
                   >
                     <span className="whitespace-nowrap">View Article</span>
                     <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/button:translate-x-1 flex-shrink-0" />
@@ -208,6 +209,7 @@ const ArticleList: React.FC = () => {
                     aria-label={`Go to page ${pageNum}`}
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.95 }}
+                    data-testid={`pagination-page-${pageNum}`}
                   >
                     {page === pageNum && (
                       <motion.span

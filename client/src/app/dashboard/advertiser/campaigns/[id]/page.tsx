@@ -51,7 +51,7 @@ export default function CampaignDetailPage() {
             )}
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <Link href="/dashboard/advertiser/campaigns" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+                <Link href="/dashboard/advertiser/campaigns" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors" data-testid="link-back-campaigns">
                     <ArrowLeft className="w-3 h-3 mr-2" /> Back to Campaigns
                 </Link>
 
@@ -75,6 +75,7 @@ export default function CampaignDetailPage() {
                         <button
                             onClick={toggleStatus}
                             className="flex items-center space-x-2 bg-white px-6 py-3 rounded-2xl border text-xs font-black text-[#2F4F4F] hover:border-[#87CEEB] shadow-sm transition-all"
+                            data-testid="btn-toggle-status"
                         >
                             {status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                             <span>{status === 'active' ? 'PAUSE CAMPAIGN' : 'RESUME CAMPAIGN'}</span>
@@ -83,11 +84,12 @@ export default function CampaignDetailPage() {
                             onClick={handleExport}
                             disabled={isExporting}
                             className="sky-button flex items-center space-x-3 text-xs tracking-widest disabled:opacity-50"
+                            data-testid="btn-export-report"
                         >
                             {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                             <span>{isExporting ? 'PROCESSING...' : 'EXPORT PDF REPORT'}</span>
                         </button>
-                        <Link href={`/dashboard/advertiser/campaigns/${id}/ad-creatives`} className="sky-button bg-white text-[#2F4F4F] border border-[#2F4F4F] hover:bg-gray-50">
+                        <Link href={`/dashboard/advertiser/campaigns/${id}/ad-creatives`} className="sky-button bg-white text-[#2F4F4F] border border-[#2F4F4F] hover:bg-gray-50" data-testid="btn-manage-creatives">
                             Manage Creatives
                         </Link>
                     </div>
@@ -103,19 +105,19 @@ export default function CampaignDetailPage() {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                                 <div>
                                     <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Delivered Views</div>
-                                    <div className="text-3xl font-black text-[#2F4F4F]">{campaign.viewsDelivered?.toLocaleString() || 0}</div>
+                                    <div className="text-3xl font-black text-[#2F4F4F]" data-testid="stat-delivered-views">{campaign.viewsDelivered?.toLocaleString() || 0}</div>
                                     <div className="text-[10px] text-gray-400 font-bold mt-1 uppercase">of {campaign.targetViews?.toLocaleString() || 0} target</div>
                                 </div>
                                 <div>
                                     <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Completion</div>
-                                    <div className="text-3xl font-black text-[#87CEEB]">{deliveryPercent.toFixed(1)}%</div>
+                                    <div className="text-3xl font-black text-[#87CEEB]" data-testid="stat-completion-rate">{deliveryPercent.toFixed(1)}%</div>
                                     <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mt-3">
                                         <div className="bg-[#87CEEB] h-full transition-all duration-1000" style={{ width: `${deliveryPercent}%` }} />
                                     </div>
                                 </div>
                                 <div>
                                     <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Ad Spend</div>
-                                    <div className="text-3xl font-black text-[#2F4F4F]">₦{Number(campaign.spent || 0).toLocaleString()}</div>
+                                    <div className="text-3xl font-black text-[#2F4F4F]" data-testid="stat-total-spend">₦{Number(campaign.spent || 0).toLocaleString()}</div>
                                     <div className="text-[10px] text-gray-400 font-bold mt-1 uppercase">from ₦{Number(campaign.budget || 0).toLocaleString()} budget</div>
                                 </div>
                             </div>
@@ -156,11 +158,11 @@ export default function CampaignDetailPage() {
                             </h2>
                             <div className="flex flex-wrap gap-3">
                                 {campaign.targeting?.map ? campaign.targeting.map((t: string) => (
-                                    <span key={t} className="px-6 py-2 bg-gray-50 text-[#2F4F4F] text-[10px] font-black uppercase tracking-widest rounded-full border border-gray-100">
+                                    <span key={t} className="px-6 py-2 bg-gray-50 text-[#2F4F4F] text-[10px] font-black uppercase tracking-widest rounded-full border border-gray-100" data-testid={`badge-targeting-${t.toLowerCase().replace(/\s/g, '-')}`}>
                                         {t}
                                     </span>
                                 )) : (
-                                    <span className="text-gray-400 italic text-xs">No targeting parameters set</span>
+                                    <span className="text-gray-400 italic text-xs" data-testid="text-no-targeting">No targeting parameters set</span>
                                 )}
                             </div>
                         </section>

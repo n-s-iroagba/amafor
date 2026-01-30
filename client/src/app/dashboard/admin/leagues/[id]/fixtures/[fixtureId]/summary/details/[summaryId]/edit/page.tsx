@@ -120,6 +120,7 @@ export default function EditFixtureSummary() {
               className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.summary ? 'border-red-500' : 'border-sky-300'
                 } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
               placeholder="Enter match summary..."
+              data-testid="textarea-summary"
             />
             {errors.summary && (
               <p className="mt-1 text-sm text-red-600">{errors.summary}</p>
@@ -134,6 +135,7 @@ export default function EditFixtureSummary() {
               type="button"
               onClick={() => router.back()}
               className="px-4 py-2 border border-sky-300 rounded-md shadow-sm text-sm font-medium text-sky-700 hover:bg-sky-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 mt-2 sm:mt-0"
+              data-testid="btn-cancel"
             >
               Cancel
             </button>
@@ -141,6 +143,7 @@ export default function EditFixtureSummary() {
               type="submit"
               disabled={isSubmitting}
               className="px-4 py-2 bg-sky-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-75"
+              data-testid="btn-update-summary"
             >
               {isSubmitting ? 'Updating...' : 'Update Summary'}
             </button>

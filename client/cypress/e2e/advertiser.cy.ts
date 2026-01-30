@@ -1,15 +1,27 @@
 describe("Advertiser Journeys", () => {
+    // UJ-ADV-000: View Advertising Info
+    describe("UJ-ADV-000: View Advertising Info", () => {
+        it("should display advertising information and allow navigation to register", () => {
+            cy.visit("/advertise");
+            cy.get('[data-testid="ad-zone-1"]').should("exist"); // Assuming ID 1 exists
+            cy.get('[data-testid="hero-register-btn"]').click();
+            cy.url().should("include", "/advertise/register");
+        });
+    });
+
     // UJ-ADV-001: Register as Advertiser
     describe("UJ-ADV-001: Register as Advertiser", () => {
         it("should allow a business to register", () => {
             cy.visit("/advertise/register");
-            cy.get('input[name="companyName"]').type("Acme Corp");
-            cy.get('input[name="contactPerson"]').type("John Doe");
-            cy.get('input[name="email"]').type(`advertiser-${Date.now()}@example.com`);
+            cy.get('[data-testid="business-name-input"]').type("Acme Corp");
+            cy.get('[data-testid="business-email-input"]').type(`advertiser-${Date.now()}@example.com`);
 
-            cy.get('button[type="submit"]').click();
+            // Assuming phone input has no name but we can use testid if we had it, or type=tel
+            cy.get('[data-testid="business-phone-input"]').type("08012345678");
 
-            cy.contains("registration pending").should("be.visible");
+            cy.get('[data-testid="submit-registration"]').click();
+
+            cy.get('[data-testid="success-message"]').should("be.visible");
         });
     });
 

@@ -61,6 +61,7 @@ export default function CoachDetail() {
           <Link
             href="/dashboard/admin/coaches"
             className="text-sky-600 hover:text-sky-800 flex items-center text-sm sm:text-base"
+            data-testid="btn-back-coaches"
           >
             <svg
               className="w-4 h-4 mr-1"
@@ -98,15 +99,15 @@ export default function CoachDetail() {
 
             <div className="md:w-2/3 p-6 flex flex-col justify-between">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-sky-800">
+                <h2 className="text-2xl sm:text-3xl font-bold text-sky-800" data-testid="coach-name">
                   {coach.name}
                 </h2>
-                <p className="text-sky-600 text-sm sm:text-base mb-4">
+                <p className="text-sky-600 text-sm sm:text-base mb-4" data-testid="coach-role">
                   {coach.role}
                 </p>
 
                 {coach.bio ? (
-                  <div className="text-sky-900 text-sm sm:text-base whitespace-pre-wrap">
+                  <div className="text-sky-900 text-sm sm:text-base whitespace-pre-wrap" data-testid="coach-bio">
                     {coach.bio}
                   </div>
                 ) : (

@@ -35,7 +35,7 @@ export default function ScoutReportsPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link href="/dashboard/scout" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors" data-testid="link-back-portal">
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Portal
         </Link>
 
@@ -47,11 +47,11 @@ export default function ScoutReportsPage() {
         <div className="bg-white p-8 rounded-[2.5rem] shadow-sm mb-8 border border-gray-100 flex flex-wrap items-center gap-8">
           <div className="flex-1 min-w-[300px] relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
-            <input type="text" placeholder="Search by player name or report ID..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-1 focus:ring-[#87CEEB] text-sm" />
+            <input type="text" placeholder="Search by player name or report ID..." className="w-full pl-12 pr-6 py-4 bg-gray-50 rounded-2xl border-none outline-none focus:ring-1 focus:ring-[#87CEEB] text-sm" data-testid="input-search-reports" />
           </div>
           <div className="flex items-center space-x-3">
             <Filter className="w-4 h-4 text-gray-400" />
-            <select className="bg-gray-50 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none">
+            <select className="bg-gray-50 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#2F4F4F] border-none outline-none" data-testid="select-filter-reports">
               <option>Most Recent</option>
               <option>By Player</option>
             </select>
@@ -60,7 +60,7 @@ export default function ScoutReportsPage() {
 
         <div className="space-y-4">
           {reports.map(report => (
-            <div key={report.id} className={`bg - white rounded - [2rem] p - 8 border border - gray - 100 flex flex - col md: flex - row items - center justify - between gap - 8 hover: shadow - xl transition - all group ${isDeleting === report.id ? 'opacity-50 grayscale' : ''}`}>
+            <div key={report.id} className={`bg - white rounded - [2rem] p - 8 border border - gray - 100 flex flex - col md: flex - row items - center justify - between gap - 8 hover: shadow - xl transition - all group ${isDeleting === report.id ? 'opacity-50 grayscale' : ''}`} data-testid={`report-row-${report.id}`}>
               <div className="flex items-center space-x-6">
                 <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-[#2F4F4F] group-hover:bg-[#87CEEB] transition-colors">
                   <FileText className="w-6 h-6" />
@@ -81,16 +81,17 @@ export default function ScoutReportsPage() {
                   <div className="text-xs font-bold text-[#2F4F4F]">{report.date}</div>
                 </div>
                 <div className="flex space-x-2">
-                  <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all">
+                  <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all" data-testid={`btn-view-report-${report.id}`}>
                     <Eye className="w-5 h-5" />
                   </button>
-                  <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all">
+                  <button className="p-4 bg-gray-50 text-gray-400 hover:text-[#87CEEB] hover:bg-[#87CEEB]/10 rounded-2xl transition-all" data-testid={`btn-download-report-${report.id}`}>
                     <Download className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(report.id)}
                     disabled={!!isDeleting}
                     className="p-4 bg-gray-50 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all disabled:opacity-30"
+                    data-testid={`btn-delete-report-${report.id}`}
                   >
                     {isDeleting === report.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
                   </button>
@@ -103,7 +104,7 @@ export default function ScoutReportsPage() {
             <div className="py-20 text-center bg-white rounded-[3rem] border-2 border-dashed border-gray-100">
               <AlertCircle className="w-12 h-12 text-gray-200 mx-auto mb-4" />
               <h3 className="text-gray-300 font-black uppercase tracking-widest">No documents found in vault</h3>
-              <button onClick={() => window.location.reload()} className="mt-6 text-[#87CEEB] text-[10px] font-black uppercase tracking-widest hover:underline">Re-fetch Records</button>
+              <button onClick={() => window.location.reload()} className="mt-6 text-[#87CEEB] text-[10px] font-black uppercase tracking-widest hover:underline" data-testid="btn-refetch">Re-fetch Records</button>
             </div>
           )}
         </div>

@@ -160,6 +160,7 @@ export default function PatronListPage() {
         <Link
           href="/dashboard/admin/patrons/new"
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+          data-testid="btn-add-patron"
         >
           <Plus className="w-4 h-4" />
           Add Patron
@@ -177,6 +178,7 @@ export default function PatronListPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              data-testid="input-search-patrons"
             />
           </div>
           <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -214,6 +216,7 @@ export default function PatronListPage() {
             <div
               key={patron.id}
               className="p-6 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow duration-200"
+              data-testid="patron-card"
             >
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 {/* Patron Info */}

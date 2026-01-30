@@ -54,7 +54,7 @@ export default function PlayerScoutProfile() {
     <div className="bg-white min-h-screen">
       <div className="bg-[#2F4F4F] text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link href="/dashboard/scout/players" className="inline-flex items-center text-[#87CEEB] font-bold text-[10px] mb-8 hover:translate-x-[-4px] transition-transform uppercase tracking-widest">
+          <Link href="/dashboard/scout/players" className="inline-flex items-center text-[#87CEEB] font-bold text-[10px] mb-8 hover:translate-x-[-4px] transition-transform uppercase tracking-widest" data-testid="link-back-players">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Directory
           </Link>
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-8">
@@ -72,13 +72,14 @@ export default function PlayerScoutProfile() {
               </div>
             </div>
             <div className="flex space-x-4">
-              <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all">
+              <button className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all" data-testid="btn-request-dossier">
                 REQUEST FULL DOSSIER
               </button>
               <button
                 onClick={handleGenerateReport}
                 disabled={isGenerating}
                 className="sky-button flex items-center space-x-3 text-[10px] tracking-widest disabled:opacity-50"
+                data-testid="btn-generate-report"
               >
                 {isGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                 <span>{isGenerating ? 'ANALYZING METRICS...' : reportReady ? 'DOWNLOAD READY' : 'GENERATE SCOUT REPORT'}</span>
@@ -98,7 +99,7 @@ export default function PlayerScoutProfile() {
                 <p className="text-xs text-green-600 font-bold uppercase tracking-widest">Signed with professional key: scout_v4_auth</p>
               </div>
             </div>
-            <button className="bg-white px-6 py-3 rounded-xl text-[10px] font-black uppercase border border-green-200 hover:bg-green-100 transition-colors">SAVE TO VAULT</button>
+            <button className="bg-white px-6 py-3 rounded-xl text-[10px] font-black uppercase border border-green-200 hover:bg-green-100 transition-colors" data-testid="btn-save-vault">SAVE TO VAULT</button>
           </div>
         )}
 
@@ -115,7 +116,7 @@ export default function PlayerScoutProfile() {
                   { label: 'Minutes', value: player.stats?.minutesPlayed || 0, trend: '-' },
                   { label: 'Cards', value: (player.stats?.yellowCards || 0) + (player.stats?.redCards || 0), trend: '-' }
                 ].map((stat, i) => (
-                  <div key={i} className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
+                  <div key={i} className="bg-gray-50 p-8 rounded-[2rem] border border-gray-100" data-testid={`stat-card-${stat.label.toLowerCase()}`}>
                     <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-2">{stat.label}</div>
                     <div className="text-2xl font-black text-[#2F4F4F] mb-2">{stat.value}</div>
                     <div className="text-[10px] font-bold text-gray-400">

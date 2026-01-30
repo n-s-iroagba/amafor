@@ -329,6 +329,7 @@ export default function EditFeedPage() {
                     }`}
                   placeholder="Enter a descriptive name for this RSS feed source"
                   maxLength={255}
+                  data-testid="input-feed-name"
                 />
                 <div className="absolute right-3 top-3 text-xs text-gray-400">
                   {name.length}/255
@@ -370,6 +371,7 @@ export default function EditFeedPage() {
                   : 'border-gray-300 hover:border-gray-400'
                   }`}
                 placeholder="https://example.com/rss.xml"
+                data-testid="input-feed-url"
               />
               {errors.feedUrl && (
                 <motion.p
@@ -411,6 +413,7 @@ export default function EditFeedPage() {
                         }`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
+                      data-testid={`btn-category-${cat}`}
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{categoryInfo.icon}</span>
@@ -482,6 +485,7 @@ export default function EditFeedPage() {
                 className="flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold text-white shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 flex items-center justify-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                data-testid="btn-update-feed"
               >
                 {isSubmitting ? (
                   <>

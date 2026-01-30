@@ -101,6 +101,7 @@ export default function InfrastructureHealthPage() {
             onClick={triggerDiagnostic}
             disabled={isRunningDiagnostic || loading}
             className="bg-white px-8 py-4 rounded-2xl border text-[10px] font-black text-[#2F4F4F] hover:border-[#87CEEB] transition-all uppercase tracking-widest flex items-center disabled:opacity-50"
+            data-testid="btn-trigger-diagnostic"
           >
             {isRunningDiagnostic ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <RefreshCw className="w-4 h-4 mr-2" />}
             {isRunningDiagnostic ? 'SWEEPING EDGE NODES...' : 'TRIGGER SYSTEM DIAGNOSTIC'}
@@ -116,7 +117,7 @@ export default function InfrastructureHealthPage() {
             <div className="lg:col-span-2 space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {components.map((c, i) => (
-                  <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 group hover:shadow-xl transition-all">
+                  <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100 group hover:shadow-xl transition-all" data-testid={`health-component-${c.name.replace(/\s+/g, '-').toLowerCase()}`}>
                     <div className="flex items-center justify-between mb-8">
                       <div className="p-3 bg-gray-50 rounded-xl group-hover:bg-[#87CEEB] group-hover:text-[#2F4F4F] transition-colors">
                         {getComponentIcon(c.name)}

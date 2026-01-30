@@ -218,6 +218,7 @@ export default function AcademyStaffPage() {
               <Link
                 href="/dashboard/admin/academy/staff/new"
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-medium flex items-center gap-2"
+                data-testid="btn-add-academy-staff"
               >
                 <UserPlus className="h-4 w-4" />
                 Add Staff
@@ -293,6 +294,7 @@ export default function AcademyStaffPage() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                data-testid="input-search-academy-staff"
               />
             </div>
 
@@ -351,7 +353,7 @@ export default function AcademyStaffPage() {
         {sortedStaff.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {sortedStaff.map((staff) => (
-              <div key={staff.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition-shadow">
+              <div key={staff.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition-shadow" data-testid={`academy-staff-item-${staff.id}`}>
                 <div className="p-6">
                   {/* Staff Header */}
                   <div className="flex items-start justify-between mb-4">

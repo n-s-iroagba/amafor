@@ -344,6 +344,7 @@ export default function EditPlayer() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter player name"
+                data-testid="input-name"
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -363,6 +364,7 @@ export default function EditPlayer() {
                 onChange={(e) => setPosition(e.target.value)}
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.position ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                data-testid="select-position"
               >
                 <option value="">Select position</option>
                 <option value="Goalkeeper">Goalkeeper</option>
@@ -394,6 +396,7 @@ export default function EditPlayer() {
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.jerseyNumber ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
                 placeholder="Enter jersey number"
+                data-testid="input-jersey-number"
               />
               {errors.jerseyNumber && (
                 <p className="mt-1 text-sm text-red-600">
@@ -472,6 +475,7 @@ export default function EditPlayer() {
               type="submit"
               disabled={isSubmitting || isUploading}
               className="px-4 py-2 bg-sky-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-75"
+              data-testid="btn-update-player"
             >
               {isSubmitting ? 'Updating...' : 'Update Player'}
             </button>

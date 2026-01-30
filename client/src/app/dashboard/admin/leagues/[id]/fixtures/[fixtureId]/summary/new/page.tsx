@@ -37,7 +37,7 @@ interface FixtureSummaryAttributes {
 const CreateFixtureSummaryForm = ({ }) => {
   const router = useRouter();
   const [summary, setSummary] = useState('');
-  const { fixtureId } = useParams();
+  const { fixtureId, id: leagueId } = useParams();
   const [showPreview, setShowPreview] = useState(false);
   const [errors, setErrors] = useState<{ summary?: string }>({});
   const [wordCount, setWordCount] = useState(0);
@@ -111,7 +111,7 @@ const CreateFixtureSummaryForm = ({ }) => {
         summary: summary.trim(),
       };
       await post(matchSummary);
-      router.push(`/sports-admin/fixtures/${fixtureId}`);
+      router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}`);
     } catch (error) {
       console.error('Error creating match summary:', error);
       setSaveStatus('error');
@@ -159,8 +159,9 @@ const CreateFixtureSummaryForm = ({ }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => router.push(`/sports-admin/fixture/${fixtureId}`)}
+              onClick={() => router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}`)}
               className="p-2 rounded-full bg-sky-50 hover:bg-sky-100 transition-all duration-200 active:scale-95"
+              data-testid="btn-back-fixture-mobile"
             >
               <ArrowLeft className="w-5 h-5 text-sky-600" />
             </button>
@@ -172,6 +173,7 @@ const CreateFixtureSummaryForm = ({ }) => {
           <button
             onClick={() => setShowPreview(!showPreview)}
             className="p-2 rounded-full bg-sky-500 text-white hover:bg-sky-600 transition-all duration-200"
+            data-testid="btn-toggle-preview-mobile"
           >
             {showPreview ? (
               <EyeOff className="w-5 h-5" />
@@ -190,9 +192,10 @@ const CreateFixtureSummaryForm = ({ }) => {
               <div className="flex items-center gap-4">
                 <button
                   onClick={() =>
-                    router.push(`/sports-admin/fixture/${fixtureId}`)
+                    router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}`)
                   }
                   className="group p-3 rounded-xl bg-white shadow-sm border border-sky-200 hover:shadow-md hover:border-sky-300 transition-all duration-200"
+                  data-testid="btn-back-fixture"
                 >
                   <ArrowLeft className="w-6 h-6 text-sky-600 group-hover:text-sky-700" />
                 </button>
@@ -321,6 +324,7 @@ Include key highlights such as:
 • Post-match interviews or quotes"
                         rows={8}
                         disabled={isSubmitting}
+                        data-testid="textarea-summary"
                       />
 
                       {/* Character progress bar */}
@@ -403,10 +407,11 @@ Include key highlights such as:
                       <button
                         type="button"
                         onClick={() =>
-                          router.push(`/sports-admin/fixture/${fixtureId}`)
+                          router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}`)
                         }
                         className="flex-1 sm:flex-none px-6 py-2.5 border border-sky-300 text-sky-700 rounded-xl hover:bg-white hover:shadow-md transition-all duration-200 disabled:opacity-50 font-medium"
                         disabled={isSubmitting}
+                        data-testid="btn-cancel"
                       >
                         Cancel
                       </button>
@@ -416,6 +421,7 @@ Include key highlights such as:
                           isSubmitting || !summary.trim() || !!errors.summary
                         }
                         className="flex-1 sm:flex-none px-6 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-xl hover:from-sky-600 hover:to-blue-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-medium shadow-lg hover:shadow-xl"
+                        data-testid="btn-create-summary"
                       >
                         <Save className="w-4 h-4" />
                         {isSubmitting ? (

@@ -124,6 +124,7 @@ export default function NewCoach() {
                 onChange={(e) => setName(e.target.value)}
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.name ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                data-testid="input-coach-name"
               />
               {errors.name && (
                 <p className="mt-1 text-sm text-red-600">{errors.name}</p>
@@ -144,6 +145,7 @@ export default function NewCoach() {
                 onChange={(e) => setRole(e.target.value)}
                 className={`mt-1 block w-full rounded-md border p-2 text-sm sm:text-base ${errors.role ? 'border-red-500' : 'border-sky-300'
                   } shadow-sm focus:border-sky-500 focus:ring-sky-500`}
+                data-testid="input-coach-role"
               />
               {errors.role && (
                 <p className="mt-1 text-sm text-red-600">{errors.role}</p>
@@ -165,6 +167,7 @@ export default function NewCoach() {
               onChange={(e) => setBio(e.target.value)}
               rows={4}
               className="mt-1 block w-full rounded-md border border-sky-300 p-2 text-sm sm:text-base shadow-sm focus:border-sky-500 focus:ring-sky-500"
+              data-testid="textarea-coach-bio"
             />
           </div>
 
@@ -261,6 +264,7 @@ export default function NewCoach() {
               type="submit"
               disabled={isSubmitting || !imageUrl}
               className="px-4 py-2 bg-sky-600 rounded-md text-white font-medium hover:bg-sky-700 disabled:opacity-50 flex items-center justify-center"
+              data-testid="btn-save-coach"
             >
               {isSubmitting ? (
                 <>

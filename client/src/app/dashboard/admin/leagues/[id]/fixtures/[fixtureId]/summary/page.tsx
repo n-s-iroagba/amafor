@@ -104,6 +104,7 @@ export default function MatchSummaryPage() {
                     onChange={handleInputChange}
                     className="w-20 px-2 py-1 border rounded text-right focus:ring-sky-500 focus:border-sky-500"
                     min="0"
+                    data-testid={`input-home-${homeKey}`}
                 />
             </div>
             <div className="text-center font-medium text-gray-600 text-sm uppercase tracking-wide">
@@ -117,6 +118,7 @@ export default function MatchSummaryPage() {
                     onChange={handleInputChange}
                     className="w-20 px-2 py-1 border rounded focus:ring-sky-500 focus:border-sky-500"
                     min="0"
+                    data-testid={`input-away-${awayKey}`}
                 />
             </div>
         </div>
@@ -137,6 +139,7 @@ export default function MatchSummaryPage() {
                     <button
                         onClick={() => router.back()}
                         className="flex items-center gap-2 text-sky-600 hover:text-sky-700 mb-2 transition-colors text-sm"
+                        data-testid="btn-back-details"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Back to details
@@ -150,6 +153,7 @@ export default function MatchSummaryPage() {
                     onClick={handleSubmit}
                     disabled={isCreating || isUpdating}
                     className="flex items-center gap-2 px-6 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 disabled:opacity-50 transition-colors"
+                    data-testid="btn-save-summary"
                 >
                     {(isCreating || isUpdating) ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                     Save Changes

@@ -2,9 +2,9 @@ describe('Comprehensive Authentication Flow', () => {
     // Shared setup
     const login = (email: string, password = 'password123') => {
         cy.visit('/auth/login');
-        cy.get('input[name="email"]').type(email);
-        cy.get('input[name="password"]').type(password);
-        cy.get('button[type="submit"]').click();
+        cy.get('[data-testid="email-input"]').type(email);
+        cy.get('[data-testid="password-input"]').type(password);
+        cy.get('[data-testid="login-btn"]').click();
     };
 
     const logout = () => {
@@ -50,7 +50,7 @@ describe('Comprehensive Authentication Flow', () => {
             const newEmail = `newuser${timestamp}@example.com`;
 
             cy.visit('/auth/login');
-            cy.contains('Create New Account').click();
+            cy.get('[data-testid="signup-link"]').click();
             cy.url().should('include', '/auth/signup');
 
             // Fill registration form

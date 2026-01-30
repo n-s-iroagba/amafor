@@ -180,6 +180,7 @@ export default function FixtureDetail() {
           <Link
             href={`/dashboard/admin/leagues/${leagueId}/fixtures`}
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base group"
+            data-testid="btn-back-fixtures"
           >
             <ArrowLeft className="w-4 h-4 mr-1 transform group-hover:-translate-x-1 transition-transform" />
             Back to fixtures
@@ -215,6 +216,7 @@ export default function FixtureDetail() {
               <Link
                 href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}/edit`}
                 className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base flex items-center gap-2"
+                data-testid="btn-edit-fixture"
               >
                 <Edit3 className="w-4 h-4" />
                 Edit
@@ -226,6 +228,7 @@ export default function FixtureDetail() {
                     onClick={handleDelete}
                     disabled={isDeleting}
                     className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    data-testid="btn-confirm-delete-fixture"
                   >
                     {isDeleting ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -246,6 +249,7 @@ export default function FixtureDetail() {
                   onClick={confirmDelete}
                   disabled={isDeleting}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  data-testid="btn-delete-fixture"
                 >
                   <Trash2 className="w-4 h-4" />
                   Delete
@@ -321,6 +325,7 @@ export default function FixtureDetail() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key as any)}
+                data-testid={`tab-${tab.key}`}
                 className={`py-4 px-6 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${activeTab === tab.key
                   ? 'border-sky-500 text-sky-600 bg-sky-50'
                   : 'border-transparent text-sky-500 hover:text-sky-600 hover:bg-sky-50'
@@ -351,9 +356,16 @@ export default function FixtureDetail() {
             )}
 
             {activeTab === 'goals' && (
-              <div className="text-center py-12 text-gray-500">
-                <Trophy className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-                <p>Goals management coming soon</p>
+              <div className="text-center py-12">
+                <Trophy className="w-12 h-12 mx-auto text-sky-200 mb-3" />
+                <p className="text-gray-500 mb-4">Manage match goals and scorers</p>
+                <Link
+                  href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}/goals`}
+                  className="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors"
+                  data-testid="btn-manage-goals"
+                >
+                  Manage Goals
+                </Link>
               </div>
             )}
 
@@ -361,6 +373,15 @@ export default function FixtureDetail() {
               <div>
                 {lineup && fixture && (
                   <div className="space-y-6">
+                    <div className="flex justify-end">
+                      <Link
+                        href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}/lineup`}
+                        className="inline-flex items-center px-4 py-2 border border-sky-300 text-sky-700 rounded-md hover:bg-sky-50 transition-colors"
+                        data-testid="btn-manage-lineup"
+                      >
+                        Full Lineup Manager
+                      </Link>
+                    </div>
                     <LineupList
                       lineup={lineup}
                       fixture={fixture}
@@ -384,14 +405,25 @@ export default function FixtureDetail() {
             )}
 
             {activeTab === 'summary' && (
-              <div className="text-center py-12 text-gray-500">
-                <Edit3 className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-                <p>Match summary management coming soon</p>
+              <div className="text-center py-12">
+                <Edit3 className="w-12 h-12 mx-auto text-sky-200 mb-3" />
+                <p className="text-gray-500 mb-4">Create or edit match summary report</p>
+                <div className="flex justify-center gap-3">
+                  <Link
+                    href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}/summary/new`}
+                    className="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors"
+                    data-testid="btn-create-summary"
+                  >
+                    Create New Summary
+                  </Link>
+                  {/* Assuming we might verify if summary exists to show View/Edit vs Create, 
+                        but purely linking is safer for now or listing summaries if multiple allowed (though typically 1 per match) */}
+                </div>
               </div>
             )}
 
             {activeTab === 'gallery' && (
-              <div className="text-center py-12 text-gray-500">
+              <div className="text-center py-12">
                 <Image
                   width={48}
                   height={48}
@@ -400,7 +432,14 @@ export default function FixtureDetail() {
                   className="w-12 h-12 mx-auto opacity-20 mb-3"
                   unoptimized
                 />
-                <p>Gallery management coming soon</p>
+                <p className="text-gray-500 mb-4">Manage fixture photo gallery</p>
+                <Link
+                  href={`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}/images`}
+                  className="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors"
+                  data-testid="btn-manage-gallery"
+                >
+                  Manage Gallery
+                </Link>
               </div>
             )}
           </div>

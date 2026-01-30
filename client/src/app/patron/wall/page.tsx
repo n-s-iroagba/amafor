@@ -137,6 +137,7 @@ export default function SupporterWall() {
                 <Link
                   href="/patron/checkout"
                   className="inline-block bg-sky-700 hover:bg-sky-800 text-white px-8 py-3 rounded-lg transition-colors font-semibold"
+                  data-testid="make-donation-cta"
                 >
                   Make a Donation
                 </Link>
@@ -220,6 +221,7 @@ export default function SupporterWall() {
                         <div
                           key={`${letter}-${index}`}
                           className="bg-slate-50 rounded-lg p-4 hover:shadow-md transition-shadow"
+                          data-testid="supporter-card"
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1">
@@ -251,6 +253,7 @@ export default function SupporterWall() {
               <Link
                 href="/patron/checkout"
                 className="inline-block bg-sky-700 hover:bg-sky-800 text-white px-8 py-3 rounded-lg transition-colors font-semibold"
+                data-testid="make-donation-cta"
               >
                 Make a Donation
               </Link>

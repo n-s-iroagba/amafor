@@ -103,6 +103,7 @@ export default function LeagueStatsDetail() {
           <Link
             href={`/dashboard/admin/leagues/${leagueId}`}
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
+            data-testid="link-back-league"
           >
             <svg
               className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
@@ -143,6 +144,7 @@ export default function LeagueStatsDetail() {
                 <Link
                   href={`/dashboard/admin/leagues/${leagueId}/league-statstics/${stats.id}/edit`}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap"
+                  data-testid="btn-edit-stats"
                 >
                   Edit
                 </Link>

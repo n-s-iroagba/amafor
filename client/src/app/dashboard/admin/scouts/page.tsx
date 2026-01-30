@@ -52,7 +52,7 @@ export default function ScoutVerificationQueue() {
         ) : (
           <div className="space-y-6">
             {applications.map(app => (
-              <div key={app.id} className="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-12 transition-all hover:shadow-xl group">
+              <div key={app.id} className="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-12 transition-all hover:shadow-xl group" data-testid="scout-application-card">
                 <div className="flex-1 space-y-8">
                   <div className="flex items-center space-x-6">
                     <div className="w-20 h-20 rounded-[2rem] bg-gray-50 flex items-center justify-center text-[#2F4F4F] font-black text-3xl shadow-inner border border-gray-100 group-hover:bg-[#87CEEB]/10 transition-colors">
@@ -82,7 +82,7 @@ export default function ScoutVerificationQueue() {
                 </div>
 
                 <div className="lg:w-80 flex flex-col justify-center space-y-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-12">
-                  <Link href={`/dashboard/admin/scouts/${app.id}`} className="w-full py-4 bg-[#2F4F4F] text-[#87CEEB] rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all">
+                  <Link href={`/dashboard/admin/scouts/${app.id}`} className="w-full py-4 bg-[#2F4F4F] text-[#87CEEB] rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] flex items-center justify-center hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all" data-testid="link-view-dossier">
                     VIEW DOSSIER <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
                 </div>

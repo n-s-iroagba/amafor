@@ -69,6 +69,7 @@ export default function SupportDonate() {
                 <Link
                   href="/patron/checkout"
                   className="inline-flex items-center justify-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-8 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest group"
+                  data-testid="hero-donate-btn"
                 >
                   Make a Donation
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -91,6 +92,7 @@ export default function SupportDonate() {
                     <Link
                       href="/patron/wall"
                       className="inline-flex items-center gap-2 text-sky-600 hover:text-sky-700 font-black text-xs uppercase tracking-widest transition-colors"
+                      data-testid="wall-link"
                     >
                       Browse the Wall <ArrowRight className="w-4 h-4" />
                     </Link>
@@ -127,6 +129,7 @@ export default function SupportDonate() {
                       ? 'bg-gradient-to-br from-sky-400 to-indigo-500'
                       : 'bg-slate-200'
                       }`}
+                    data-testid="patron-tier-card"
                   >
                     <div className="bg-white p-10 rounded-[2.8rem] h-full flex flex-col justify-between">
                       <div>
@@ -164,6 +167,7 @@ export default function SupportDonate() {
                           ? 'bg-slate-900 text-white hover:bg-slate-800'
                           : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
                           }`}
+                        data-testid="select-tier-btn"
                       >
                         Select Tier
                       </Link>

@@ -16,4 +16,21 @@ describe("Academy Journeys", () => {
             cy.contains("application submitted").should("be.visible");
         });
     });
+
+    describe("UJ-ACA-002: View Academy Staff", () => {
+        it("should allow viewing and refreshing staff members", () => {
+            cy.visit("/academy");
+            cy.get('[data-testid="btn-refresh-staff"]').should("be.visible").click();
+            // Mock API response or wait for real fetch if E2E environment supports it
+            // cy.get('[data-testid^="staff-card-"]').should("have.length.greaterThan", 0);
+        });
+    });
+
+    describe("UJ-ACA-003: Contact Academy", () => {
+        it("should have contact options available", () => {
+            cy.visit("/academy");
+            cy.get('[data-testid="link-contact-us"]').should("have.attr", "href", "/help");
+            cy.get('[data-testid="btn-whatsapp"]').should("be.visible");
+        });
+    });
 });

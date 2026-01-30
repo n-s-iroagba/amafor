@@ -203,6 +203,7 @@ export default function EditTrialist() {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.firstName ? 'border-red-500' : 'border-emerald-300'}`}
+                  data-testid="input-trialist-firstname"
                 />
                 {errors.firstName && <p className="text-sm text-red-600 mt-1">{errors.firstName}</p>}
               </div>
@@ -217,6 +218,7 @@ export default function EditTrialist() {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.lastName ? 'border-red-500' : 'border-emerald-300'}`}
+                  data-testid="input-trialist-lastname"
                 />
                 {errors.lastName && <p className="text-sm text-red-600 mt-1">{errors.lastName}</p>}
               </div>
@@ -231,6 +233,7 @@ export default function EditTrialist() {
                   value={formData.email}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.email ? 'border-red-500' : 'border-emerald-300'}`}
+                  data-testid="input-trialist-email"
                 />
                 {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email}</p>}
               </div>
@@ -245,6 +248,7 @@ export default function EditTrialist() {
                   value={formData.phone}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.phone ? 'border-red-500' : 'border-emerald-300'}`}
+                  data-testid="input-trialist-phone"
                 />
                 {errors.phone && <p className="text-sm text-red-600 mt-1">{errors.phone}</p>}
               </div>
@@ -259,6 +263,7 @@ export default function EditTrialist() {
                   value={formData.dob}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.dob ? 'border-red-500' : 'border-emerald-300'}`}
+                  data-testid="input-trialist-dob"
                 />
                 {errors.dob && <p className="text-sm text-red-600 mt-1">{errors.dob}</p>}
               </div>
@@ -278,6 +283,7 @@ export default function EditTrialist() {
                   value={formData.position}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.position ? 'border-red-500' : 'border-emerald-300'}`}
+                  data-testid="select-trialist-position"
                 >
                   <option value="">Select position</option>
                   {positions.map(pos => (
@@ -296,6 +302,7 @@ export default function EditTrialist() {
                   value={formData.preferredFoot}
                   onChange={handleInputChange}
                   className="w-full rounded-md border border-emerald-300 p-2"
+                  data-testid="select-trialist-foot"
                 >
                   <option value="RIGHT">Right</option>
                   <option value="LEFT">Left</option>
@@ -313,6 +320,7 @@ export default function EditTrialist() {
                   value={formData.height}
                   onChange={handleInputChange}
                   className="w-full rounded-md border border-emerald-300 p-2"
+                  data-testid="input-trialist-height"
                 />
               </div>
 
@@ -326,6 +334,7 @@ export default function EditTrialist() {
                   value={formData.weight}
                   onChange={handleInputChange}
                   className="w-full rounded-md border border-emerald-300 p-2"
+                  data-testid="input-trialist-weight"
                 />
               </div>
 
@@ -339,6 +348,7 @@ export default function EditTrialist() {
                   value={formData.previousClub}
                   onChange={handleInputChange}
                   className="w-full rounded-md border border-emerald-300 p-2"
+                  data-testid="input-trialist-club"
                 />
               </div>
             </div>
@@ -502,6 +512,7 @@ export default function EditTrialist() {
                 value={formData.status}
                 onChange={handleInputChange}
                 className="w-full rounded-md border border-emerald-300 p-2"
+                data-testid="select-trialist-status"
               >
                 <option value="PENDING">Pending</option>
                 <option value="REVIEWED">Reviewed</option>
@@ -521,6 +532,7 @@ export default function EditTrialist() {
                 rows={4}
                 className="w-full rounded-md border border-emerald-300 p-2"
                 placeholder="Add any notes or observations..."
+                data-testid="textarea-trialist-notes"
               />
             </div>
           </div>
@@ -545,6 +557,7 @@ export default function EditTrialist() {
               type="submit"
               disabled={isSubmitting}
               className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+              data-testid="btn-update-trialist"
             >
               {isSubmitting && <Upload className="w-4 h-4 animate-spin" />}
               {isSubmitting ? 'Updating...' : 'Update Trialist'}

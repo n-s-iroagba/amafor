@@ -211,9 +211,9 @@ export default function EditPatronPage() {
             name="name"
             placeholder="Enter patron's full name"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={form.name}
             onChange={handleChange}
             required
+            data-testid="input-patron-name"
           />
         </div>
 
@@ -231,9 +231,9 @@ export default function EditPatronPage() {
             name="position"
             placeholder="Enter position or role"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={form.position}
             onChange={handleChange}
             required
+            data-testid="input-patron-position"
           />
         </div>
 
@@ -296,6 +296,7 @@ export default function EditPatronPage() {
               accept="image/jpeg,image/jpg,image/png,image/webp"
               onChange={handleFileChange}
               className="hidden"
+              data-testid="input-patron-image"
             />
             <span className="text-sm text-gray-500">
               {imageFile ? imageFile.name : 'No file chosen'}
@@ -324,6 +325,7 @@ export default function EditPatronPage() {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={form.bio || ''}
             onChange={handleChange}
+            data-testid="input-patron-bio"
           />
         </div>
 
@@ -347,6 +349,7 @@ export default function EditPatronPage() {
             type="submit"
             disabled={isUploading || isSubmitting}
             className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            data-testid="btn-update-patron"
           >
             {isUploading || isSubmitting ? 'Updating...' : 'Update Patron'}
           </button>

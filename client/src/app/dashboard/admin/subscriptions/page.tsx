@@ -108,6 +108,7 @@ export default function SubscriptionPackagesPage() {
                 <Link
                     href="/dashboard/admin/subscriptions/new"
                     className="flex items-center gap-2 bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 transition-colors shadow-sm hover:shadow-md"
+                    data-testid="btn-create-subscription"
                 >
                     <Plus className="w-4 h-4" />
                     Create Package
@@ -124,6 +125,7 @@ export default function SubscriptionPackagesPage() {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        data-testid="input-search-package"
                     />
                 </div>
             </div>
@@ -145,6 +147,7 @@ export default function SubscriptionPackagesPage() {
                         <div
                             key={pkg.id}
                             className="bg-white border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex flex-col"
+                            data-testid="sub-plan-card"
                         >
                             <div className="p-6 flex-1">
                                 <div className="flex justify-between items-start mb-4">
@@ -183,6 +186,7 @@ export default function SubscriptionPackagesPage() {
                                 <Link
                                     href={`/dashboard/admin/subscriptions/${pkg.id}/edit`}
                                     className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:bg-white hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-gray-200"
+                                    data-testid="btn-edit-plan"
                                 >
                                     <Edit className="w-4 h-4" />
                                     <span className="text-sm font-medium">Edit</span>

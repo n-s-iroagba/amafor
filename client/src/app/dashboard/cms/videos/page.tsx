@@ -84,6 +84,7 @@ export default function VideoLibrary() {
           <Link
             href="/sports-admin/videos/new"
             className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center"
+            data-testid="btn-add-video"
           >
             Add New Video
           </Link>
@@ -181,6 +182,7 @@ export default function VideoLibrary() {
                     <tr
                       key={video.id}
                       className="hover:bg-sky-50 transition-colors"
+                      data-testid={`video-row-${video.id}`}
                     >
                       <td className="px-4 sm:px-6 py-4">
                         <div className="flex-shrink-0 h-16 w-24 relative">
@@ -269,6 +271,7 @@ export default function VideoLibrary() {
                             onClick={() => setDeleteConfirm(video.id)}
                             className="text-red-600 hover:text-red-900 transition-colors text-xs sm:text-sm"
                             title="Delete"
+                            data-testid={`btn-delete-video-${video.id}`}
                           >
                             <span className="sr-only sm:not-sr-only">
                               Delete
@@ -299,12 +302,14 @@ export default function VideoLibrary() {
                                 <button
                                   onClick={() => setDeleteConfirm(null)}
                                   className="px-4 py-2 text-sm bg-sky-100 text-sky-700 rounded hover:bg-sky-200 transition-colors"
+                                  data-testid="btn-confirm-cancel"
                                 >
                                   Cancel
                                 </button>
                                 <button
                                   onClick={() => handleDeleteClick(video.id)}
                                   className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                                  data-testid="btn-confirm-delete"
                                 >
                                   Delete
                                 </button>

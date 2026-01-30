@@ -110,6 +110,7 @@ export default function BackupsPage() {
           onClick={handleCreateBackup}
           disabled={creating}
           className="sky-button flex items-center gap-2 py-3 disabled:opacity-50"
+          data-testid="btn-create-backup"
         >
           {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           CREATE NEW BACKUP
@@ -179,7 +180,7 @@ export default function BackupsPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {backups.map(backup => (
-                <tr key={backup.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={backup.id} className="hover:bg-gray-50 transition-colors" data-testid="backup-row">
                   <td className="px-8 py-4">
                     <div className="flex items-center gap-3">
                       <Database className="w-4 h-4 text-[#87CEEB]" />
@@ -209,6 +210,7 @@ export default function BackupsPage() {
                           onClick={() => handleDownload(backup.id)}
                           className="p-2 hover:bg-[#87CEEB]/10 rounded-lg transition-colors text-[#87CEEB]"
                           title="Download"
+                          data-testid="btn-download-backup"
                         >
                           <Download className="w-4 h-4" />
                         </button>
@@ -218,6 +220,7 @@ export default function BackupsPage() {
                         disabled={deleteLoading && deletingId === backup.id}
                         className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-400 disabled:opacity-50"
                         title="Delete"
+                        data-testid="btn-delete-backup"
                       >
                         {deleteLoading && deletingId === backup.id
                           ? <Loader2 className="w-4 h-4 animate-spin" />

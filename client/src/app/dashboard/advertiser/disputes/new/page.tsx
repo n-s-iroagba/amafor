@@ -21,7 +21,7 @@ export default function NewDisputePage() {
   const navigate = useRouter();
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
-  const [campaign, setCampaign] = useState('Summer Kit Launch');
+
 
   const { post, isPending } = usePost(API_ROUTES.ADVERTISER.DISPUTES.CREATE);
 
@@ -31,7 +31,6 @@ export default function NewDisputePage() {
       await post({
         subject,
         description,
-        campaign,
       });
       navigate.push('/dashboard/advertiser/disputes');
     } catch (error) {
@@ -42,7 +41,7 @@ export default function NewDisputePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <Link href="/dashboard/advertiser/disputes" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest">
+        <Link href="/dashboard/advertiser/disputes" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest" data-testid="link-cancel-dispute">
           <ArrowLeft className="w-3 h-3 mr-2" /> Cancel Dispute
         </Link>
 
@@ -55,18 +54,7 @@ export default function NewDisputePage() {
         </header>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-[3rem] p-12 shadow-sm border border-gray-100 space-y-8">
-          <div className="space-y-2">
-            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Select Campaign</label>
-            <select
-              required
-              value={campaign}
-              onChange={(e) => setCampaign(e.target.value)}
-              className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold"
-            >
-              <option>Summer Kit Launch</option>
-              <option>Academy Scholarship Drive</option>
-            </select>
-          </div>
+
           <div className="space-y-2">
             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Dispute Subject</label>
             <input
@@ -76,6 +64,7 @@ export default function NewDisputePage() {
               onChange={(e) => setSubject(e.target.value)}
               placeholder="e.g. Impression count mismatch"
               className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold"
+              data-testid="input-subject"
             />
           </div>
           <div className="space-y-2">
@@ -86,6 +75,7 @@ export default function NewDisputePage() {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Provide evidence or context for the discrepancy..."
               className="w-full px-6 py-4 bg-gray-50 rounded-2xl border focus:border-[#87CEEB] outline-none font-bold h-32 resize-none"
+              data-testid="textarea-description"
             />
           </div>
 
@@ -100,6 +90,7 @@ export default function NewDisputePage() {
             type="submit"
             disabled={isPending}
             className="w-full sky-button py-5 uppercase tracking-[0.2em] flex items-center justify-center disabled:opacity-50"
+            data-testid="btn-submit-dispute"
           >
             <span>{isPending ? 'FILING...' : 'FILE FORMAL DISPUTE'}</span>
             <Send className="w-5 h-5 ml-3" />

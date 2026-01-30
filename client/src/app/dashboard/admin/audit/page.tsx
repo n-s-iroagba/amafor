@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Shield, FileSearch, Download, Filter, Calendar, Clock, User, Activity, Loader2 } from 'lucide-react';
+import { Shield, FileSearch, Download, Filter, Calendar, Clock, User, Activity, Loader2, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
@@ -36,6 +36,7 @@ interface AuditStats {
 export default function AuditTrailDashboard() {
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [exporting, setExporting] = useState(false);
 
   const { data: response, loading: logsLoading } = useGet<any>(
@@ -47,6 +48,15 @@ export default function AuditTrailDashboard() {
   const { post: exportLogs } = usePost<{ dateFrom: string; dateTo: string; format: string }, Blob>(
     API_ROUTES.AUDIT.EXPORT
   );
+
+  const filteredLogs = React.useMemo(() => {
+    return logs.filter(log =>
+      log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.entityType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      log.entityId.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [logs, searchTerm]);
 
   // Calculate stats from logs
   const totalLogs = logs?.length || 0;
@@ -96,7 +106,18 @@ export default function AuditTrailDashboard() {
             Audit Trail System
           </h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search by action, user, or entity..."
+              className="w-full pl-10 pr-4 py-2 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#87CEEB] focus:border-transparent transition-all"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              data-testid="input-search-audit"
+            />
+          </div>
           <div className="flex items-center gap-2 bg-white rounded-xl px-4 py-2 border">
             <Calendar className="w-4 h-4 text-gray-400" />
             <input
@@ -105,6 +126,7 @@ export default function AuditTrailDashboard() {
               onChange={(e) => setDateFrom(e.target.value)}
               className="text-sm outline-none"
               placeholder="From"
+              data-testid="input-date-from"
             />
             <span className="text-gray-300">→</span>
             <input
@@ -113,12 +135,14 @@ export default function AuditTrailDashboard() {
               onChange={(e) => setDateTo(e.target.value)}
               className="text-sm outline-none"
               placeholder="To"
+              data-testid="input-date-to"
             />
           </div>
           <button
             onClick={handleExport}
             disabled={exporting}
             className="sky-button flex items-center gap-2 py-3 disabled:opacity-50"
+            data-testid="btn-export-audit"
           >
             {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
             EXPORT AUDIT BUNDLE
@@ -168,8 +192,8 @@ export default function AuditTrailDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {logs.slice(0, 20).map(log => (
-                <tr key={log.id} className="hover:bg-gray-50 transition-colors">
+              {filteredLogs.slice(0, 50).map(log => (
+                <tr key={log.id} className="hover:bg-gray-50 transition-colors" data-testid="audit-log-row">
                   <td className="px-8 py-4 text-sm text-gray-500 font-mono">
                     {new Date(log.timestamp).toLocaleString()}
                   </td>

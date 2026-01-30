@@ -904,3 +904,60 @@
 {"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:07:41"}
 {"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:08:04","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
 {"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:08:04"}
+{"email":"media@academy.com","level":"warn","message":"Login failed - bad password","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:09:16","userId":"eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:09:16"}
+{"email":"media@academy.com","level":"warn","message":"Login failed - bad password","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:09:59","userId":"eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:09:59"}
+{"email":"media@academy.com","level":"warn","message":"Login failed - bad password","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:10:09","userId":"eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:10:09"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:20:51","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:20:52"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:27:09"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:27:09"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:36"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:36"}
+{"level":"info","message":"Warming up FeaturedNews cache...","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:39"}
+{"level":"info","message":"Warming up FeaturedNews cache...","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:39"}
+{"level":"info","message":"RssFeedSource updated: 1","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:49"}
+{"level":"info","message":"RssFeedSource updated: 1","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:49"}
+{"level":"info","message":"RssFeedSource updated: 2","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:59"}
+{"level":"info","message":"RssFeedSource updated: 2","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:28:59"}
+{"level":"info","message":"RssFeedSource updated: 3","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:29:09"}
+{"level":"info","message":"RssFeedSource updated: 3","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:29:09"}
+{"level":"info","message":"FeaturedNews cache warmed up successfully","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:29:15"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-01-27 01:29:24"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:52:40"}
+{"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:52:53"}
+{"level":"info","message":"Warming up FeaturedNews cache...","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:52:53"}
+{"level":"info","message":"RssFeedSource updated: 1","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:03"}
+{"level":"info","message":"RssFeedSource updated: 1","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:03"}
+{"level":"info","message":"RssFeedSource updated: 2","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:13"}
+{"level":"info","message":"RssFeedSource updated: 2","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:13"}
+{"level":"info","message":"RssFeedSource updated: 3","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:23"}
+{"level":"info","message":"RssFeedSource updated: 3","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:23"}
+{"level":"info","message":"FeaturedNews cache warmed up successfully","service":"amafor-gladiators-api","timestamp":"2026-01-27 09:53:29"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:06:16","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:06:18"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:07:29","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:07:29"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:20:28"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:21:43"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:23:05"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:23:30"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:26:40"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:27:11"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:28:07"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:29:35"}
+{"error":"Invalid credentials","level":"error","message":"Login failed","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:30:57"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:33:34","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:33:34"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:34:51","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:34:51"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:36:17","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:36:17"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:37:33","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:37:33"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:40:52","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:40:52"}
+{"level":"info","message":"Login success","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:42:07","userId":"cccccccc-cccc-cccc-cccc-cccccccccccc"}
+{"level":"info","message":"User updated: cccccccc-cccc-cccc-cccc-cccccccccccc","service":"amafor-gladiators-api","timestamp":"2026-01-27 10:42:07"}

@@ -193,6 +193,7 @@ export default function NewArticlePage() {
                     : 'border-gray-300 hover:border-gray-400'
                     }`}
                   maxLength={200}
+                  data-testid="input-article-title"
                 />
                 <div className="absolute right-3 top-3 text-xs text-gray-400">
                   {title.length}/200
@@ -220,6 +221,7 @@ export default function NewArticlePage() {
                   type="button"
                   onClick={() => setShowStatusDropdown(!showStatusDropdown)}
                   className="w-full sm:w-auto min-w-[200px] px-4 py-3 border border-gray-300 rounded-xl bg-white text-left hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 flex items-center justify-between gap-3"
+                  data-testid="btn-status-dropdown"
                 >
                   <div className="flex items-center gap-2">
                     <SelectedIcon
@@ -257,6 +259,7 @@ export default function NewArticlePage() {
                             ? 'bg-sky-50 border-r-2 border-sky-500'
                             : ''
                             }`}
+                          data-testid={`option-status-${option.value}`}
                         >
                           <IconComponent
                             className={`w-5 h-5 ${option.color} flex-shrink-0 mt-0.5`}
@@ -290,6 +293,7 @@ export default function NewArticlePage() {
                   ? 'border-red-300 bg-red-50'
                   : 'border-gray-300 hover:border-gray-400 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500'
                   }`}
+                data-testid="editor-wrapper"
               >
                 <CustomEditor
                   value={editorContent}
@@ -331,6 +335,7 @@ export default function NewArticlePage() {
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
+                data-testid="btn-save-article"
               >
                 {loading ? (
                   <>

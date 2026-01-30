@@ -79,6 +79,7 @@ export default function SystemNotificationsPage() {
               onClick={handleMarkAllRead}
               disabled={markingAll}
               className="bg-white px-6 py-4 rounded-2xl border text-[10px] font-black text-[#2F4F4F] hover:bg-gray-50 transition-all uppercase tracking-widest disabled:opacity-50"
+              data-testid="btn-mark-all-read"
             >
               {markingAll ? <Loader2 className="w-4 h-4 animate-spin" /> : 'MARK ALL READ'}
             </button>
@@ -97,6 +98,7 @@ export default function SystemNotificationsPage() {
                 onClick={() => setActiveFilter(f)}
                 className={`px-6 py-3 rounded-xl text-[9px] font-black tracking-widest transition-all ${activeFilter === f ? 'bg-[#2F4F4F] text-[#87CEEB]' : 'bg-gray-50 text-gray-400 hover:text-[#2F4F4F]'
                   }`}
+                data-testid={`filter-btn-${f.toLowerCase()}`}
               >
                 {f}
               </button>
@@ -110,6 +112,7 @@ export default function SystemNotificationsPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-gray-50 rounded-xl border-none outline-none focus:ring-1 focus:ring-[#87CEEB] text-sm"
+              data-testid="input-search-notifs"
             />
           </div>
         </div>
@@ -129,7 +132,7 @@ export default function SystemNotificationsPage() {
           <div className="space-y-4">
             {filteredNotifications.map(notif => (
               <div key={notif.id} className={`bg-white rounded-[2rem] p-8 shadow-sm border-l-8 transition-all hover:shadow-md cursor-pointer ${notif.severity === 'CRITICAL' ? 'border-red-500' : notif.severity === 'WARNING' ? 'border-amber-500' : 'border-blue-500'
-                }`}>
+                }`} data-testid="notification-item">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-6">
                     <div className="p-4 bg-gray-50 rounded-2xl shadow-inner">

@@ -74,7 +74,7 @@ export default function ArticleDetail() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-sky-100 py-8 px-4">
       <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
-        <h1 className="text-3xl font-bold text-sky-800 mb-4">
+        <h1 className="text-3xl font-bold text-sky-800 mb-4" data-testid="article-title">
           {article.title}
         </h1>
 
@@ -88,6 +88,7 @@ export default function ArticleDetail() {
             ? 'bg-green-100 text-green-700'
             : 'bg-yellow-100 text-yellow-700'
             }`}
+          data-testid="article-status-badge"
         >
           {article.status}
         </span>
@@ -116,6 +117,7 @@ export default function ArticleDetail() {
               router.push(`/dashboard/cms/articles/${article.id}/edit`)
             }
             className="px-4 py-2 border text-sky-600 rounded hover:bg-sky-50"
+            data-testid="btn-edit-article"
           >
             Edit
           </button>
@@ -125,12 +127,14 @@ export default function ArticleDetail() {
               <button
                 onClick={handleDelete}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                data-testid="btn-confirm-delete"
               >
                 Confirm Delete
               </button>
               <button
                 onClick={() => setDeleteConfirm(false)}
                 className="px-4 py-2 border text-gray-600 rounded hover:bg-gray-50"
+                data-testid="btn-confirm-cancel"
               >
                 Cancel
               </button>
@@ -139,6 +143,7 @@ export default function ArticleDetail() {
             <button
               onClick={() => setDeleteConfirm(true)}
               className="px-4 py-2 border text-red-600 rounded hover:bg-red-50"
+              data-testid="btn-delete-article"
             >
               Delete
             </button>

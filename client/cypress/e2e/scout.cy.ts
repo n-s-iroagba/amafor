@@ -10,13 +10,13 @@ describe("Scout Dashboard Journeys", () => {
 
             // Browse Players
             cy.visit("/dashboard/scout/players");
-            cy.get('[data-testid="player-row"]').should("have.length.greaterThan", 0);
-            cy.get('[data-testid="player-row"]').first().click();
+            cy.get('[data-testid^="player-card-"]').should("have.length.greaterThan", 0);
+            cy.get('[data-testid^="player-card-"]').first().click();
             cy.url().should("include", "/dashboard/scout/players/");
 
             // Match Analysis
             cy.visit("/dashboard/scout/matches");
-            cy.get('[data-testid="match-item"]').first().click();
+            cy.get('[data-testid^="match-card-"]').first().click();
             cy.url().should("include", "/dashboard/scout/matches/");
             // Check for analysis components
 

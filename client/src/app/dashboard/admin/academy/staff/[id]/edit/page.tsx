@@ -216,6 +216,7 @@ export default function EditStaff() {
                   value={formData.name}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.name ? 'border-red-500' : 'border-indigo-300'}`}
+                  data-testid="input-staff-name"
                 />
                 {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name}</p>}
               </div>
@@ -230,6 +231,7 @@ export default function EditStaff() {
                   value={formData.role}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.role ? 'border-red-500' : 'border-indigo-300'}`}
+                  data-testid="input-staff-role"
                 />
                 {errors.role && <p className="text-sm text-red-600 mt-1">{errors.role}</p>}
               </div>
@@ -245,6 +247,7 @@ export default function EditStaff() {
                   onChange={handleInputChange}
                   className="w-full rounded-md border border-indigo-300 p-2"
                   maxLength={5}
+                  data-testid="input-staff-initials"
                 />
               </div>
 
@@ -257,6 +260,7 @@ export default function EditStaff() {
                   value={formData.category}
                   onChange={handleInputChange}
                   className={`w-full rounded-md border p-2 ${errors.category ? 'border-red-500' : 'border-indigo-300'}`}
+                  data-testid="select-staff-category"
                 >
                   <option value="">Select category</option>
                   {categories.map(cat => (
@@ -280,6 +284,7 @@ export default function EditStaff() {
                   className="w-full rounded-md border border-indigo-300 p-2"
                   min="0"
                   max="50"
+                  data-testid="input-staff-experience"
                 />
               </div>
             </div>
@@ -298,6 +303,7 @@ export default function EditStaff() {
                 onChange={handleInputChange}
                 rows={5}
                 className="w-full rounded-md border border-indigo-300 p-2"
+                data-testid="textarea-staff-bio"
               />
             </div>
           </div>
@@ -326,6 +332,7 @@ export default function EditStaff() {
                     value={qualification}
                     onChange={(e) => handleQualificationChange(index, e.target.value)}
                     className={`flex-1 rounded-md border p-2 ${errors.qualifications && index === 0 ? 'border-red-500' : 'border-indigo-300'}`}
+                    data-testid={`input-staff-qualification-${index}`}
                   />
                   {formData.qualifications.length > 1 && (
                     <button
@@ -448,6 +455,7 @@ export default function EditStaff() {
               type="submit"
               disabled={isSubmitting}
               className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+              data-testid="btn-update-staff"
             >
               {isSubmitting && <Upload className="w-4 h-4 animate-spin" />}
               {isSubmitting ? 'Updating...' : 'Update Staff Member'}

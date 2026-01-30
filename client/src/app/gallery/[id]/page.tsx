@@ -173,6 +173,7 @@ export default function FixtureGalleryPage() {
           <button
             onClick={() => router.back()}
             className="flex items-center gap-2 text-slate-300 hover:text-white mb-6 transition-colors"
+            data-testid="back-button"
           >
             <ChevronLeft className="h-5 w-5" />
             Back to Gallery
@@ -302,6 +303,7 @@ export default function FixtureGalleryPage() {
                     <button
                       onClick={() => setLightboxOpen(true)}
                       className="absolute top-4 right-4 bg-black/70 text-white p-2.5 rounded-lg hover:bg-black/80 transition-colors"
+                      data-testid="lightbox-open-btn"
                     >
                       <Maximize2 className="h-5 w-5" />
                     </button>
@@ -380,6 +382,7 @@ export default function FixtureGalleryPage() {
                       ? 'ring-2 ring-slate-800 ring-offset-2'
                       : 'hover:ring-2 hover:ring-slate-400'
                       }`}
+                    data-testid="gallery-thumbnail"
                   >
                     {/* In real app, use next/image */}
                     <div
@@ -432,7 +435,7 @@ export default function FixtureGalleryPage() {
 
       {/* Lightbox Modal */}
       {lightboxOpen && selectedImage && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" data-testid="lightbox-modal">
           <button
             onClick={() => setLightboxOpen(false)}
             className="absolute top-4 right-4 text-white p-2 hover:text-slate-300"

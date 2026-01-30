@@ -56,7 +56,7 @@ export default function AdvertiserRegistration() {
               <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-4xl">⏳</span>
               </div>
-              <h1 className="text-3xl font-heading text-slate-800 mb-4">Application Received</h1>
+              <h1 className="text-3xl font-heading text-slate-800 mb-4" data-testid="success-message">Application Received</h1>
               <p className="text-lg text-slate-600 mb-8 max-w-lg mx-auto">
                 Thank you for registering. Your account is currently <strong>Awaiting Verification</strong>.
                 <br /><br />
@@ -106,6 +106,7 @@ export default function AdvertiserRegistration() {
                   onChange={(e) => setBusinessName(e.target.value)}
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
+                  data-testid="business-name-input"
                 />
               </div>
 
@@ -120,6 +121,7 @@ export default function AdvertiserRegistration() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
+                  data-testid="business-email-input"
                 />
                 <p className="text-sm text-slate-500 mt-2">
                   This will be your login email and where we send campaign notifications
@@ -137,6 +139,7 @@ export default function AdvertiserRegistration() {
                   onChange={(e) => setPhone(e.target.value)}
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
+                  data-testid="business-phone-input"
                 />
               </div>
 
@@ -151,6 +154,7 @@ export default function AdvertiserRegistration() {
                 type="submit"
                 disabled={!businessName || !email || !phone || isPending}
                 className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-colors font-semibold"
+                data-testid="submit-registration"
               >
                 {isPending ? 'Submitting...' : 'Submit Application'}
               </button>

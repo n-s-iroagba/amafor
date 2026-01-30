@@ -40,9 +40,9 @@ export default function ScoutDashboard() {
       <aside className="w-20 bg-[#2F4F4F] hidden lg:flex flex-col items-center py-8 space-y-8">
         <Shield className="w-8 h-8 text-[#87CEEB]" />
         <div className="space-y-6">
-          <Link href="/dashboard/scout" className="p-3 bg-[#87CEEB] rounded-xl block text-[#2F4F4F]"><UserSearch className="w-6 h-6" /></Link>
-          <Link href="/dashboard/scout/reports" className="p-3 text-white/50 hover:text-white block"><FileText className="w-6 h-6" /></Link>
-          <Link href="/dashboard/scout/matches" className="p-3 text-white/50 hover:text-white block"><Film className="w-6 h-6" /></Link>
+          <Link href="/dashboard/scout" className="p-3 bg-[#87CEEB] rounded-xl block text-[#2F4F4F]" data-testid="sidebar-link-scout-home"><UserSearch className="w-6 h-6" /></Link>
+          <Link href="/dashboard/scout/reports" className="p-3 text-white/50 hover:text-white block" data-testid="sidebar-link-scout-reports"><FileText className="w-6 h-6" /></Link>
+          <Link href="/dashboard/scout/matches" className="p-3 text-white/50 hover:text-white block" data-testid="sidebar-link-scout-matches"><Film className="w-6 h-6" /></Link>
         </div>
       </aside>
 
@@ -82,7 +82,7 @@ export default function ScoutDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Quick Actions */}
             <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 h-fit">
-              <Link href="/dashboard/scout/players" className="group bg-[#2F4F4F] p-10 rounded-[2.5rem] text-white shadow-xl hover:shadow-2xl transition-all relative overflow-hidden">
+              <Link href="/dashboard/scout/players" className="group bg-[#2F4F4F] p-10 rounded-[2.5rem] text-white shadow-xl hover:shadow-2xl transition-all relative overflow-hidden" data-testid="link-quick-players">
                 <Shield className="absolute -right-8 -bottom-8 w-40 h-40 text-white/5" />
                 <div className="bg-[#87CEEB] w-12 h-12 rounded-xl flex items-center justify-center mb-8">
                   <Search className="w-6 h-6 text-[#2F4F4F]" />
@@ -94,7 +94,7 @@ export default function ScoutDashboard() {
                 </div>
               </Link>
 
-              <Link href="/dashboard/scout/reports" className="group bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all">
+              <Link href="/dashboard/scout/reports" className="group bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all" data-testid="link-quick-reports">
                 <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mb-8">
                   <FileText className="w-6 h-6 text-[#2F4F4F]" />
                 </div>
@@ -105,7 +105,7 @@ export default function ScoutDashboard() {
                 </div>
               </Link>
 
-              <Link href="/dashboard/scout/matches" className="group bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all md:col-span-2">
+              <Link href="/dashboard/scout/matches" className="group bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all md:col-span-2" data-testid="link-quick-matches">
                 <div className="bg-gray-100 w-12 h-12 rounded-xl flex items-center justify-center mb-8">
                   <Film className="w-6 h-6 text-[#2F4F4F]" />
                 </div>
@@ -132,7 +132,7 @@ export default function ScoutDashboard() {
                   <p className="text-gray-400 text-sm text-center py-8">No recently viewed players</p>
                 ) : (
                   recentlyViewed.map(player => (
-                    <Link key={player.id} href={`/dashboard/scout/players/${player.id}`} className="flex items-center space-x-4 group">
+                    <Link key={player.id} href={`/dashboard/scout/players/${player.id}`} className="flex items-center space-x-4 group" data-testid={`recent-view-item-${player.id}`}>
                       <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex-none">
                         <img src={player.imageUrl} className="w-full h-full object-cover" alt={player.name} />
                       </div>
@@ -145,7 +145,7 @@ export default function ScoutDashboard() {
                   ))
                 )}
               </div>
-              <button className="w-full mt-10 py-4 bg-gray-50 text-gray-500 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all">
+              <button className="w-full mt-10 py-4 bg-gray-50 text-gray-500 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#87CEEB] hover:text-[#2F4F4F] transition-all" data-testid="btn-view-search-history">
                 View Search History
               </button>
             </section>

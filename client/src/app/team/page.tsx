@@ -169,6 +169,7 @@ export default function TeamSquad() {
                 ? 'bg-slate-900 text-white shadow-lg'
                 : 'text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100'
                 }`}
+              data-testid="tab-players"
             >
               <Users className={`w-4 h-4 ${selectedTab === 'players' ? 'text-sky-400' : ''}`} />
               Players ({playersData.length})
@@ -179,6 +180,7 @@ export default function TeamSquad() {
                 ? 'bg-slate-900 text-white shadow-lg'
                 : 'text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100'
                 }`}
+              data-testid="tab-coaches"
             >
               <Shield className={`w-4 h-4 ${selectedTab === 'coaches' ? 'text-sky-400' : ''}`} />
               Staff ({coachesData.length})
@@ -252,6 +254,7 @@ export default function TeamSquad() {
             <button
               onClick={() => setSelectedMember(null)}
               className="absolute top-8 right-8 z-20 w-12 h-12 bg-slate-900/10 hover:bg-slate-900/20 text-slate-900 rounded-2xl flex items-center justify-center transition-all duration-200"
+              data-testid="modal-close-btn"
             >
               <X className="w-6 h-6" />
             </button>
@@ -319,6 +322,7 @@ export default function TeamSquad() {
                     <Link
                       href={`/player/${selectedMember.id}`}
                       className="inline-flex items-center justify-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-10 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest shadow-xl shadow-slate-900/20 active:scale-95 duration-200"
+                      data-testid="modal-full-metrics-link"
                     >
                       Full Performance Metrics
                       <ArrowRight className="w-4 h-4 text-sky-400" />

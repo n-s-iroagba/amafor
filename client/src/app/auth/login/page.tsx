@@ -237,6 +237,7 @@ export default function LoginPage() {
                       } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
                     placeholder="you@example.com"
                     disabled={loginLoading}
+                    data-testid="email-input"
                   />
                 </div>
                 {validationErrors.email && (
@@ -264,6 +265,7 @@ export default function LoginPage() {
                       } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
                     placeholder="Enter your password"
                     disabled={loginLoading}
+                    data-testid="password-input"
                   />
                   <button
                     type="button"
@@ -289,6 +291,7 @@ export default function LoginPage() {
                 type="submit"
                 disabled={loginLoading || !loginRequest.email || !loginRequest.password}
                 className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+                data-testid="login-btn"
               >
                 {loginLoading ? (
                   <>
@@ -308,6 +311,7 @@ export default function LoginPage() {
               <button
                 onClick={handleForgotPassword}
                 className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+                data-testid="forgot-password-link"
               >
                 <Lock className="w-5 h-5" />
                 Forgot Password?
@@ -316,6 +320,7 @@ export default function LoginPage() {
               <button
                 onClick={handleSignUp}
                 className="w-full py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-xl hover:from-sky-700 hover:to-blue-700 transition-all flex items-center justify-center gap-2 font-medium text-sm shadow-sm hover:shadow"
+                data-testid="signup-link"
               >
                 <UserCircle className="w-5 h-5" />
                 Create New Account
