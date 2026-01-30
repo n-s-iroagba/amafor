@@ -5,7 +5,7 @@ import { UserAction, UserActionSequence } from '../types';
 
 
 // Mock the UserActionTracker
-jest.mock('@/lib/user-action-tracker', () => ({
+jest.mock('../lib/user-action-tracker', () => ({
   UserActionTracker: {
     getInstance: jest.fn(),
   },
@@ -29,14 +29,10 @@ describe('useUserActions', () => {
     } as any;
 
     (UserActionTracker.getInstance as jest.Mock).mockReturnValue(mockTracker);
-    
+
     // Mock window.location
-    Object.defineProperty(window, 'location', {
-      value: {
-        pathname: '/test-page',
-      },
-      writable: true,
-    });
+    // Mock window.location
+    window.history.pushState({}, '', '/test-page');
   });
 
   afterEach(() => {
@@ -94,7 +90,7 @@ describe('useUserActions', () => {
         page: '/music',
         userId: 'user123',
         data: { songId: 'song456' },
-        sessionId:''
+        sessionId: ''
       };
 
       act(() => {
@@ -107,7 +103,7 @@ describe('useUserActions', () => {
 
   describe('Action Retrieval', () => {
     it('should get last user actions without user filter', () => {
-      const mockActions:UserAction[] = [
+      const mockActions: UserAction[] = [
         {
           timestamp: Date.now(), type: 'click', action: 'click_button1',
           id: '1',
@@ -125,7 +121,7 @@ describe('useUserActions', () => {
     });
 
     it('should get user-specific actions', () => {
-         const mockUserActions:UserAction[] = [
+      const mockUserActions: UserAction[] = [
         {
           timestamp: Date.now(), type: 'click', action: 'click_button1',
           id: '1',
@@ -143,7 +139,7 @@ describe('useUserActions', () => {
     });
 
     it('should get action sequence', () => {
-      const mockSequence:UserActionSequence[] = [
+      const mockSequence: UserActionSequence[] = [
         {
           step: 1, action: 'click_button1', timestamp: 1000,
           durationFromPrevious: 0,

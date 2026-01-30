@@ -10,12 +10,30 @@ import {
 } from '../test-utils/observability-test-utils';
 
 // Mock the observability module
-jest.mock('@/lib/observability', () => ({
-  observability: mockObservability,
-  logger: mockLogger,
-  metrics: mockMetrics,
-  tracer: mockTracer,
-}));
+// Mock individual observability modules
+jest.mock('../logger', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { mockLogger } = require('../test-utils/observability-test-utils');
+  return { logger: mockLogger };
+});
+
+jest.mock('../metrics', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { mockMetrics } = require('../test-utils/observability-test-utils');
+  return { metrics: mockMetrics };
+});
+
+jest.mock('../tracer', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { mockTracer } = require('../test-utils/observability-test-utils');
+  return { tracer: mockTracer };
+});
+
+jest.mock('../_mocks_/observability', () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { mockObservability } = require('../test-utils/observability-test-utils');
+  return { observability: mockObservability };
+});
 
 describe('useObservability', () => {
   beforeEach(() => {
@@ -296,7 +314,7 @@ describe('useObservability', () => {
       });
 
       mockLogger.getLogs.mockReturnValue([
-        { timestamp: 123456, message: 'Test log', level: 'info' },
+        { timestamp: 123456, message: 'Test log', level: 'info', context: {} },
       ]);
     });
 
