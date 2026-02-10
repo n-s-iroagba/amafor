@@ -433,11 +433,8 @@ export default function FeedDetailPage() {
                       disabled={deleting}
                       className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
                     >
-                      <>
-                        <Trash2 className="w-4 h-4" />
-                        Delete Feed
-                      </>
-                      )}
+                      <Trash2 className="w-4 h-4" />
+                      Delete Feed
                     </button>
                     <button
                       onClick={() => setShowDeleteConfirm(false)}
