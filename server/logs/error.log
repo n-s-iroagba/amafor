@@ -400,3 +400,5 @@
 {"error":{"code":"EAUTH","command":"API"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-02-22 12:58:01"}
 {"error":"Invalid login: 535 5.7.8 Error: authentication failed: (reason unavailable)","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-02-22 12:58:03"}
 {"error":"Invalid login: 535 5.7.8 Error: authentication failed: (reason unavailable)","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-02-22 12:58:03"}
+{"error":"Invalid login: 535 5.7.8 Error: authentication failed: (reason unavailable)","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-02-22 15:08:29"}
+{"error":"Invalid login: 535 5.7.8 Error: authentication failed: (reason unavailable)","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-02-22 15:08:38"}

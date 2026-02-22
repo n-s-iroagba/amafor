@@ -1,19 +1,21 @@
-'use client';
+"use client";
 
-import HeroSection from '@/features/home/components/HeroSection'
-import NextFixtureSection from '@/features/home/components/NextFixtureSection'
-import AcademyScoutingSection from '@/features/home/components/AcademyScoutingSection'
-import TrialistsSection from '@/features/home/components/TrialistsSection'
-import LatestNewsSection from '@/features/home/components/LatestNewsSection'
-import VideoSection from '@/features/home/components/VideoSection'
-import SupportSection from '@/features/home/components/SupportSection'
-import { Header } from '@/shared/components/Header';
-import { CookieConsent } from '@/features/home/components/CookieConsent';
-import { Footer } from '@/shared/components/Footer';
-import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget';
-import FixtureGallerySection from '@/features/fixture/components/FixtureGallerySection';
-import FeaturedNews from '@/features/home/components/FeaturedNews';
-
+import HeroSection from "@/features/home/components/HeroSection";
+import NextFixtureSection from "@/features/home/components/NextFixtureSection";
+import AcademyScoutingSection from "@/features/home/components/AcademyScoutingSection";
+import TrialistsSection from "@/features/home/components/TrialistsSection";
+import LatestNewsSection from "@/features/home/components/LatestNewsSection";
+import VideoSection from "@/features/home/components/VideoSection";
+import SupportSection from "@/features/home/components/SupportSection";
+import { Header } from "@/shared/components/Header";
+import { CookieConsent } from "@/features/home/components/CookieConsent";
+import { Footer } from "@/shared/components/Footer";
+import { WhatsAppWidget } from "@/shared/components/WhatsAppWidget";
+import FixtureGallerySection from "@/features/fixture/components/FixtureGallerySection";
+import FeaturedNews from "@/features/home/components/FeaturedNews";
+import sponsor from "@/images/mr_nekezieh.jpeg";
+import clubLogo from "@/images/logo.jpeg";
+import SponsorBanner from "@/features/home/components/SponsorBanner";
 
 /**
  * Page: Homepage
@@ -26,6 +28,7 @@ import FeaturedNews from '@/features/home/components/FeaturedNews';
 export default function Home() {
   return (
     <>
+      <SponsorBanner sponsorImage={sponsor} clubLogo={clubLogo} />
       <Header />
       <HeroSection />
 
@@ -41,5 +44,5 @@ export default function Home() {
       <CookieConsent />
       <WhatsAppWidget />
     </>
-  )
+  );
 }
