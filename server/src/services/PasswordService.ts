@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 import logger from '../utils/logger'
 import { CryptoUtil } from '../utils/crypto.util'

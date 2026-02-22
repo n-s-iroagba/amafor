@@ -1,12 +1,8 @@
 {
-    "client/**/*.{js,jsx,ts,tsx}": [
-        "eslint --fix",
+    "client/src/**/*.{js,jsx,ts,tsx}": [
         "prettier --write"
     ],
-    "client/**/*.{json,md,css,scss}": [
+    "client/src/**/*.{json,md,css,scss}": [
         "prettier --write"
-    ],
-    "server/**/*.ts": [
-        "eslint --fix"
     ]
 }

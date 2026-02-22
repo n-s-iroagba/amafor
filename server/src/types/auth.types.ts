@@ -1,14 +1,21 @@
+import { UserStatus } from '@models/User';
+
+export type UserRole = 'admin' | 'scout' | 'advertiser';
+
 export interface AuthUser {
-  id: number
-  username: string
-  role: Role
+  id: string;
+  username: string;
+  avatarUrl?: string;
+  role: UserRole;
+  status: UserStatus;
+  emailVerified: boolean;
 }
+
 export enum Role {
   ADVERTISER = 'advertiser',
   ADMIN = 'admin',
-  SPORTS_ADMIN = 'sports-admin',
+  SCOUT = 'scout',
 }
-
 
 export interface AuthConfig {
   jwtSecret: string
@@ -19,9 +26,9 @@ export interface AuthConfig {
     refresh: number
   }
 }
+
 export interface SignUpRequestDto {
   // --- User Fields ---
-  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -32,17 +39,22 @@ export interface SignUpRequestDto {
   contact_email: string;
   contact_phone: string;
 }
+
 export type SignUpResponseDto = {
   verificationToken: string
+  id: string
 }
+
 export interface VerifyEmailRequestDto {
   verificationCode: string
   verificationToken: string
 }
+
 export interface LoginRequestDto {
   email: string
   password: string
 }
+
 export type AuthServiceLoginResponse = {
   user: AuthUser
   accessToken: string
@@ -67,5 +79,6 @@ export interface ResetPasswordRequestDto {
   password: string
   confirmPassword: string
 }
+
 export interface ResendVerificationRequestDto extends SignUpResponseDto { }
 export interface ResendVerificationRespnseDto extends SignUpResponseDto { }

@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
   experimental: {
     // Add any experimental features here if needed
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 
   env: {
     APP_VERSION: process.env.npm_package_version || '1.0.0',

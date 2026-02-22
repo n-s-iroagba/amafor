@@ -1,93 +1,91 @@
-'use client';
+"use client";
 
-import Link from 'next/link'
-import { Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
-import { useFooterLogic } from '../hooks/useFooterLogic'
-import { FooterErrorUI } from './FooterErrorUI'
-import { FOOTER_TEST_IDS } from '../test-ids/footer-test-ids';
-
-
+import Link from "next/link";
+import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { useFooterLogic } from "../hooks/useFooterLogic";
+import { FooterErrorUI } from "./FooterErrorUI";
+import { FOOTER_TEST_IDS } from "../test-ids/footer-test-ids";
 
 // Error constants
 export const FOOTER_ERRORS = {
-  SOCIAL_LINK_FAILED: 'Social media link failed to open',
-  NAVIGATION_FAILED: 'Footer navigation failed',
+  SOCIAL_LINK_FAILED: "Social media link failed to open",
+  NAVIGATION_FAILED: "Footer navigation failed",
 } as const;
 
 // Navigation configuration
 const QUICK_LINKS = [
-  { name: 'News & Updates', href: '/news' },
-  { name: 'Fixtures & Results', href: '/fixtures' },
-  { name: 'Academy Program', href: '/academy' },
-  { name: 'Supporter Wall', href: '/supporter-wall' },
+  { name: "News & Updates", href: "/news" },
+  { name: "Fixtures & Results", href: "/fixtures" },
+  { name: "Academy Program", href: "/academy" },
+  { name: "Supporter Wall", href: "/supporter-wall" },
 ] as const;
 
 const SUPPORT_LINKS = [
-  { name: 'Donate Now', href: '/support' },
-  { name: 'Become a Patron', href: '/support' },
-  { name: 'Advertise With Us', href: '/advertise' },
-  { name: 'Pro View Access', href: '/pro-view' },
+  { name: "Donate Now", href: "/patron" },
+  { name: "Become a Patron", href: "/patron" },
+  { name: "Advertise With Us", href: "/advertise" },
+  { name: "Pro View Access", href: "/pro-view" },
 ] as const;
 
 const LEGAL_LINKS = [
-  { name: 'Help & Contact', href: '/help' },
-  { name: 'Privacy Policy', href: '/privacy-policy' },
-  { name: 'Terms of Service', href: '/terms-of-service' },
+  { name: "Help & Contact", href: "/help" },
+  { name: "Privacy Policy", href: "/privacy-policy" },
+  { name: "Terms of Service", href: "/terms-of-service" },
 ] as const;
 
 const SOCIAL_PLATFORMS = [
-  { 
-    platform: 'Facebook', 
-    href: 'https://facebook.com', 
+  {
+    platform: "Facebook",
+    href: "https://facebook.com",
     Icon: Facebook,
-    ariaLabel: 'Follow us on Facebook'
+    ariaLabel: "Follow us on Facebook",
   },
-  { 
-    platform: 'Twitter', 
-    href: 'https://twitter.com', 
+  {
+    platform: "Twitter",
+    href: "https://twitter.com",
     Icon: Twitter,
-    ariaLabel: 'Follow us on Twitter'
+    ariaLabel: "Follow us on Twitter",
   },
-  { 
-    platform: 'Instagram', 
-    href: 'https://instagram.com', 
+  {
+    platform: "Instagram",
+    href: "https://instagram.com",
     Icon: Instagram,
-    ariaLabel: 'Follow us on Instagram'
+    ariaLabel: "Follow us on Instagram",
   },
-  { 
-    platform: 'YouTube', 
-    href: 'https://youtube.com', 
+  {
+    platform: "YouTube",
+    href: "https://youtube.com",
     Icon: Youtube,
-    ariaLabel: 'Subscribe to our YouTube channel'
+    ariaLabel: "Subscribe to our YouTube channel",
   },
 ] as const;
 
 const CONTACT_INFO = {
-  address: 'Amafor Gladiators Stadium',
-  city: 'Amafor Imerienwe, Ngor Okpala LGA, Imo State, Nigeria',
-  email: 'info@amaforgladiatorsfc.com',
-  phone: '+234 XXX XXX XXXX',
+  address: "Amafor Gladiators Stadium",
+  city: "Amafor Imerienwe, Ngor Okpala LGA, Imo State, Nigeria",
+  email: "info@amaforgladiatorsfc.com",
+  phone: "+234 XXX XXX XXXX",
 } as const;
 
 /**
  * Main site footer component with comprehensive navigation and contact information
- * 
+ *
  * @remarks
  * Provides site-wide footer with quick links, support information, contact details,
  * and social media integration. Includes accessibility features and error handling.
- * 
+ *
  * @features
  * - Responsive grid layout
  * - Social media integration with tracking
  * - Accessibility compliant navigation
  * - User action tracking
  * - Graceful error handling
- * 
+ *
  * @example
  * ```tsx
  * <Footer />
  * ```
- * 
+ *
  * @throws {Error} When social media links fail or navigation tracking fails
  * @returns {JSX.Element} Footer component
  */
@@ -97,7 +95,7 @@ export function Footer() {
     handleSocialClick,
     handleNavigation,
     handleLegalLinkClick,
-    handleContactClick
+    handleContactClick,
   } = useFooterLogic();
 
   // If error state, render error UI
@@ -106,7 +104,7 @@ export function Footer() {
   }
 
   return (
-    <footer 
+    <footer
       className="bg-sky-900 text-white"
       data-testid={FOOTER_TEST_IDS.ROOT}
       role="contentinfo"
@@ -114,10 +112,9 @@ export function Footer() {
     >
       <div className="container mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
           {/* About Section */}
           <AboutSection onSocialClick={handleSocialClick} />
-          
+
           {/* Quick Links Section */}
           <NavigationSection
             title="Quick Links"
@@ -125,7 +122,7 @@ export function Footer() {
             testId={FOOTER_TEST_IDS.QUICK_LINKS_SECTION}
             onNavigate={handleNavigation}
           />
-          
+
           {/* Support Section */}
           <NavigationSection
             title="Support Us"
@@ -133,9 +130,9 @@ export function Footer() {
             testId={FOOTER_TEST_IDS.SUPPORT_SECTION}
             onNavigate={handleNavigation}
           />
-          
+
           {/* Contact Section */}
-          <ContactSection 
+          <ContactSection
             onContactClick={handleContactClick}
             onLegalLinkClick={handleLegalLinkClick}
           />
@@ -145,7 +142,7 @@ export function Footer() {
         <LegalSection />
       </div>
     </footer>
-  )
+  );
 }
 
 /**
@@ -160,7 +157,8 @@ function AboutSection({ onSocialClick }: AboutSectionProps) {
     <div data-testid={FOOTER_TEST_IDS.ABOUT_SECTION}>
       <h3 className="text-xl font-heading mb-4">Amafor Gladiators FC</h3>
       <p className="text-slate-300 text-sm leading-relaxed mb-4">
-        Building champions through dedication, discipline, and elite performance since our founding.
+        Building champions through dedication, discipline, and elite performance
+        since our founding.
       </p>
       <div className="flex gap-3">
         {SOCIAL_PLATFORMS.map(({ platform, href, Icon, ariaLabel }) => (
@@ -189,7 +187,13 @@ interface SocialLinkProps {
   onClick: () => void;
 }
 
-function SocialLink({ platform, href, Icon, ariaLabel, onClick }: SocialLinkProps) {
+function SocialLink({
+  platform,
+  href,
+  Icon,
+  ariaLabel,
+  onClick,
+}: SocialLinkProps) {
   return (
     <a
       href={href}
@@ -218,7 +222,12 @@ interface NavigationSectionProps {
   onNavigate: (href: string, name: string) => void;
 }
 
-function NavigationSection({ title, links, testId, onNavigate }: NavigationSectionProps) {
+function NavigationSection({
+  title,
+  links,
+  testId,
+  onNavigate,
+}: NavigationSectionProps) {
   return (
     <div data-testid={testId}>
       <h3 className="text-lg font-heading mb-4">{title}</h3>
@@ -257,7 +266,7 @@ function NavLink({ href, name, onClick }: NavLinkProps) {
         onClick();
       }}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick();
         }
@@ -274,11 +283,14 @@ function NavLink({ href, name, onClick }: NavLinkProps) {
  * Contact Section Component
  */
 interface ContactSectionProps {
-  onContactClick: (type: 'email' | 'phone', value: string) => void;
+  onContactClick: (type: "email" | "phone", value: string) => void;
   onLegalLinkClick: (name: string, href: string) => void;
 }
 
-function ContactSection({ onContactClick, onLegalLinkClick }: ContactSectionProps) {
+function ContactSection({
+  onContactClick,
+  onLegalLinkClick,
+}: ContactSectionProps) {
   return (
     <div data-testid={FOOTER_TEST_IDS.CONTACT_SECTION}>
       <h3 className="text-lg font-heading mb-4">Contact</h3>
@@ -289,14 +301,14 @@ function ContactSection({ onContactClick, onLegalLinkClick }: ContactSectionProp
           <ContactLink
             type="email"
             value={CONTACT_INFO.email}
-            onClick={() => onContactClick('email', CONTACT_INFO.email)}
+            onClick={() => onContactClick("email", CONTACT_INFO.email)}
           />
         </li>
         <li>
           <ContactLink
             type="phone"
             value={CONTACT_INFO.phone}
-            onClick={() => onContactClick('phone', CONTACT_INFO.phone)}
+            onClick={() => onContactClick("phone", CONTACT_INFO.phone)}
           />
         </li>
       </ul>
@@ -308,14 +320,15 @@ function ContactSection({ onContactClick, onLegalLinkClick }: ContactSectionProp
  * Contact Link Component
  */
 interface ContactLinkProps {
-  type: 'email' | 'phone';
+  type: "email" | "phone";
   value: string;
   onClick: () => void;
 }
 
 function ContactLink({ type, value, onClick }: ContactLinkProps) {
-  const href = type === 'email' ? `mailto:${value}` : `tel:${value}`;
-  const testId = type === 'email' ? FOOTER_TEST_IDS.EMAIL_LINK : FOOTER_TEST_IDS.PHONE_LINK;
+  const href = type === "email" ? `mailto:${value}` : `tel:${value}`;
+  const testId =
+    type === "email" ? FOOTER_TEST_IDS.EMAIL_LINK : FOOTER_TEST_IDS.PHONE_LINK;
 
   return (
     <a
@@ -327,7 +340,7 @@ function ContactLink({ type, value, onClick }: ContactLinkProps) {
         onClick();
       }}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick();
         }
@@ -348,11 +361,12 @@ function LegalSection() {
 
   return (
     <div className="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-300">
-      <p 
+      <p
         data-testid={FOOTER_TEST_IDS.COPYRIGHT}
         aria-label={`Copyright ${new Date().getFullYear()} Amafor Gladiators FC`}
       >
-        &copy; {new Date().getFullYear()} Amafor Gladiators FC. All rights reserved.
+        &copy; {new Date().getFullYear()} Amafor Gladiators FC. All rights
+        reserved.
       </p>
       <div className="flex gap-6">
         {LEGAL_LINKS.map(({ name, href }) => (
@@ -388,7 +402,7 @@ function LegalLink({ name, href, onClick }: LegalLinkProps) {
         onClick();
       }}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onClick();
         }

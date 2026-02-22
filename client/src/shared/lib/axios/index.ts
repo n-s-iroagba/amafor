@@ -1,17 +1,21 @@
 // src/lib/apiutils.ts
-import { API_ROUTES } from '@/config/routes';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-const route = process.env.NODE_ENV ==='production'?'https://agfc_server_app.fly.dev/api':'http://localhost:5000/api'
+import { API_ROUTES } from "@/config/routes";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+const route =
+  process.env.NEXT_PUBLIC_API_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://agfc_server_app.fly.dev/api"
+    : "http://localhost:5000/api");
 // Single axios instance
 const api = axios.create({
   baseURL: route,
   timeout: 30000,
-  withCredentials:true
+  withCredentials: true,
 });
 const refreshApi = axios.create({
   baseURL: route,
   timeout: 30000,
-  withCredentials:true
+  withCredentials: true,
 });
 
 // Token management
@@ -41,7 +45,7 @@ const isFormData = (data: any): boolean => {
 };
 
 const containsFiles = (data: any): boolean => {
-  if (!data || typeof data !== 'object') return false;
+  if (!data || typeof data !== "object") return false;
 
   return Object.values(data).some((value) => {
     if (value instanceof File || value instanceof FileList) return true;
@@ -61,10 +65,10 @@ api.interceptors.request.use(
     }
 
     // Set Content-Type based on payload for POST and PATCH
-    if (['post', 'patch', 'put'].includes(config.method?.toLowerCase() || '')) {
+    if (["post", "patch", "put"].includes(config.method?.toLowerCase() || "")) {
       if (isFormData(config.data)) {
         // Let browser set Content-Type with boundary for FormData
-        delete config.headers['Content-Type'];
+        delete config.headers["Content-Type"];
       } else if (containsFiles(config.data)) {
         // Convert to FormData and let browser set Content-Type
         const formData = new FormData();
@@ -85,21 +89,21 @@ api.interceptors.request.use(
           } else if (value !== null && value !== undefined) {
             formData.append(
               key,
-              typeof value === 'object' ? JSON.stringify(value) : String(value)
+              typeof value === "object" ? JSON.stringify(value) : String(value),
             );
           }
         });
         config.data = formData;
-        delete config.headers['Content-Type'];
+        delete config.headers["Content-Type"];
       } else {
         // Regular JSON payload
-        config.headers['Content-Type'] = 'application/json';
+        config.headers["Content-Type"] = "application/json";
       }
     }
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Response interceptor
@@ -112,12 +116,13 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshResponse = await refreshApi.post(API_ROUTES.AUTH.REFRESH_ACCESS_TOKEN,
+        const refreshResponse = await refreshApi.post(
+          API_ROUTES.AUTH.REFRESH_ACCESS_TOKEN,
 
           {
-            headers: { 'Content-Type': 'application/json' },
+            headers: { "Content-Type": "application/json" },
             timeout: 10000,
-          }
+          },
         );
 
         const { data } = refreshResponse;
@@ -129,7 +134,7 @@ api.interceptors.response.use(
           return api(originalRequest);
         }
       } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
+        console.error("Token refresh failed:", refreshError);
         clearTokens();
 
         // if (typeof window !== 'undefined') {
@@ -141,7 +146,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

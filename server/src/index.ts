@@ -1,8 +1,9 @@
 import sequelize from '@config/database';
 import app from './app';
 import dotenv from 'dotenv';
-import { syncDatabase } from './models';
+import { syncDatabase, User } from './models';
 import FeaturedNewsService from '@services/FeaturedNewsService';
+
 
 
 
@@ -85,6 +86,7 @@ let server: any;
 
 // Start the server
 startServer();
+
 
 // Handle termination signals
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));

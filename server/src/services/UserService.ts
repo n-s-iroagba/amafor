@@ -46,7 +46,7 @@ export class UserService {
         await this.auditService.logAction({
           userId,
           userEmail: updatedUser.email,
-          userType: updatedUser.userType || 'user',
+          userType: updatedUser.role || 'advertiser',
           action: AuditAction.UPDATE,
           entityType: EntityType.USER,
           entityId: userId,

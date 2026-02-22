@@ -2,6 +2,7 @@
 describe('Admin Dashboard - Academy Management', () => {
 
     beforeEach(() => {
+        cy.login('admin@academy.com', 'password123'); // Seeded admin user
         cy.visit('/dashboard/admin');
     });
 

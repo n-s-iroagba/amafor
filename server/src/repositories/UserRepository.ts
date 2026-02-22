@@ -1,5 +1,5 @@
 import { FindOptions, Op } from 'sequelize';
-import { User, UserAttributes, UserCreationAttributes, UserType, UserStatus } from '@models/User';
+import { User, UserAttributes, UserCreationAttributes, UserRole, UserStatus } from '@models/User';
 import { BaseRepository } from './BaseRepository';
 import { AuditLogRepository } from './AuditLogRepository';
 import tracer from '@utils/tracer';
@@ -17,7 +17,7 @@ export class UserRepository extends BaseRepository<User> {
   public async countNewToday(): Promise<number> {
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
-    
+
     return this.model.count({
       where: {
         createdAt: { [Op.gte]: startOfDay }
@@ -30,7 +30,7 @@ export class UserRepository extends BaseRepository<User> {
       try {
         span.setAttribute('email', email);
         const attributes: any = includePassword ? undefined : { exclude: ['passwordHash'] };
-        
+
         const user = await this.model.findOne({
           where: { email },
           attributes
@@ -51,17 +51,17 @@ export class UserRepository extends BaseRepository<User> {
   async createWithAudit(data: UserCreationAttributes, auditData: any): Promise<User> {
     return tracer.startActiveSpan('repository.User.createWithAudit', async (span: Span) => {
       const transaction = await User.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('email', data.email);
-        
+
         const user = await this.create(data, { transaction });
-        
+
         // Create audit log
         await this.auditLogRepository.create({
           userId: user.id,
           userEmail: user.email,
-          userType: user.userType,
+          userType: user.role,
           action: 'create',
           entityType: 'user',
           entityId: user.id,
@@ -93,19 +93,19 @@ export class UserRepository extends BaseRepository<User> {
   async updateWithAudit(id: string, data: Partial<UserAttributes>, auditData: any): Promise<User | null> {
     return tracer.startActiveSpan('repository.User.updateWithAudit', async (span: Span) => {
       const transaction = await User.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('id', id);
-        
+
         const user = await this.findById(id, { transaction });
         if (!user) {
           throw new Error('User not found');
         }
         const oldValue = user.toJSON() as UserAttributes;
-        
+
         // Update user
         await user.update(data, { transaction });
-        
+
         // Get changes
         const changes = Object.keys(data)
           .filter(key => user.get(key as keyof UserAttributes) !== oldValue[key as keyof UserAttributes])
@@ -119,7 +119,7 @@ export class UserRepository extends BaseRepository<User> {
         await this.auditLogRepository.create({
           userId: auditData.userId || id,
           userEmail: auditData.userEmail || user.email,
-          userType: auditData.userType || user.userType,
+          userType: auditData.userType || user.role,
           action: 'update',
           entityType: 'user',
           entityId: id,
@@ -193,12 +193,12 @@ export class UserRepository extends BaseRepository<User> {
     });
   }
 
-  async findByType(userType: UserType, options?: FindOptions): Promise<User[]> {
-    return tracer.startActiveSpan('repository.User.findByType', async (span: Span) => {
+  async findByRole(role: UserRole, options?: FindOptions): Promise<User[]> {
+    return tracer.startActiveSpan('repository.User.findByRole', async (span: Span) => {
       try {
-        span.setAttribute('userType', userType);
+        span.setAttribute('role', role);
         const users = await this.findAll({
-          where: { userType },
+          where: { role },
           ...options
         });
         span.setAttribute('count', users.length);
@@ -206,7 +206,7 @@ export class UserRepository extends BaseRepository<User> {
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         span.setStatus({ code: 2, message: errorMessage });
-        logger.error(`Error finding users by type: ${userType}`, { error });
+        logger.error(`Error finding users by role: ${role}`, { error });
         throw error;
       } finally {
         span.end();
@@ -220,8 +220,8 @@ export class UserRepository extends BaseRepository<User> {
         const users = await this.findAll({
           where: {
             status: UserStatus.PENDING_VERIFICATION,
-            userType: {
-              [Op.in]: [UserType.SCOUT, UserType.ADVERTISER]
+            role: {
+              [Op.in]: ['scout', 'advertiser']
             }
           },
           order: [['createdAt', 'ASC']]
@@ -242,16 +242,16 @@ export class UserRepository extends BaseRepository<User> {
   async verifyUser(id: string, verificationData: any): Promise<void> {
     return tracer.startActiveSpan('repository.User.verifyUser', async (span: Span) => {
       const transaction = await User.sequelize!.transaction();
-      
+
       try {
         span.setAttribute('id', id);
-        
+
         const user = await this.findById(id, { transaction });
         if (!user) {
           throw new Error('User not found');
         }
         const oldValue = user.toJSON() as UserAttributes;
-        
+
         await user.update(
           {
             status: UserStatus.ACTIVE,
@@ -300,7 +300,7 @@ export class UserRepository extends BaseRepository<User> {
     return tracer.startActiveSpan('repository.User.searchUsers', async (span: Span) => {
       try {
         span.setAttribute('query', query);
-        
+
         const users = await this.findAll({
           where: {
             [Op.or]: [

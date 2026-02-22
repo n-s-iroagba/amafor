@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { X, Upload, ImageIcon, Award, Briefcase } from 'lucide-react';
-import { useGet, usePut } from '@/shared/hooks/useApiQuery';
-import { API_ROUTES } from '@/config/routes';
-import { uploadFile } from '@/shared/utils';
-import Image from 'next/image';
+import { useEffect, useRef, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { X, Upload, ImageIcon, Award, Briefcase } from "lucide-react";
+import { useGet, usePut } from "@/shared/hooks/useApiQuery";
+import { API_ROUTES } from "@/config/routes";
+import { uploadFile } from "@/shared/utils";
+import Image from "next/image";
 
 interface AcademyStaff {
   id: string;
@@ -19,7 +19,6 @@ interface AcademyStaff {
   qualifications?: string[];
   yearsOfExperience?: number;
 }
-
 
 /**
  * Page: Edit Staff
@@ -35,22 +34,20 @@ export default function EditStaff() {
   const id = params.id as string;
 
   const { data: staff, loading } = useGet<AcademyStaff>(
-    API_ROUTES.ACADEMY.STAFF.VIEW(id)
+    API_ROUTES.STAFF.VIEW(id),
   );
 
-  const { put, isPending: isSubmitting } = usePut(
-    API_ROUTES.ACADEMY.STAFF.UPDATE(id)
-  );
+  const { put, isPending: isSubmitting } = usePut(API_ROUTES.STAFF.MUTATE(id));
 
   const [formData, setFormData] = useState({
-    name: '',
-    role: '',
-    bio: '',
-    initials: '',
-    imageUrl: '',
-    category: '',
-    qualifications: [''],
-    yearsOfExperience: '',
+    name: "",
+    role: "",
+    bio: "",
+    initials: "",
+    imageUrl: "",
+    category: "",
+    qualifications: [""],
+    yearsOfExperience: "",
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -60,27 +57,28 @@ export default function EditStaff() {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const categories = [
-    { value: 'coaching', label: 'Coaching' },
-    { value: 'medical', label: 'Medical' },
-    { value: 'administrative', label: 'Administrative' },
-    { value: 'technical', label: 'Technical' },
-    { value: 'scouting', label: 'Scouting' },
-    { value: 'support', label: 'Support' },
+    { value: "coaching", label: "Coaching" },
+    { value: "medical", label: "Medical" },
+    { value: "administrative", label: "Administrative" },
+    { value: "technical", label: "Technical" },
+    { value: "scouting", label: "Scouting" },
+    { value: "support", label: "Support" },
   ];
 
   useEffect(() => {
     if (staff) {
       setFormData({
-        name: staff.name || '',
-        role: staff.role || '',
-        bio: staff.bio || '',
-        initials: staff.initials || '',
-        imageUrl: staff.imageUrl || '',
-        category: staff.category || '',
-        qualifications: staff.qualifications && staff.qualifications.length > 0
-          ? staff.qualifications
-          : [''],
-        yearsOfExperience: staff.yearsOfExperience?.toString() || '',
+        name: staff.name || "",
+        role: staff.role || "",
+        bio: staff.bio || "",
+        initials: staff.initials || "",
+        imageUrl: staff.imageUrl || "",
+        category: staff.category || "",
+        qualifications:
+          staff.qualifications && staff.qualifications.length > 0
+            ? staff.qualifications
+            : [""],
+        yearsOfExperience: staff.yearsOfExperience?.toString() || "",
       });
     }
   }, [staff]);
@@ -88,13 +86,15 @@ export default function EditStaff() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.role.trim()) newErrors.role = 'Role is required';
-    if (!formData.category) newErrors.category = 'Category is required';
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.role.trim()) newErrors.role = "Role is required";
+    if (!formData.category) newErrors.category = "Category is required";
 
-    const validQualifications = formData.qualifications.filter(q => q.trim() !== '');
+    const validQualifications = formData.qualifications.filter(
+      (q) => q.trim() !== "",
+    );
     if (validQualifications.length === 0) {
-      newErrors.qualifications = 'At least one qualification is required';
+      newErrors.qualifications = "At least one qualification is required";
     }
 
     setErrors(newErrors);
@@ -104,51 +104,53 @@ export default function EditStaff() {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!file.type.startsWith('image/')) {
-        setErrors(prev => ({
+      if (!file.type.startsWith("image/")) {
+        setErrors((prev) => ({
           ...prev,
-          imageUrl: 'Please select a valid image file',
+          imageUrl: "Please select a valid image file",
         }));
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        setErrors(prev => ({
+        setErrors((prev) => ({
           ...prev,
-          imageUrl: 'Image must be smaller than 5MB',
+          imageUrl: "Image must be smaller than 5MB",
         }));
         return;
       }
 
       setUploadProgress(10);
-      const url = await uploadFile(file, 'image');
+      const url = await uploadFile(file, "image");
       setUploadProgress(100);
 
       setImageFile(file);
-      setFormData(prev => ({ ...prev, imageUrl: url }));
-      setErrors(prev => ({ ...prev, imageUrl: '' }));
+      setFormData((prev) => ({ ...prev, imageUrl: url }));
+      setErrors((prev) => ({ ...prev, imageUrl: "" }));
     }
   };
 
   const handleQualificationChange = (index: number, value: string) => {
     const updatedQualifications = [...formData.qualifications];
     updatedQualifications[index] = value;
-    setFormData(prev => ({ ...prev, qualifications: updatedQualifications }));
+    setFormData((prev) => ({ ...prev, qualifications: updatedQualifications }));
 
-    if (errors.qualifications && value.trim() !== '') {
-      setErrors(prev => ({ ...prev, qualifications: '' }));
+    if (errors.qualifications && value.trim() !== "") {
+      setErrors((prev) => ({ ...prev, qualifications: "" }));
     }
   };
 
   const addQualification = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      qualifications: [...prev.qualifications, '']
+      qualifications: [...prev.qualifications, ""],
     }));
   };
 
   const removeQualification = (index: number) => {
-    const updatedQualifications = formData.qualifications.filter((_, i) => i !== index);
-    setFormData(prev => ({ ...prev, qualifications: updatedQualifications }));
+    const updatedQualifications = formData.qualifications.filter(
+      (_, i) => i !== index,
+    );
+    setFormData((prev) => ({ ...prev, qualifications: updatedQualifications }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -158,25 +160,31 @@ export default function EditStaff() {
     try {
       await put({
         ...formData,
-        qualifications: formData.qualifications.filter(q => q.trim() !== ''),
-        yearsOfExperience: formData.yearsOfExperience ? parseInt(formData.yearsOfExperience) : null,
+        qualifications: formData.qualifications.filter((q) => q.trim() !== ""),
+        yearsOfExperience: formData.yearsOfExperience
+          ? parseInt(formData.yearsOfExperience)
+          : null,
         initials: formData.initials || null,
       });
 
-      router.push('/sports-admin/staff');
+      router.push("/sports-admin/staff");
     } catch (error) {
-      console.error('Error updating staff:', error);
-      setErrors({ submit: 'Failed to update staff member. Please try again.' });
+      console.error("Error updating staff:", error);
+      setErrors({ submit: "Failed to update staff member. Please try again." });
     } finally {
       setUploadProgress(0);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -197,14 +205,16 @@ export default function EditStaff() {
             Edit Staff Member
           </h2>
           <p className="text-indigo-600 mt-2">
-            {formData.name || 'Update staff information'}
+            {formData.name || "Update staff information"}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="bg-indigo-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-indigo-800 mb-4">Basic Information</h3>
+            <h3 className="text-lg font-semibold text-indigo-800 mb-4">
+              Basic Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-indigo-700 mb-1">
@@ -215,10 +225,12 @@ export default function EditStaff() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.name ? 'border-red-500' : 'border-indigo-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.name ? "border-red-500" : "border-indigo-300"}`}
                   data-testid="input-staff-name"
                 />
-                {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name}</p>}
+                {errors.name && (
+                  <p className="text-sm text-red-600 mt-1">{errors.name}</p>
+                )}
               </div>
 
               <div>
@@ -230,10 +242,12 @@ export default function EditStaff() {
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.role ? 'border-red-500' : 'border-indigo-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.role ? "border-red-500" : "border-indigo-300"}`}
                   data-testid="input-staff-role"
                 />
-                {errors.role && <p className="text-sm text-red-600 mt-1">{errors.role}</p>}
+                {errors.role && (
+                  <p className="text-sm text-red-600 mt-1">{errors.role}</p>
+                )}
               </div>
 
               <div>
@@ -259,17 +273,19 @@ export default function EditStaff() {
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.category ? 'border-red-500' : 'border-indigo-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.category ? "border-red-500" : "border-indigo-300"}`}
                   data-testid="select-staff-category"
                 >
                   <option value="">Select category</option>
-                  {categories.map(cat => (
+                  {categories.map((cat) => (
                     <option key={cat.value} value={cat.value}>
                       {cat.label}
                     </option>
                   ))}
                 </select>
-                {errors.category && <p className="text-sm text-red-600 mt-1">{errors.category}</p>}
+                {errors.category && (
+                  <p className="text-sm text-red-600 mt-1">{errors.category}</p>
+                )}
               </div>
 
               <div>
@@ -292,7 +308,9 @@ export default function EditStaff() {
 
           {/* Bio */}
           <div className="bg-indigo-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-indigo-800 mb-4">Biography</h3>
+            <h3 className="text-lg font-semibold text-indigo-800 mb-4">
+              Biography
+            </h3>
             <div>
               <label className="block text-sm font-medium text-indigo-700 mb-1">
                 Biography
@@ -330,8 +348,10 @@ export default function EditStaff() {
                   <input
                     type="text"
                     value={qualification}
-                    onChange={(e) => handleQualificationChange(index, e.target.value)}
-                    className={`flex-1 rounded-md border p-2 ${errors.qualifications && index === 0 ? 'border-red-500' : 'border-indigo-300'}`}
+                    onChange={(e) =>
+                      handleQualificationChange(index, e.target.value)
+                    }
+                    className={`flex-1 rounded-md border p-2 ${errors.qualifications && index === 0 ? "border-red-500" : "border-indigo-300"}`}
                     data-testid={`input-staff-qualification-${index}`}
                   />
                   {formData.qualifications.length > 1 && (
@@ -347,20 +367,25 @@ export default function EditStaff() {
               ))}
             </div>
             {errors.qualifications && (
-              <p className="text-sm text-red-600 mt-2">{errors.qualifications}</p>
+              <p className="text-sm text-red-600 mt-2">
+                {errors.qualifications}
+              </p>
             )}
           </div>
 
           {/* Image Upload */}
           <div className="bg-indigo-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-indigo-800 mb-4">Profile Image</h3>
+            <h3 className="text-lg font-semibold text-indigo-800 mb-4">
+              Profile Image
+            </h3>
             <div>
               <div
                 onClick={() => imageInputRef.current?.click()}
-                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile || formData.imageUrl
-                  ? 'border-green-300 bg-green-50'
-                  : 'border-indigo-300 bg-indigo-50 hover:border-indigo-400'
-                  }`}
+                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                  imageFile || formData.imageUrl
+                    ? "border-green-300 bg-green-50"
+                    : "border-indigo-300 bg-indigo-50 hover:border-indigo-400"
+                }`}
               >
                 <input
                   ref={imageInputRef}
@@ -374,7 +399,11 @@ export default function EditStaff() {
                   <div className="space-y-4">
                     <div className="relative mx-auto w-48 h-48">
                       <Image
-                        src={imageFile ? URL.createObjectURL(imageFile) : formData.imageUrl}
+                        src={
+                          imageFile
+                            ? URL.createObjectURL(imageFile)
+                            : formData.imageUrl
+                        }
                         alt="Profile preview"
                         fill
                         className="object-cover rounded-lg"
@@ -384,8 +413,9 @@ export default function EditStaff() {
                         onClick={(e) => {
                           e.stopPropagation();
                           setImageFile(null);
-                          setFormData(prev => ({ ...prev, imageUrl: '' }));
-                          if (imageInputRef.current) imageInputRef.current.value = '';
+                          setFormData((prev) => ({ ...prev, imageUrl: "" }));
+                          if (imageInputRef.current)
+                            imageInputRef.current.value = "";
                         }}
                         className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                       >
@@ -393,7 +423,7 @@ export default function EditStaff() {
                       </button>
                     </div>
                     <p className="text-sm text-gray-600">
-                      {imageFile ? imageFile.name : 'Current profile image'}
+                      {imageFile ? imageFile.name : "Current profile image"}
                     </p>
                     {formData.imageUrl && !imageFile && (
                       <p className="text-xs text-gray-500">
@@ -458,7 +488,7 @@ export default function EditStaff() {
               data-testid="btn-update-staff"
             >
               {isSubmitting && <Upload className="w-4 h-4 animate-spin" />}
-              {isSubmitting ? 'Updating...' : 'Update Staff Member'}
+              {isSubmitting ? "Updating..." : "Update Staff Member"}
             </button>
           </div>
         </form>

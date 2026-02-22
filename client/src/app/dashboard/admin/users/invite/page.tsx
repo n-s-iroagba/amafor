@@ -1,46 +1,94 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { UserPlus, ArrowLeft, Mail, Shield, Send, Loader2 } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { API_ROUTES } from '@/config/routes';
-import { usePost } from '@/shared/hooks/useApiQuery';
+import React, { useState } from "react";
+import {
+  UserPlus,
+  ArrowLeft,
+  Mail,
+  Shield,
+  Send,
+  Loader2,
+  CheckCircle,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { API_ROUTES } from "@/config/routes";
+import { usePost } from "@/shared/hooks/useApiQuery";
+import type { UserRole } from "@/shared/types/auth";
 
+const ROLES: { value: UserRole; label: string; description: string }[] = [
+  { value: "admin", label: "Admin", description: "Full system access" },
+  { value: "scout", label: "Scout", description: "Player scouting & reports" },
+  {
+    value: "advertiser",
+    label: "Advertiser",
+    description: "Commercial campaigns",
+  },
+];
 
 /**
  * Page: Invite User
- * Description: Form to invite a new administrator or staff member.
- * Requirements: REQ-ADM-16 (User Onboarding)
- * User Story: US-ADM-016 (Invite New User)
- * User Journey: UJ-ADM-007 (Manage Users & Permissions)
- * API: POST /auth/invite (Internal API)
+ * Description: Form to invite a new user by email. Creates an unverified account
+ *              and sends a verification email — the invited user must verify before logging in.
+ * API: POST /auth/invite
  */
 export default function InviteUserPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [role, setRole] = useState('User');
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [role, setRole] = useState<UserRole>("admin");
+  const [sent, setSent] = useState(false);
 
-  const { post, isPending } = usePost(API_ROUTES.USERS.CREATE);
+  const { post, isPending, error } = usePost<
+    { email: string; role: UserRole; firstName?: string; lastName?: string },
+    { verificationToken: string; id: string }
+  >(API_ROUTES.AUTH.INVITE);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     try {
-      await post({ email, role, dateOfBirth: new Date(), confirmed_email: true, name: email.split('@')[0], password: 'Password123!' });
-      alert(`Invitation sent to ${email}`);
-      router.push('/dashboard/admin/users');
+      await post({ email, role, firstName, lastName });
+      setSent(true);
     } catch (err) {
       console.error(err);
-      alert('Failed to send invitation');
     }
   };
+
+  if (sent) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 px-4 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white rounded-[3rem] p-12 shadow-sm border border-gray-100 text-center">
+          <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-10 h-10 text-green-500" />
+          </div>
+          <h2 className="text-2xl font-black text-[#2F4F4F] uppercase tracking-tight mb-2">
+            Invitation Sent
+          </h2>
+          <p className="text-gray-500 text-sm mb-8">
+            A verification email has been sent to <strong>{email}</strong>. They
+            must verify their email before they can log in.
+          </p>
+          <Link
+            href="/dashboard/admin/users"
+            className="inline-flex items-center gap-2 text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest hover:text-[#87CEEB] transition-colors"
+          >
+            <ArrowLeft className="w-3 h-3" /> Back to Directory
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <Link href="/dashboard/admin/users" className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors">
+        <Link
+          href="/dashboard/admin/users"
+          className="inline-flex items-center text-gray-400 font-bold text-[10px] mb-8 hover:text-[#87CEEB] uppercase tracking-widest transition-colors"
+        >
           <ArrowLeft className="w-3 h-3 mr-2" /> Back to Directory
         </Link>
 
@@ -48,20 +96,31 @@ export default function InviteUserPage() {
           <div className="bg-[#2F4F4F] w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
             <UserPlus className="w-8 h-8 text-[#87CEEB]" />
           </div>
-          <h1 className="text-4xl text-[#2F4F4F] font-black uppercase tracking-tight">System Invitation</h1>
-          <p className="text-gray-500 text-sm mt-2">Grant role-based access to club officials and media managers.</p>
+          <h1 className="text-4xl text-[#2F4F4F] font-black uppercase tracking-tight">
+            Invite User
+          </h1>
+          <p className="text-gray-500 text-sm mt-2">
+            The invited user will receive a verification email and must verify
+            before logging in.
+          </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-[3rem] p-12 shadow-sm border border-gray-100 space-y-8">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-[3rem] p-12 shadow-sm border border-gray-100 space-y-8"
+        >
+          {/* Email */}
           <div className="space-y-4">
-            <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">Official Email Address</label>
+            <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">
+              Official Email Address
+            </label>
             <div className="relative">
               <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 w-5 h-5" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="official@gladiators.ng"
+                placeholder="user@organization.com"
                 className="w-full pl-14 pr-6 py-5 bg-gray-50 rounded-2xl border outline-none focus:border-[#87CEEB] font-bold"
                 required
                 data-testid="input-user-email"
@@ -69,40 +128,95 @@ export default function InviteUserPage() {
             </div>
           </div>
 
+          {/* Name fields */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">
+                First Name
+              </label>
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First name"
+                className="w-full px-5 py-4 bg-gray-50 rounded-2xl border outline-none focus:border-[#87CEEB] font-bold"
+                data-testid="input-first-name"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">
+                Last Name
+              </label>
+              <input
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last name"
+                className="w-full px-5 py-4 bg-gray-50 rounded-2xl border outline-none focus:border-[#87CEEB] font-bold"
+                data-testid="input-last-name"
+              />
+            </div>
+          </div>
+
+          {/* Role */}
           <div className="space-y-4">
-            <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">Assign System Role</label>
-            <div className="grid grid-cols-2 gap-4">
-              {['Admin', 'Scout', 'Advertiser', 'User'].map(r => (
+            <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">
+              Assign Role
+            </label>
+            <div className="grid grid-cols-3 gap-4">
+              {ROLES.map((r) => (
                 <button
-                  key={r}
+                  key={r.value}
                   type="button"
-                  onClick={() => setRole(r)}
-                  className={`p-4 border-2 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${role === r ? 'border-[#87CEEB] text-[#2F4F4F] bg-sky-50' : 'border-gray-100 text-gray-400 hover:border-[#87CEEB] hover:text-[#2F4F4F]'}`}
-                  data-testid={`radio-role-${r.toLowerCase()}`}
+                  onClick={() => setRole(r.value)}
+                  className={`p-4 border-2 rounded-2xl text-left transition-all ${
+                    role === r.value
+                      ? "border-[#87CEEB] text-[#2F4F4F] bg-sky-50"
+                      : "border-gray-100 text-gray-400 hover:border-[#87CEEB] hover:text-[#2F4F4F]"
+                  }`}
+                  data-testid={`radio-role-${r.value}`}
                 >
-                  {r}
+                  <div className="text-xs font-black uppercase tracking-widest">
+                    {r.label}
+                  </div>
+                  <div className="text-[10px] mt-1 text-gray-400">
+                    {r.description}
+                  </div>
                 </button>
               ))}
             </div>
           </div>
 
+          {/* Info banner */}
           <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
             <div className="flex items-start space-x-4">
               <Shield className="w-6 h-6 text-blue-500 flex-none" />
               <p className="text-[10px] text-blue-600 font-bold uppercase leading-relaxed">
-                Invitation links expire in 24 hours. All new system users must complete identity verification as per ISO 27001 protocol ADM-SEC-01.
+                A verification email will be sent. The user must verify their
+                email before they can log in. They will be prompted to set a new
+                password on first login.
               </p>
             </div>
           </div>
 
+          {/* Error */}
+          {error && <p className="text-red-500 text-xs font-bold">{error}</p>}
+
           <button
             type="submit"
-            disabled={isPending}
-            className="w-full sky-button py-5 uppercase tracking-[0.2em] flex items-center justify-center disabled:opacity-50"
+            disabled={isPending || !email}
+            className="w-full py-5 bg-[#2F4F4F] text-white rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-3 font-black text-xs hover:bg-[#3d6363] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             data-testid="btn-send-invite"
           >
-            {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5 ml-3" />}
-            <span className="ml-3">{isPending ? 'SENDING...' : 'GENERATE SECURE LINK'}</span>
+            {isPending ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" /> Sending...
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5" /> Send Invitation
+              </>
+            )}
           </button>
         </form>
       </div>

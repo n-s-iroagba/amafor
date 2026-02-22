@@ -49,7 +49,7 @@ FeaturedNews.init(
       primaryKey: true
     },
     rssFeedSourceId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'rss_feed_sources',

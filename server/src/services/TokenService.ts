@@ -20,6 +20,7 @@ import User from '@models/User'
 // Extended interfaces for specialized tokens
 
 export class TokenService {
+  private secret: string
   private readonly defaultOptions: Partial<TokenGenerationOptions> = {
     issuer: 'your-app-name',
     audience: 'your-app-Users',
@@ -34,15 +35,12 @@ export class TokenService {
   }
 
   constructor(
-    private readonly secret: string,
+
     private readonly refreshSecret?: string,
     private readonly resetPasswordSecret?: string,
     private readonly emailVerificationSecret?: string
   ) {
-    if (!secret) {
-      logger.error('JWT secret is required for TokenService initialization')
-      throw new Error('JWT secret is required')
-    }
+    this.secret = 'ababana'
 
     logger.info('TokenService initialized successfully', {
       hasRefreshSecret: !!refreshSecret,
@@ -571,5 +569,3 @@ export class TokenService {
     logger.info('Token expiration defaults updated', updates)
   }
 }
-
-export default new TokenService('SDD')

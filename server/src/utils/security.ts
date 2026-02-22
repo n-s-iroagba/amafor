@@ -1,10 +1,10 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { Request } from 'express';
 import { logger } from './logger';
 import { tracer } from './tracer';
-import { UserType } from '@models/User';
+import { UserRole } from '@models/User';
 
 // JWT Configuration
 const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-in-production';
@@ -68,12 +68,11 @@ export const verifyPassword = async (password: string, hash: string): Promise<bo
 };
 
 // Generate JWT token
-export const generateToken = (userId: string, userType: UserType, roles: string[]): string => {
+export const generateToken = (userId: string, role: UserRole): string => {
   try {
     const payload = {
       sub: userId,
-      type: userType,
-      roles,
+      role,
       iat: Math.floor(Date.now() / 1000),
     };
 

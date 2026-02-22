@@ -32,30 +32,20 @@ export class AuthController {
     }
   }
 
-  async signupAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
-
-
+  /**
+   * Invite a new user (admin / scout) — sends a verification email.
+   * @api POST /auth/invite
+   */
+  async inviteUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      console.log(req.body)
-      const response = await this.authService.createAdmin(req.body)
-
-      res.status(201).json(response)
+      const { email, role, firstName, lastName } = req.body;
+      const response = await this.authService.inviteUser({ email, role, firstName, lastName });
+      res.status(201).json(response);
     } catch (error) {
-      console.error(error)
-      next(error)
+      console.error(error);
+      next(error);
     }
   }
-
-  async createSportsAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const result = await this.authService.createSportsAdmin(req.body)
-      res.status(201).json(result)
-    } catch (error) {
-      console.error(error)
-      next(error)
-    }
-  }
-
 
   /**
    * User login endpoint
@@ -91,8 +81,10 @@ export class AuthController {
 
 
         res.status(200).json({
-          user: verified.user,
-          accessToken: verified.accessToken,
+          data: {
+            user: verified.user,
+            accessToken: verified.accessToken,
+          }
         })
       } else {
         res.status(200).json(result as SignUpResponseDto)
@@ -193,7 +185,7 @@ export class AuthController {
       res.status(200).json({
         user: {
           id: result.user.id,
-          role: result.user.role,
+          userType: result.user.role,
           username: result.user.username,
         },
         accessToken: result.accessToken,

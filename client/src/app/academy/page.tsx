@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import { Header } from '@/shared/components/Header'
-import { Footer } from '@/shared/components/Footer'
-import Link from 'next/link'
-import { Target, BookOpen, Users, TrendingUp, Loader2 } from 'lucide-react'
-import { AcademyStaff } from '@/features/academy/types';
-import { useGet } from '@/shared/hooks/useApiQuery';
-import { API_ROUTES } from '@/config/routes';
-
+import { Header } from "@/shared/components/Header";
+import { Footer } from "@/shared/components/Footer";
+import Link from "next/link";
+import { Target, BookOpen, Users, TrendingUp, Loader2 } from "lucide-react";
+import { AcademyStaff } from "@/features/academy/types";
+import { useGet } from "@/shared/hooks/useApiQuery";
+import { API_ROUTES } from "@/config/routes";
 
 /**
  * Page: Academy Hub
@@ -18,41 +17,46 @@ import { API_ROUTES } from '@/config/routes';
  * API: GET /api/academy/staff (API_ROUTES.ACADEMY.STAFF.LIST)
  * Hook: useGet(API_ROUTES.ACADEMY.STAFF.LIST)
  */
-export default function AcademyHub({ params }: { params: { section?: string[] } }) {
-  const activeSection = params.section?.[0] || 'overview'
+import { useSearchParams } from "next/navigation";
+
+import { Suspense } from "react";
+
+function AcademyContent() {
+  const searchParams = useSearchParams();
+  const activeSection = searchParams.get("section") || "overview";
 
   // Fetch staff data when staff section is active
   const {
     data: staffData,
     loading: staffLoading,
     error: staffError,
-    refetch: refetchStaff
+    refetch: refetchStaff,
   } = useGet<AcademyStaff[]>(
-    activeSection === 'staff' ? API_ROUTES.STAFF.LIST : null,
+    activeSection === "staff" ? API_ROUTES.STAFF.LIST : null,
     {
       params: {
-        category: 'coaching', // Optional: filter by category
-        limit: 10
+        category: "coaching", // Optional: filter by category
+        limit: 10,
       },
-      enabled: activeSection === 'staff' // Only fetch when staff section is active
-    }
-  )
+      enabled: activeSection === "staff", // Only fetch when staff section is active
+    },
+  );
 
   const sections = [
-    { id: '/academy', name: 'Overview', icon: Target },
-
-    { id: '/academy/apply', name: 'Apply', icon: TrendingUp }
-  ]
+    { id: "/academy", name: "Overview", icon: Target },
+    { id: "/academy?section=staff", name: "Staff", icon: Users },
+    { id: "/academy/apply", name: "Apply", icon: TrendingUp },
+  ];
 
   // Helper function to get initials from name
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase()
-      .slice(0, 2)
-  }
+      .slice(0, 2);
+  };
 
   return (
     <>
@@ -60,54 +64,59 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
 
       <main className="py-16 bg-slate-50 min-h-screen">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl mb-8 font-heading">Youth Academy</h1>
+          <h1 className="text-4xl md:text-5xl mb-8 font-heading">
+            Youth Academy
+          </h1>
 
           {/* Sub-Navigation */}
           <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
             {sections.map((sec) => {
-              const Icon = sec.icon
+              const Icon = sec.icon;
               return (
                 <Link
                   key={sec.id}
                   href={`${sec.id}`}
-                  className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${activeSection === sec.id
-                    ? 'bg-sky-700 text-white font-medium'
-                    : 'bg-white text-slate-700 hover:bg-slate-100'
-                    }`}
-                  aria-current={activeSection === sec.id ? 'page' : undefined}
-                  data-testid={`nav-item-${sec.id.replace('/', '').replace('/', '-')}`}
+                  className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${
+                    activeSection === sec.id
+                      ? "bg-sky-700 text-white font-medium"
+                      : "bg-white text-slate-700 hover:bg-slate-100"
+                  }`}
+                  aria-current={activeSection === sec.id ? "page" : undefined}
+                  data-testid={`nav-item-${sec.name.toLowerCase()}`}
                 >
                   <Icon className="w-5 h-5" />
                   {sec.name}
                 </Link>
-              )
+              );
             })}
           </div>
 
           {/* Content */}
           <div className="bg-white rounded-lg shadow-card p-8">
-            {activeSection === 'overview' && (
+            {activeSection === "overview" && (
               <div>
                 <h2 className="text-3xl mb-6 font-heading">Academy Overview</h2>
                 {/* ... existing overview content ... */}
               </div>
             )}
 
-            {activeSection === 'philosophy' && (
+            {activeSection === "philosophy" && (
               <div>
                 <h2 className="text-3xl mb-6 font-heading">Our Philosophy</h2>
                 {/* ... existing philosophy content ... */}
               </div>
             )}
 
-            {activeSection === 'curriculum' && (
+            {activeSection === "curriculum" && (
               <div>
-                <h2 className="text-3xl mb-6 font-heading">Training Curriculum</h2>
+                <h2 className="text-3xl mb-6 font-heading">
+                  Training Curriculum
+                </h2>
                 {/* ... existing curriculum content ... */}
               </div>
             )}
 
-            {activeSection === 'staff' && (
+            {activeSection === "staff" && (
               <div>
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-3xl font-heading">Coaching Staff</h2>
@@ -129,7 +138,9 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
 
                 {staffError && (
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                    <p className="text-red-700">Error loading staff: {staffError}</p>
+                    <p className="text-red-700">
+                      Error loading staff: {staffError}
+                    </p>
                     <button
                       onClick={() => refetchStaff()}
                       className="mt-2 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded transition-colors"
@@ -197,11 +208,13 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
                       <div className="w-20 h-20 bg-gradient-to-br from-sky-600 to-sky-800 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
                         SA
                       </div>
-                      <h3 className="text-xl mb-2 text-center font-heading">Samuel Adeleke</h3>
-                      <p className="text-sky-700 text-center mb-3 font-medium">Academy Director</p>
-                      <p className="text-sm text-slate-600 text-center">
-                        F.
+                      <h3 className="text-xl mb-2 text-center font-heading">
+                        Samuel Adeleke
+                      </h3>
+                      <p className="text-sky-700 text-center mb-3 font-medium">
+                        Academy Director
                       </p>
+                      <p className="text-sm text-slate-600 text-center">F.</p>
                     </div>
                     {/* ... other hardcoded staff cards ... */}
                   </div>
@@ -209,28 +222,42 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
               </div>
             )}
 
-            {activeSection === 'pathway' && (
+            {activeSection === "pathway" && (
               <div>
-                <h2 className="text-3xl mb-6 font-heading">Player Pathway to Success</h2>
+                <h2 className="text-3xl mb-6 font-heading">
+                  Player Pathway to Success
+                </h2>
                 {/* ... existing pathway content ... */}
               </div>
             )}
 
             {/* Contact CTA */}
             <div className="mt-12 pt-8 border-t border-slate-200">
-              <h3 className="text-2xl mb-4 font-heading">Interested in Joining Our Academy?</h3>
+              <h3 className="text-2xl mb-4 font-heading">
+                Interested in Joining Our Academy?
+              </h3>
               <p className="text-slate-700 mb-6">
-                Contact us to learn more about trial dates and enrollment information.
+                Contact us to learn more about trial dates and enrollment
+                information.
               </p>
               <div className="flex gap-4">
-                <Link href="/help" className="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-lg transition-colors font-medium" data-testid="link-contact-us">
+                <Link
+                  href="/help"
+                  className="bg-sky-700 hover:bg-sky-800 text-white px-6 py-3 rounded-lg transition-colors font-medium"
+                  data-testid="link-contact-us"
+                >
                   Contact Us
                 </Link>
                 <button
                   onClick={() => {
-                    const phoneNumber = '234XXXXXXXXXX'
-                    const message = encodeURIComponent('Hello, I\'m interested in joining the Amafor Gladiators FC Academy...')
-                    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
+                    const phoneNumber = "234XXXXXXXXXX";
+                    const message = encodeURIComponent(
+                      "Hello, I'm interested in joining the Amafor Gladiators FC Academy...",
+                    );
+                    window.open(
+                      `https://wa.me/${phoneNumber}?text=${message}`,
+                      "_blank",
+                    );
                   }}
                   className="border border-sky-700 text-sky-700 hover:bg-sky-50 px-6 py-3 rounded-lg transition-colors font-medium"
                   data-testid="btn-whatsapp"
@@ -245,5 +272,19 @@ export default function AcademyHub({ params }: { params: { section?: string[] } 
 
       <Footer />
     </>
-  )
+  );
+}
+
+export default function AcademyHub() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+          <Loader2 className="w-10 h-10 text-sky-700 animate-spin" />
+        </div>
+      }
+    >
+      <AcademyContent />
+    </Suspense>
+  );
 }

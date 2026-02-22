@@ -1,20 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import {
   ChevronLeft,
   Edit,
   Trash2,
   Download,
   Share2,
-
   Award,
   Briefcase,
   Calendar,
-
   Users,
   BookOpen,
   Shield,
@@ -23,17 +21,15 @@ import {
   TrendingUp,
   FileText,
   ExternalLink,
-
   UserCheck,
   AlertCircle,
-  Loader2
-} from 'lucide-react';
-import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
-import { AcademyStaff } from '@/features/academy/types';
+  Loader2,
+} from "lucide-react";
+import { useGet, useDelete } from "@/shared/hooks/useApiQuery";
+import { AcademyStaff } from "@/features/academy/types";
 
-
-import { API_ROUTES } from '@/config/routes';
-
+import { API_ROUTES } from "@/config/routes";
+import { DeletionConfirmationModal } from "@/shared/components/DeleteModal";
 
 /**
  * Page: Staff Details
@@ -55,38 +51,46 @@ export default function StaffDetailsPage() {
   const {
     data: staff,
     loading,
-    error
+    error,
   } = useGet<AcademyStaff>(API_ROUTES.STAFF.VIEW(staffId), {
     params: {
-      include: 'reports,achievements'
-    }
+      include: "reports,achievements",
+    },
   });
-
-
 
   const getCategoryColor = (category?: string) => {
     switch (category) {
-      case 'coaching': return 'bg-blue-100 text-blue-800';
-      case 'medical': return 'bg-green-100 text-green-800';
-      case 'administrative': return 'bg-purple-100 text-purple-800';
-      case 'technical': return 'bg-orange-100 text-orange-800';
-      case 'scouting': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "coaching":
+        return "bg-blue-100 text-blue-800";
+      case "medical":
+        return "bg-green-100 text-green-800";
+      case "administrative":
+        return "bg-purple-100 text-purple-800";
+      case "technical":
+        return "bg-orange-100 text-orange-800";
+      case "scouting":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getCategoryIcon = (category?: string) => {
     switch (category) {
-      case 'coaching': return <Award className="h-5 w-5" />;
-      case 'medical': return <Shield className="h-5 w-5" />;
-      case 'administrative': return <Briefcase className="h-5 w-5" />;
-      case 'technical': return <Target className="h-5 w-5" />;
-      case 'scouting': return <UserCheck className="h-5 w-5" />;
-      default: return <Users className="h-5 w-5" />;
+      case "coaching":
+        return <Award className="h-5 w-5" />;
+      case "medical":
+        return <Shield className="h-5 w-5" />;
+      case "administrative":
+        return <Briefcase className="h-5 w-5" />;
+      case "technical":
+        return <Target className="h-5 w-5" />;
+      case "scouting":
+        return <UserCheck className="h-5 w-5" />;
+      default:
+        return <Users className="h-5 w-5" />;
     }
   };
-
-
 
   if (loading) {
     return (
@@ -116,13 +120,13 @@ export default function StaffDetailsPage() {
           <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-red-800 mb-2">
-              {error ? 'Error Loading Staff Details' : 'Staff Not Found'}
+              {error ? "Error Loading Staff Details" : "Staff Not Found"}
             </h3>
             <p className="text-red-600 mb-6">
-              {error || 'The requested staff member could not be found.'}
+              {error || "The requested staff member could not be found."}
             </p>
             <button
-              onClick={() => router.push('/dashboard/admin/academy/staff')}
+              onClick={() => router.push("/dashboard/admin/academy/staff")}
               className="px-6 py-3 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors font-medium"
             >
               Browse All Staff
@@ -190,14 +194,26 @@ export default function StaffDetailsPage() {
             {/* Staff Info */}
             <div className="flex-1">
               <div className="flex items-center gap-4 mb-4">
-                <h1 className="text-3xl md:text-4xl font-bold" data-testid="staff-name">{staff.name}</h1>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getCategoryColor(staff.category)}`}>
+                <h1
+                  className="text-3xl md:text-4xl font-bold"
+                  data-testid="staff-name"
+                >
+                  {staff.name}
+                </h1>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${getCategoryColor(staff.category)}`}
+                >
                   {getCategoryIcon(staff.category)}
-                  {staff.category || 'General'}
+                  {staff.category || "General"}
                 </span>
               </div>
 
-              <h2 className="text-xl text-slate-300 mb-4" data-testid="staff-role">{staff.role}</h2>
+              <h2
+                className="text-xl text-slate-300 mb-4"
+                data-testid="staff-role"
+              >
+                {staff.role}
+              </h2>
 
               <div className="flex flex-wrap items-center gap-4 text-slate-300">
                 {staff.yearsOfExperience && (
@@ -214,7 +230,6 @@ export default function StaffDetailsPage() {
             </div>
           </div>
 
-
           <div className="container mx-auto max-w-7xl px-4 py-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column - Bio & Details */}
@@ -226,7 +241,9 @@ export default function StaffDetailsPage() {
                     Biography
                   </h3>
                   <div className="prose max-w-none" data-testid="section-bio">
-                    <p className="text-slate-700 whitespace-pre-line">{staff.bio}</p>
+                    <p className="text-slate-700 whitespace-pre-line">
+                      {staff.bio}
+                    </p>
                   </div>
                 </div>
 
@@ -239,13 +256,20 @@ export default function StaffDetailsPage() {
                     </h3>
                     <div className="space-y-3">
                       {staff.qualifications.map((qualification, index) => (
-                        <div key={index} className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <div
+                          key={index}
+                          className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg"
+                        >
                           <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
                             <Award className="h-4 w-4 text-sky-600" />
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-medium text-slate-800">{qualification}</h4>
-                            <p className="text-sm text-slate-600 mt-1">Professional Certification</p>
+                            <h4 className="font-medium text-slate-800">
+                              {qualification}
+                            </h4>
+                            <p className="text-sm text-slate-600 mt-1">
+                              Professional Certification
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -263,25 +287,29 @@ export default function StaffDetailsPage() {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between p-4 bg-sky-50 rounded-lg">
                         <div>
-                          <h4 className="font-semibold text-slate-800">Total Experience</h4>
-                          <p className="text-slate-600">Years in football and coaching</p>
+                          <h4 className="font-semibold text-slate-800">
+                            Total Experience
+                          </h4>
+                          <p className="text-slate-600">
+                            Years in football and coaching
+                          </p>
                         </div>
-                        <div className="text-3xl font-bold text-sky-700">{staff.yearsOfExperience} years</div>
+                        <div className="text-3xl font-bold text-sky-700">
+                          {staff.yearsOfExperience} years
+                        </div>
                       </div>
 
                       {/* Mock experience items */}
                       <div className="border-l-2 border-sky-500 ml-6 space-y-6">
                         <div className="relative pl-6">
                           <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-sky-500 border-2 border-white"></div>
-                          <h4 className="font-semibold text-slate-800">Current Role</h4>
+                          <h4 className="font-semibold text-slate-800">
+                            Current Role
+                          </h4>
                           <p className="text-slate-700">{staff.role}</p>
-                          <p className="text-sm text-slate-600 mt-1">Amafor Gladiators FC Academy</p>
-                        </div>
-                        <div className="relative pl-6">
-                          <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-sky-300 border-2 border-white"></div>
-                          <h4 className="font-semibold text-slate-800">Previous Experience</h4>
-                          <p className="text-slate-700">Senior Coach</p>
-                          <p className="text-sm text-slate-600 mt-1">Various football academies</p>
+                          <p className="text-sm text-slate-600 mt-1">
+                            Amafor Gladiators FC Academy
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -293,7 +321,9 @@ export default function StaffDetailsPage() {
               <div className="space-y-8">
                 {/* Quick Stats */}
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Staff Overview</h3>
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">
+                    Staff Overview
+                  </h3>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                       <div className="flex items-center gap-3">
@@ -301,8 +331,12 @@ export default function StaffDetailsPage() {
                           <Target className="h-5 w-5 text-blue-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-slate-800">Specialization</div>
-                          <div className="text-sm text-slate-600">{staff.category || 'General'}</div>
+                          <div className="font-medium text-slate-800">
+                            Specialization
+                          </div>
+                          <div className="text-sm text-slate-600">
+                            {staff.category || "General"}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -313,8 +347,12 @@ export default function StaffDetailsPage() {
                           <Calendar className="h-5 w-5 text-green-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-slate-800">Experience</div>
-                          <div className="text-sm text-slate-600">{staff.yearsOfExperience || 'N/A'} years</div>
+                          <div className="font-medium text-slate-800">
+                            Experience
+                          </div>
+                          <div className="text-sm text-slate-600">
+                            {staff.yearsOfExperience || "N/A"} years
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -325,8 +363,12 @@ export default function StaffDetailsPage() {
                           <FileText className="h-5 w-5 text-purple-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-slate-800">Qualifications</div>
-                          <div className="text-sm text-slate-600">{staff.qualifications?.length || 0} certifications</div>
+                          <div className="font-medium text-slate-800">
+                            Qualifications
+                          </div>
+                          <div className="text-sm text-slate-600">
+                            {staff.qualifications?.length || 0} certifications
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -335,7 +377,9 @@ export default function StaffDetailsPage() {
 
                 {/* Actions */}
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Actions</h3>
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">
+                    Actions
+                  </h3>
                   <div className="space-y-3">
                     <Link
                       href={`/academy/staff/${staffId}/edit`}
@@ -368,7 +412,9 @@ export default function StaffDetailsPage() {
 
                 {/* Related Resources */}
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                  <h3 className="text-xl font-semibold text-slate-800 mb-4">Related</h3>
+                  <h3 className="text-xl font-semibold text-slate-800 mb-4">
+                    Related
+                  </h3>
                   <div className="space-y-3">
                     <Link
                       href="/academy"
@@ -379,8 +425,12 @@ export default function StaffDetailsPage() {
                           <Users className="h-5 w-5 text-sky-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-slate-800">Academy Overview</div>
-                          <div className="text-sm text-slate-600">View all academy sections</div>
+                          <div className="font-medium text-slate-800">
+                            Academy Overview
+                          </div>
+                          <div className="text-sm text-slate-600">
+                            View all academy sections
+                          </div>
                         </div>
                       </div>
                       <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
@@ -395,8 +445,12 @@ export default function StaffDetailsPage() {
                           <Briefcase className="h-5 w-5 text-green-600" />
                         </div>
                         <div>
-                          <div className="font-medium text-slate-800">All Staff</div>
-                          <div className="text-sm text-slate-600">View all academy staff</div>
+                          <div className="font-medium text-slate-800">
+                            All Staff
+                          </div>
+                          <div className="text-sm text-slate-600">
+                            View all academy staff
+                          </div>
                         </div>
                       </div>
                       <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
@@ -408,6 +462,15 @@ export default function StaffDetailsPage() {
           </div>
         </div>
       </div>
+      <DeletionConfirmationModal
+        error={""}
+        onClose={() => setShowDeleteModal(false)}
+        handleDelete={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+        message={""}
+        isDeleting={false}
+      />
     </div>
   );
 }

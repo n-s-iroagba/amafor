@@ -1,19 +1,17 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+"use client";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
 import {
   UserCircle,
   Lock,
   RefreshCw,
   AlertCircle,
-  CheckCircle
-} from 'lucide-react';
-import { API_ROUTES } from '@/config/routes';
-import { usePost } from '@/shared/hooks/useApiQuery';
-import { useAuthContext } from '@/shared/hooks/useAuthContext';
-import { AuthUser, UserType } from '@/shared/types';
-
-
+  CheckCircle,
+} from "lucide-react";
+import { API_ROUTES } from "@/config/routes";
+import { usePost } from "@/shared/hooks/useApiQuery";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
+import { AuthUser } from "@/shared/types";
 
 /**
  * Page: Reset Password Page
@@ -36,18 +34,18 @@ export default function ResetPasswordPage() {
 
   const [isMounted, setIsMounted] = useState(false);
   const [form, setForm] = useState<FormState>({
-    password: '',
-    confirmPassword: '',
+    password: "",
+    confirmPassword: "",
   });
   const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>("");
 
   const { setUser } = useAuthContext();
 
   const {
     post: resetPasswordPost,
     isPending: resetLoading,
-    error: resetError
+    error: resetError,
   } = usePost<any, any>(API_ROUTES.AUTH.RESET_PASSWORD);
 
   useEffect(() => {
@@ -80,24 +78,24 @@ export default function ResetPasswordPage() {
     try {
       const response = await resetPasswordPost(payload);
 
-      if (response && 'user' in response) {
+      if (response && "user" in response) {
         const user: AuthUser = response.user;
         const accessToken = response.accessToken;
 
         setUser(user);
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem("accessToken", accessToken);
 
-        setMessage('Password reset successful! Redirecting...');
+        setMessage("Password reset successful! Redirecting...");
 
         // Navigate based on UserRole
         setTimeout(() => {
-          router.push('/dashboard')
+          router.push("/dashboard");
         }, 2000);
-      } else if (response && 'verificationToken' in response) {
+      } else if (response && "verificationToken" in response) {
         router.push(`/auth/verify-email/${response.verificationToken}`);
       }
     } catch (err) {
-      console.error('Reset password error:', err);
+      console.error("Reset password error:", err);
     }
   };
 
@@ -112,7 +110,7 @@ export default function ResetPasswordPage() {
 
         <h1 className="text-2xl font-bold text-slate-900 mb-8 text-center flex items-center justify-center gap-2">
           <UserCircle className="w-8 h-8 text-slate-700" />
-          {message ? 'Success!' : 'New Password'}
+          {message ? "Success!" : "New Password"}
         </h1>
 
         {(error || resetError) && (
@@ -133,15 +131,15 @@ export default function ResetPasswordPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {[
               {
-                label: 'Password',
-                name: 'password',
-                type: 'password',
+                label: "Password",
+                name: "password",
+                type: "password",
                 Icon: Lock,
               },
               {
-                label: 'Confirm Password',
-                name: 'confirmPassword',
-                type: 'password',
+                label: "Confirm Password",
+                name: "confirmPassword",
+                type: "password",
                 Icon: Lock,
               },
             ].map(({ label, name, type, Icon }) => (
@@ -156,10 +154,11 @@ export default function ResetPasswordPage() {
                   value={form[name as keyof FormState]}
                   onChange={handleChange}
                   required
-                  className={`w-full p-3 rounded-xl border-2 ${error?.toLowerCase().includes(name)
-                    ? 'border-red-300'
-                    : 'border-slate-100'
-                    } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
+                  className={`w-full p-3 rounded-xl border-2 ${
+                    error?.toLowerCase().includes(name)
+                      ? "border-red-300"
+                      : "border-slate-100"
+                  } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
                   data-testid={`${name}-input`}
                 />
               </div>
@@ -177,13 +176,13 @@ export default function ResetPasswordPage() {
                   Resetting Password...
                 </>
               ) : (
-                'Reset Password'
+                "Reset Password"
               )}
             </button>
           </form>
         ) : (
           <button
-            onClick={() => router.push('/login')}
+            onClick={() => router.push("/login")}
             className="w-full py-3 bg-slate-700 text-white rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-5 h-5" />

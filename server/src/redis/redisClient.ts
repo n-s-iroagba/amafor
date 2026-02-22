@@ -3,7 +3,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const redis = new Redis(process.env.REDIS_URL as string);
+const redis = new Redis(process.env.REDIS_URL as string, {
+  lazyConnect: true,
+  connectTimeout: 5000,
+  maxRetriesPerRequest: 1
+});
 
 
 redis.on('connect', () => {

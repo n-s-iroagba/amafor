@@ -1,19 +1,19 @@
 // data/development/user.ts
-import { UserAttributes, UserStatus, UserType } from "../../../models/User";
+import { UserAttributes, UserStatus } from "../../../models/User";
 
-// Hash for "password123"
+// Hash for 'password123'
 const DEFAULT_PASSWORD_HASH = '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4h.t/1.R..';
+const passwordhash = '$2b$10$v7OLaRJDjIuuUwkiU1ZNaelm6cKbmEihRC.ribOU22i24Yo2r53Pa'; // hashed '12345678'
 
 export const developmentUsers: UserAttributes[] = [
   {
     id: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
-    email: 'admin@academy.com',
-    passwordHash: DEFAULT_PASSWORD_HASH,
+    email: 'nnamdisolomon@gmail.com',
+    passwordHash: passwordhash,
     firstName: 'Super',
     lastName: 'Admin',
     phone: '+2348000000000',
-    userType: UserType.SUPER_ADMIN,
-    roles: ['admin', 'editor'],
+    role: 'admin',
     status: UserStatus.ACTIVE,
     emailVerified: true,
     metadata: { access_level: 'root' },
@@ -23,29 +23,27 @@ export const developmentUsers: UserAttributes[] = [
   },
   {
     id: 'dddddddd-dddd-dddd-dddd-dddddddddddd',
-    email: 'fan@academy.com',
+    email: 'scout@academy.com',
     passwordHash: DEFAULT_PASSWORD_HASH,
     firstName: 'John',
     lastName: 'Doe',
     phone: '+2348011111111',
-    userType: UserType.FAN,
-    roles: ['user'],
+    role: 'scout',
     status: UserStatus.ACTIVE,
     emailVerified: true,
-    metadata: { favorite_team: 'U17' },
+    metadata: {},
     loginAttempts: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     id: 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
-    email: 'media@academy.com',
+    email: 'advertiser@academy.com',
     passwordHash: DEFAULT_PASSWORD_HASH,
     firstName: 'Sarah',
-    lastName: 'Media',
+    lastName: 'Advertiser',
     phone: '+2348022222222',
-    userType: UserType.MEDIA_MANAGER,
-    roles: ['editor', 'publisher'],
+    role: 'advertiser',
     status: UserStatus.ACTIVE,
     emailVerified: true,
     metadata: {},

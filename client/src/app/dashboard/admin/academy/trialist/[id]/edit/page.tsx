@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useRef, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Upload } from 'lucide-react';
-import { useGet, usePut } from '@/shared/hooks/useApiQuery';
-import { API_ROUTES } from '@/config/routes';
-import { uploadFile } from '@/shared/utils';
-
+import React, { useRef, useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Upload } from "lucide-react";
+import { useGet, usePut } from "@/shared/hooks/useApiQuery";
+import { API_ROUTES } from "@/config/routes";
+import { uploadFile } from "@/shared/utils";
+import strict from "node:assert/strict";
 
 interface Trialist {
   id: string;
@@ -17,15 +17,14 @@ interface Trialist {
   dob: string;
   position: string;
   preferredFoot: "RIGHT" | "LEFT" | "BOTH";
-  height?: number;
-  weight?: number;
+  height?: string;
+  weight?: string;
   previousClub?: string;
   videoUrl?: string;
   cvUrl?: string;
-  status: 'PENDING' | 'REVIEWED' | 'INVITED' | 'REJECTED';
+  status: "PENDING" | "REVIEWED" | "INVITED" | "REJECTED";
   notes?: string;
 }
-
 
 /**
  * Page: Edit Trialist
@@ -41,105 +40,114 @@ export default function EditTrialist() {
   const id = params.id as string;
 
   const { data: trialist, loading } = useGet<Trialist>(
-    API_ROUTES.TRIALISTS.VIEW(id)
+    API_ROUTES.TRIALISTS.VIEW(id),
   );
 
   const { put, isPending: isSubmitting } = usePut(
-    API_ROUTES.TRIALISTS.UPDATE(id)
+    API_ROUTES.TRIALISTS.UPDATE(id),
   );
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dob: '',
-    position: '',
-    preferredFoot: 'RIGHT' as const,
-    height: '',
-    weight: '',
-    previousClub: '',
-    videoUrl: '',
-    cvUrl: '',
-    status: 'PENDING' as const,
-    notes: '',
+  const [formData, setFormData] = useState<Omit<Trialist, "id">>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    dob: "",
+    position: "",
+    preferredFoot: "RIGHT" as const,
+    height: "",
+    weight: "",
+    previousClub: "",
+    videoUrl: "",
+    cvUrl: "",
+    status: "PENDING" as const,
+    notes: "",
   });
 
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploading, setUploading] = useState<string>('');
+  const [uploading, setUploading] = useState<string>("");
 
   const videoInputRef = useRef<HTMLInputElement>(null);
   const cvInputRef = useRef<HTMLInputElement>(null);
 
   const positions = [
-    'Goalkeeper', 'Center Back', 'Right Back', 'Left Back',
-    'Defensive Midfielder', 'Central Midfielder', 'Attacking Midfielder',
-    'Right Winger', 'Left Winger', 'Striker', 'Forward'
+    "Goalkeeper",
+    "Center Back",
+    "Right Back",
+    "Left Back",
+    "Defensive Midfielder",
+    "Central Midfielder",
+    "Attacking Midfielder",
+    "Right Winger",
+    "Left Winger",
+    "Striker",
+    "Forward",
   ];
 
-  // useEffect(() => {
-  //   if (trialist) {
-  //     setFormData({
-  //       firstName: trialist.firstName,
-  //       lastName: trialist.lastName,
-  //       email: trialist.email,
-  //       phone: trialist.phone,
-  //       dob: trialist.dob ? trialist.dob.split('T')[0] : '',
-  //       position: trialist.position,
-  //       // preferredFoot: trialist.preferredFoot as  "RIGHT" | "LEFT" | "BOTH" ,
-  //       height: trialist.height?.toString() || '',
-  //       weight: trialist.weight?.toString() || '',
-  //       previousClub: trialist.previousClub || '',
-  //       videoUrl: trialist.videoUrl || '',
-  //       cvUrl: trialist.cvUrl || '',
-  //       status: trialist.status,
-  //       notes: trialist.notes || '',
-  //     });
-  //   }
-  // }, [trialist]);
+  useEffect(() => {
+    if (trialist) {
+      setFormData({
+        firstName: trialist.firstName,
+        lastName: trialist.lastName,
+        email: trialist.email,
+        phone: trialist.phone,
+        dob: trialist.dob ? trialist.dob.split("T")[0] : "",
+        position: trialist.position,
+        preferredFoot: trialist.preferredFoot as "RIGHT" | "LEFT" | "BOTH",
+        height: trialist.height?.toString() || "",
+        weight: trialist.weight?.toString() || "",
+        previousClub: trialist.previousClub || "",
+        videoUrl: trialist.videoUrl || "",
+        cvUrl: trialist.cvUrl || "",
+        status: trialist.status,
+        notes: trialist.notes || "",
+      });
+    }
+  }, [trialist]);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
-    if (!formData.dob) newErrors.dob = 'Date of birth is required';
-    if (!formData.position) newErrors.position = 'Position is required';
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
+    if (!formData.dob) newErrors.dob = "Date of birth is required";
+    if (!formData.position) newErrors.position = "Position is required";
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFileUpload = async (file: File, type: 'video' | 'cv') => {
+  const handleFileUpload = async (file: File, type: "video" | "cv") => {
     setUploading(type);
     setUploadProgress(10);
 
     try {
-      const url = await uploadFile(file, 'image');
+      const url = await uploadFile(file, "image");
       setUploadProgress(100);
 
-      if (type === 'video') {
-        setFormData(prev => ({ ...prev, videoUrl: url }));
+      if (type === "video") {
+        setFormData((prev) => ({ ...prev, videoUrl: url }));
         setVideoFile(file);
       } else {
-        setFormData(prev => ({ ...prev, cvUrl: url }));
+        setFormData((prev) => ({ ...prev, cvUrl: url }));
         setCvFile(file);
       }
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error("Upload failed:", error);
     } finally {
       setUploadProgress(0);
-      setUploading('');
+      setUploading("");
     }
   };
 
@@ -155,18 +163,22 @@ export default function EditTrialist() {
         weight: formData.weight ? parseInt(formData.weight) : null,
       });
 
-      router.push('/sports-admin/trialist');
+      router.push("/sports-admin/trialist");
     } catch (error) {
-      console.error('Error updating trialist:', error);
-      setErrors({ submit: 'Failed to update trialist. Please try again.' });
+      console.error("Error updating trialist:", error);
+      setErrors({ submit: "Failed to update trialist. Please try again." });
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -191,7 +203,9 @@ export default function EditTrialist() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Personal Information */}
           <div className="bg-emerald-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-4">Personal Information</h3>
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Personal Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-emerald-700 mb-1">
@@ -202,10 +216,14 @@ export default function EditTrialist() {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.firstName ? 'border-red-500' : 'border-emerald-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.firstName ? "border-red-500" : "border-emerald-300"}`}
                   data-testid="input-trialist-firstname"
                 />
-                {errors.firstName && <p className="text-sm text-red-600 mt-1">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="text-sm text-red-600 mt-1">
+                    {errors.firstName}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -217,10 +235,12 @@ export default function EditTrialist() {
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.lastName ? 'border-red-500' : 'border-emerald-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.lastName ? "border-red-500" : "border-emerald-300"}`}
                   data-testid="input-trialist-lastname"
                 />
-                {errors.lastName && <p className="text-sm text-red-600 mt-1">{errors.lastName}</p>}
+                {errors.lastName && (
+                  <p className="text-sm text-red-600 mt-1">{errors.lastName}</p>
+                )}
               </div>
 
               <div>
@@ -232,10 +252,12 @@ export default function EditTrialist() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.email ? 'border-red-500' : 'border-emerald-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.email ? "border-red-500" : "border-emerald-300"}`}
                   data-testid="input-trialist-email"
                 />
-                {errors.email && <p className="text-sm text-red-600 mt-1">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-sm text-red-600 mt-1">{errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -247,10 +269,12 @@ export default function EditTrialist() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.phone ? 'border-red-500' : 'border-emerald-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.phone ? "border-red-500" : "border-emerald-300"}`}
                   data-testid="input-trialist-phone"
                 />
-                {errors.phone && <p className="text-sm text-red-600 mt-1">{errors.phone}</p>}
+                {errors.phone && (
+                  <p className="text-sm text-red-600 mt-1">{errors.phone}</p>
+                )}
               </div>
 
               <div>
@@ -262,17 +286,21 @@ export default function EditTrialist() {
                   name="dob"
                   value={formData.dob}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.dob ? 'border-red-500' : 'border-emerald-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.dob ? "border-red-500" : "border-emerald-300"}`}
                   data-testid="input-trialist-dob"
                 />
-                {errors.dob && <p className="text-sm text-red-600 mt-1">{errors.dob}</p>}
+                {errors.dob && (
+                  <p className="text-sm text-red-600 mt-1">{errors.dob}</p>
+                )}
               </div>
             </div>
           </div>
 
           {/* Football Information */}
           <div className="bg-emerald-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-4">Football Information</h3>
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Football Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-emerald-700 mb-1">
@@ -282,15 +310,19 @@ export default function EditTrialist() {
                   name="position"
                   value={formData.position}
                   onChange={handleInputChange}
-                  className={`w-full rounded-md border p-2 ${errors.position ? 'border-red-500' : 'border-emerald-300'}`}
+                  className={`w-full rounded-md border p-2 ${errors.position ? "border-red-500" : "border-emerald-300"}`}
                   data-testid="select-trialist-position"
                 >
                   <option value="">Select position</option>
-                  {positions.map(pos => (
-                    <option key={pos} value={pos}>{pos}</option>
+                  {positions.map((pos) => (
+                    <option key={pos} value={pos}>
+                      {pos}
+                    </option>
                   ))}
                 </select>
-                {errors.position && <p className="text-sm text-red-600 mt-1">{errors.position}</p>}
+                {errors.position && (
+                  <p className="text-sm text-red-600 mt-1">{errors.position}</p>
+                )}
               </div>
 
               <div>
@@ -356,12 +388,14 @@ export default function EditTrialist() {
 
           {/* Attachments */}
           <div className="bg-emerald-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-4">Attachments</h3>
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Attachments
+            </h3>
 
             {/* Video Upload */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-emerald-700 mb-2">
-                Highlight Video {formData.videoUrl && '(Current file uploaded)'}
+                Highlight Video {formData.videoUrl && "(Current file uploaded)"}
               </label>
               <div
                 onClick={() => videoInputRef.current?.click()}
@@ -373,7 +407,7 @@ export default function EditTrialist() {
                   accept="video/*"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) handleFileUpload(file, 'video');
+                    if (file) handleFileUpload(file, "video");
                   }}
                   className="hidden"
                 />
@@ -381,7 +415,7 @@ export default function EditTrialist() {
                 {videoFile || formData.videoUrl ? (
                   <div className="space-y-2">
                     <div className="text-emerald-600 font-medium">
-                      {videoFile ? videoFile.name : 'Video uploaded'}
+                      {videoFile ? videoFile.name : "Video uploaded"}
                     </div>
                     {formData.videoUrl && (
                       <a
@@ -398,8 +432,9 @@ export default function EditTrialist() {
                       onClick={(e) => {
                         e.stopPropagation();
                         setVideoFile(null);
-                        setFormData(prev => ({ ...prev, videoUrl: '' }));
-                        if (videoInputRef.current) videoInputRef.current.value = '';
+                        setFormData((prev) => ({ ...prev, videoUrl: "" }));
+                        if (videoInputRef.current)
+                          videoInputRef.current.value = "";
                       }}
                       className="text-red-600 hover:text-red-800 text-sm"
                     >
@@ -408,12 +443,16 @@ export default function EditTrialist() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <div className="text-emerald-600 font-medium">Upload new video</div>
-                    <div className="text-sm text-gray-500">MP4, MOV, AVI up to 100MB</div>
+                    <div className="text-emerald-600 font-medium">
+                      Upload new video
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      MP4, MOV, AVI up to 100MB
+                    </div>
                   </div>
                 )}
               </div>
-              {uploading === 'video' && uploadProgress > 0 && (
+              {uploading === "video" && uploadProgress > 0 && (
                 <div className="mt-2">
                   <div className="bg-gray-200 rounded-full h-2">
                     <div
@@ -431,7 +470,7 @@ export default function EditTrialist() {
             {/* CV Upload */}
             <div>
               <label className="block text-sm font-medium text-emerald-700 mb-2">
-                Resume/CV {formData.cvUrl && '(Current file uploaded)'}
+                Resume/CV {formData.cvUrl && "(Current file uploaded)"}
               </label>
               <div
                 onClick={() => cvInputRef.current?.click()}
@@ -443,7 +482,7 @@ export default function EditTrialist() {
                   accept=".pdf,.doc,.docx"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) handleFileUpload(file, 'cv');
+                    if (file) handleFileUpload(file, "cv");
                   }}
                   className="hidden"
                 />
@@ -451,7 +490,7 @@ export default function EditTrialist() {
                 {cvFile || formData.cvUrl ? (
                   <div className="space-y-2">
                     <div className="text-emerald-600 font-medium">
-                      {cvFile ? cvFile.name : 'CV uploaded'}
+                      {cvFile ? cvFile.name : "CV uploaded"}
                     </div>
                     {formData.cvUrl && (
                       <a
@@ -468,8 +507,8 @@ export default function EditTrialist() {
                       onClick={(e) => {
                         e.stopPropagation();
                         setCvFile(null);
-                        setFormData(prev => ({ ...prev, cvUrl: '' }));
-                        if (cvInputRef.current) cvInputRef.current.value = '';
+                        setFormData((prev) => ({ ...prev, cvUrl: "" }));
+                        if (cvInputRef.current) cvInputRef.current.value = "";
                       }}
                       className="text-red-600 hover:text-red-800 text-sm"
                     >
@@ -478,12 +517,16 @@ export default function EditTrialist() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <div className="text-emerald-600 font-medium">Upload new resume</div>
-                    <div className="text-sm text-gray-500">PDF, DOC, DOCX up to 10MB</div>
+                    <div className="text-emerald-600 font-medium">
+                      Upload new resume
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      PDF, DOC, DOCX up to 10MB
+                    </div>
                   </div>
                 )}
               </div>
-              {uploading === 'cv' && uploadProgress > 0 && (
+              {uploading === "cv" && uploadProgress > 0 && (
                 <div className="mt-2">
                   <div className="bg-gray-200 rounded-full h-2">
                     <div
@@ -501,7 +544,9 @@ export default function EditTrialist() {
 
           {/* Additional Information */}
           <div className="bg-emerald-50 p-4 rounded-lg">
-            <h3 className="text-lg font-semibold text-emerald-800 mb-4">Additional Information</h3>
+            <h3 className="text-lg font-semibold text-emerald-800 mb-4">
+              Additional Information
+            </h3>
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-emerald-700 mb-2">
@@ -560,7 +605,7 @@ export default function EditTrialist() {
               data-testid="btn-update-trialist"
             >
               {isSubmitting && <Upload className="w-4 h-4 animate-spin" />}
-              {isSubmitting ? 'Updating...' : 'Update Trialist'}
+              {isSubmitting ? "Updating..." : "Update Trialist"}
             </button>
           </div>
         </form>

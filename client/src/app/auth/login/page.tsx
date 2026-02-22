@@ -1,5 +1,5 @@
-'use client';
-import React, { FormEvent, useState } from 'react';
+"use client";
+import React, { FormEvent, useState } from "react";
 import {
   Mail,
   Lock,
@@ -12,14 +12,12 @@ import {
   CheckCircle,
   ArrowRight,
   UserCircle,
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { API_ROUTES } from '@/config/routes';
-import { usePost } from '@/shared/hooks/useApiQuery';
-import { AuthUser } from '@/shared/types';
-import { useAuthContext } from '@/shared/hooks/useAuthContext';
-
-
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { API_ROUTES } from "@/config/routes";
+import { usePost } from "@/shared/hooks/useApiQuery";
+import { AuthUser } from "@/shared/types";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
 
 /**
  * Page: Login Page
@@ -41,15 +39,17 @@ interface ValidationErrors {
 }
 
 const LOGIN_FORM_DEFAULT_DATA: LoginRequestDto = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 };
 
 export default function LoginPage() {
   const [loginRequest, setLoginRequest] = useState<LoginRequestDto>(
-    LOGIN_FORM_DEFAULT_DATA
+    LOGIN_FORM_DEFAULT_DATA,
   );
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {},
+  );
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
   const [successUser, setSuccessUser] = useState<AuthUser | null>(null);
@@ -60,17 +60,15 @@ export default function LoginPage() {
   // Redirect on success
   React.useEffect(() => {
     if (loginSuccess && successUser) {
-      console.log('Login Success! User:', successUser); // DEBUG
+      console.log("Login Success! User:", successUser); // DEBUG
       const timer = setTimeout(() => {
-        // Determine dashboard Based on role
-        if (successUser.userType === 'super_admin' || successUser.roles.includes('admin')) {
-          router.push('/dashboard/admin');
-        } else if (successUser.roles.includes('scout')) {
-          router.push('/dashboard/scout');
-        } else if (successUser.roles.includes('advertiser')) {
-          router.push('/dashboard/advertiser');
-        } else {
-          router.push('/dashboard');
+        // Determine dashboard based on role
+        if (successUser.role === "admin") {
+          router.push("/dashboard/admin");
+        } else if (successUser.role === "scout") {
+          router.push("/dashboard/scout");
+        } else if (successUser.role === "advertiser") {
+          router.push("/dashboard/advertiser");
         }
       }, 1500);
       return () => clearTimeout(timer);
@@ -83,19 +81,18 @@ export default function LoginPage() {
     isPending: loginLoading,
     error: loginError,
     reset: resetLoginState,
-    data: loginData
+    data: loginData,
   } = usePost<LoginRequestDto, any>(API_ROUTES.AUTH.LOGIN, {
     onSuccess: (data) => {
-      if (data && 'user' in data) {
+      if (data && "user" in data) {
         const user: AuthUser = data.user;
         const accessToken = data.accessToken;
 
         setUser(user);
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem("accessToken", accessToken);
         setSuccessUser(user);
         setLoginSuccess(true);
-
-      } else if (data && 'verificationToken' in data) {
+      } else if (data && "verificationToken" in data) {
         router.push(`/auth/verify-email/${data.verificationToken}`);
       }
     },
@@ -118,13 +115,13 @@ export default function LoginPage() {
     const errors: ValidationErrors = {};
 
     if (!loginRequest.email.trim()) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginRequest.email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
     }
 
     if (!loginRequest.password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     }
 
     setValidationErrors(errors);
@@ -139,18 +136,19 @@ export default function LoginPage() {
     }
 
     try {
-      await loginPost(loginRequest);
+      const loginData = await loginPost(loginRequest);
+      console.log("Login Success! User:", loginData); // DEBUG
     } catch (err) {
-      console.error('Login error:', err);
+      console.error("Login error:", err);
     }
   };
 
   const handleForgotPassword = () => {
-    router.push('/auth/forgot-password');
+    router.push("/auth/forgot-password");
   };
 
   const handleSignUp = () => {
-    router.push('/auth/signup');
+    router.push("/advertise/register");
   };
 
   return (
@@ -164,12 +162,12 @@ export default function LoginPage() {
         </div>
 
         <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
-          {loginSuccess ? 'Welcome Back!' : 'Sign In'}
+          {loginSuccess ? "Welcome Back!" : "Sign In"}
         </h1>
         <p className="text-slate-600 text-center mb-8">
           {loginSuccess
-            ? `Welcome, ${successUser?.firstName || 'User'}!`
-            : 'Enter your credentials to continue'}
+            ? `Welcome, ${successUser?.username || "User"}!`
+            : "Enter your credentials to continue"}
         </p>
 
         {/* Error Alert */}
@@ -177,8 +175,8 @@ export default function LoginPage() {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
             <div className="text-sm text-red-700">
-              {loginError.includes('401') || loginError.includes('invalid')
-                ? 'Invalid email or password'
+              {loginError.includes("401") || loginError.includes("invalid")
+                ? "Invalid email or password"
                 : loginError}
             </div>
           </div>
@@ -203,11 +201,11 @@ export default function LoginPage() {
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>You're now signed in as {successUser?.firstName}</span>
+                  <span>You're now signed in as {successUser?.username}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Role: {successUser?.userType}</span>
+                  <span>Role: {successUser?.role}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Loader2 className="w-4 h-4 text-blue-500 mt-0.5 animate-spin flex-shrink-0" />
@@ -233,8 +231,11 @@ export default function LoginPage() {
                     name="email"
                     value={loginRequest.email}
                     onChange={handleChange}
-                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${validationErrors.email ? 'border-red-300' : 'border-slate-200'
-                      } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${
+                      validationErrors.email
+                        ? "border-red-300"
+                        : "border-slate-200"
+                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
                     placeholder="you@example.com"
                     disabled={loginLoading}
                     data-testid="email-input"
@@ -257,12 +258,15 @@ export default function LoginPage() {
                     <Lock className="w-5 h-5 text-slate-400" />
                   </div>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={loginRequest.password}
                     onChange={handleChange}
-                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${validationErrors.password ? 'border-red-300' : 'border-slate-200'
-                      } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${
+                      validationErrors.password
+                        ? "border-red-300"
+                        : "border-slate-200"
+                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
                     placeholder="Enter your password"
                     disabled={loginLoading}
                     data-testid="password-input"
@@ -289,7 +293,9 @@ export default function LoginPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={loginLoading || !loginRequest.email || !loginRequest.password}
+                disabled={
+                  loginLoading || !loginRequest.email || !loginRequest.password
+                }
                 className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
                 data-testid="login-btn"
               >
@@ -332,7 +338,13 @@ export default function LoginPage() {
         {/* Footer note */}
         {!loginSuccess && (
           <div className="mt-8 text-center text-sm text-slate-500">
-            Need help? <a href="/contact" className="text-slate-700 hover:text-slate-900 font-medium">Contact Support</a>
+            Need help?{" "}
+            <a
+              href="/contact"
+              className="text-slate-700 hover:text-slate-900 font-medium"
+            >
+              Contact Support
+            </a>
           </div>
         )}
       </div>
