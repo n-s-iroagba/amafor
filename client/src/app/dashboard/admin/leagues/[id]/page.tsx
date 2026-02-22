@@ -1,12 +1,12 @@
 // app/sports-admin/leagues/[id]/page.tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useDelete, useGet } from '@/shared/hooks/useApiQuery';
-import { API_ROUTES } from '@/config/routes';
-import api from '@/shared/lib/axios';
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useDelete, useGet } from "@/shared/hooks/useApiQuery";
+import { API_ROUTES } from "@/config/routes";
+import api from "@/shared/lib/axios";
 import {
   Calendar,
   Users,
@@ -22,8 +22,8 @@ import {
   Gamepad2,
   Plus,
   Eye,
-  Settings
-} from 'lucide-react';
+  Settings,
+} from "lucide-react";
 
 interface League {
   id: number;
@@ -33,7 +33,6 @@ interface League {
   createdAt: string;
   updatedAt: string;
 }
-
 
 /**
  * Page: League Detail
@@ -51,12 +50,10 @@ export default function LeagueDetail() {
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const { data: league, loading } = useGet<League>(
-    API_ROUTES.LEAGUES.VIEW(id)
-  );
+  const { data: league, loading } = useGet<League>(API_ROUTES.LEAGUES.VIEW(id));
 
-  const { delete: deleteLeague, isPending: isDeleting } = useDelete(
-    (id) => API_ROUTES.LEAGUES.MUTATE(Number(id))
+  const { delete: deleteLeague, isPending: isDeleting } = useDelete((id) =>
+    API_ROUTES.LEAGUES.MUTATE(Number(id)),
   );
 
   const handleDelete = async () => {
@@ -64,20 +61,22 @@ export default function LeagueDetail() {
 
     try {
       await deleteLeague(league.id);
-      router.push('/dashboard/admin/leagues');
+      router.push("/dashboard/admin/leagues");
       router.refresh();
     } catch (error) {
-      console.error('Error deleting league:', error);
-      alert('Failed to delete league. Please try again.');
+      console.error("Error deleting league:", error);
+      alert("Failed to delete league. Please try again.");
     } finally {
       setShowDeleteConfirm(false);
     }
   };
 
   const confirmDelete = () => {
-    if (window.confirm(
-      `Are you sure you want to delete the "${league?.name}" league? This action cannot be undone and will remove all associated fixtures and data.`
-    )) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the "${league?.name}" league? This action cannot be undone and will remove all associated fixtures and data.`,
+      )
+    ) {
       handleDelete();
     }
   };
@@ -90,7 +89,9 @@ export default function LeagueDetail() {
             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-lg opacity-20 animate-pulse"></div>
           </div>
-          <p className="text-blue-700 font-medium text-lg">Loading league details...</p>
+          <p className="text-blue-700 font-medium text-lg">
+            Loading league details...
+          </p>
         </div>
       </div>
     );
@@ -108,7 +109,8 @@ export default function LeagueDetail() {
             League Not Found
           </h3>
           <p className="text-gray-600 mb-8 text-lg">
-            The league you&apos;re looking for doesn&apos;t exist or has been removed.
+            The league you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <Link
             href="/sports-admin/leagues"
@@ -123,12 +125,12 @@ export default function LeagueDetail() {
   }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -149,11 +151,14 @@ export default function LeagueDetail() {
 
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-black">
                     {league.name}
                   </h1>
                   <p className="text-gray-600 mt-2 text-lg">
-                    Season {league.season} • {league.isFriendly ? 'Friendly League' : 'Competitive League'}
+                    Season {league.season} •{" "}
+                    {league.isFriendly
+                      ? "Friendly League"
+                      : "Competitive League"}
                   </p>
                 </div>
 
@@ -213,8 +218,12 @@ export default function LeagueDetail() {
                     <Trophy className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-semibold text-gray-900">League Overview</h2>
-                    <p className="text-gray-600">Complete league information and details</p>
+                    <h2 className="text-xl font-semibold text-gray-900">
+                      League Overview
+                    </h2>
+                    <p className="text-gray-600">
+                      Complete league information and details
+                    </p>
                   </div>
                 </div>
 
@@ -226,8 +235,12 @@ export default function LeagueDetail() {
                         <Calendar className="w-5 h-5 text-blue-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Created Date</p>
-                        <p className="text-gray-900 font-semibold">{formatDate(league.createdAt)}</p>
+                        <p className="text-sm font-medium text-gray-500">
+                          Created Date
+                        </p>
+                        <p className="text-gray-900 font-semibold">
+                          {formatDate(league.createdAt)}
+                        </p>
                       </div>
                     </div>
 
@@ -236,9 +249,13 @@ export default function LeagueDetail() {
                         <Shield className="w-5 h-5 text-green-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">League Type</p>
+                        <p className="text-sm font-medium text-gray-500">
+                          League Type
+                        </p>
                         <p className="text-gray-900 font-semibold">
-                          {league.isFriendly ? 'Friendly Series' : 'Official Competition'}
+                          {league.isFriendly
+                            ? "Friendly Series"
+                            : "Official Competition"}
                         </p>
                       </div>
                     </div>
@@ -251,8 +268,12 @@ export default function LeagueDetail() {
                         <Clock className="w-5 h-5 text-purple-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Last Updated</p>
-                        <p className="text-gray-900 font-semibold">{formatDate(league.updatedAt)}</p>
+                        <p className="text-sm font-medium text-gray-500">
+                          Last Updated
+                        </p>
+                        <p className="text-gray-900 font-semibold">
+                          {formatDate(league.updatedAt)}
+                        </p>
                       </div>
                     </div>
 
@@ -261,8 +282,12 @@ export default function LeagueDetail() {
                         <Users className="w-5 h-5 text-orange-600" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-500">Status</p>
-                        <p className="text-gray-900 font-semibold">Active & Running</p>
+                        <p className="text-sm font-medium text-gray-500">
+                          Status
+                        </p>
+                        <p className="text-gray-900 font-semibold">
+                          Active & Running
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -286,7 +311,9 @@ export default function LeagueDetail() {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <Settings className="w-6 h-6 text-gray-700" />
-                <h3 className="text-xl font-semibold text-gray-900">Quick Actions</h3>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  Quick Actions
+                </h3>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -306,8 +333,6 @@ export default function LeagueDetail() {
                     Browse all matches in this league
                   </p>
                 </Link>
-
-
 
                 <Link
                   href={`/sports-admin/lineups?league=${league.id}`}
@@ -365,7 +390,7 @@ export default function LeagueDetail() {
                         ) : (
                           <Trash2 className="w-4 h-4" />
                         )}
-                        {isDeleting ? 'Deleting...' : 'Confirm'}
+                        {isDeleting ? "Deleting..." : "Confirm"}
                       </button>
                       <button
                         onClick={() => setShowDeleteConfirm(false)}
@@ -397,19 +422,28 @@ export default function LeagueDetail() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">
                   <span className="text-sm text-gray-600">League ID</span>
-                  <span className="text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">#{league.id}</span>
+                  <span className="text-sm font-semibold text-gray-900 bg-gray-100 px-2 py-1 rounded">
+                    #{league.id}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center py-3 border-b border-gray-100">
                   <span className="text-sm text-gray-600">Season</span>
-                  <span className="text-sm font-semibold text-gray-900">{league.season}</span>
+                  <span className="text-sm font-semibold text-gray-900">
+                    {league.season}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center py-3">
-                  <span className="text-sm text-gray-600">Competition Type</span>
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${league.isFriendly
-                    ? 'bg-purple-100 text-purple-800'
-                    : 'bg-green-100 text-green-800'
-                    }`}>
-                    {league.isFriendly ? 'Friendly' : 'Competitive'}
+                  <span className="text-sm text-gray-600">
+                    Competition Type
+                  </span>
+                  <span
+                    className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                      league.isFriendly
+                        ? "bg-purple-100 text-purple-800"
+                        : "bg-green-100 text-green-800"
+                    }`}
+                  >
+                    {league.isFriendly ? "Friendly" : "Competitive"}
                   </span>
                 </div>
               </div>
@@ -422,7 +456,9 @@ export default function LeagueDetail() {
                 Danger Zone
               </h3>
               <p className="text-sm text-red-700 mb-4">
-                Deleting this league will permanently remove all associated fixtures, goals, lineups, and statistics. This action cannot be undone.
+                Deleting this league will permanently remove all associated
+                fixtures, goals, lineups, and statistics. This action cannot be
+                undone.
               </p>
               <button
                 onClick={confirmDelete}
@@ -435,7 +471,9 @@ export default function LeagueDetail() {
                 ) : (
                   <Trash2 className="w-4 h-4 transform group-hover:scale-110 transition-transform" />
                 )}
-                {isDeleting ? 'Deleting League...' : 'Delete League Permanently'}
+                {isDeleting
+                  ? "Deleting League..."
+                  : "Delete League Permanently"}
               </button>
             </div>
           </div>

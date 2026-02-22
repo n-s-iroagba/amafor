@@ -1,15 +1,26 @@
-'use client';
+"use client";
 
-import { API_ROUTES } from '@/config/routes';
-import { useState } from 'react';
-import Image from 'next/image';
-import { Coach } from '@/features/coach/types';
-import { Player } from '@/features/player/types';
-import { useGet } from '@/shared/hooks/useApiQuery';
-import { Header } from '@/shared/components/Header';
-import { Footer } from '@/shared/components/Footer';
-import { Users, Shield, Star, Trophy, ArrowRight, X, Info, ChevronRight, MapPin, Calendar } from 'lucide-react';
-import Link from 'next/link';
+import { API_ROUTES } from "@/config/routes";
+import { useState } from "react";
+import Image from "next/image";
+import { Coach } from "@/features/coach/types";
+import { Player } from "@/features/player/types";
+import { useGet } from "@/shared/hooks/useApiQuery";
+import { Header } from "@/shared/components/Header";
+import { Footer } from "@/shared/components/Footer";
+import {
+  Users,
+  Shield,
+  Star,
+  Trophy,
+  ArrowRight,
+  X,
+  Info,
+  ChevronRight,
+  MapPin,
+  Calendar,
+} from "lucide-react";
+import Link from "next/link";
 
 /**
  * Page: Team Squad
@@ -21,8 +32,12 @@ import Link from 'next/link';
  * Hook: useGet(API_ROUTES.PLAYERS.LIST), useGet(API_ROUTES.COACHES.LIST)
  */
 export default function TeamSquad() {
-  const [selectedTab, setSelectedTab] = useState<'coaches' | 'players'>('players');
-  const [selectedMember, setSelectedMember] = useState<Player | Coach | null>(null);
+  const [selectedTab, setSelectedTab] = useState<"coaches" | "players">(
+    "players",
+  );
+  const [selectedMember, setSelectedMember] = useState<Player | Coach | null>(
+    null,
+  );
 
   const {
     data: coaches,
@@ -49,11 +64,16 @@ export default function TeamSquad() {
 
   const getPositionColor = (position: string) => {
     switch (position.toLowerCase()) {
-      case 'goalkeeper': return 'from-rose-500 to-rose-600 bg-rose-500';
-      case 'defender': return 'from-blue-500 to-indigo-600 bg-blue-500';
-      case 'midfielder': return 'from-emerald-500 to-teal-600 bg-emerald-500';
-      case 'forward': return 'from-orange-500 to-amber-600 bg-orange-500';
-      default: return 'from-slate-500 to-slate-600 bg-slate-500';
+      case "goalkeeper":
+        return "from-rose-500 to-rose-600 bg-rose-500";
+      case "defender":
+        return "from-blue-500 to-indigo-600 bg-blue-500";
+      case "midfielder":
+        return "from-emerald-500 to-teal-600 bg-emerald-500";
+      case "forward":
+        return "from-orange-500 to-amber-600 bg-orange-500";
+      default:
+        return "from-slate-500 to-slate-600 bg-slate-500";
     }
   };
 
@@ -62,7 +82,9 @@ export default function TeamSquad() {
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-sky-400/20 border-t-sky-400 rounded-full animate-spin mx-auto mb-6" />
-          <p className="text-sky-400 font-black uppercase text-[10px] tracking-[0.3em]">Initializing Squad Protocols...</p>
+          <p className="text-sky-400 font-black uppercase text-[10px] tracking-[0.3em]">
+            Initializing Squad Protocols...
+          </p>
         </div>
       </div>
     );
@@ -71,8 +93,14 @@ export default function TeamSquad() {
   const playersData = players ?? [];
   const coachesData = coaches.data ?? [];
 
-  const MemberCard = ({ member, type }: { member: Player | Coach; type: 'player' | 'coach' }) => {
-    const isPlayer = type === 'player';
+  const MemberCard = ({
+    member,
+    type,
+  }: {
+    member: Player | Coach;
+    type: "player" | "coach";
+  }) => {
+    const isPlayer = type === "player";
     const player = member as Player;
     const coach = member as Coach;
 
@@ -113,7 +141,9 @@ export default function TeamSquad() {
 
         <div className="p-8">
           <div className="mb-4">
-            <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r ${getPositionColor(isPlayer ? player.position : coach.role)}`}>
+            <span
+              className={`inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r ${getPositionColor(isPlayer ? player.position : coach.role)}`}
+            >
               {isPlayer ? player.position : coach.role}
             </span>
           </div>
@@ -128,7 +158,8 @@ export default function TeamSquad() {
             )}
             {isPlayer && player.dateOfBirth && (
               <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5" /> Age {calculateAge(player.dateOfBirth)}
+                <Calendar className="w-3.5 h-3.5" /> Age{" "}
+                {calculateAge(player.dateOfBirth)}
               </span>
             )}
           </div>
@@ -151,10 +182,16 @@ export default function TeamSquad() {
                 <Shield className="w-3.5 h-3.5" /> AGFC Elite Personnel
               </div>
               <h1 className="text-5xl md:text-7xl font-black text-white mb-8 uppercase tracking-tight leading-tight">
-                The <span className="text-sky-400 text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">Gladiators</span> Squad
+                The{" "}
+                <span className="text-sky-400 text-black bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">
+                  Gladiators
+                </span>{" "}
+                Squad
               </h1>
               <p className="text-xl text-slate-400 font-medium leading-relaxed mb-12">
-                Meet the world-class professionals committed to excellence. Our technical staff and elite athletes pushing boundaries every match day.
+                Meet the world-class professionals committed to excellence. Our
+                technical staff and elite athletes pushing boundaries every
+                match day.
               </p>
             </div>
           </div>
@@ -164,25 +201,31 @@ export default function TeamSquad() {
         <div className="container mx-auto px-4 -mt-10 relative z-20 mb-20">
           <div className="max-w-md mx-auto bg-white p-3 rounded-[2.5rem] shadow-2xl border border-slate-100 flex gap-2">
             <button
-              onClick={() => setSelectedTab('players')}
-              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${selectedTab === 'players'
-                ? 'bg-slate-900 text-white shadow-lg'
-                : 'text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100'
-                }`}
+              onClick={() => setSelectedTab("players")}
+              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                selectedTab === "players"
+                  ? "bg-slate-900 text-white shadow-lg"
+                  : "text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100"
+              }`}
               data-testid="tab-players"
             >
-              <Users className={`w-4 h-4 ${selectedTab === 'players' ? 'text-sky-400' : ''}`} />
+              <Users
+                className={`w-4 h-4 ${selectedTab === "players" ? "text-sky-400" : ""}`}
+              />
               Players ({playersData.length})
             </button>
             <button
-              onClick={() => setSelectedTab('coaches')}
-              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${selectedTab === 'coaches'
-                ? 'bg-slate-900 text-white shadow-lg'
-                : 'text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100'
-                }`}
+              onClick={() => setSelectedTab("coaches")}
+              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                selectedTab === "coaches"
+                  ? "bg-slate-900 text-white shadow-lg"
+                  : "text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100"
+              }`}
               data-testid="tab-coaches"
             >
-              <Shield className={`w-4 h-4 ${selectedTab === 'coaches' ? 'text-sky-400' : ''}`} />
+              <Shield
+                className={`w-4 h-4 ${selectedTab === "coaches" ? "text-sky-400" : ""}`}
+              />
               Staff ({coachesData.length})
             </button>
           </div>
@@ -190,54 +233,77 @@ export default function TeamSquad() {
 
         <div className="container mx-auto px-4 pb-24">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {selectedTab === 'players'
+            {selectedTab === "players"
               ? playersData.map((player) => (
-                <MemberCard key={player.id} member={player} type="player" />
-              ))
+                  <MemberCard key={player.id} member={player} type="player" />
+                ))
               : coachesData.map((coach) => (
-                <MemberCard key={coach.id} member={coach} type="coach" />
-              ))}
+                  <MemberCard key={coach.id} member={coach} type="coach" />
+                ))}
           </div>
 
-          {((selectedTab === 'players' && playersData.length === 0) ||
-            (selectedTab === 'coaches' && coachesData.length === 0)) && (
-              <div className="text-center py-32 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
-                <Users className="w-20 h-20 text-slate-100 mx-auto mb-6" />
-                <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">Personnel Manifest empty</h3>
-                <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No active profiles detected in the database</p>
-              </div>
-            )}
+          {((selectedTab === "players" && playersData.length === 0) ||
+            (selectedTab === "coaches" && coachesData.length === 0)) && (
+            <div className="text-center py-32 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
+              <Users className="w-20 h-20 text-slate-100 mx-auto mb-6" />
+              <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">
+                Personnel Manifest empty
+              </h3>
+              <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                No active profiles detected in the database
+              </p>
+            </div>
+          )}
 
           {/* Detailed Statistics Dashboard */}
           <div className="mt-32 bg-slate-900 rounded-[3.5rem] p-12 md:p-20 relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-400/10 via-transparent to-transparent pointer-events-none" />
             <div className="relative z-10">
-              <h2 className="text-center text-sky-400 font-black text-xs uppercase tracking-[0.4em] mb-16">Squad Biometrics & Analytics</h2>
+              <h2 className="text-center text-sky-400 font-black text-xs uppercase tracking-[0.4em] mb-16">
+                Squad Biometrics & Analytics
+              </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
                 <div>
-                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">{playersData.length}</div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Active Assets</div>
+                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">
+                    {playersData.length}
+                  </div>
+                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    Active Assets
+                  </div>
                 </div>
                 <div>
-                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">{coachesData.length}</div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Technical Staff</div>
+                  <div className="text-6xl font-black text-white mb-2 tracking-tighter">
+                    {coachesData.length}
+                  </div>
+                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    Technical Staff
+                  </div>
                 </div>
                 <div>
                   <div className="text-6xl font-black text-white mb-2 tracking-tighter">
                     {new Set(playersData.map((p) => p.nationality)).size}
                   </div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Territories</div>
+                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    Territories
+                  </div>
                 </div>
                 <div>
                   <div className="text-6xl font-black text-white mb-2 tracking-tighter">
                     {playersData.length > 0
                       ? Math.round(
-                        playersData.reduce((acc, p) => p.dateOfBirth ? acc + calculateAge(p.dateOfBirth) : acc, 0) /
-                        playersData.filter(p => p.dateOfBirth).length
-                      )
+                          playersData.reduce(
+                            (acc, p) =>
+                              p.dateOfBirth
+                                ? acc + calculateAge(p.dateOfBirth)
+                                : acc,
+                            0,
+                          ) / playersData.filter((p) => p.dateOfBirth).length,
+                        )
                       : 0}
                   </div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Avg Age Profiling</div>
+                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                    Avg Age Profiling
+                  </div>
                 </div>
               </div>
             </div>
@@ -248,7 +314,10 @@ export default function TeamSquad() {
       {/* Profile Dossier Modal */}
       {selectedMember && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-          <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl" onClick={() => setSelectedMember(null)} />
+          <div
+            className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl"
+            onClick={() => setSelectedMember(null)}
+          />
 
           <div className="relative bg-white w-full max-w-5xl max-h-full overflow-hidden rounded-[3.5rem] shadow-2xl flex flex-col md:flex-row animate-in fade-in zoom-in duration-300">
             <button
@@ -277,34 +346,48 @@ export default function TeamSquad() {
 
             <div className="flex-1 p-10 md:p-16 overflow-y-auto">
               <div className="mb-8">
-                <span className={`inline-block px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r ${getPositionColor('position' in selectedMember ? selectedMember.position : selectedMember.role)} mb-6`}>
-                  {'position' in selectedMember ? selectedMember.position : selectedMember.role}
+                <span
+                  className={`inline-block px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white bg-gradient-to-r ${getPositionColor("position" in selectedMember ? selectedMember.position : selectedMember.role)} mb-6`}
+                >
+                  {"position" in selectedMember
+                    ? selectedMember.position
+                    : selectedMember.role}
                 </span>
                 <h2 className="text-5xl font-black text-slate-900 uppercase tracking-tight leading-none mb-4">
                   {selectedMember.name}
                 </h2>
-                {'jerseyNumber' in selectedMember && (
-                  <p className="text-sky-500 font-black text-xl mb-4">SQUAD NUMBER: {selectedMember.jerseyNumber}</p>
+                {"jerseyNumber" in selectedMember && (
+                  <p className="text-sky-500 font-black text-xl mb-4">
+                    SQUAD NUMBER: {selectedMember.jerseyNumber}
+                  </p>
                 )}
               </div>
 
               <div className="grid grid-cols-2 gap-8 mb-12">
-                {'nationality' in selectedMember && selectedMember.nationality && (
-                  <div>
-                    <p className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-1.5">Territory</p>
-                    <p className="text-slate-900 font-black tracking-tight flex items-center gap-2 uppercase">
-                      <MapPin className="w-4 h-4 text-sky-400" /> {selectedMember.nationality}
-                    </p>
-                  </div>
-                )}
-                {'dateOfBirth' in selectedMember && selectedMember.dateOfBirth && (
-                  <div>
-                    <p className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-1.5">Age Profiling</p>
-                    <p className="text-slate-900 font-black tracking-tight flex items-center gap-2 uppercase">
-                      <Calendar className="w-4 h-4 text-sky-400" /> {calculateAge(selectedMember.dateOfBirth)} YEARS
-                    </p>
-                  </div>
-                )}
+                {"nationality" in selectedMember &&
+                  selectedMember.nationality && (
+                    <div>
+                      <p className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-1.5">
+                        Territory
+                      </p>
+                      <p className="text-slate-900 font-black tracking-tight flex items-center gap-2 uppercase">
+                        <MapPin className="w-4 h-4 text-sky-400" />{" "}
+                        {selectedMember.nationality}
+                      </p>
+                    </div>
+                  )}
+                {"dateOfBirth" in selectedMember &&
+                  selectedMember.dateOfBirth && (
+                    <div>
+                      <p className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-1.5">
+                        Age Profiling
+                      </p>
+                      <p className="text-slate-900 font-black tracking-tight flex items-center gap-2 uppercase">
+                        <Calendar className="w-4 h-4 text-sky-400" />{" "}
+                        {calculateAge(selectedMember.dateOfBirth)} YEARS
+                      </p>
+                    </div>
+                  )}
               </div>
 
               <div className="space-y-8">
@@ -313,12 +396,13 @@ export default function TeamSquad() {
                     <Info className="w-4 h-4 text-sky-400" /> Operational Bio
                   </h4>
                   <p className="text-slate-600 font-medium leading-relaxed text-lg italic">
-                    {selectedMember.bio || "No biographical data initialized for this personnel profile."}
+                    {selectedMember.bio ||
+                      "No biographical data initialized for this personnel profile."}
                   </p>
                 </div>
 
                 <div className="pt-8 border-t border-slate-100 flex gap-4">
-                  {'position' in selectedMember && (
+                  {"position" in selectedMember && (
                     <Link
                       href={`/player/${selectedMember.id}`}
                       className="inline-flex items-center justify-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-10 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest shadow-xl shadow-slate-900/20 active:scale-95 duration-200"

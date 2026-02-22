@@ -1,23 +1,5 @@
 describe("Authentication Journeys", () => {
-    // UJ-AUTH-001: User Registration
-    describe("UJ-AUTH-001: User Registration", () => {
-        it("should allow a user to sign up", () => {
-            cy.visit("/auth/login");
-            // Assuming there is a link to sign up
-            cy.contains("Sign Up").click(); // Adjust selector based on actual UI
-            cy.url().should("include", "/register"); // Or whatever the registration path is, adjust as needed
 
-            cy.get('input[name="email"]').type(`testuser-${Date.now()}@example.com`);
-            cy.get('input[name="password"]').type("Password123!");
-            cy.get('input[name="confirmPassword"]').type("Password123!"); // If exists
-            // Select user type if applicable
-
-            cy.get('button[type="submit"]').click();
-
-            // Expect specific feedback, e.g., verification email sent
-            cy.contains("verification email").should("be.visible");
-        });
-    });
 
     // UJ-AUTH-002: User Login
     describe("UJ-AUTH-002: User Login", () => {

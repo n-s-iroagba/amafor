@@ -61,8 +61,8 @@ const startServer = async () => {
   try {
 
     await syncDatabase(false)
-    console.log('Database synchronized');
 
+    console.log('Database synchronized');
     // Warm up cache and fetch RSS feeds
     FeaturedNewsService.warmCache().catch(err => {
       console.error('Failed to warm up FeaturedNews cache:', err);

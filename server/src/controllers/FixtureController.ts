@@ -1,6 +1,61 @@
 import { Request, Response, NextFunction } from 'express';
 import { FixtureService } from '../services';
 import { structuredLogger } from '../utils';
+import { League, Lineup, Player, FixtureStatistics, Goal, FixtureImage, PlayerLeagueStatistics } from '@models/index';
+
+/**
+ * Map of supported include alias names to their Sequelize model / include config.
+ * Supports top-level aliases used by the client (e.g. "league", "lineups", "stats").
+ */
+function buildFixtureIncludes(includeParam: string): any[] {
+  const requested = includeParam.split(',').map(s => s.trim()).filter(Boolean);
+
+  // Normalise: "stats" → "statistics" so the client can use either name
+  const aliases = requested.map(a => a === 'stats' ? 'statistics' : a);
+
+  // We collect top-level associations only. Nested ones (lineups.player) are handled below.
+  const topLevel = new Map<string, any>();
+
+  for (const alias of aliases) {
+    const parts = alias.split('.');
+    const top = parts[0];
+
+    if (top === 'league' && !topLevel.has('league')) {
+      topLevel.set('league', { model: League, as: 'league' });
+    } else if (top === 'lineups' && !topLevel.has('lineups')) {
+      topLevel.set('lineups', { model: Lineup, as: 'lineups', include: [] });
+    } else if (top === 'statistics' && !topLevel.has('statistics')) {
+      topLevel.set('statistics', { model: FixtureStatistics, as: 'statistics' });
+    } else if (top === 'goals' && !topLevel.has('goals')) {
+      topLevel.set('goals', { model: Goal, as: 'goals' });
+    } else if (top === 'images' && !topLevel.has('images')) {
+      topLevel.set('images', { model: FixtureImage, as: 'images' });
+    }
+
+    // Handle nested: lineups.player
+    if (top === 'lineups' && parts.length > 1 && parts[1] === 'player') {
+      const lineupEntry = topLevel.get('lineups');
+      if (lineupEntry) {
+        const alreadyHasPlayer = lineupEntry.include.some((i: any) => i.as === 'player');
+        if (!alreadyHasPlayer) {
+          lineupEntry.include.push({ model: Player, as: 'player', include: [] });
+        }
+        // Handle lineups.player.leagueStatistics (client may send lineups.player.stats)
+        if (parts.length > 2 && (parts[2] === 'stats' || parts[2] === 'leagueStatistics')) {
+          const playerEntry = lineupEntry.include.find((i: any) => i.as === 'player');
+          if (playerEntry) {
+            const alreadyHasStats = playerEntry.include.some((i: any) => i.as === 'leagueStatistics');
+            if (!alreadyHasStats) {
+              playerEntry.include.push({ model: PlayerLeagueStatistics, as: 'leagueStatistics' });
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return Array.from(topLevel.values());
+}
 
 export class FixtureController {
   private matchService: FixtureService;
@@ -45,7 +100,7 @@ export class FixtureController {
     }
   };
 
-  public getUpcomingFixturees = async (req: Request, res: Response, next: NextFunction) => {
+  public getUpcomingFixtures = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
       // Fixturees service: getUpcoming(limit)
@@ -68,7 +123,8 @@ export class FixtureController {
       res.status(200).json({
         success: true,
         data: matches.length > 0 ? matches[0] : null
-      });
+      }
+      );
     } catch (error) {
       next(error);
     }
@@ -198,8 +254,16 @@ export class FixtureController {
   public getFixtureById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      // Pass query params (like include) to service
-      const match = await this.matchService.findById(id, req.query);
+
+      // Parse the include query param into proper Sequelize include objects.
+      // Never pass raw req.query directly — Sequelize can't use a string alias like
+      // "league,lineups.player,stats" and will throw "Association does not exist".
+      const findOptions: any = {};
+      if (req.query.include) {
+        findOptions.include = buildFixtureIncludes(req.query.include as string);
+      }
+
+      const match = await this.matchService.findById(id, findOptions);
 
       if (!match) {
         res.status(404).json({ success: false, message: 'Fixture not found' });

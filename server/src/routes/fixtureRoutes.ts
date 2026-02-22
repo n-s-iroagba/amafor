@@ -16,7 +16,7 @@ const fixtureController = new FixtureController();
 
 router.post('/:leagueId', fixtureController.createFixture);
 router.get('/', fixtureController.listAllFixturees);
-router.get('/upcoming', fixtureController.getUpcomingFixturees);
+router.get('/upcoming', fixtureController.getUpcomingFixtures);
 router.get('/next-upcoming', fixtureController.getNextUpcoming);
 router.get('/gallery', fixtureController.getGallery);
 router.get('/league/:leagueId', fixtureController.getFixturesByLeague);

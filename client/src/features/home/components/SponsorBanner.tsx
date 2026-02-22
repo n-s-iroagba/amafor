@@ -39,7 +39,7 @@ const SponsorBanner: React.FC<SponsorBannerProps> = ({
         </div>
       )}
 
-      <div className="relative max-w-7xl mx-auto px-6 py-3 md:py-20 flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="relative max-w-7xl mx-auto px-6 py-3 md:py-28 flex flex-col md:flex-row items-center justify-between gap-8">
         {/* TEXT */}
         <div className="text-black text-center md:text-left space-y-2">
           <p className="uppercase tracking-widest text-xs text-black/70">
@@ -52,7 +52,7 @@ const SponsorBanner: React.FC<SponsorBannerProps> = ({
         </div>
 
         {/* IMAGE */}
-        <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden shadow-xl transition-transform duration-300 hover:-translate-y-1">
+        <div className="relative w-24 h-24 md:w-28 md:h-32 rounded-full overflow-hidden shadow-xl transition-transform duration-300 hover:-translate-y-1">
           <Image
             src={sponsorImage}
             alt="Sponsor"
@@ -61,20 +61,6 @@ const SponsorBanner: React.FC<SponsorBannerProps> = ({
             priority
           />
         </div>
-      </div>
-
-      {/* Bottom Curve */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-        <svg
-          viewBox="0 0 1440 100"
-          className="w-full h-16"
-          preserveAspectRatio="none"
-        >
-          <path
-            fill="#ffffff"
-            d="M0,64L120,69.3C240,75,480,85,720,80C960,75,1200,53,1320,42.7L1440,32V100H0Z"
-          />
-        </svg>
       </div>
     </section>
   );
