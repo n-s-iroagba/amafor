@@ -3,8 +3,8 @@ import { LeagueStatistics } from '../../models/LeagueStatistics';
 import { LeagueStatisticsAttributes } from '../../models/LeagueStatistics';
 import logger from '../../utils/logger';
 import { developmentLeagueStatistics } from '../data/development/leaguestatistics';
-import { productionLeagueStatisticss } from '../data/production/leaguestatisticss';
-import { testLeagueStatisticss } from '../data/testing/leaguestatisticss';
+import { productionLeagueStatistics } from '../data/production/leaguestatistics';
+import { testLeagueStatistics } from '../data/testing/leaguestatistics';
 import { BaseSeeder } from './base-seeder';
 
 export class LeagueStatisticsSeeder extends BaseSeeder<LeagueStatistics> {
@@ -28,7 +28,7 @@ export class LeagueStatisticsSeeder extends BaseSeeder<LeagueStatistics> {
 
   private async getProductionData(): Promise<LeagueStatisticsAttributes[]> {
     try {
-      return productionLeagueStatisticss || [];
+      return productionLeagueStatistics || [];
     } catch (error) {
       logger.warn(`No production data found for ${this.name}, returning empty array`);
       return [];
@@ -37,7 +37,7 @@ export class LeagueStatisticsSeeder extends BaseSeeder<LeagueStatistics> {
 
   private getTestData(): LeagueStatisticsAttributes[] {
     try {
-      return testLeagueStatisticss || [];
+      return testLeagueStatistics || [];
     } catch (error) {
       logger.warn(`No test data found for ${this.name}, returning empty array`);
       return [];

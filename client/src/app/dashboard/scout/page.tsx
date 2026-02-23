@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
+import { UserStatus } from '@/types';
 
 interface RecentView {
   id: string;
@@ -29,7 +30,7 @@ export default function ScoutDashboard() {
 
   const { data: recentlyViewed, loading: viewsLoading } = useGet<RecentView[]>(
     API_ROUTES.SCOUT.RECENT_VIEWS,
-    { enabled: user?.isApproved }
+    { enabled: user?.status === UserStatus.ACTIVE }
   );
 
   const loading = authLoading;
@@ -51,7 +52,7 @@ export default function ScoutDashboard() {
           <div>
             <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-2">Authenticated Scout Portal</div>
             <h1 className="text-4xl text-[#2F4F4F]">
-              Welcome, {loading ? '...' : user?.firstName || 'Scout'}
+              Welcome, {loading ? '...' : user?.username || 'Scout'}
             </h1>
           </div>
           <div className="flex items-center space-x-4">
@@ -63,7 +64,7 @@ export default function ScoutDashboard() {
         </header>
 
         {/* BRD Requirement: DEV-01 Manual Approval */}
-        {user && !user.isApproved ? (
+        {user && user.status !== UserStatus.ACTIVE ? (
           <div className="mb-8 bg-yellow-50 border-l-4 border-yellow-400 p-8 rounded-r shadow-sm">
             <div className="flex flex-col items-center text-center">
               <div className="flex-shrink-0 mb-4">

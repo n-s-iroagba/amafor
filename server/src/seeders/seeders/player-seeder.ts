@@ -3,8 +3,8 @@ import { Player } from '../../models/Player';
 import { PlayerAttributes } from '../../models/Player';
 import logger from '../../utils/logger';
 import { developmentPlayers } from '../data/development/player';
-import { productionPlayers } from '../data/production/players';
-import { testPlayers } from '../data/testing/players';
+import { productionPlayers } from '../data/production/player';
+import { testPlayers } from '../data/testing/player';
 import { BaseSeeder } from './base-seeder';
 
 export class PlayerSeeder extends BaseSeeder<Player> {

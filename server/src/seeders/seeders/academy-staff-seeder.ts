@@ -1,8 +1,8 @@
 import AcademyStaff, { AcademyStaffAttributes } from "../../models/AcademyStaff";
 import logger from "@utils/logger";
 import { developmentAcademyStaff } from "../data/development/academystaffs";
-import { productionAcademyStaffs } from "../data/production/academystaffs";
-import { testAcademyStaffs } from "../data/testing/academystaffs";
+import { productionAcademyStaff } from "../data/production/academystaffs";
+import { testAcademyStaff } from "../data/testing/academystaffs";
 import { BaseSeeder } from "./base-seeder";
 
 
@@ -27,7 +27,7 @@ export class AcademyStaffSeeder extends BaseSeeder<AcademyStaff> {
 
   private async getProductionData(): Promise<AcademyStaffAttributes[]> {
     try {
-      return productionAcademyStaffs || [];
+      return productionAcademyStaff || [];
     } catch (error) {
       logger.warn(`No production data found for ${this.name}, returning empty array`);
       return [];
@@ -36,7 +36,7 @@ export class AcademyStaffSeeder extends BaseSeeder<AcademyStaff> {
 
   private getTestData(): AcademyStaffAttributes[] {
     try {
-      return testAcademyStaffs || [];
+      return testAcademyStaff || [];
     } catch (error) {
       logger.warn(`No test data found for ${this.name}, returning empty array`);
       return [];

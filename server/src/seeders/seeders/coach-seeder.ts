@@ -1,8 +1,8 @@
 
 import logger from '../../utils/logger';
 import { developmentCoaches } from '../data/development/coachs';
-import { productionCoachs } from '../data/production/coachs';
-import { testCoachs } from '../data/testing/coachs';
+import { productionCoaches } from '../data/production/coachs';
+import { testCoaches } from '../data/testing/coachs';
 import Coach, { CoachAttributes } from '../../models/Coach';
 import { BaseSeeder } from './base-seeder';
 
@@ -27,7 +27,7 @@ export class CoachSeeder extends BaseSeeder<Coach> {
 
   private async getProductionData(): Promise<CoachAttributes[]> {
     try {
-      return productionCoachs || [];
+      return productionCoaches || [];
     } catch (error) {
       logger.warn(`No production data found for ${this.name}, returning empty array`);
       return [];
@@ -36,7 +36,7 @@ export class CoachSeeder extends BaseSeeder<Coach> {
 
   private getTestData(): CoachAttributes[] {
     try {
-      return testCoachs || [];
+      return testCoaches || [];
     } catch (error) {
       logger.warn(`No test data found for ${this.name}, returning empty array`);
       return [];

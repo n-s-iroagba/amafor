@@ -18,7 +18,7 @@ export interface AcademyStaffAttributes {
 }
 
 // Interface for creation attributes (optional fields for creation)
-export interface AcademyStaffCreationAttributes extends Optional<AcademyStaffAttributes, 'id' | 'initials' | 'imageUrl' | 'category' | 'qualifications' | 'yearsOfExperience'> {}
+export interface AcademyStaffCreationAttributes extends Optional<AcademyStaffAttributes, 'id' | 'initials' | 'imageUrl' | 'category' | 'qualifications' | 'yearsOfExperience'> { }
 
 class AcademyStaff extends Model<AcademyStaffAttributes, AcademyStaffCreationAttributes> implements AcademyStaffAttributes {
   public id!: string;
@@ -30,7 +30,7 @@ class AcademyStaff extends Model<AcademyStaffAttributes, AcademyStaffCreationAtt
   public category?: string;
   public qualifications?: string[];
   public yearsOfExperience?: number;
-  
+
   // Timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

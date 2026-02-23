@@ -1,8 +1,8 @@
 
 import logger from '../../utils/logger';
 import { developmentLineups } from '../data/development/lineup';
-import { productionLineups } from '../data/production/lineups';
-import { testLineups } from '../data/testing/lineups';
+import { productionLineups } from '../data/production/lineup';
+import { testLineups } from '../data/testing/lineup';
 import Lineup, { LineupAttributes } from '../../models/Lineup';
 import { BaseSeeder } from './base-seeder';
 
