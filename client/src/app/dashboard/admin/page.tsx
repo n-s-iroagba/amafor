@@ -32,17 +32,19 @@ import { useGet } from "@/shared/hooks/useApiQuery";
 import { API_ROUTES } from "@/config/routes";
 
 interface DashboardStats {
-  revenue: {
+  users: {
     total: number;
-    advertising: number;
-    donations: number;
-    patronage: number;
+    newToday: number;
   };
-  infrastructure: {
-    uptime: string;
-    securityAudit: string;
-    apiLatency: string;
+  content: {
+    articles: number;
+    players: number;
   };
+  commercial: {
+    activeCampaigns: number;
+    revenue: number;
+  };
+  timestamp: string;
 }
 
 /**
@@ -259,18 +261,9 @@ export default function AdminDashboard() {
     }).format(amount);
   };
 
-  const revenueData = stats?.revenue || {
-    total: 0,
-    advertising: 0,
-    donations: 0,
-    patronage: 0,
-  };
-
-  const infraData = stats?.infrastructure || {
-    uptime: "—",
-    securityAudit: "—",
-    apiLatency: "—",
-  };
+  const usersData = stats?.users || { total: 0, newToday: 0 };
+  const contentData = stats?.content || { articles: 0, players: 0 };
+  const commercialData = stats?.commercial || { activeCampaigns: 0, revenue: 0 };
 
   const handleLogout = async () => {
     try {
@@ -312,8 +305,8 @@ export default function AdminDashboard() {
                     key={item.path}
                     href={item.path}
                     className={`flex items-center justify-center lg:justify-start gap-0 lg:gap-3 px-3 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all ${isActive
-                        ? "bg-[#87CEEB] text-[#2F4F4F]"
-                        : "text-white/50 hover:text-white hover:bg-white/8"
+                      ? "bg-[#87CEEB] text-[#2F4F4F]"
+                      : "text-white/50 hover:text-white hover:bg-white/8"
                       }`}
                     data-testid={`admin-nav-link-${item.name.toLowerCase().replace(/ /g, "-")}`}
                     title={item.name}
@@ -354,65 +347,71 @@ export default function AdminDashboard() {
 
         {/* Stats strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-8">
-          {/* Total Revenue */}
+          {/* Total Users */}
           <div
             className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
-            data-testid="stat-card-revenue"
+            data-testid="stat-card-users"
           >
             <div className="flex items-center gap-2 mb-2">
-              <BarChart2 className="w-4 h-4 text-[#87CEEB]" />
+              <Users className="w-4 h-4 text-[#87CEEB]" />
               <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                Total Revenue
+                Total Users
               </span>
             </div>
             <div className="text-xl font-black text-[#2F4F4F]">
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin text-gray-300" />
               ) : (
-                formatCurrency(revenueData.total)
+                usersData.total.toLocaleString()
               )}
             </div>
+            <div className="text-[10px] text-gray-400 mt-1">
+              +{loading ? "—" : usersData.newToday} today
+            </div>
           </div>
 
-          {/* Advertising */}
+          {/* Published Articles */}
           <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
-              <DollarSign className="w-4 h-4 text-blue-400" />
+              <BarChart2 className="w-4 h-4 text-blue-400" />
               <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                Advertising
+                Articles
               </span>
             </div>
             <div className="text-xl font-black text-[#2F4F4F]">
-              {loading ? "—" : formatCurrency(revenueData.advertising)}
+              {loading ? "—" : contentData.articles.toLocaleString()}
+            </div>
+            <div className="text-[10px] text-gray-400 mt-1">
+              {loading ? "—" : contentData.players.toLocaleString()} players
             </div>
           </div>
 
-          {/* Patronage */}
+          {/* Active Campaigns */}
           <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
-              <Heart className="w-4 h-4 text-rose-400" />
+              <DollarSign className="w-4 h-4 text-rose-400" />
               <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                Patronage
+                Active Campaigns
               </span>
             </div>
             <div className="text-xl font-black text-[#2F4F4F]">
-              {loading ? "—" : formatCurrency(revenueData.patronage)}
+              {loading ? "—" : commercialData.activeCampaigns.toLocaleString()}
             </div>
           </div>
 
-          {/* Platform Uptime */}
+          {/* Revenue */}
           <div
             className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
-            data-testid="stat-card-infrastructure"
+            data-testid="stat-card-revenue"
           >
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-green-400" />
               <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                Platform Uptime
+                Revenue
               </span>
             </div>
             <div className="text-xl font-black text-[#2F4F4F]">
-              {infraData.uptime}
+              {loading ? "—" : formatCurrency(commercialData.revenue)}
             </div>
           </div>
         </div>
@@ -450,24 +449,26 @@ export default function AdminDashboard() {
         </section>
 
         {/* Infra snapshot */}
-        <section className="mt-8 bg-[#2F4F4F] rounded-2xl p-6 text-white flex flex-wrap gap-8">
+        <section className="mt-8 bg-[#2F4F4F] rounded-2xl p-6 text-white flex flex-wrap gap-8 items-center">
           <div>
             <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">
-              Platform Uptime
+              Last Updated
             </div>
-            <div className="text-base font-black">{infraData.uptime}</div>
+            <div className="text-base font-black">
+              {stats?.timestamp ? new Date(stats.timestamp).toLocaleTimeString() : "—"}
+            </div>
           </div>
           <div>
             <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">
-              Security Audit
+              New Users Today
             </div>
-            <div className="text-base font-black">{infraData.securityAudit}</div>
+            <div className="text-base font-black">{loading ? "—" : usersData.newToday}</div>
           </div>
           <div>
             <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">
-              API Latency
+              Registered Players
             </div>
-            <div className="text-base font-black">{infraData.apiLatency}</div>
+            <div className="text-base font-black">{loading ? "—" : contentData.players.toLocaleString()}</div>
           </div>
           <div className="ml-auto flex items-center">
             <Link
