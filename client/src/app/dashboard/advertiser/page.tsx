@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
+import { UserStatus } from '@/types';
 
 interface Campaign {
   id: string;
@@ -69,7 +70,7 @@ export default function AdvertiserDashboard() {
   const openDisputes = disputes?.filter(d => d.status === 'open') || [];
 
   // Show pending verification if not approved
-  if (user && !user.isApproved) {
+  if (user && user.status !== UserStatus.ACTIVE) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-8 rounded-r shadow-sm max-w-xl">
@@ -103,7 +104,7 @@ export default function AdvertiserDashboard() {
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-2">Advertiser Self-Service Portal</div>
-            <h1 className="text-4xl text-[#2F4F4F]">{user?.firstName}'s Dashboard</h1>
+            <h1 className="text-4xl text-[#2F4F4F]">{user?.username}'s Dashboard</h1>
           </div>
           <Link href="/dashboard/advertiser/campaigns/new" className="sky-button flex items-center space-x-3 py-4">
             <PlusCircle className="w-5 h-5" />

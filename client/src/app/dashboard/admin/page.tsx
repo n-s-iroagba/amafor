@@ -6,8 +6,6 @@ import {
   Activity,
   Bell,
   FileSearch,
-  Settings,
-  ChevronRight,
   UserCheck,
   TrendingUp,
   BarChart2,
@@ -17,9 +15,19 @@ import {
   DollarSign,
   HardDrive,
   Loader2,
+  BookOpen,
+  Video,
+  Newspaper,
+  AlertTriangle,
+  CreditCard,
+  Rss,
+  GraduationCap,
+  ChevronRight,
+  LogOut,
+  UserCog,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useGet } from "@/shared/hooks/useApiQuery";
 import { API_ROUTES } from "@/config/routes";
 
@@ -43,81 +51,203 @@ interface DashboardStats {
  * Requirements: REQ-ADM-02 (Admin Dashboard), REQ-ADM-01 (RBAC Entry)
  * User Story: US-ADM-001 (Overview)
  * User Journey: UJ-ADM-001 (System Administration)
- * API: GET /api/admin/metrics (API_ROUTES.ANALYTICS.DASHBOARD)
+ * API: GET /analytics/dashboard (API_ROUTES.ANALYTICS.DASHBOARD)
  * Hook: useGet(API_ROUTES.ANALYTICS.DASHBOARD)
  */
 export default function AdminDashboard() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const { data: stats, loading } = useGet<DashboardStats>(
     API_ROUTES.ANALYTICS.DASHBOARD,
   );
 
-  const navItems = [
+  const navGroups = [
     {
-      name: "Dashboard",
-      path: "/dashboard/admin",
-      icon: <Activity className="w-4 h-4" />,
+      label: "Overview",
+      items: [
+        {
+          name: "Dashboard",
+          path: "/dashboard/admin",
+          icon: <Activity className="w-4 h-4" />,
+        },
+      ],
     },
     {
-      name: "User Management",
+      label: "People",
+      items: [
+        {
+          name: "User Management",
+          path: "/dashboard/admin/users",
+          icon: <Users className="w-4 h-4" />,
+        },
+        {
+          name: "Scout Verification",
+          path: "/dashboard/admin/scouts",
+          icon: <UserCheck className="w-4 h-4" />,
+        },
+        {
+          name: "Advertiser Verification",
+          path: "/dashboard/admin/advertisers",
+          icon: <Shield className="w-4 h-4" />,
+        },
+        {
+          name: "Roster Management",
+          path: "/dashboard/admin/players",
+          icon: <UserCircle className="w-4 h-4" />,
+        },
+        {
+          name: "Coaches",
+          path: "/dashboard/admin/coaches",
+          icon: <UserCog className="w-4 h-4" />,
+        },
+        {
+          name: "Academy",
+          path: "/dashboard/admin/academy/trialist",
+          icon: <GraduationCap className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      label: "Content",
+      items: [
+        {
+          name: "Articles",
+          path: "/dashboard/admin/cms/articles",
+          icon: <BookOpen className="w-4 h-4" />,
+        },
+        {
+          name: "Videos",
+          path: "/dashboard/admin/cms/videos",
+          icon: <Video className="w-4 h-4" />,
+        },
+        {
+          name: "RSS Feeds",
+          path: "/dashboard/admin/rss-feeds",
+          icon: <Rss className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      label: "Competition",
+      items: [
+        {
+          name: "Fixtures & Results",
+          path: "/dashboard/admin/leagues",
+          icon: <Calendar className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      label: "Commerce",
+      items: [
+        {
+          name: "Patronage Program",
+          path: "/dashboard/admin/patrons",
+          icon: <Heart className="w-4 h-4" />,
+        },
+        {
+          name: "Subscriptions",
+          path: "/dashboard/admin/subscriptions",
+          icon: <CreditCard className="w-4 h-4" />,
+        },
+        {
+          name: "Disputes",
+          path: "/dashboard/admin/disputes",
+          icon: <AlertTriangle className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      label: "Operations",
+      items: [
+        {
+          name: "Audit Trails",
+          path: "/dashboard/admin/audit",
+          icon: <FileSearch className="w-4 h-4" />,
+        },
+        {
+          name: "Notifications",
+          path: "/dashboard/admin/notifications",
+          icon: <Bell className="w-4 h-4" />,
+        },
+        {
+          name: "Infra Health",
+          path: "/dashboard/admin/health",
+          icon: <TrendingUp className="w-4 h-4" />,
+        },
+        {
+          name: "Data Backups",
+          path: "/dashboard/admin/backups",
+          icon: <HardDrive className="w-4 h-4" />,
+        },
+      ],
+    },
+  ];
+
+  const quickActions = [
+    {
+      label: "User Management",
+      description: "View, search, and role-assign platform users",
       path: "/dashboard/admin/users",
-      icon: <Users className="w-4 h-4" />,
+      icon: <Users className="w-6 h-6" />,
+      color: "bg-blue-50 text-blue-600",
     },
     {
-      name: "Scout Verification",
+      label: "Scout Verification",
+      description: "Review pending scout applications",
       path: "/dashboard/admin/scouts",
-      icon: <UserCheck className="w-4 h-4" />,
+      icon: <UserCheck className="w-6 h-6" />,
+      color: "bg-green-50 text-green-600",
     },
     {
-      name: "Advertiser Verification",
+      label: "Advertiser Verification",
+      description: "Approve or reject advertiser accounts",
       path: "/dashboard/admin/advertisers",
-      icon: <Shield className="w-4 h-4" />,
+      icon: <Shield className="w-6 h-6" />,
+      color: "bg-sky-50 text-sky-600",
     },
     {
-      name: "Roster Management",
-      path: "/dashboard/admin/players",
-      icon: <UserCircle className="w-4 h-4" />,
+      label: "Publish Article",
+      description: "Create or manage CMS articles",
+      path: "/dashboard/admin/cms/articles",
+      icon: <Newspaper className="w-6 h-6" />,
+      color: "bg-purple-50 text-purple-600",
     },
     {
-      name: "Fixtures & Results",
+      label: "Fixtures & Results",
+      description: "Manage leagues, fixtures and match data",
       path: "/dashboard/admin/leagues",
-      icon: <Calendar className="w-4 h-4" />,
+      icon: <Calendar className="w-6 h-6" />,
+      color: "bg-amber-50 text-amber-600",
     },
     {
-      name: "Patronage Program",
+      label: "Disputes",
+      description: "Resolve active advertiser disputes",
+      path: "/dashboard/admin/disputes",
+      icon: <AlertTriangle className="w-6 h-6" />,
+      color: "bg-red-50 text-red-600",
+    },
+    {
+      label: "Patron Packages",
+      description: "Manage patronage tiers and subscribers",
       path: "/dashboard/admin/patrons",
-      icon: <Heart className="w-4 h-4" />,
+      icon: <Heart className="w-6 h-6" />,
+      color: "bg-rose-50 text-rose-600",
     },
     {
-      name: "Advertising Rates",
-      path: "/dashboard/admin/ad-plans",
-      icon: <DollarSign className="w-4 h-4" />,
-    },
-    {
-      name: "Audit Trails",
+      label: "Audit Trails",
+      description: "Review system-wide activity logs",
       path: "/dashboard/admin/audit",
-      icon: <FileSearch className="w-4 h-4" />,
+      icon: <FileSearch className="w-6 h-6" />,
+      color: "bg-teal-50 text-teal-600",
     },
     {
-      name: "Notifications",
-      path: "/dashboard/admin/notifications",
-      icon: <Bell className="w-4 h-4" />,
-    },
-    {
-      name: "Infra Health",
-      path: "/dashboard/admin/health",
-      icon: <TrendingUp className="w-4 h-4" />,
-    },
-    {
-      name: "Data Backups",
-      path: "/dashboard/admin/backups",
-      icon: <HardDrive className="w-4 h-4" />,
-    },
-    {
-      name: "System Settings",
-      path: "/dashboard/admin/settings",
-      icon: <Settings className="w-4 h-4" />,
+      label: "Academy Trialists",
+      description: "Manage trialist registrations and status",
+      path: "/dashboard/admin/academy/trialist",
+      icon: <GraduationCap className="w-6 h-6" />,
+      color: "bg-indigo-50 text-indigo-600",
     },
   ];
 
@@ -137,179 +267,217 @@ export default function AdminDashboard() {
   };
 
   const infraData = stats?.infrastructure || {
-    uptime: "Loading...",
-    securityAudit: "Loading...",
-    apiLatency: "Loading...",
+    uptime: "—",
+    securityAudit: "—",
+    apiLatency: "—",
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // ignore
+    }
+    router.push("/auth/login");
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      <aside className="w-20 lg:w-64 bg-[#2F4F4F] flex flex-col text-white sticky top-0 h-screen transition-all duration-300">
-        <div className="p-4 lg:p-8 border-b border-white/5 flex items-center justify-center lg:justify-start space-x-0 lg:space-x-3">
-          <Shield className="w-8 h-8 text-[#87CEEB]" />
-          <span className="font-black text-xs tracking-widest uppercase hidden lg:inline">
+      {/* ── Sidebar ── */}
+      <aside className="w-16 lg:w-64 bg-[#2F4F4F] flex flex-col text-white sticky top-0 h-screen transition-all duration-300 overflow-hidden">
+        {/* Logo */}
+        <div className="p-4 lg:p-6 border-b border-white/10 flex items-center justify-center lg:justify-start gap-0 lg:gap-3 shrink-0">
+          <Shield className="w-7 h-7 text-[#87CEEB] shrink-0" />
+          <span className="font-black text-[11px] tracking-widest uppercase hidden lg:inline leading-tight">
             Admin Command
           </span>
         </div>
-        <nav className="flex-1 py-8 px-2 lg:px-4 space-y-1 overflow-y-auto custom-scrollbar">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`flex items-center justify-center lg:justify-start space-x-0 lg:space-x-3 p-3 lg:p-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all ${
-                pathname === item.path
-                  ? "bg-[#87CEEB] text-[#2F4F4F]"
-                  : "text-white/50 hover:text-white hover:bg-white/5"
-              }`}
-              data-testid={`admin-nav-link-${item.name.toLowerCase().replace(/ /g, "-")}`}
-              title={item.name}
-            >
-              {item.icon} <span className="hidden lg:inline">{item.name}</span>
-            </Link>
+
+        {/* Nav */}
+        <nav className="flex-1 py-4 px-2 lg:px-3 space-y-5 overflow-y-auto custom-scrollbar">
+          {navGroups.map((group) => (
+            <div key={group.label}>
+              <div className="hidden lg:block px-2 mb-1 text-[9px] font-black uppercase tracking-[0.2em] text-white/30">
+                {group.label}
+              </div>
+              {group.items.map((item) => {
+                // highlight if the pathname starts with the item path
+                // (exact match for dashboard root, prefix match for others)
+                const isActive =
+                  item.path === "/dashboard/admin"
+                    ? pathname === item.path
+                    : pathname.startsWith(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`flex items-center justify-center lg:justify-start gap-0 lg:gap-3 px-3 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all ${isActive
+                        ? "bg-[#87CEEB] text-[#2F4F4F]"
+                        : "text-white/50 hover:text-white hover:bg-white/8"
+                      }`}
+                    data-testid={`admin-nav-link-${item.name.toLowerCase().replace(/ /g, "-")}`}
+                    title={item.name}
+                  >
+                    <span className="shrink-0">{item.icon}</span>
+                    <span className="hidden lg:inline truncate">{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
           ))}
         </nav>
 
-        <div className="p-4 hidden lg:block">
-          <div className="bg-[#2F4F4F] text-white p-6 rounded-[2.5rem] relative overflow-hidden shadow-xl border border-white/5">
-            <Shield className="absolute -right-8 -bottom-8 w-32 h-32 text-white/5" />
-            <h4 className="text-sm mb-4 font-black uppercase tracking-tight relative z-10">
-              ISO 27001
-            </h4>
-            <Link
-              href="/dashboard/admin/settings"
-              className="w-full py-3 bg-white/10 hover:bg-white text-white hover:text-[#2F4F4F] rounded-xl text-[9px] font-black uppercase tracking-widest transition-all text-center block relative z-10"
-            >
-              Audit Config
-            </Link>
-          </div>
+        {/* Logout */}
+        <div className="p-2 lg:p-3 border-t border-white/10 shrink-0">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center lg:justify-start gap-0 lg:gap-3 px-3 py-3 rounded-xl text-white/40 hover:text-white hover:bg-red-500/20 transition-all font-black text-[10px] uppercase tracking-widest"
+            data-testid="admin-logout-btn"
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            <span className="hidden lg:inline">Logout</span>
+          </button>
         </div>
       </aside>
 
-      <main className="flex-1 p-4 lg:p-12 overflow-y-auto">
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 lg:mb-12">
-          <div>
-            <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-2">
-              Central Infrastructure Console
-            </div>
-            <h1 className="text-2xl lg:text-4xl text-[#2F4F4F]">
-              Arena Operations
-            </h1>
+      {/* ── Main ── */}
+      <main className="flex-1 p-4 lg:p-10 overflow-y-auto">
+        {/* Header */}
+        <header className="mb-8">
+          <div className="text-[10px] font-black text-[#87CEEB] uppercase tracking-[0.3em] mb-1">
+            Central Infrastructure Console
           </div>
+          <h1 className="text-2xl lg:text-4xl font-black text-[#2F4F4F]">
+            Arena Operations
+          </h1>
         </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-12">
-          <div className="lg:col-span-2 space-y-6 lg:space-y-12">
-            <section
-              className="bg-white rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 border border-gray-100 shadow-sm"
-              data-testid="stat-card-revenue"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 lg:mb-10 gap-4">
-                <h2 className="text-xs lg:text-sm font-black text-[#2F4F4F] uppercase tracking-widest flex items-center">
-                  <BarChart2 className="w-5 h-5 mr-3 text-[#87CEEB]" /> Revenue
-                  by Source
-                </h2>
-                <div className="text-2xl lg:text-3xl font-black text-[#2F4F4F]">
-                  {loading ? (
-                    <Loader2 className="w-6 h-6 animate-spin" />
-                  ) : (
-                    formatCurrency(revenueData.total)
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
-                <div className="space-y-2">
-                  <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                    Advertising
-                  </div>
-                  <div className="text-lg lg:text-xl font-bold text-[#2F4F4F]">
-                    {loading ? "..." : formatCurrency(revenueData.advertising)}
-                  </div>
-                  <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className="bg-blue-500 h-full"
-                      style={{
-                        width: revenueData.total
-                          ? `${(revenueData.advertising / revenueData.total) * 100}%`
-                          : "0%",
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                    Donations
-                  </div>
-                  <div className="text-lg lg:text-xl font-bold text-[#2F4F4F]">
-                    {loading ? "..." : formatCurrency(revenueData.donations)}
-                  </div>
-                  <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className="bg-green-500 h-full"
-                      style={{
-                        width: revenueData.total
-                          ? `${(revenueData.donations / revenueData.total) * 100}%`
-                          : "0%",
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                    Patronage
-                  </div>
-                  <div className="text-lg lg:text-xl font-bold text-[#2F4F4F]">
-                    {loading ? "..." : formatCurrency(revenueData.patronage)}
-                  </div>
-                  <div className="w-full bg-gray-50 h-1.5 rounded-full overflow-hidden">
-                    <div
-                      className="bg-[#87CEEB] h-full"
-                      style={{
-                        width: revenueData.total
-                          ? `${(revenueData.patronage / revenueData.total) * 100}%`
-                          : "0%",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </section>
+        {/* Stats strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6 mb-8">
+          {/* Total Revenue */}
+          <div
+            className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
+            data-testid="stat-card-revenue"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <BarChart2 className="w-4 h-4 text-[#87CEEB]" />
+              <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                Total Revenue
+              </span>
+            </div>
+            <div className="text-xl font-black text-[#2F4F4F]">
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin text-gray-300" />
+              ) : (
+                formatCurrency(revenueData.total)
+              )}
+            </div>
+          </div>
 
-            <section
-              className="bg-white rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 border border-gray-100 shadow-sm"
-              data-testid="stat-card-infrastructure"
-            >
-              <h2 className="text-xs lg:text-sm font-black text-[#2F4F4F] uppercase tracking-widest mb-6 lg:mb-10">
-                Infrastructure Health (ADM-17)
-              </h2>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-                <div className="space-y-2">
-                  <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest">
-                    Platform Uptime
-                  </div>
-                  <div className="text-base lg:text-lg font-black text-[#2F4F4F]">
-                    {infraData.uptime}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest">
-                    Security Audit
-                  </div>
-                  <div className="text-base lg:text-lg font-black text-[#2F4F4F]">
-                    {infraData.securityAudit}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-[9px] font-black text-gray-300 uppercase tracking-widest">
-                    API Latency
-                  </div>
-                  <div className="text-base lg:text-lg font-black text-[#2F4F4F]">
-                    {infraData.apiLatency}
-                  </div>
-                </div>
-              </div>
-            </section>
+          {/* Advertising */}
+          <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <DollarSign className="w-4 h-4 text-blue-400" />
+              <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                Advertising
+              </span>
+            </div>
+            <div className="text-xl font-black text-[#2F4F4F]">
+              {loading ? "—" : formatCurrency(revenueData.advertising)}
+            </div>
+          </div>
+
+          {/* Patronage */}
+          <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <Heart className="w-4 h-4 text-rose-400" />
+              <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                Patronage
+              </span>
+            </div>
+            <div className="text-xl font-black text-[#2F4F4F]">
+              {loading ? "—" : formatCurrency(revenueData.patronage)}
+            </div>
+          </div>
+
+          {/* Platform Uptime */}
+          <div
+            className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm"
+            data-testid="stat-card-infrastructure"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-4 h-4 text-green-400" />
+              <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">
+                Platform Uptime
+              </span>
+            </div>
+            <div className="text-xl font-black text-[#2F4F4F]">
+              {infraData.uptime}
+            </div>
           </div>
         </div>
+
+        {/* Quick Actions */}
+        <section>
+          <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-5">
+            Quick Actions
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            {quickActions.map((action) => (
+              <Link
+                key={action.path}
+                href={action.path}
+                className="group bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-start gap-4"
+                data-testid={`quick-action-${action.label.toLowerCase().replace(/ /g, "-")}`}
+              >
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${action.color}`}
+                >
+                  {action.icon}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-black text-[#2F4F4F] text-sm uppercase tracking-tight leading-tight mb-1">
+                    {action.label}
+                  </div>
+                  <div className="text-[11px] text-gray-400 leading-snug">
+                    {action.description}
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-gray-200 group-hover:text-[#87CEEB] shrink-0 mt-1 ml-auto transition-colors" />
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Infra snapshot */}
+        <section className="mt-8 bg-[#2F4F4F] rounded-2xl p-6 text-white flex flex-wrap gap-8">
+          <div>
+            <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">
+              Platform Uptime
+            </div>
+            <div className="text-base font-black">{infraData.uptime}</div>
+          </div>
+          <div>
+            <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">
+              Security Audit
+            </div>
+            <div className="text-base font-black">{infraData.securityAudit}</div>
+          </div>
+          <div>
+            <div className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-1">
+              API Latency
+            </div>
+            <div className="text-base font-black">{infraData.apiLatency}</div>
+          </div>
+          <div className="ml-auto flex items-center">
+            <Link
+              href="/dashboard/admin/health"
+              className="text-[9px] font-black uppercase tracking-widest text-[#87CEEB] hover:text-white transition-colors flex items-center gap-1"
+            >
+              Full Diagnostics <ChevronRight className="w-3 h-3" />
+            </Link>
+          </div>
+        </section>
       </main>
     </div>
   );
