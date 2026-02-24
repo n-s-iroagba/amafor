@@ -7,8 +7,8 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   collectCoverageFrom: [
-    'src/hooks/**/*.{ts,tsx}',
-    'src/lib/**/*.{ts,tsx}',
+    '../hooks/**/*.{ts,tsx}',
+    '../lib/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/*.test.{ts,tsx}',
   ],

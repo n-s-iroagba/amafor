@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../services';
 import { structuredLogger } from '../utils';
 import { getCookieOptions } from '@config/cookIeOptions';
-import { AuthServiceLoginResponse, AuthUser, ResendVerificationRespnseDto, SignUpResponseDto } from 'src/types/auth.types';
+import { AuthServiceLoginResponse, AuthUser, ResendVerificationRespnseDto, SignUpResponseDto } from '../types/auth.types';
 
 export class AuthController {
   private authService: AuthService;

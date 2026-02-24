@@ -1,7 +1,7 @@
 import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
-import redisClient from 'src/redis/redisClient';
-import { PaginatedData } from 'src/types';
+import redisClient from '../redis/redisClient';
+import { PaginatedData } from '../types';
 import { FeaturedNewsRepository } from '@repositories/FeaturedNewsRepository';
 import FeaturedNews from '@models/FeaturedNews';
 import { RssFeedFetcherService } from './RssFeedFetcherService';

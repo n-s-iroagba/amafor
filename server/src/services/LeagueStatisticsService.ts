@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Sequelize } from 'sequelize';
 import { LeagueStatisticsRepository } from '@repositories/LeagueStatisticsRepository';
 import { AppError } from '@utils/errors';
-import { PaginatedData } from 'src/types';
+import { PaginatedData } from '../types';
 
 export interface CreateLeagueStatisticsData {
   leagueId: string;

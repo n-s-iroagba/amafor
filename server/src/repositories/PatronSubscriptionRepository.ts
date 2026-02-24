@@ -5,7 +5,7 @@ import { AuditLogRepository } from './AuditLogRepository';
 import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
 import { underscoredIf } from 'sequelize/types/utils';
-import { PatronSubscriptionWithPatron } from 'src/types/patronSubscription';
+import { PatronSubscriptionWithPatron } from '../types/patronSubscription';
 
 export interface PatronFilterOptions {
   tier?: PatronTier;

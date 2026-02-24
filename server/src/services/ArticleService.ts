@@ -4,9 +4,9 @@ import { Article, ArticleTag } from '@models/Article';
 
 import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
-import redisClient from 'src/redis/redisClient';
+import redisClient from '../redis/redisClient';
 
-import { PaginatedData } from 'src/types';
+import { PaginatedData } from '../types';
 
 export interface HomepageArticles {
   featured: Article[];

@@ -5,7 +5,7 @@ import { AuditLogRepository } from './AuditLogRepository';
 import logger from '@utils/logger';
 import { tracer } from '@utils/tracer';
 import sequelize from 'sequelize/types/sequelize';
-import { AdCampaignWithAdvertiser } from 'src/types/adCampaign';
+import { AdCampaignWithAdvertiser } from '../types/adCampaign';
 import AdCreative from '@models/AdCreative';
 
 export interface AdCampaignFilterOptions {

@@ -117,15 +117,15 @@ export const trialistController = {
    */
   updateTrialist: asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
 
     const updateData: UpdateTrialistData = {
       ...req.body,
       ...(req.body.dob && { dob: new Date(req.body.dob) }),
       ...(req.body.height && { height: parseInt(req.body.height) }),
       ...(req.body.weight && { weight: parseInt(req.body.weight) }),
-      videoFile: files?.videoFile?.[0],
-      cvFile: files?.cvFile?.[0],
+
+
     };
 
     const trialist = await trialistService.updateTrialist(id, updateData);

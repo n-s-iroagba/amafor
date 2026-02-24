@@ -1,7 +1,8 @@
-import Joi from 'joi';
+
 import { Request, Response, NextFunction } from 'express';
 import { logger } from './logger';
 import { tracer } from './tracer';
+import Joi from 'joi';
 
 // Common validation schemas
 export const commonSchemas = {
@@ -602,27 +603,7 @@ export const validateAsync = async (data: any, schema: Joi.ObjectSchema): Promis
   });
 };
 
-// Validate file upload
-export const validateFile = (file: Express.Multer.File, allowedTypes: string[], maxSize: number) => {
-  const errors: string[] = [];
-
-  // Check file type
-  const fileType = file.mimetype.split('/')[1];
-  if (!allowedTypes.includes(fileType)) {
-    errors.push(`File type ${fileType} is not allowed. Allowed types: ${allowedTypes.join(', ')}`);
-  }
-
-  // Check file size
-  if (file.size > maxSize) {
-    const maxSizeMB = (maxSize / (1024 * 1024)).toFixed(2);
-    errors.push(`File size ${(file.size / (1024 * 1024)).toFixed(2)}MB exceeds maximum ${maxSizeMB}MB`);
-  }
-
-  return {
-    valid: errors.length === 0,
-    errors: errors.length > 0 ? errors : undefined,
-  };
-};
+;
 
 // Validate ID parameter
 export const validateId = (id: string): boolean => {
@@ -689,8 +670,7 @@ export default {
   audit: auditSchemas,
   system: systemSchemas,
   validate,
-  validateAsync,
-  validateFile,
+
   validateId,
   validateEmail,
   validateUrl,

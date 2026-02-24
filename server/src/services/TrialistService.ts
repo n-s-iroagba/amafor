@@ -4,13 +4,11 @@ import { AppError } from '@utils/errors';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface CreateTrialistData extends Omit<TrialistCreationAttributes, 'id' | 'videoUrl' | 'cvUrl'> {
-  videoFile?: Express.Multer.File;
-  cvFile?: Express.Multer.File;
+
 }
 
 export interface UpdateTrialistData extends Partial<Omit<TrialistAttributes, 'id' | 'videoUrl' | 'cvUrl'>> {
-  videoFile?: Express.Multer.File;
-  cvFile?: Express.Multer.File;
+
 }
 
 export class TrialistService {
@@ -33,14 +31,12 @@ export class TrialistService {
       throw new AppError('Trialist must be at least 14 years old', 400);
     }
 
-    // Upload files if provided
-    const uploads = await this.uploadFiles(data.videoFile, data.cvFile);
+
 
     const trialistData: TrialistCreationAttributes = {
       ...data,
       id: uuidv4(),
-      videoUrl: uploads.videoUrl,
-      cvUrl: uploads.cvUrl,
+
       status: data.status || 'PENDING',
     };
 
@@ -104,13 +100,11 @@ export class TrialistService {
       }
     }
 
-    // Upload new files if provided
-    const uploads = await this.uploadFiles(data.videoFile, data.cvFile);
+
 
     const updateData: Partial<TrialistAttributes> = {
       ...data,
-      videoUrl: uploads.videoUrl || trialist.videoUrl,
-      cvUrl: uploads.cvUrl || trialist.cvUrl,
+
     };
 
     // Remove undefined values
@@ -167,22 +161,4 @@ export class TrialistService {
     return age;
   }
 
-  private async uploadFiles(
-    videoFile?: Express.Multer.File,
-    cvFile?: Express.Multer.File
-  ): Promise<{ videoUrl?: string; cvUrl?: string }> {
-    const result: { videoUrl?: string; cvUrl?: string } = {};
-
-    // In a real implementation, you would upload to cloud storage
-    // For now, we'll use local file paths or placeholder URLs
-    if (videoFile) {
-      result.videoUrl = `/uploads/trialists/videos/${videoFile.filename || videoFile.originalname}`;
-    }
-
-    if (cvFile) {
-      result.cvUrl = `/uploads/trialists/cvs/${cvFile.filename || cvFile.originalname}`;
-    }
-
-    return result;
-  }
 }
