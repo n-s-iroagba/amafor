@@ -12,6 +12,7 @@
     "start": "node dist/index.js",
     "lint": "eslint . --ext .ts",
     "migrate": "npx sequelize-cli db:migrate",
+    "prod": "node dist/scripts/seed.js",
     "seed": "npx ts-node -r tsconfig-paths/register src/scripts/seed.ts"
   },
   "dependencies": {

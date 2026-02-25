@@ -3,6 +3,7 @@ import app from './app';
 import dotenv from 'dotenv';
 import { syncDatabase, User } from './models';
 import FeaturedNewsService from '@services/FeaturedNewsService';
+import { runSeeders } from './scripts/seed';
 
 
 
@@ -61,6 +62,7 @@ const startServer = async () => {
   try {
 
     await syncDatabase(false)
+
 
     console.log('Database synchronized');
     // Warm up cache and fetch RSS feeds

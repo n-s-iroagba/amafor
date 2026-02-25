@@ -1,6 +1,6 @@
 import { seeder } from "../seeders/seeders";
 
-async function runSeeders() {
+export async function runSeeders() {
   try {
     await seeder.runAll();
     console.log('All seeders completed successfully');
@@ -11,4 +11,4 @@ async function runSeeders() {
   }
 }
 
-runSeeders();
+// runSeeders();

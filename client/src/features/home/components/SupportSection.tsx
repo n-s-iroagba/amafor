@@ -84,7 +84,7 @@ export default function SupportSection() {
                     </div>
 
                     {/* Name */}
-                    <h3 className="font-black text-gray-900 text-xl sm:text-lg lg:text-xl mb-2 text-center group-hover:text-sky-600 transition-colors truncate px-1">
+                    <h3 className="font-black text-gray-900 text-xl mt-12 sm:text-lg lg:text-xl mb-2 text-center group-hover:text-sky-600 transition-colors truncate px-1">
                       {patron.name}
                     </h3>
 
