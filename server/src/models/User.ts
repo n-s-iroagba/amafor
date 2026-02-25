@@ -152,7 +152,6 @@ User.init(
     indexes: [
       { fields: ['email'], unique: true },
       { fields: ['role'] },
-      { fields: ['status'] },
       { fields: ['createdAt'] },
     ],
   }

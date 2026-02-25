@@ -60,7 +60,7 @@ const gracefulShutdown = async (signal: string) => {
 const startServer = async () => {
   try {
 
-    await syncDatabase(true)
+    await syncDatabase(false)
 
     console.log('Database synchronized');
     // Warm up cache and fetch RSS feeds

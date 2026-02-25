@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 const route =
   process.env.NEXT_PUBLIC_API_URL ||
   (process.env.NODE_ENV === "production"
-    ? "https://agfc_server_app.fly.dev/api"
+    ? "https://agfc-server-app.fly.dev/api"
     : "http://localhost:5000/api");
 // Single axios instance
 const api = axios.create({
