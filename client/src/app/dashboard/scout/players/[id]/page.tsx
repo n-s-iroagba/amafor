@@ -11,11 +11,13 @@ import Link from 'next/link';
 
 /**
  * Page: Scout Player Detail
- * Description: Detailed scouting view of a player profile.
- * Requirements: REQ-SCT-02 (Player Database)
- * User Story: US-SCT-002 (Browse Player Database)
+ * Description: Full scouting profile for a verified player. Displays performance metrics,
+ *              physical profile, and career stats. Allows generation of a branded PDF dossier
+ *              that can be saved to the secure vault.
+ * BRD Requirements: BR-TP-01 (verified player profiles), BR-TP-02 (Pro View access), BR-TP-03 (branded PDF dossier generation)
  * User Journey: UJ-SCT-001 (Scout Dashboard)
- * API: GET /scout/view/:id (API_ROUTES.SCOUT.PLAYER_VIEW)
+ * User Story: US-SCT-002 (Browse Player Database)
+ * API: GET /players/:id (API_ROUTES.PLAYERS.VIEW)
  */
 export default function PlayerScoutProfile() {
   const { id } = useParams();

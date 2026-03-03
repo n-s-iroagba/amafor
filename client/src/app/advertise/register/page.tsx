@@ -20,29 +20,42 @@ import { API_ROUTES } from '@/config/routes'
  */
 export default function AdvertiserRegistration() {
   const [businessName, setBusinessName] = useState('')
+  const [contactName, setContactName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [formError, setFormError] = useState('')
 
-  const { post, isPending } = usePost(API_ROUTES.AUTH.SIGNUP); // Using generic signup, assuming backend handles type via body or specific route needed? 
-  // Actually, let's use a specific route if available or generic with type.
-  // Looking at AuthController, it had signupAdvertiser.
-  // I will check if I need to add ADVERTISERS_SIGNUP to routes.
+  const { post, isPending } = usePost(API_ROUTES.AUTH.SIGNUP);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setFormError('')
+
+    if (password !== confirmPassword) {
+      setFormError('Passwords do not match')
+      return
+    }
 
     try {
       await post({
         businessName,
+        companyName: businessName,
+        contactName,
         email,
         phone,
-        userType: 'advertiser' // Explicitly set type to trigger correct backend flow if generic, or just data
+        contact_phone: phone,
+        password,
+        confirmPassword,
+        userType: 'advertiser'
       });
       setSubmitted(true)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration failed:', error);
-      alert('Registration failed. Please try again.');
+      const msg = error?.response?.data?.message || error?.message || 'Registration failed. Please try again.';
+      setFormError(msg);
     }
   }
 
@@ -94,6 +107,12 @@ export default function AdvertiserRegistration() {
               Your account will be reviewed and verified within 24-48 hours.
             </p>
 
+            {formError && (
+              <div className="mb-6 p-4 bg-red-50 text-red-700 border border-red-200 rounded-lg">
+                <span data-testid="error-message">{formError}</span>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-sky-500 mb-2">
@@ -107,6 +126,21 @@ export default function AdvertiserRegistration() {
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="business-name-input"
+                />
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-sky-500 mb-2">
+                  Contact Person <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Full name of primary contact"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  required
+                  data-testid="contact-name-input"
                 />
               </div>
 
@@ -128,7 +162,7 @@ export default function AdvertiserRegistration() {
                 </p>
               </div>
 
-              <div className="mb-8">
+              <div className="mb-6">
                 <label className="block text-sm font-semibold text-sky-500 mb-2">
                   Business Phone Number <span className="text-red-600">*</span>
                 </label>
@@ -143,6 +177,36 @@ export default function AdvertiserRegistration() {
                 />
               </div>
 
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-sky-500 mb-2">
+                  Password <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="password"
+                  placeholder="Create a password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  required
+                  data-testid="password-input"
+                />
+              </div>
+
+              <div className="mb-8">
+                <label className="block text-sm font-semibold text-sky-500 mb-2">
+                  Confirm Password <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  required
+                  data-testid="confirm-password-input"
+                />
+              </div>
+
               <div className="bg-blue-50 border border-blue-200 p-4 mb-8 rounded-lg">
                 <p className="text-sm text-blue-900 leading-relaxed">
                   <strong>Note:</strong> By registering, you agree to our advertising terms and conditions.
@@ -152,7 +216,7 @@ export default function AdvertiserRegistration() {
 
               <button
                 type="submit"
-                disabled={!businessName || !email || !phone || isPending}
+                disabled={!businessName || !contactName || !email || !phone || !password || !confirmPassword || isPending}
                 className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-colors font-semibold"
                 data-testid="submit-registration"
               >

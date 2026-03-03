@@ -22,11 +22,14 @@ export class AuthController {
 
 
     try {
+      console.log('--- AUTH CONTROLLER: signupAdvertiser STARTED ---')
       console.log(req.body)
       const response = await this.authService.signupAdvertiser(req.body)
 
+      console.log('--- AUTH CONTROLLER: signupAdvertiser SUCCESS ---')
       res.status(201).json(response)
     } catch (error) {
+      console.error('--- AUTH CONTROLLER: signupAdvertiser CAUGHT ERROR ---')
       console.error(error)
       next(error)
     }

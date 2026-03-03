@@ -6,11 +6,12 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 
 
 /**
- * Page: Scout Reports List
- * Description: Archive of generated scout reports and dossiers.
- * Requirements: REQ-SCT-04 (Report Management)
+ * Page: Scout Reports Vault
+ * Description: Archive of generated scout reports and player dossiers. Supports search,
+ *              preview, download, and deletion of saved reports. Reports are retained 365 days.
+ * BRD Requirements: BR-TP-03 (branded PDF summaries), BR-TP-13 (Scouting Reports as structured records)
+ * User Journey: UJ-SCT-001 (Scout Dashboard)
  * User Story: US-SCT-004 (Manage Reports)
- * User Journey: UJ-SCT-003 (Report Generation)
  * API: GET /scout/reports (API_ROUTES.SCOUT.REPORTS)
  * Hook: useGet(API_ROUTES.SCOUT.REPORTS)
  */

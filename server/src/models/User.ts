@@ -150,7 +150,7 @@ User.init(
     timestamps: true,
     paranoid: true,
     indexes: [
-      { fields: ['email'], unique: true },
+      { fields: ['email'] },
       { fields: ['role'] },
       { fields: ['createdAt'] },
     ],

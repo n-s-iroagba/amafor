@@ -12,11 +12,13 @@ import { API_ROUTES } from '@/config/routes';
 
 /**
  * Page: Scout Match Analysis
- * Description: Detailed view of a match for scouting purposes.
- * Requirements: REQ-SCT-03 (Match Analysis)
- * User Story: US-SCT-003 (View Match Analysis)
+ * Description: Stream-only match viewing for scouting purposes. Scouts can log timestamped
+ *              events and add tactical notes. No downloads or offline storage (BR-TP-14).
+ *              Matches are available for streaming within 30 minutes of final whistle (BR-TP-05).
+ * BRD Requirements: BR-TP-02 (Pro View portal), BR-TP-05 (30-min archive SLA), BR-TP-12 (match-level scouting), BR-TP-14 (stream-only)
  * User Journey: UJ-SCT-001 (Scout Dashboard)
- * API: GET /scout/matches/:id (API_ROUTES.FIXTURES.VIEW + Analysis Data)
+ * User Story: US-SCT-003 (Watch Match Replays)
+ * API: GET /videos/:id (API_ROUTES.VIDEOS.VIEW)
  */
 export default function MatchAnalysisPage({ params }: { params?: { id: string } }) {
   const urlParams = useParams();
@@ -65,10 +67,12 @@ export default function MatchAnalysisPage({ params }: { params?: { id: string } 
               </div>
             </div>
           </div>
+          {/* BR-TP-14: Stream-only — no download or offline storage permitted */}
           <div className="flex items-center space-x-4">
-            <button className="bg-[#87CEEB] text-[#2F4F4F] px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white transition-all" data-testid="btn-download-clips">
-              DOWNLOAD CLIPS
-            </button>
+            <div className="flex items-center space-x-2 bg-white/10 px-5 py-2.5 rounded-xl" data-testid="badge-stream-only">
+              <Shield className="w-3.5 h-3.5 text-[#87CEEB]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#87CEEB]">STREAM ONLY</span>
+            </div>
           </div>
         </header>
 

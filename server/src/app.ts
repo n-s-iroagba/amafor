@@ -46,12 +46,15 @@ app.use('/api', apiRoutes);
 
 
 // Global error handler (should be after all routes)
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Unhandled error:', err);
-  res.status(500).json({
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('--- GLOBAL ERROR HANDLER CAUGHT AN ERROR ---');
+  console.error(err);
+
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
     status: 'error',
-    message: 'Internal server error',
-    ...(process.env.NODE_ENV === 'development' && { error: err.message })
+    message: err.message || 'Internal server error',
+    ...(process.env.NODE_ENV === 'development' && { error: err.stack })
   });
 });
 

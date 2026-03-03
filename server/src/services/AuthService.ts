@@ -103,13 +103,17 @@ export class AuthService {
    */
   public async signupAdvertiser(data: SignUpRequestDto): Promise<SignUpResponseDto> {
     try {
+      console.log('--- AUTH SERVICE: signupAdvertiser STARTED ---')
       logger.info('Advertiser signup started', { email: data.email });
 
       // 1. Duplicate check
+      console.log('--- AUTH SERVICE: Checking for duplicates ---')
       const existing = await this.userRepository.findOne({ where: { email: data.email } });
       if (existing) {
+        console.log('--- AUTH SERVICE: Duplicate found! Throwing BadRequestError... ---')
         throw new BadRequestError('An account with this email already exists');
       }
+      console.log('--- AUTH SERVICE: Duplicate check passed ---')
 
       // 2. Validate passwords match
       if (data.password !== data.confirmPassword) {

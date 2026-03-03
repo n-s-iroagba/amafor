@@ -9,10 +9,12 @@ import { API_ROUTES } from '@/config/routes';
 
 /**
  * Page: Fixture Video Archive
- * Description: Library of full-match video recordings for analysis.
- * Requirements: REQ-SCT-06 (Video Archive)
- * User Story: US-SCT-006 (Watch Match Replays)
- * User Journey: UJ-SCT-004 (Video Analysis)
+ * Description: Library of full-match video recordings for scout analysis. Matches become
+ *              available within 30 minutes of final whistle (BR-TP-05). Access is stream-only;
+ *              no downloads or offline storage are permitted (BR-TP-14).
+ * BRD Requirements: BR-TP-02 (Pro View portal access), BR-TP-05 (30-min archive SLA), BR-TP-14 (stream-only)
+ * User Journey: UJ-SCT-001 (Scout Dashboard)
+ * User Story: US-SCT-003 (Watch Match Replays)
  * API: GET /videos (API_ROUTES.VIDEOS.LIST)
  * Hook: useGet(API_ROUTES.VIDEOS.LIST)
  */

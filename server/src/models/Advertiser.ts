@@ -6,7 +6,7 @@ export interface AdvertiserAttributes {
   id: string;
   companyName: string;
   contactPerson: string;
-  email: string;
+  companyEmail: string;
   phone?: string;
   website?: string;
   industry?: string;
@@ -16,13 +16,13 @@ export interface AdvertiserAttributes {
   updatedAt?: Date;
 }
 
-export interface AdvertiserCreationAttributes extends Optional<AdvertiserAttributes, 'id' | 'phone' | 'website' | 'industry' | 'address' | 'status' | 'createdAt' | 'updatedAt'> {}
+export interface AdvertiserCreationAttributes extends Optional<AdvertiserAttributes, 'id' | 'phone' | 'website' | 'industry' | 'address' | 'status' | 'createdAt' | 'updatedAt'> { }
 
 class Advertiser extends Model<AdvertiserAttributes, AdvertiserCreationAttributes> implements AdvertiserAttributes {
   public id!: string;
   public companyName!: string;
   public contactPerson!: string;
-  public email!: string;
+  public companyEmail!: string;
   public phone?: string;
   public website?: string;
   public industry?: string;
@@ -47,7 +47,8 @@ Advertiser.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    email: {
+    companyEmail: {
+      field: 'email',
       type: DataTypes.STRING(150),
       allowNull: false,
       validate: {

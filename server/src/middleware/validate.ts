@@ -13,10 +13,14 @@ export const validate = (schema: z.ZodSchema<any>) =>
       });
       next();
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      console.error('--- VALIDATION ERROR CAUGHT ---');
+      console.error(error);
+
+      if (error instanceof z.ZodError || (error as any).name === 'ZodError') {
         const zodError = error as any;
-        const errors = zodError.errors.map((err: any) => ({
-          field: err.path.join('.'),
+        const issues = zodError.errors || zodError.issues || [];
+        const errors = issues.map((err: any) => ({
+          field: err.path ? err.path.join('.') : 'unknown',
           message: err.message,
         }));
         res.status(400).json({

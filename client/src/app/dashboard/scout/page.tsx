@@ -18,10 +18,11 @@ interface RecentView {
 
 /**
  * Page: Scout Dashboard Overview
- * Description: Central hub for authenticated scouts showing assigned matches and recent views.
- * Requirements: REQ-SCT-03 (Scout Dashboard)
- * User Story: US-SCT-003 (View Assignments)
- * User Journey: UJ-SCT-002 (Scouting Workflow)
+ * Description: Central hub for authenticated scouts. Shows pending-approval banner for unverified
+ *              scouts, or quick-action cards and recently viewed players for approved scouts.
+ * BRD Requirements: BR-TP-01, BR-TP-02, BR-TP-04, BR-TP-12, BR-TP-13, BR-TP-14
+ * User Journey: UJ-SCT-001 (Scout Dashboard)
+ * User Story: US-SCT-001 (Access Scout Portal)
  * API: GET /scout/recent-views (API_ROUTES.SCOUT.RECENT_VIEWS)
  * Hook: useGet(API_ROUTES.SCOUT.RECENT_VIEWS)
  */
