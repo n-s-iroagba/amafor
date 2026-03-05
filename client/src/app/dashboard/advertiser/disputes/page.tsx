@@ -28,11 +28,11 @@ interface Dispute {
  * Hook: useGet(API_ROUTES.ADVERTISER.DISPUTES.LIST)
  */
 export default function AdvertiserDisputeListPage() {
-  const { data: response, loading } = useGet<{ success: boolean; data: Dispute[] }>(
+  const { data: disputesResponse, loading } = useGet<Dispute[]>(
     API_ROUTES.ADVERTISER.DISPUTES.LIST
   );
 
-  const disputes = response?.data || [];
+  const disputes = disputesResponse || [];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-GB', {

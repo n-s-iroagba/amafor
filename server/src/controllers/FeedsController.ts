@@ -27,7 +27,7 @@ export class FeedsController {
   getFeedSources = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const feedSources = await this.rssFeedSourceService.getAllFeedSources();
-      res.json(feedSources);
+      res.json({ success: true, data: feedSources });
     } catch (error) {
       next(error)
     }
@@ -44,7 +44,7 @@ export class FeedsController {
     try {
 
       const feedSource = await this.rssFeedSourceService.createFeedSource(req.body);
-      res.status(201).json(feedSource);
+      res.status(201).json({ success: true, data: feedSource });
     } catch (error) {
       next(error)
     }
@@ -60,7 +60,7 @@ export class FeedsController {
         return;
       }
 
-      res.json(feedSource);
+      res.json({ success: true, data: feedSource });
     } catch (error) {
       next(error)
     }
@@ -84,7 +84,7 @@ export class FeedsController {
         return;
       }
 
-      res.json(feedSource);
+      res.json({ success: true, data: feedSource });
     } catch (error) {
       res.status(400).json({ error });
     }

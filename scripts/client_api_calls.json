@@ -1,0 +1,1556 @@
+[
+  {
+    "file": "/academy/apply/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.CREATE"
+  },
+  {
+    "file": "/academy/apply/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.CREATE"
+  },
+  {
+    "file": "/academy/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ACADEMY.STAFF.LIST"
+  },
+  {
+    "file": "/academy/page.tsx",
+    "method": "Get",
+    "types": "AcademyStaff[]",
+    "urlArg": "activeSection === \"staff\" ? API_ROUTES.STAFF.LIST : null"
+  },
+  {
+    "file": "/advertise/register/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.SIGNUP"
+  },
+  {
+    "file": "/advertise/register/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.SIGNUP"
+  },
+  {
+    "file": "/auth/forgot-password/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.FORGOT_PASSWORD"
+  },
+  {
+    "file": "/auth/forgot-password/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.FORGOT_PASSWORD"
+  },
+  {
+    "file": "/auth/login/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.LOGIN"
+  },
+  {
+    "file": "/auth/login/page.tsx",
+    "method": "Post",
+    "types": "LoginRequestDto, any",
+    "urlArg": "API_ROUTES.AUTH.LOGIN"
+  },
+  {
+    "file": "/auth/reset-password/[token]/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.RESET_PASSWORD"
+  },
+  {
+    "file": "/auth/reset-password/[token]/page.tsx",
+    "method": "Post",
+    "types": "any, any",
+    "urlArg": "API_ROUTES.AUTH.RESET_PASSWORD"
+  },
+  {
+    "file": "/auth/verify-email/[token]/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.VERIFY_EMAIL"
+  },
+  {
+    "file": "/auth/verify-email/[token]/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.RESEND_VERIFICATION_CODE"
+  },
+  {
+    "file": "/auth/verify-email/[token]/page.tsx",
+    "method": "Post",
+    "types": "any, any",
+    "urlArg": "API_ROUTES.AUTH.VERIFY_EMAIL"
+  },
+  {
+    "file": "/auth/verify-email/[token]/page.tsx",
+    "method": "Post",
+    "types": "any, any",
+    "urlArg": "API_ROUTES.AUTH.RESEND_VERIFICATION_CODE"
+  },
+  {
+    "file": "/coaches/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.VIEW"
+  },
+  {
+    "file": "/coaches/[id]/page.tsx",
+    "method": "Get",
+    "types": "Coach",
+    "urlArg": "API_ROUTES.COACHES.MUTATE(id as string"
+  },
+  {
+    "file": "/dashboard/admin/academy/calendar/page.tsx",
+    "method": "Get",
+    "types": "Session[]",
+    "urlArg": "`/academy/sessions?year=${year}&month=${month + 1}`"
+  },
+  {
+    "file": "/dashboard/admin/academy/calendar/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "'/academy/attendance'"
+  },
+  {
+    "file": "/dashboard/admin/academy/communications/page.tsx",
+    "method": "Get",
+    "types": "Recipient[]",
+    "urlArg": "`/academy/${group}`"
+  },
+  {
+    "file": "/dashboard/admin/academy/communications/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "'/academy/communications/send'"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "AcademyStaff",
+    "urlArg": "API_ROUTES.STAFF.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.STAFF.MUTATE(id"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.STAFF.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/[id]/page.tsx",
+    "method": "Get",
+    "types": "AcademyStaff",
+    "urlArg": "API_ROUTES.STAFF.VIEW(staffId"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.STAFF.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.STAFF.LIST"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.STAFF.LIST"
+  },
+  {
+    "file": "/dashboard/admin/academy/staff/page.tsx",
+    "method": "Delete",
+    "types": "AcademyStaff",
+    "urlArg": "API_ROUTES.STAFF.LIST"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "Trialist",
+    "urlArg": "API_ROUTES.TRIALISTS.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.UPDATE(id"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/[id]/page.tsx",
+    "method": "Get",
+    "types": "Trialist",
+    "urlArg": "API_ROUTES.TRIALISTS.VIEW(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/page.tsx",
+    "method": "Get",
+    "types": "TrialistResponse",
+    "urlArg": "API_ROUTES.TRIALISTS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/academy/trialist/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.TRIALISTS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/advertisers/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/advertisers/[id]/page.tsx",
+    "method": "Get",
+    "types": "Advertiser",
+    "urlArg": "API_ROUTES.USERS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/advertisers/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.PENDING_ADVERTISERS"
+  },
+  {
+    "file": "/dashboard/admin/advertisers/page.tsx",
+    "method": "Get",
+    "types": "Advertiser[]",
+    "urlArg": "API_ROUTES.USERS.PENDING_ADVERTISERS"
+  },
+  {
+    "file": "/dashboard/admin/advertising/page.tsx",
+    "method": "Get",
+    "types": "AdZone[]",
+    "urlArg": "API_ROUTES.ADS.ZONES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/advertising/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADS.ZONES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/audit/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUDIT.LIST"
+  },
+  {
+    "file": "/dashboard/admin/audit/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUDIT.EXPORT"
+  },
+  {
+    "file": "/dashboard/admin/audit/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUDIT.LIST"
+  },
+  {
+    "file": "/dashboard/admin/audit/page.tsx",
+    "method": "Post",
+    "types": "{ dateFrom: string; dateTo: string; format: string }, Blob",
+    "urlArg": "API_ROUTES.AUDIT.EXPORT"
+  },
+  {
+    "file": "/dashboard/admin/backups/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.BACKUPS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/backups/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.BACKUPS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/backups/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.BACKUPS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/backups/page.tsx",
+    "method": "Post",
+    "types": "{ type: string }, Backup",
+    "urlArg": "API_ROUTES.BACKUPS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/backups/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id: string | number"
+  },
+  {
+    "file": "/dashboard/admin/cms/analytics/page.tsx",
+    "method": "Get",
+    "types": "ArticleAnalytics",
+    "urlArg": "API_ROUTES.ARTICLES.ANALYTICS"
+  },
+  {
+    "file": "/dashboard/admin/cms/articles/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "Article",
+    "urlArg": "`/articles/${id}`"
+  },
+  {
+    "file": "/dashboard/admin/cms/articles/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "`/articles/${id}`"
+  },
+  {
+    "file": "/dashboard/admin/cms/articles/[id]/page.tsx",
+    "method": "Get",
+    "types": "Article",
+    "urlArg": "API_ROUTES.ARTICLES.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/cms/articles/[id]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.ARTICLES.MUTATE(id as unknown as number"
+  },
+  {
+    "file": "/dashboard/admin/cms/articles/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.ARTICLES.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/cms/articles/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ARTICLES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/cms/videos/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "{ data: Video }",
+    "urlArg": "API_ROUTES.VIDEOS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/cms/videos/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.VIDEOS.MUTATE(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/cms/videos/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.VIDEOS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/cms/videos/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.VIDEOS.MUTATE(deleteConfirm"
+  },
+  {
+    "file": "/dashboard/admin/coaches/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "Coach",
+    "urlArg": "API_ROUTES.COACHES.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/coaches/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.MUTATE(id"
+  },
+  {
+    "file": "/dashboard/admin/coaches/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/coaches/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/coaches/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/coaches/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/coaches/page.tsx",
+    "method": "Get",
+    "types": "CoachResponse",
+    "urlArg": "API_ROUTES.COACHES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/coaches/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/disputes/[id]/page.tsx",
+    "method": "Get",
+    "types": "{ success: boolean; data: Dispute }",
+    "urlArg": "API_ROUTES.VIDEOS.VIEW(disputeId"
+  },
+  {
+    "file": "/dashboard/admin/disputes/[id]/page.tsx",
+    "method": "Get",
+    "types": "{ success: boolean; data: Dispute }",
+    "urlArg": "API_URL"
+  },
+  {
+    "file": "/dashboard/admin/disputes/[id]/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADMIN.DISPUTES.RESOLVE(disputeId"
+  },
+  {
+    "file": "/dashboard/admin/disputes/page.tsx",
+    "method": "Get",
+    "types": "{ success: boolean; data: Dispute[] }",
+    "urlArg": "API_ROUTES.ADMIN.DISPUTES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/health/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.HEALTH.STATUS"
+  },
+  {
+    "file": "/dashboard/admin/health/page.tsx",
+    "method": "Get",
+    "types": "HealthData",
+    "urlArg": "API_ROUTES.HEALTH.STATUS"
+  },
+  {
+    "file": "/dashboard/admin/health/page.tsx",
+    "method": "Post",
+    "types": "void, void",
+    "urlArg": "API_ROUTES.HEALTH.DIAGNOSTIC"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "League",
+    "urlArg": "`${API_ROUTES.LEAGUES.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.MUTATE(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/edit/page.tsx",
+    "method": "Get",
+    "types": "Fixture",
+    "urlArg": "API_ROUTES.FIXTURES.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/edit/page.tsx",
+    "method": "Get",
+    "types": "League[]",
+    "urlArg": "`${API_ROUTES.LEAGUES.LIST}/all`"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.UPDATE(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/[goalId]/edit/page.tsx",
+    "method": "Get",
+    "types": "Goal",
+    "urlArg": "API_ROUTES.GOALS.VIEW(goalId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/[goalId]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.GOALS.MUTATE(Number(goalId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/[goalId]/page.tsx",
+    "method": "Get",
+    "types": "Goal",
+    "urlArg": "API_ROUTES.GOALS.VIEW(goalId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/[goalId]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.GOALS.CREATE(fixtureId as string"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/new/page.tsx",
+    "method": "Get",
+    "types": "Player[]",
+    "urlArg": "API_ROUTES.PLAYERS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/page.tsx",
+    "method": "Get",
+    "types": "Goal[]",
+    "urlArg": "API_ROUTES.GOALS.LIST(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.GOALS.CREATE(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/goals/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/[imageId]/edit/page.tsx",
+    "method": "Get",
+    "types": "MatchImage",
+    "urlArg": "API_ROUTES.MATCH_GALLERY.MUTATE(imageId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/[imageId]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.MATCH_GALLERY.MUTATE(imageId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.MATCH_GALLERY.CREATE(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/page.tsx",
+    "method": "Get",
+    "types": "FixtureImage[]",
+    "urlArg": "API_ROUTES.MATCH_GALLERY.LIST(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.MATCH_GALLERY.CREATE(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/images/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/lineup/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.LINEUP.BY_FIXTURE"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/lineup/page.tsx",
+    "method": "Get",
+    "types": "Fixture",
+    "urlArg": "API_ROUTES.FIXTURES.VIEW(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/lineup/page.tsx",
+    "method": "Get",
+    "types": "Lineup[]",
+    "urlArg": "API_ROUTES.LINEUP.BY_FIXTURE(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/page.tsx",
+    "method": "Get",
+    "types": "FixtureDetail",
+    "urlArg": "API_ROUTES.FIXTURES.VIEW(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/page.tsx",
+    "method": "Get",
+    "types": "Lineup[]",
+    "urlArg": "fixture ? API_ROUTES.LINEUP.BY_FIXTURE(fixture.id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/details/[summaryId]/edit/page.tsx",
+    "method": "Get",
+    "types": "FixtureSummary",
+    "urlArg": "API_ROUTES.MATCH_SUMMARY.VIEW(summaryId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/details/[summaryId]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.MATCH_SUMMARY.MUTATE(summaryId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/details/[summaryId]/page.tsx",
+    "method": "Get",
+    "types": "FixtureSummary",
+    "urlArg": "API_ROUTES.MATCH_SUMMARY.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.MATCH_SUMMARY.CREATE(String(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/page.tsx",
+    "method": "Get",
+    "types": "FixtureStatistics",
+    "urlArg": "API_ROUTES.MATCH_SUMMARY.BY_FIXTURE(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.MATCH_SUMMARY.CREATE(fixtureId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/[fixtureId]/summary/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "summary ? API_ROUTES.MATCH_SUMMARY.MUTATE(summary.id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/new/page.tsx",
+    "method": "Get",
+    "types": "League[]",
+    "urlArg": "`${API_ROUTES.LEAGUES.LIST}/all`"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.CREATE(formData.leagueId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/fixtures/page.tsx",
+    "method": "Get",
+    "types": "League[]",
+    "urlArg": "`${API_ROUTES.LEAGUES.LIST}/all`"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/[statsId]/edit/page.tsx",
+    "method": "Get",
+    "types": "League[]",
+    "urlArg": "API_ROUTES.LEAGUES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/[statsId]/edit/page.tsx",
+    "method": "Get",
+    "types": "ClubLeagueStats",
+    "urlArg": "API_ROUTES.LEAGUE_STATS.VIEW(statsId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/[statsId]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUE_STATS.MUTATE(Number(statsId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/[statsId]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUE_STATS.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/[statsId]/page.tsx",
+    "method": "Get",
+    "types": "ClubLeagueStats",
+    "urlArg": "statsId ? API_ROUTES.LEAGUE_STATS.VIEW(statsId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.STATISTICS"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/league-statstics/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.STATISTICS(leagueId"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.MUTATE"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/page.tsx",
+    "method": "Get",
+    "types": "League",
+    "urlArg": "API_ROUTES.LEAGUES.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/[id]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/leagues/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/leagues/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/leagues/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.LEAGUES.MUTATE"
+  },
+  {
+    "file": "/dashboard/admin/leagues/page.tsx",
+    "method": "Get",
+    "types": "League[]",
+    "urlArg": "API_ROUTES.LEAGUES.LIST"
+  },
+  {
+    "file": "/dashboard/admin/leagues/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "(id"
+  },
+  {
+    "file": "/dashboard/admin/notifications/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.NOTIFICATIONS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/notifications/page.tsx",
+    "method": "Get",
+    "types": "Notification[]",
+    "urlArg": "API_ROUTES.NOTIFICATIONS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/notifications/page.tsx",
+    "method": "Post",
+    "types": "void, void",
+    "urlArg": "API_ROUTES.NOTIFICATIONS.MARK_ALL_READ"
+  },
+  {
+    "file": "/dashboard/admin/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ANALYTICS.DASHBOARD"
+  },
+  {
+    "file": "/dashboard/admin/page.tsx",
+    "method": "Get",
+    "types": "DashboardStats",
+    "urlArg": "API_ROUTES.ANALYTICS.DASHBOARD"
+  },
+  {
+    "file": "/dashboard/admin/patrons/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "Patron",
+    "urlArg": "API_ROUTES.PATRONS.DETAIL(Number(patronId"
+  },
+  {
+    "file": "/dashboard/admin/patrons/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.UPDATE(Number(patronId"
+  },
+  {
+    "file": "/dashboard/admin/patrons/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.DETAIL"
+  },
+  {
+    "file": "/dashboard/admin/patrons/[id]/page.tsx",
+    "method": "Get",
+    "types": "Patron",
+    "urlArg": "API_ROUTES.PATRONS.DETAIL(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/patrons/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/patrons/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/patrons/page.tsx",
+    "method": "Get",
+    "types": "{ data: Patron[] }",
+    "urlArg": "API_ROUTES.PATRONS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/patrons/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.DELETE"
+  },
+  {
+    "file": "/dashboard/admin/players/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "Player",
+    "urlArg": "API_ROUTES.PLAYERS.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/players/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.MUTATE(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/players/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.VIEW"
+  },
+  {
+    "file": "/dashboard/admin/players/[id]/page.tsx",
+    "method": "Get",
+    "types": "Player",
+    "urlArg": "API_ROUTES.PLAYERS.VIEW(playerId"
+  },
+  {
+    "file": "/dashboard/admin/players/[id]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.DELETE"
+  },
+  {
+    "file": "/dashboard/admin/players/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/players/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/players/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.MUTATE"
+  },
+  {
+    "file": "/dashboard/admin/players/page.tsx",
+    "method": "Get",
+    "types": "Player[]",
+    "urlArg": "API_ROUTES.PLAYERS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/players/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.MUTATE"
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "RssFeedSource",
+    "urlArg": "API_ROUTES.FEEDS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.FEEDS.MUTATE(id as string"
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/[id]/page.tsx",
+    "method": "Get",
+    "types": "RssFeedSource",
+    "urlArg": "id ? API_ROUTES.FEEDS.VIEW(id"
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/[id]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "//   id ? API_ROUTES.FEEDS.MUTATE(id"
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.FEEDS.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/page.tsx",
+    "method": "Get",
+    "types": "FeedResponse",
+    "urlArg": "`${API_ROUTES.FEEDS.LIST}?${queryParams.toString("
+  },
+  {
+    "file": "/dashboard/admin/rss-feeds/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.FEEDS.MUTATE"
+  },
+  {
+    "file": "/dashboard/admin/scouts/[id]/page.tsx",
+    "method": "Get",
+    "types": "User",
+    "urlArg": "API_ROUTES.USERS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/scouts/[id]/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.MUTATE(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/scouts/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/scouts/page.tsx",
+    "method": "Get",
+    "types": "User[]",
+    "urlArg": "API_ROUTES.USERS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/settings/page.tsx",
+    "method": "Get",
+    "types": "SiteConfig",
+    "urlArg": "'/admin/settings'"
+  },
+  {
+    "file": "/dashboard/admin/settings/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "'/admin/settings'"
+  },
+  {
+    "file": "/dashboard/admin/settings/retention/page.tsx",
+    "method": "Get",
+    "types": "RetentionPolicy",
+    "urlArg": "'/admin/settings/retention'"
+  },
+  {
+    "file": "/dashboard/admin/settings/retention/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "'/admin/settings/retention'"
+  },
+  {
+    "file": "/dashboard/admin/subscriptions/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "{ data: SubscriptionPkg }",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES_MGMT.DETAIL(id"
+  },
+  {
+    "file": "/dashboard/admin/subscriptions/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES_MGMT.UPDATE(id"
+  },
+  {
+    "file": "/dashboard/admin/subscriptions/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES_MGMT.CREATE"
+  },
+  {
+    "file": "/dashboard/admin/subscriptions/page.tsx",
+    "method": "Get",
+    "types": "{ data: SubscriptionPkg[] }",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES"
+  },
+  {
+    "file": "/dashboard/admin/subscriptions/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES_MGMT.DELETE"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/edit/page.tsx",
+    "method": "Get",
+    "types": "Team",
+    "urlArg": "`/teams/${id}`"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "`/teams/${id}`"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/page.tsx",
+    "method": "Get",
+    "types": "TeamDetail",
+    "urlArg": "`/teams/${id}`"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/players/page.tsx",
+    "method": "Get",
+    "types": "Team",
+    "urlArg": "`/teams/${id}`"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/players/page.tsx",
+    "method": "Get",
+    "types": "Player[]",
+    "urlArg": "'/players?unassigned=true'"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/players/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "`/teams/${id}/players`"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/players/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "`/teams/${id}/captain`"
+  },
+  {
+    "file": "/dashboard/admin/teams/[id]/players/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "`/teams/${id}/players/remove`"
+  },
+  {
+    "file": "/dashboard/admin/teams/new/page.tsx",
+    "method": "Post",
+    "types": "{ id: string }",
+    "urlArg": "'/teams'"
+  },
+  {
+    "file": "/dashboard/admin/teams/page.tsx",
+    "method": "Get",
+    "types": "Team[]",
+    "urlArg": "'/teams'"
+  },
+  {
+    "file": "/dashboard/admin/users/[id]/page.tsx",
+    "method": "Get",
+    "types": "UserData",
+    "urlArg": "API_ROUTES.USERS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/admin/users/[id]/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.MUTATE(Number(id"
+  },
+  {
+    "file": "/dashboard/admin/users/[id]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.DELETE"
+  },
+  {
+    "file": "/dashboard/admin/users/[id]/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.AUTH.FORGOT_PASSWORD"
+  },
+  {
+    "file": "/dashboard/admin/users/invite/page.tsx",
+    "method": "Post",
+    "types": "\n    { email: string; role: UserRole; firstName?: string; lastName?: string },\n    { verificationToken: string; id: string }\n  ",
+    "urlArg": "API_ROUTES.AUTH.INVITE"
+  },
+  {
+    "file": "/dashboard/admin/users/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.USERS.LIST"
+  },
+  {
+    "file": "/dashboard/admin/users/page.tsx",
+    "method": "Get",
+    "types": "User[]",
+    "urlArg": "API_ROUTES.USERS.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/[creativeId]/edit/page.tsx",
+    "method": "Get",
+    "types": "AdCreative",
+    "urlArg": "`${API_ROUTES.ADS.CREATIVES.DETAIL(creativeId"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/[creativeId]/edit/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "`${API_ROUTES.ADS.CREATIVES.UPDATE(creativeId"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/[creativeId]/page.tsx",
+    "method": "Get",
+    "types": "AdCreative",
+    "urlArg": "`${API_ROUTES.ADS.CREATIVES.DETAIL(creativeId"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/[creativeId]/page.tsx",
+    "method": "Put",
+    "types": "any",
+    "urlArg": "`${API_ROUTES.ADS.CREATIVES.UPDATE(creativeId"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/[creativeId]/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADS.CREATIVES.DELETE"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADS.CREATIVES.CREATE"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/page.tsx",
+    "method": "Get",
+    "types": "AdCreative[]",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.CREATIVES(campaignId"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/ad-creatives/page.tsx",
+    "method": "Delete",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADS.CREATIVES.DELETE"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/[id]/page.tsx",
+    "method": "Get",
+    "types": "AdCampaignWithAdCreatives",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.CREATE"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/new/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADS.ZONES.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.CREATE"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/new/page.tsx",
+    "method": "Get",
+    "types": "AdZone[]",
+    "urlArg": "API_ROUTES.ADS.ZONES.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/campaigns/page.tsx",
+    "method": "Get",
+    "types": "AdCampaign[]",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/disputes/[id]/page.tsx",
+    "method": "Get",
+    "types": "{ success: boolean; data: Dispute }",
+    "urlArg": "API_ROUTES.ADVERTISER.DISPUTES.VIEW(disputeId"
+  },
+  {
+    "file": "/dashboard/advertiser/disputes/new/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.DISPUTES.CREATE"
+  },
+  {
+    "file": "/dashboard/advertiser/disputes/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.DISPUTES.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/disputes/page.tsx",
+    "method": "Get",
+    "types": "{ success: boolean; data: Dispute[] }",
+    "urlArg": "API_ROUTES.ADVERTISER.DISPUTES.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.DISPUTES.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/page.tsx",
+    "method": "Get",
+    "types": "Campaign[]",
+    "urlArg": "API_ROUTES.ADVERTISER.CAMPAIGNS.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/page.tsx",
+    "method": "Get",
+    "types": "Dispute[]",
+    "urlArg": "API_ROUTES.ADVERTISER.DISPUTES.LIST"
+  },
+  {
+    "file": "/dashboard/advertiser/reports/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.REPORTS"
+  },
+  {
+    "file": "/dashboard/advertiser/reports/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ADVERTISER.REPORTS"
+  },
+  {
+    "file": "/dashboard/scout/matches/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.VIDEOS.VIEW(matchId"
+  },
+  {
+    "file": "/dashboard/scout/matches/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.VIDEOS.LIST"
+  },
+  {
+    "file": "/dashboard/scout/matches/page.tsx",
+    "method": "Get",
+    "types": "any[]",
+    "urlArg": "API_ROUTES.VIDEOS.LIST"
+  },
+  {
+    "file": "/dashboard/scout/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.SCOUT.RECENT_VIEWS"
+  },
+  {
+    "file": "/dashboard/scout/page.tsx",
+    "method": "Get",
+    "types": "RecentView[]",
+    "urlArg": "API_ROUTES.SCOUT.RECENT_VIEWS"
+  },
+  {
+    "file": "/dashboard/scout/players/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.VIEW(id as string"
+  },
+  {
+    "file": "/dashboard/scout/players/page.tsx",
+    "method": "Get",
+    "types": "any[]",
+    "urlArg": "API_ROUTES.PLAYERS.LIST"
+  },
+  {
+    "file": "/dashboard/scout/reports/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.SCOUT.REPORTS"
+  },
+  {
+    "file": "/dashboard/scout/reports/page.tsx",
+    "method": "Get",
+    "types": "any[]",
+    "urlArg": "'/scout/reports'"
+  },
+  {
+    "file": "/featured-news/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.FEATURED_NEWS.LIST"
+  },
+  {
+    "file": "/featured-news/page.tsx",
+    "method": "Get",
+    "types": "RSSResponse",
+    "urlArg": "API_ROUTES.FEATURED_NEWS.LIST"
+  },
+  {
+    "file": "/fixtures/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.VIEW(id"
+  },
+  {
+    "file": "/fixtures/[id]/page.tsx",
+    "method": "Get",
+    "types": "FixtureDetails",
+    "urlArg": "API_ROUTES.FIXTURES.VIEW(fixtureId"
+  },
+  {
+    "file": "/fixtures/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.LIST"
+  },
+  {
+    "file": "/fixtures/page.tsx",
+    "method": "Get",
+    "types": "FixtureWithLeague[]",
+    "urlArg": "API_ROUTES.FIXTURES.LIST"
+  },
+  {
+    "file": "/fixtures/page.tsx",
+    "method": "Get",
+    "types": "League[]",
+    "urlArg": "API_ROUTES.LEAGUES.LIST"
+  },
+  {
+    "file": "/gallery/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "'/api/fixtures/${fixtureId}/images'"
+  },
+  {
+    "file": "/gallery/[id]/page.tsx",
+    "method": "Get",
+    "types": "FixtureWithLeague",
+    "urlArg": "`/api/fixtures/${fixtureId}`"
+  },
+  {
+    "file": "/gallery/[id]/page.tsx",
+    "method": "Get",
+    "types": "FixtureImage[]",
+    "urlArg": "`/api/fixtures/${fixtureId}/images`"
+  },
+  {
+    "file": "/gallery/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.FIXTURES.GALLERY"
+  },
+  {
+    "file": "/gallery/page.tsx",
+    "method": "Get",
+    "types": "FixtureWithLeague[]",
+    "urlArg": "API_ROUTES.FIXTURES.GALLERY"
+  },
+  {
+    "file": "/gallery/page.tsx",
+    "method": "Get",
+    "types": "any[]",
+    "urlArg": "'/api/leagues'"
+  },
+  {
+    "file": "/league-statistics/[id]/page.tsx",
+    "method": "Get",
+    "types": "LeagueDetails",
+    "urlArg": "API_ROUTES.LEAGUES.TABLE(leagueId"
+  },
+  {
+    "file": "/league-statistics/page.tsx",
+    "method": "Get",
+    "types": "LeagueWithTable[]",
+    "urlArg": "API_ROUTES.LEAGUES.TABLES"
+  },
+  {
+    "file": "/news/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ARTICLES.VIEW(id"
+  },
+  {
+    "file": "/news/[id]/page.tsx",
+    "method": "Get",
+    "types": "Article",
+    "urlArg": "API_ROUTES.ARTICLES.VIEW(id"
+  },
+  {
+    "file": "/news/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.ARTICLES.PUBLISHED"
+  },
+  {
+    "file": "/patron/checkout/page.tsx",
+    "method": "Get",
+    "types": "PatronSubscriptionPackage[]",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES"
+  },
+  {
+    "file": "/patron/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES"
+  },
+  {
+    "file": "/patron/page.tsx",
+    "method": "Get",
+    "types": "PatronSubscriptionPackage[]",
+    "urlArg": "API_ROUTES.PATRONS.PACKAGES"
+  },
+  {
+    "file": "/patron/wall/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "'/api/supporters'"
+  },
+  {
+    "file": "/patron/wall/page.tsx",
+    "method": "Get",
+    "types": "PatronWithSubscription[]",
+    "urlArg": "API_ROUTES.PATRONS.LIST"
+  },
+  {
+    "file": "/player/[id]/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.VIEW"
+  },
+  {
+    "file": "/player/[id]/page.tsx",
+    "method": "Get",
+    "types": "Player",
+    "urlArg": "API_ROUTES.PLAYERS.VIEW(id as string"
+  },
+  {
+    "file": "/pro-view/apply/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.SCOUT.APPLY"
+  },
+  {
+    "file": "/pro-view/apply/page.tsx",
+    "method": "Post",
+    "types": "any",
+    "urlArg": "API_ROUTES.SCOUT.APPLY"
+  },
+  {
+    "file": "/team/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.PLAYERS.LIST"
+  },
+  {
+    "file": "/team/page.tsx",
+    "method": "Get",
+    "types": "any",
+    "urlArg": "API_ROUTES.COACHES.LIST"
+  },
+  {
+    "file": "/team/page.tsx",
+    "method": "Get",
+    "types": "{ data: Coach[] }",
+    "urlArg": "API_ROUTES.COACHES.LIST"
+  },
+  {
+    "file": "/team/page.tsx",
+    "method": "Get",
+    "types": "Player[]",
+    "urlArg": "API_ROUTES.PLAYERS.LIST"
+  }
+]

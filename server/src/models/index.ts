@@ -15,6 +15,10 @@ import FeaturedNews from './FeaturedNews';
 import AcademyStaff from './AcademyStaff';
 import Coach from './Coach';
 
+// Academy Sessions
+import AcademySession from './AcademySession';
+import AcademyAttendance from './AcademyAttendance';
+
 // Fixture & Team
 import Fixture from './Fixture';
 import FixtureStatistics from './FixtureStatistics'; // Added
@@ -38,6 +42,7 @@ import ScoutReport from './ScoutReport';
 import ScoutApplication from './ScoutApplication';
 import Video from './Video';
 import Trialist from './Trialist';
+import Backup from './Backup';
 
 export {
   User,
@@ -67,7 +72,10 @@ export {
   AuditLog,
   SystemNotification,
   ScoutReport,
-  ScoutApplication
+  ScoutApplication,
+  AcademySession,
+  AcademyAttendance,
+  Backup
 };
 
 export async function setupAssociations(): Promise<void> {
@@ -276,6 +284,20 @@ export async function setupAssociations(): Promise<void> {
     onUpdate: 'CASCADE'
   });
 
+  Advertiser.belongsTo(User, {
+    foreignKey: 'userId',
+    as: 'user',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  });
+
+  User.hasOne(Advertiser, {
+    foreignKey: 'userId',
+    as: 'advertiserProfile',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  });
+
   AdCampaign.belongsTo(Advertiser, {
     foreignKey: 'advertiserId',
     as: 'advertiser',
@@ -393,6 +415,21 @@ export async function setupAssociations(): Promise<void> {
   User.hasOne(AcademyStaff, {
     foreignKey: 'userId',
     as: 'academyStaffProfile',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  });
+
+  // ==================== ACADEMY SESSION ASSOCIATIONS ====================
+  AcademySession.hasMany(AcademyAttendance, {
+    foreignKey: 'sessionId',
+    as: 'attendees',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  });
+
+  AcademyAttendance.belongsTo(AcademySession, {
+    foreignKey: 'sessionId',
+    as: 'session',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   });

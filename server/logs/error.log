@@ -566,3 +566,7 @@
 {"error":"Invalid login: 535 5.7.8 Error: authentication failed: (reason unavailable)","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-03-02 01:11:09"}
 {"email":"nnamdisolomon@gmail.com","error":"An account with this email already exists","level":"error","message":"Advertiser signup failed","service":"amafor-gladiators-api","timestamp":"2026-03-02 01:20:30"}
 {"email":"nnamdisolomon@gmail.com","error":"An account with this email already exists","level":"error","message":"Advertiser signup failed","service":"amafor-gladiators-api","timestamp":"2026-03-02 01:20:46"}
+{"error":"Connection timeout","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-03-03 15:59:30"}
+{"error":"Connection timeout","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-03-03 15:59:30"}
+{"error":{"code":"ETIMEDOUT","command":"CONN"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-03-03 15:59:32"}
+{"error":{},"level":"error","message":"Error warming up FeaturedNews cache","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:55"}

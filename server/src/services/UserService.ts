@@ -2,7 +2,8 @@ import { UserRepository } from '../repositories';
 import { AuditService } from './AuditService';
 
 import { structuredLogger, tracer } from '../utils';
-import User, { UserAttributes } from '@models/User';
+import User, { UserAttributes, UserStatus } from '@models/User';
+import Advertiser from '@models/Advertiser';
 import { AuditAction, EntityType } from '@models/AuditLog';
 
 export class UserService {
@@ -14,11 +15,37 @@ export class UserService {
     this.auditService = new AuditService();
   }
 
+  /**
+   * Get current user profile
+   * @api GET /users/profile
+   */
   public async getUserProfile(userId: string): Promise<User | null> {
     return tracer.startActiveSpan('service.UserService.getUserProfile', async (span) => {
       try {
-        const user = await this.userRepository.findById(userId);
+        const user = await this.userRepository.findById(userId, {
+          include: [{
+            model: Advertiser,
+            as: 'advertiserProfile'
+          }]
+        });
         if (!user) throw new Error('User not found');
+
+        // Map if it's an advertiser to provide a flat structure for the review page if needed,
+        // or just let the frontend handle nested data if it's updated.
+        // Actually, the AdvertiserReviewDetail page expects a flat Advertiser object.
+        if (user.role === 'advertiser') {
+          return {
+            id: user.id,
+            name: user.advertiserProfile?.companyName || `${user.firstName} ${user.lastName}`,
+            contact: `${user.firstName} ${user.lastName}`,
+            email: user.email,
+            status: user.status,
+            industry: user.advertiserProfile?.industry || 'General',
+            website: user.advertiserProfile?.website || '',
+            registered: (user as any).advertiserProfile?.id?.split('-')[0].toUpperCase() || 'REG-PENDING', // Mocking reg number if not present
+          } as any;
+        }
+
         return user;
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
@@ -29,6 +56,9 @@ export class UserService {
     });
   }
 
+  /**
+   * Update user profile
+   */
   public async updateUserProfile(userId: string, data: Partial<UserAttributes>): Promise<User> {
     return tracer.startActiveSpan('service.UserService.updateUserProfile', async (span) => {
       try {
@@ -42,7 +72,7 @@ export class UserService {
 
         const updatedUser = updatedUsers[0];
 
-        // Audit the update via AuditService (writes to DB and Logger)
+        // Audit the update via AuditService
         await this.auditService.logAction({
           userId,
           userEmail: updatedUser.email,
@@ -68,12 +98,25 @@ export class UserService {
     });
   }
 
+  /**
+   * Verify user account (Admin only)
+   */
   public async verifyUser(adminId: string, targetUserId: string, status: string): Promise<User> {
     return tracer.startActiveSpan('service.UserService.verifyUser', async (span) => {
       try {
-        const [_, updatedUsers] = await this.userRepository.update(targetUserId, { status });
+        const [_, updatedUsers] = await this.userRepository.update(targetUserId, { status: status as UserStatus });
 
         if (!updatedUsers || updatedUsers.length === 0) throw new Error('User not found');
+
+        const user = updatedUsers[0];
+
+        // Also update Advertiser status if it exists
+        if (user.role === 'advertiser') {
+          await Advertiser.update(
+            { status: status === UserStatus.ACTIVE ? 'active' : 'suspended' },
+            { where: { userId: targetUserId } }
+          );
+        }
 
         await this.auditService.logAction({
           userId: adminId,
@@ -102,16 +145,33 @@ export class UserService {
     });
   }
 
-  public async getPendingAdvertisers(): Promise<User[]> {
+  /**
+   * Get pending advertisers for verification queue
+   */
+  public async getPendingAdvertisers(): Promise<any[]> {
     return tracer.startActiveSpan('service.UserService.getPendingAdvertisers', async (span) => {
       try {
         const users = await this.userRepository.findAll({
           where: {
-            userType: 'advertiser',
-            status: 'PENDING'
-          }
+            role: 'advertiser',
+            status: UserStatus.PENDING_VERIFICATION
+          },
+          include: [{
+            model: Advertiser,
+            as: 'advertiserProfile'
+          }]
         });
-        return users;
+
+        // Map to flat structure expected by frontend Advertiser interface
+        return users.map((user: any) => ({
+          id: user.id,
+          company: user.advertiserProfile?.companyName || 'Unknown Company',
+          contact: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          status: user.status,
+          industry: user.advertiserProfile?.industry || 'General',
+          website: user.advertiserProfile?.website || ''
+        }));
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
         structuredLogger.error('Failed to fetch pending advertisers', { error: error.message });
@@ -146,8 +206,6 @@ export class UserService {
   public async createUser(userData: any): Promise<User> {
     return tracer.startActiveSpan('service.UserService.createUser', async (span) => {
       try {
-        // Simplified create for admin purposes - assuming repository handles validation/hashing if strictly typed, 
-        // otherwise we might need to hash password here if passed.
         const user = await this.userRepository.create(userData);
         return user;
       } catch (error: any) {

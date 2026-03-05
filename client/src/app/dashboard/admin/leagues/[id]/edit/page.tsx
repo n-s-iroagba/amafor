@@ -32,7 +32,7 @@ export default function EditLeague() {
   );
 
   const { put, isPending: isSubmitting } = usePut(
-    API_ROUTES.LEAGUES.MUTATE(Number(id))
+    API_ROUTES.LEAGUES.MUTATE(id)
   );
 
   // Set form state when league data is fetched

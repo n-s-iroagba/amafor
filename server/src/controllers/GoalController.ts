@@ -18,7 +18,7 @@ export class GoalController {
   createGoal = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const goal = await this.goalService.createGoal(req.body);
-      res.status(201).json(goal);
+      res.status(201).json({ success: true, data: goal });
     } catch (error) {
       next(error);
     }
@@ -27,7 +27,7 @@ export class GoalController {
   getGoal = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const goal = await this.goalService.getGoalById(req.params.id);
-      res.status(200).json(goal);
+      res.status(200).json({ success: true, data: goal });
     } catch (error) {
       next(error);
     }
@@ -43,7 +43,7 @@ export class GoalController {
   getGoalsByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const goals = await this.goalService.getFixtureGoals(req.params.fixtureId);
-      res.status(200).json(goals);
+      res.status(200).json({ success: true, data: goals });
     } catch (error) {
       next(error);
     }
@@ -59,7 +59,7 @@ export class GoalController {
   updateGoal = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const goal = await this.goalService.updateGoal(req.params.id, req.body);
-      res.status(200).json(goal);
+      res.status(200).json({ success: true, data: goal });
     } catch (error) {
       next(error);
     }
@@ -75,7 +75,7 @@ export class GoalController {
   deleteGoal = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       await this.goalService.deleteGoal(req.params.id);
-      res.status(204).send();
+      res.status(204).json({ success: true });
     } catch (error) {
       next(error);
     }
@@ -84,7 +84,7 @@ export class GoalController {
   getGoalsByScorer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const goals = await this.goalService.searchGoalsByPlayer(req.params.scorer);
-      res.status(200).json(goals);
+      res.status(200).json({ success: true, data: goals });
     } catch (error) {
       next(error);
     }
@@ -93,7 +93,7 @@ export class GoalController {
   getPenaltyGoals = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const goals = await this.goalService.getPenaltyStats();
-      res.status(200).json(goals);
+      res.status(200).json({ success: true, data: goals });
     } catch (error) {
       next(error);
     }

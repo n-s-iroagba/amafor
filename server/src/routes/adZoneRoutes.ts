@@ -7,5 +7,6 @@ const controller = new AdZoneController();
 
 router.get('/', asyncHandler(controller.getAllZones));
 router.get('/active', asyncHandler(controller.getActiveZones));
+router.post('/', asyncHandler(controller.updateZonePrice));
 
 export default router;

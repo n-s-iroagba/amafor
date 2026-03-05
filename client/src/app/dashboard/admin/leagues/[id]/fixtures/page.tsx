@@ -232,7 +232,7 @@ export default function FixturesList() {
             </div>
 
             <Link
-              href="/dashboard/admin/fixtures/new"
+              href={`/dashboard/admin/leagues/${leagueId}/fixtures/new`}
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-sky-600 to-blue-600 text-white rounded-xl shadow-lg hover:from-sky-700 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 font-medium"
             >
               <Plus className="w-5 h-5" />
@@ -363,7 +363,7 @@ export default function FixturesList() {
                   : 'Get started by creating your first fixture'}
               </p>
               <Link
-                href="/fixtures/new"
+                href={`/dashboard/admin/leagues/${leagueId}/fixtures/new`}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-700 transition-colors font-medium"
               >
                 <Plus className="w-5 h-5" />
@@ -407,7 +407,7 @@ export default function FixturesList() {
                           key={fixture.id}
                           className="hover:bg-sky-50 transition-colors group cursor-pointer"
                           onClick={() =>
-                            router.push(`/dashboard/admin/fixtures/${fixture.id}`)
+                            router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}`)
                           }
                           data-testid={`row-fixture-${fixture.id}`}
                         >
@@ -464,7 +464,7 @@ export default function FixturesList() {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 router.push(
-                                  `/sports-admin/fixtures/${fixture.id}`
+                                  `/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}`
                                 );
                               }}
                               className="inline-flex items-center gap-1 px-3 py-1 text-sm text-sky-600 hover:text-sky-800 hover:bg-sky-50 rounded-lg transition-colors"
@@ -552,7 +552,7 @@ export default function FixturesList() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            router.push(`/dashboard/admin/fixtures/${fixture.id}`);
+                            router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixture.id}`);
                           }}
                           className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sky-600 hover:text-sky-800 hover:bg-sky-50 rounded-lg transition-colors font-medium"
                         >

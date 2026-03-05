@@ -3037,3 +3037,17 @@
 {"email":"nnamdisolomon@gmail.com","error":"An account with this email already exists","level":"error","message":"Advertiser signup failed","service":"amafor-gladiators-api","timestamp":"2026-03-02 01:20:30"}
 {"email":"nnamdisolomon@gmail.com","level":"info","message":"Advertiser signup started","service":"amafor-gladiators-api","timestamp":"2026-03-02 01:20:45"}
 {"email":"nnamdisolomon@gmail.com","error":"An account with this email already exists","level":"error","message":"Advertiser signup failed","service":"amafor-gladiators-api","timestamp":"2026-03-02 01:20:46"}
+{"level":"warn","message":"Email templates directory not found","path":"/home/udorakpuenyi/amafor/server/src/templates/email","service":"amafor-gladiators-api","timestamp":"2026-03-03 15:57:08"}
+{"hasEmailVerificationSecret":false,"hasRefreshSecret":false,"hasResetPasswordSecret":false,"level":"info","message":"TokenService initialized successfully","service":"amafor-gladiators-api","timestamp":"2026-03-03 15:57:21"}
+{"hasEmailVerificationSecret":false,"hasRefreshSecret":true,"hasResetPasswordSecret":false,"level":"info","message":"TokenService initialized successfully","service":"amafor-gladiators-api","timestamp":"2026-03-03 15:57:21"}
+{"error":"Connection timeout","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-03-03 15:59:30"}
+{"error":"Connection timeout","host":"mail.privateemail.com","level":"error","message":"SMTP connection failed","port":465,"service":"amafor-gladiators-api","timestamp":"2026-03-03 15:59:30"}
+{"error":{"code":"ETIMEDOUT","command":"CONN"},"level":"error","message":"Email transporter verification failed","service":"amafor-gladiators-api","timestamp":"2026-03-03 15:59:32"}
+{"level":"info","message":"Warming up FeaturedNews cache...","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:07"}
+{"level":"info","message":"RssFeedSource updated: 2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f61","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:24"}
+{"level":"info","message":"RssFeedSource updated: 2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f61","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:24"}
+{"level":"info","message":"RssFeedSource updated: 2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f62","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:34"}
+{"level":"info","message":"RssFeedSource updated: 2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f62","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:34"}
+{"level":"info","message":"RssFeedSource updated: 2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f63","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:44"}
+{"level":"info","message":"RssFeedSource updated: 2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f63","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:44"}
+{"error":{},"level":"error","message":"Error warming up FeaturedNews cache","service":"amafor-gladiators-api","timestamp":"2026-03-03 16:00:55"}

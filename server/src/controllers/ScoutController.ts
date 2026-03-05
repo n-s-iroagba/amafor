@@ -51,6 +51,16 @@ export class ScoutController {
         }
     };
 
+    public getRecentViews = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const scoutId = (req as any).user.id;
+            const views = await this.scoutService.getRecentViews(scoutId);
+            res.status(200).json({ success: true, data: views });
+        } catch (error) {
+            next(error);
+        }
+    };
+
     public submitApplication = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const application = await this.scoutService.submitApplication(req.body);

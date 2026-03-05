@@ -121,6 +121,45 @@ export class AdvertisingController {
   };
 
   /**
+   * Get all campaigns (for an advertiser)
+   * @api GET /ads/campaigns
+   * @apiName API-AD-010
+   */
+  public getAllCampaigns = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = (req as any).user;
+      const advertiserId = user.userType === 'advertiser' ? user.id : undefined;
+
+      const campaigns = await this.adService.getAllCampaigns(advertiserId);
+      res.status(200).json({ success: true, data: campaigns });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Get campaign by id
+   * @api GET /ads/campaigns/:id
+   * @apiName API-AD-011
+   */
+  public getCampaignById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const user = (req as any).user;
+      const advertiserId = user.userType === 'advertiser' ? user.id : undefined;
+
+      const campaign = await this.adService.getCampaignById(id, advertiserId);
+      if (!campaign) {
+        res.status(404).json({ success: false, message: 'Campaign not found' });
+        return;
+      }
+      res.status(200).json({ success: true, data: campaign });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
    * Get active campaigns
    * @api GET /ads/campaigns/active
    * @apiName API-AD-006
@@ -130,10 +169,6 @@ export class AdvertisingController {
   public getActiveCampaigns = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = (req as any).user;
-      // If advertiser, filter by their ID. If admin, optional filter? 
-      // Assuming for now this endpoint is for the logged-in advertiser to see THEIR active campaigns.
-      // If admin wants all, they might use a different endpoint or query param.
-      // Let's assume generic "get my active campaigns" for advertiser.
       const advertiserId = user.userType === 'advertiser' ? user.id : undefined;
 
       const campaigns = await this.adService.getActiveCampaigns(advertiserId);

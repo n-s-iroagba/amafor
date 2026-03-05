@@ -89,6 +89,44 @@ export class AdvertisingService {
     });
   }
 
+  async getAllCampaigns(advertiserId?: string): Promise<AdCampaign[]> {
+    return tracer.startActiveSpan('service.AdvertisingService.getAllCampaigns', async (span) => {
+      try {
+        const where: any = {};
+        if (advertiserId) {
+          where.advertiserId = advertiserId;
+        }
+        return await this.adRepository.findAll({ where });
+      } catch (error: any) {
+        span.setStatus({ code: 2, message: error.message });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  async getCampaignById(id: string, advertiserId?: string): Promise<AdCampaign | null> {
+    return tracer.startActiveSpan('service.AdvertisingService.getCampaignById', async (span) => {
+      try {
+        span.setAttribute('campaignId', id);
+        // Include creatives using literal string since it maps to the association
+        const campaign = await this.adRepository.findById(id, { include: ['creatives'] } as any);
+
+        if (campaign && advertiserId && campaign.advertiserId !== advertiserId) {
+          return null; // Not authorized or doesn't belong to this advertiser
+        }
+
+        return campaign;
+      } catch (error: any) {
+        span.setStatus({ code: 2, message: error.message });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
   async getActiveCampaigns(advertiserId?: string): Promise<AdCampaign[]> {
     return tracer.startActiveSpan('service.AdvertisingService.getActiveCampaigns', async (span) => {
       try {

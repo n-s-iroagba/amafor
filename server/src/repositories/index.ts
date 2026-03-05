@@ -20,4 +20,4 @@ export * from './FeaturedNewsRepository';
 export * from './TrialistRepository';
 export * from './VideoRepository';
 export * from './LeagueRepository';
-export * from './ScoutReportRepository';
+export * from './ScoutReportRepository';export * from './BackupRepository';

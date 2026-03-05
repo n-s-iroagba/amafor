@@ -11,8 +11,8 @@ import api from '@/shared/lib/axios';
 
 
 interface FixtureSummary {
-  id: number;
-  fixtureId: number;
+  id: string;
+  fixtureId: string;
   summary: string;
   createdAt: string;
   updatedAt: string;
@@ -40,14 +40,17 @@ interface FixtureSummary {
 export default function SummaryDetailPage() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const leagueId = params.id as string;
+  const fixtureId = params.fixtureId as string;
+  const summaryId = params.summaryId as string;
+
   const {
     data: summary,
     loading: summaryLoading,
     error: summaryError,
     refetch: refetchSummary,
   } = useGet<FixtureSummary>(
-    API_ROUTES.MATCH_SUMMARY.VIEW(id)
+    API_ROUTES.MATCH_SUMMARY.VIEW(summaryId)
   );
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -57,8 +60,8 @@ export default function SummaryDetailPage() {
 
   const handleDelete = async () => {
     try {
-      await api.delete(API_ROUTES.MATCH_SUMMARY.VIEW(id));
-      router.push(`/sports-admin/fixtures/${summary?.fixtureId}`)
+      await api.delete(API_ROUTES.MATCH_SUMMARY.VIEW(summaryId));
+      router.push(`/dashboard/admin/leagues/${leagueId}/fixtures/${fixtureId}`);
 
     } catch (error) {
       console.error('Error deleting match summary:', error);
@@ -99,7 +102,7 @@ export default function SummaryDetailPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-4 sm:mb-6">
           <Link
-            href={`/sports-admin/fixtures/${summary?.fixtureId}`}
+            href={`/dashboard/admin/leagues/${params.id}/fixtures/${summary?.fixtureId}`}
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
             data-testid="link-back-fixture"
           >
@@ -137,7 +140,7 @@ export default function SummaryDetailPage() {
               </div>
               <div className="flex space-x-2">
                 <Link
-                  href={`/sports-admin/match-summary/details/${summary.id}/edit`}
+                  href={`/dashboard/admin/leagues/${params.id}/fixtures/${summary.fixtureId}/summary/details/${summary.id}/edit`}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap"
                   data-testid="btn-edit-summary"
                 >

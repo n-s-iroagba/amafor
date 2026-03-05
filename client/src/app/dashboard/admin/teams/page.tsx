@@ -81,7 +81,7 @@ export default function TeamListPage() {
                         <AlertCircle className="w-5 h-5 text-red-500" />
                         <div>
                             <p className="font-medium text-red-800">Failed to load teams</p>
-                            <button onClick={refetch} className="mt-2 text-sm text-red-700 underline">Retry</button>
+                            <button onClick={() => refetch()} className="mt-2 text-sm text-red-700 underline">Retry</button>
                         </div>
                     </div>
                 ) : filtered.length === 0 ? (

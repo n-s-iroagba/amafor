@@ -7,6 +7,7 @@ import { Target, BookOpen, Users, TrendingUp, Loader2 } from "lucide-react";
 import { AcademyStaff } from "@/features/academy/types";
 import { useGet } from "@/shared/hooks/useApiQuery";
 import { API_ROUTES } from "@/config/routes";
+import { PaginatedData } from "@/shared/types/common";
 
 /**
  * Page: Academy Hub
@@ -27,11 +28,11 @@ function AcademyContent() {
 
   // Fetch staff data when staff section is active
   const {
-    data: staffData,
+    data: staffResponse,
     loading: staffLoading,
     error: staffError,
     refetch: refetchStaff,
-  } = useGet<AcademyStaff[]>(
+  } = useGet<PaginatedData<AcademyStaff>>(
     activeSection === "staff" ? API_ROUTES.STAFF.LIST : null,
     {
       params: {
@@ -41,6 +42,8 @@ function AcademyContent() {
       enabled: activeSection === "staff", // Only fetch when staff section is active
     },
   );
+
+  const staffData = staffResponse?.data;
 
   const sections = [
     { id: "/academy", name: "Overview", icon: Target },
@@ -76,11 +79,10 @@ function AcademyContent() {
                 <Link
                   key={sec.id}
                   href={`${sec.id}`}
-                  className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${
-                    activeSection === sec.id
-                      ? "bg-sky-700 text-white font-medium"
-                      : "bg-white text-slate-700 hover:bg-slate-100"
-                  }`}
+                  className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${activeSection === sec.id
+                    ? "bg-sky-700 text-white font-medium"
+                    : "bg-white text-slate-700 hover:bg-slate-100"
+                    }`}
                   aria-current={activeSection === sec.id ? "page" : undefined}
                   data-testid={`nav-item-${sec.name.toLowerCase()}`}
                 >

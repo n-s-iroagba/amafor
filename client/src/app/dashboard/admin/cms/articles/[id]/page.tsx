@@ -52,7 +52,7 @@ export default function ArticleDetail() {
   const handleDelete = async () => {
     try {
       await deleteItem(id as unknown as number);
-      router.push("/dashboard/cms/articles"); // back to list
+      router.push("/dashboard/admin/cms/articles"); // back to list
     } catch (err) {
       console.error("Error deleting article:", err);
       // Toast error handled by hook usually or add local handling
@@ -91,11 +91,10 @@ export default function ArticleDetail() {
         </p>
 
         <span
-          className={`inline-block text-xs px-2 py-1 rounded-full mb-4 ${
-            article.status === ArticleStatus.Published
+          className={`inline-block text-xs px-2 py-1 rounded-full mb-4 ${article.status === ArticleStatus.Published
               ? "bg-green-100 text-green-700"
               : "bg-yellow-100 text-yellow-700"
-          }`}
+            }`}
           data-testid="article-status-badge"
         >
           {article.status}
@@ -119,7 +118,7 @@ export default function ArticleDetail() {
         <div className="flex gap-3">
           <button
             onClick={() =>
-              router.push(`/dashboard/cms/articles/${article.id}/edit`)
+              router.push(`/dashboard/admin/cms/articles/${article.id}/edit`)
             }
             className="px-4 py-2 border text-sky-600 rounded hover:bg-sky-50"
             data-testid="btn-edit-article"

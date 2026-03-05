@@ -23,15 +23,15 @@ import { League } from '@/shared/types';
 export default function LeaguesList() {
   const router = useRouter();
 
-  const [deleteConfirm, setDeleteConfirm] = useState<number>(0);
-  const [deletingId, setDeletingId] = useState<number>(0);
+  const [deleteConfirm, setDeleteConfirm] = useState<string>('');
+  const [deletingId, setDeletingId] = useState<string>('');
 
   const { data: leagues, loading: leaguesLoading, refetch } = useGet<League[]>(
     API_ROUTES.LEAGUES.LIST
   );
 
   const { delete: deleteLeague, isPending: deleteLoading } = useDelete(
-    (id) => API_ROUTES.LEAGUES.MUTATE(Number(id))
+    (id) => API_ROUTES.LEAGUES.MUTATE(String(id))
   );
 
   const handleDeleteLeague = async () => {
@@ -43,8 +43,8 @@ export default function LeaguesList() {
     } catch (err) {
       console.error('Error deleting league:', err);
     } finally {
-      setDeletingId(0);
-      setDeleteConfirm(0);
+      setDeletingId('');
+      setDeleteConfirm('');
     }
   };
 
@@ -233,7 +233,7 @@ export default function LeaguesList() {
                             </svg>
                           </Link>
                           <button
-                            onClick={() => setDeleteConfirm(Number(league.id))}
+                            onClick={() => setDeleteConfirm(String(league.id))}
                             className="text-red-600 hover:text-red-900 transition-colors text-xs sm:text-sm"
                             title="Delete"
                             data-testid="btn-delete-league"
@@ -264,7 +264,7 @@ export default function LeaguesList() {
                             </p>
                             <div className="flex justify-end space-x-2">
                               <button
-                                onClick={() => setDeleteConfirm(0)}
+                                onClick={() => setDeleteConfirm('')}
                                 className="px-3 py-1 text-sm bg-sky-100 text-sky-700 rounded hover:bg-sky-200 transition-colors"
                               >
                                 Cancel

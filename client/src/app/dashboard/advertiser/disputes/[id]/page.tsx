@@ -31,11 +31,9 @@ export default function AdvertiserDisputeDetailPage() {
 
     // Construct URL manually or use the route helper if it works correctly with client-side params
     // API_ROUTES.ADVERTISER.DISPUTES.VIEW(id) -> /disputes/:id
-    const { data: response, loading, error } = useGet<{ success: boolean; data: Dispute }>(
+    const { data: dispute, loading, error } = useGet<Dispute>(
         API_ROUTES.ADVERTISER.DISPUTES.VIEW(disputeId)
     );
-
-    const dispute = response?.data;
 
     if (loading) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin text-[#87CEEB]" /></div>;
     if (error || !dispute) return <div className="p-12 text-center text-red-500"><AlertCircle className="w-8 h-8 mx-auto mb-2" />Error loading dispute</div>;

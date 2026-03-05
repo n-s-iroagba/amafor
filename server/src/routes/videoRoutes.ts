@@ -16,7 +16,8 @@ router.get('/upload/signature', VideoController.getUploadSignature)
 // GET /api/videos - Get all videos with pagination
 router.get('/', VideoController.getAllVideos);
 
-
+// GET /api/videos/:id - Get video by ID
+router.get('/:id', VideoController.getVideoById);
 
 // POST /api/videos - Create new video
 router.post('/', VideoController.createVideo);

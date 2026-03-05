@@ -59,6 +59,21 @@ export class ScoutService {
         });
     }
 
+    public async getRecentViews(scoutId: string): Promise<any[]> {
+        return tracer.startActiveSpan('service.ScoutService.getRecentViews', async (span) => {
+            try {
+                // Placeholder for recently viewed players functionality
+                // Requires tracking player views per scout
+                return [];
+            } catch (error: any) {
+                span.setStatus({ code: 2, message: error.message });
+                throw error;
+            } finally {
+                span.end();
+            }
+        });
+    }
+
     // Generate and save a report
     public async createReport(data: any): Promise<any> {
         return tracer.startActiveSpan('service.ScoutService.createReport', async (span) => {

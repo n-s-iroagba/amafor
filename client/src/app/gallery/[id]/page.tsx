@@ -24,6 +24,7 @@ import {
   GlobeIcon
 } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
 import { FixtureWithLeague, FixtureImage, FixtureStatus } from '@/features/fixture/types';
 
 
@@ -45,24 +46,16 @@ export default function FixtureGalleryPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  // Fetch fixture details
+  // Fetch fixture details and images in one call
   const {
     data: fixture,
-    loading: fixtureLoading,
-    error: fixtureError
-  } = useGet<FixtureWithLeague>(`/api/fixtures/${fixtureId}`, {
-    params: { include: 'league' }
+    loading,
+    error
+  } = useGet<FixtureWithLeague & { images?: FixtureImage[] }>(API_ROUTES.FIXTURES.VIEW(fixtureId), {
+    params: { include: 'league,images' }
   });
 
-  // Fetch match images for this fixture
-  const {
-    data: images,
-    loading: imagesLoading,
-    error: imagesError
-  } = useGet<FixtureImage[]>(`/api/fixtures/${fixtureId}/images`);
-
-  const loading = fixtureLoading || imagesLoading;
-  const error = fixtureError || imagesError;
+  const images = fixture?.images || [];
 
   const getStatusColor = (status: FixtureStatus) => {
     switch (status) {

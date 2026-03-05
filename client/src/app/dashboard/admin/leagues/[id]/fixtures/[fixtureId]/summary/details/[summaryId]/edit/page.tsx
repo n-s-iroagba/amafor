@@ -8,13 +8,13 @@ import { API_ROUTES } from '@/config/routes';
 import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
 interface FixtureSummary {
-  id: number;
-  fixtureId: number;
+  id: string;
+  fixtureId: string;
   summary: string;
 }
 
 interface Fixture {
-  id: number;
+  id: string;
   homeTeam: string;
   awayTeam: string;
   date: string;
@@ -72,11 +72,11 @@ export default function EditFixtureSummary() {
 
     try {
       await put({
-        fixtureId: parseInt(fixtureId),
+        fixtureId: fixtureId,
         summary: summary.trim(),
       });
 
-      router.push(`/sports-admin/match-summary/details/${summaryId}`);
+      router.push(`/dashboard/admin/leagues/${params.id}/fixtures/${fixtureId}/summary/details/${summaryId}`);
     } catch (error) {
       console.error('Error updating match summary:', error);
     }

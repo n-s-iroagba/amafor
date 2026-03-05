@@ -11,6 +11,22 @@ const router = Router();
 const controller = new AdvertisingController();
 const creativeController = new AdCreativeController();
 
+// Get All Campaigns
+router.get(
+    '/campaigns',
+    authenticate,
+    authorize(['advertiser', 'admin', 'commercial_manager']),
+    asyncHandler(controller.getAllCampaigns)
+);
+
+// Get Campaign By Id
+router.get(
+    '/campaigns/:id',
+    authenticate,
+    authorize(['advertiser', 'admin', 'commercial_manager']),
+    asyncHandler(controller.getCampaignById)
+);
+
 // Create Campaign
 router.post(
     '/campaigns',

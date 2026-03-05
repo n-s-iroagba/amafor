@@ -20,7 +20,7 @@ enum FixtureStatus {
 }
 
 interface League {
-  id: number;
+  id: string;
   name: string;
   season: string;
 }
@@ -215,15 +215,25 @@ export default function NewFixture() {
         uploadFile(formData.awayTeamLogo!, 'image')
       ]);
 
+      // Map frontend status to backend status
+      let backendStatus = formData.status as string;
+      if (['won', 'lost', 'draw'].includes(formData.status)) {
+        backendStatus = 'COMPLETED';
+      } else if (formData.status === 'playing') {
+        backendStatus = 'IN_PROGRESS';
+      } else {
+        backendStatus = formData.status.toUpperCase();
+      }
+
       await post({
-        leagueId: parseInt(formData.leagueId),
+        leagueId: formData.leagueId,
         date: formData.date,
         homeTeam: formData.homeTeam.trim(),
         awayTeam: formData.awayTeam.trim(),
         homeTeamLogo: homeLogoUrl,
         awayTeamLogo: awayLogoUrl,
         venue: formData.venue.trim(),
-        status: formData.status,
+        status: backendStatus,
       });
 
       router.push(`/dashboard/admin/leagues/${formData.leagueId}/fixtures`);

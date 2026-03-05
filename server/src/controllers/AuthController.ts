@@ -84,13 +84,17 @@ export class AuthController {
 
 
         res.status(200).json({
+          success: true,
           data: {
             user: verified.user,
             accessToken: verified.accessToken,
           }
         })
       } else {
-        res.status(200).json(result as SignUpResponseDto)
+        res.status(200).json({
+          success: true,
+          data: result
+        })
       }
     } catch (error) {
       console.error(error)
@@ -114,7 +118,7 @@ export class AuthController {
     try {
       const { verificationToken, id } = req.body
       const newToken = await this.authService.generateNewCode(verificationToken)
-      res.json({ verificationToken: newToken, id } as ResendVerificationRespnseDto)
+      res.json({ success: true, data: { verificationToken: newToken, id } })
     } catch (error) {
       console.error(error)
       next(error)
@@ -165,8 +169,11 @@ export class AuthController {
       res.clearCookie('refreshToken', clearOptions as any);
       res.cookie('refreshToken', result.refreshToken, cookieOptions as any)
       res.status(200).json({
-        user: result.user,
-        accessToken: result.accessToken,
+        success: true,
+        data: {
+          user: result.user,
+          accessToken: result.accessToken,
+        }
       })
     } catch (error) {
       console.error(error)
@@ -186,12 +193,15 @@ export class AuthController {
       res.cookie('refreshToken', result.refreshToken, cookieOptions as any)
 
       res.status(200).json({
-        user: {
-          id: result.user.id,
-          userType: result.user.role,
-          username: result.user.username,
-        },
-        accessToken: result.accessToken,
+        success: true,
+        data: {
+          user: {
+            id: result.user.id,
+            userType: result.user.role,
+            username: result.user.username,
+          },
+          accessToken: result.accessToken,
+        }
       })
     } catch (error) {
       console.error(error)

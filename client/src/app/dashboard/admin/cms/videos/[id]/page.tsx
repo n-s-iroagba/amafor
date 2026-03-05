@@ -57,7 +57,7 @@ export default function VideoDetail() {
     try {
       const response = await api.delete(`/videos/${id}`);
 
-      router.push("/sports-admin/videos");
+      router.push("/dashboard/admin/cms/videos");
     } catch (error) {
       console.error("Error deleting video:", error);
     }
@@ -91,7 +91,7 @@ export default function VideoDetail() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-4 sm:mb-6">
           <Link
-            href="/sports-admin/videos"
+            href="/dashboard/admin/cms/videos"
             className="text-sky-600 hover:text-sky-800 transition-colors flex items-center text-sm sm:text-base"
             data-testid="link-back-videos"
           >
@@ -130,7 +130,7 @@ export default function VideoDetail() {
               </div>
               <div className="flex space-x-2">
                 <Link
-                  href={`/videos/${video.id}/edit`}
+                  href={`/dashboard/admin/cms/videos/${video.id}/edit`}
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap"
                   data-testid="btn-edit-video"
                 >

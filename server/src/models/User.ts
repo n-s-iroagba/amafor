@@ -57,6 +57,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public createdAt!: Date;
   public updatedAt!: Date;
   public deletedAt?: Date;
+  public advertiserProfile?: any; // Added to avoid lint errors with includes
 }
 
 User.init(

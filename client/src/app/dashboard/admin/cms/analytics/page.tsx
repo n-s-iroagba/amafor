@@ -21,7 +21,7 @@ interface ArticleAnalytics {
   averageTimeOnPage: number;
   bounceRate: number;
   topArticles: {
-    id: number;
+    id: string;
     title: string;
     views: number;
   }[];

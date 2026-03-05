@@ -7,15 +7,15 @@ import { API_ROUTES } from '@/config/routes';
 
 
 interface Goal {
-  id: number;
-  fixtureId: number;
+  id: string;
+  fixtureId: string;
   scorer: string;
   minute: number;
   isPenalty: boolean;
 }
 
 interface Fixture {
-  id: number;
+  id: string;
   homeTeam: string;
   awayTeam: string;
   date: string;
@@ -43,7 +43,7 @@ export default function EditGoal() {
   // The original code allowed changing the fixture, but in this nested route, the fixture is fixed by the URL.
   // I will assume we stick to the current fixture or disable changing it.
 
-  const { put, isPending: isSubmitting } = usePut(API_ROUTES.GOALS.MUTATE(Number(goalId)));
+  const { put, isPending: isSubmitting } = usePut(API_ROUTES.GOALS.MUTATE(goalId));
 
   const [scorer, setScorer] = useState('');
   const [minute, setMinute] = useState('');
@@ -77,7 +77,7 @@ export default function EditGoal() {
 
     try {
       await put({
-        fixtureId: parseInt(fixtureId), // Keep the same fixture
+        fixtureId: fixtureId, // Keep the same fixture
         scorer,
         minute: parseInt(minute),
         isPenalty,

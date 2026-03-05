@@ -142,9 +142,10 @@ export class AuthService {
 
       // 6. Create the Advertiser profile row
       await Advertiser.create({
+        userId: user.id, // Linking to User
         companyName: data.companyName,
         contactPerson: data.contactName,
-        email: data.contact_email || data.email,
+        companyEmail: data.contact_email || data.email,
         phone: data.contact_phone,
         status: 'active',
       });

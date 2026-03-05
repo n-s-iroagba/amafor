@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { FileText, Download, Trash2, Search, ArrowLeft, Shield, Eye, Filter, Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
-import { useGet } from '@/shared/hooks/useApiQuery';
+import { useDelete, useGet } from '@/shared/hooks/useApiQuery';
+import { API_ROUTES } from '@/config/routes';
+import { LoadingSpinner } from '@/shared/components/LoadingStates';
 
 
 /**
@@ -17,21 +19,24 @@ import { useGet } from '@/shared/hooks/useApiQuery';
  */
 export default function ScoutReportsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const { data: reportsData, loading, refetch } = useGet<any[]>('/scout/reports');
+  const { data: reportsData, loading, refetch } = useGet<any[]>(API_ROUTES.SCOUT.REPORTS);
+  const { delete: deleteReport } = useDelete(API_ROUTES.SCOUT.REPORTS);
   const reports = reportsData || [];
 
   const handleDelete = async (id: string) => {
     setIsDeleting(id);
-    // In a real implementation, call useDelete hook or API
-    // For now we just simulate local removal update after API call
+
     try {
-      await fetch(`/api/scout/reports/${id}`, { method: 'DELETE' });
+      await deleteReport(id);
       refetch();
     } catch (e) {
       console.error(e);
     }
     setIsDeleting(null);
   };
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">

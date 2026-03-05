@@ -18,8 +18,8 @@ import { API_ROUTES } from '@/config/routes';
 import { usePost } from '@/shared/hooks/useApiQuery';
 
 interface FixtureSummaryAttributes {
-  id: number;
-  fixtureId: number;
+  id: string;
+  fixtureId: string;
   summary: string;
   createdAt?: Date;
   updatedAt?: Date;

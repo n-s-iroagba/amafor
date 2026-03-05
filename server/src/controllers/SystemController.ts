@@ -122,7 +122,7 @@ export class SystemController {
     try {
       const { id } = req.params;
       const result = await this.systemService.downloadBackup(id);
-      res.status(200).json({ success: true, data: result });
+      res.download(result.path, result.fileName);
     } catch (error) {
       next(error);
     }

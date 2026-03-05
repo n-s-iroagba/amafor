@@ -18,8 +18,8 @@ enum FixtureStatus {
 }
 
 interface Fixture {
-  id: number;
-  leagueId: number;
+  id: string;
+  leagueId: string;
   date: string;
   matchDate?: string; // Alias for date
   homeTeam: string;
@@ -31,7 +31,7 @@ interface Fixture {
 }
 
 interface League {
-  id: number;
+  id: string;
   name: string;
   season: string;
 }
@@ -135,7 +135,7 @@ export default function EditFixture() {
     API_ROUTES.FIXTURES.VIEW(id)
   );
   const { data: leagues, loading: leaguesLoading } = useGet<League[]>(
-    `${API_ROUTES.LEAGUES.LIST}/all`
+    API_ROUTES.LEAGUES.LIST
   );
 
   const { put, isPending: isSubmitting } = usePut(
@@ -263,18 +263,28 @@ export default function EditFixture() {
         formData.awayTeamLogo ? uploadImage(formData.awayTeamLogo) : Promise.resolve(fixture?.awayTeamLogo)
       ]);
 
+      // map frontend status back to standard backend status
+      let backendStatus = formData.status as string;
+      if (['won', 'lost', 'draw'].includes(formData.status)) {
+        backendStatus = 'COMPLETED';
+      } else if (formData.status === 'playing') {
+        backendStatus = 'IN_PROGRESS';
+      } else {
+        backendStatus = formData.status.toUpperCase();
+      }
+
       await put({
-        leagueId: parseInt(formData.leagueId),
+        leagueId: formData.leagueId,
         date: formData.date,
         homeTeam: formData.homeTeam.trim(),
         awayTeam: formData.awayTeam.trim(),
         homeTeamLogo: homeLogoUrl,
         awayTeamLogo: awayLogoUrl,
         venue: formData.venue.trim(),
-        status: formData.status,
+        status: backendStatus,
       });
 
-      router.push('/sports-admin/fixtures');
+      router.push(`/dashboard/admin/leagues/${formData.leagueId}/fixtures`);
       router.refresh(); // Refresh to show updated data
     } catch (error: any) {
       console.error('Error updating fixture:', error);

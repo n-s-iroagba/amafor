@@ -271,7 +271,7 @@ export default function EditVideo() {
       if (thumbnailInputRef.current) thumbnailInputRef.current.value = "";
 
       setTimeout(() => {
-        router.push("/sports-admin/videos");
+        router.push("/dashboard/admin/cms/videos");
       }, 1500);
     } catch (error: any) {
       console.error("Error updating video:", error);
@@ -321,7 +321,7 @@ export default function EditVideo() {
             The video you&apos;re trying to edit doesn&apos;t exist.
           </p>
           <Link
-            href="/sports-admin/videos"
+            href="/dashboard/admin/cms/videos"
             className="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -342,7 +342,7 @@ export default function EditVideo() {
           className="flex items-center gap-4 mb-8"
         >
           <Link
-            href="/sports-admin/videos"
+            href="/dashboard/admin/cms/videos"
             className="inline-flex items-center text-sky-600 hover:text-sky-800 transition-colors p-2 rounded-lg hover:bg-white"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -407,11 +407,10 @@ export default function EditVideo() {
                     if (errors.title)
                       setErrors((prev) => ({ ...prev, title: "" }));
                   }}
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.title
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.title
                       ? "border-red-300 bg-red-50"
                       : "border-gray-300 hover:border-gray-400"
-                  }`}
+                    }`}
                   placeholder="Enter a descriptive title for your video"
                   maxLength={200}
                   data-testid="input-video-title"
@@ -446,11 +445,10 @@ export default function EditVideo() {
                       setErrors((prev) => ({ ...prev, excerpt: "" }));
                   }}
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.excerpt
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.excerpt
                       ? "border-red-300 bg-red-50"
                       : "border-gray-300 hover:border-gray-400"
-                  }`}
+                    }`}
                   placeholder="Describe what your video is about..."
                   maxLength={500}
                   data-testid="textarea-video-description"
@@ -487,11 +485,10 @@ export default function EditVideo() {
                   }}
                   min="1"
                   max="1440"
-                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${
-                    errors.duration
+                  className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.duration
                       ? "border-red-300 bg-red-50"
                       : "border-gray-300 hover:border-gray-400"
-                  }`}
+                    }`}
                   placeholder="Enter video duration in minutes (optional)"
                 />
                 {errors.duration && (
@@ -531,11 +528,10 @@ export default function EditVideo() {
                     type="button"
                     onClick={() => videoInputRef.current?.click()}
                     disabled={isUploading}
-                    className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-                      errors.video
+                    className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.video
                         ? "border-red-300 bg-red-50 text-red-700"
                         : "border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
-                    } disabled:opacity-50`}
+                      } disabled:opacity-50`}
                   >
                     <Video className="w-8 h-8 mx-auto mb-2 opacity-60" />
                     <p className="font-medium text-sm mb-1">Choose New Video</p>
@@ -617,11 +613,10 @@ export default function EditVideo() {
                     type="button"
                     onClick={() => thumbnailInputRef.current?.click()}
                     disabled={isUploading}
-                    className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${
-                      errors.thumbnail
+                    className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.thumbnail
                         ? "border-red-300 bg-red-50 text-red-700"
                         : "border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
-                    } disabled:opacity-50`}
+                      } disabled:opacity-50`}
                   >
                     <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-60" />
                     <p className="font-medium text-sm mb-1">

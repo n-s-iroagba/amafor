@@ -79,7 +79,7 @@ export default function VideoLibrary() {
             Videos
           </h1>
           <Link
-            href="/sports-admin/videos/new"
+            href="/dashboard/admin/cms/videos/new"
             className="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center"
             data-testid="btn-add-video"
           >
@@ -110,7 +110,7 @@ export default function VideoLibrary() {
             </p>
             <div className="mt-4 sm:mt-6">
               <Link
-                href="/sports-admin/videos/new"
+                href="/dashboard/admin/cms/videos/new"
                 className="inline-flex items-center justify-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 transition-colors text-sm sm:text-base"
               >
                 <svg
@@ -245,7 +245,7 @@ export default function VideoLibrary() {
                             </svg>
                           </Link>
                           <Link
-                            href={`/sports-admin/videos/${video.id}/edit`}
+                            href={`/dashboard/admin/cms/videos/${video.id}/edit`}
                             className="text-indigo-600 hover:text-indigo-900 transition-colors text-xs sm:text-sm"
                             title="Edit"
                           >

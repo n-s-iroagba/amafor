@@ -72,6 +72,39 @@ export class VideoController {
   }
 
   /**
+   * Get video by id
+   * @api GET /videos/:id
+   * @apiName API-VIDEO-003
+   * @apiGroup Videos
+   */
+  static async getVideoById(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const video = await Video.findByPk(id);
+
+      if (!video) {
+        return res.status(404).json({
+          success: false,
+          message: 'Video not found',
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: video,
+      });
+    } catch (error) {
+      console.error('Error fetching video by id:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+
+  /**
    * Upload video
    * @api POST /videos
    * @apiName API-VIDEO-001

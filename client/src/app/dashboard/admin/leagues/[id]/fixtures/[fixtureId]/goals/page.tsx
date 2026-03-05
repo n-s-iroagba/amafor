@@ -8,7 +8,7 @@ import { Loader2, Plus, Trash2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 interface Goal {
-    id: number;
+    id: string;
     fixtureId: string;
     scorer: string;
     minute: number;
@@ -54,7 +54,7 @@ export default function GoalsPage() {
     );
 
     const { delete: deleteGoal, isPending: isDeleting } = useDelete(
-        (id) => API_ROUTES.GOALS.MUTATE(Number(id))
+        (id) => API_ROUTES.GOALS.MUTATE(id as string)
     );
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +72,7 @@ export default function GoalsPage() {
         }
     };
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this goal?')) return;
         try {
             await deleteGoal(id);

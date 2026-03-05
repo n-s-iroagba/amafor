@@ -18,7 +18,7 @@ export class LineupController {
   createLineup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const player = await this.lineupService.createLineup(req.body);
-      res.status(201).json(player);
+      res.status(201).json({ success: true, data: player });
     } catch (error) {
       next(error);
     }
@@ -27,7 +27,7 @@ export class LineupController {
   getLineupPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const player = await this.lineupService.getLineupById(req.params.id);
-      res.status(200).json(player);
+      res.status(200).json({ success: true, data: player });
     } catch (error) {
       next(error);
     }
@@ -43,7 +43,7 @@ export class LineupController {
   getLineupByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const lineup = await this.lineupService.getFixtureLineup(req.params.fixtureId);
-      res.status(200).json(lineup);
+      res.status(200).json({ success: true, data: lineup });
     } catch (error) {
       next(error);
     }
@@ -52,7 +52,7 @@ export class LineupController {
   getStartersByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { starters } = await this.lineupService.getDetailedFixtureLineup(req.params.fixtureId);
-      res.status(200).json(starters);
+      res.status(200).json({ success: true, data: starters });
     } catch (error) {
       next(error);
     }
@@ -61,7 +61,7 @@ export class LineupController {
   getSubstitutesByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { substitutes } = await this.lineupService.getDetailedFixtureLineup(req.params.fixtureId);
-      res.status(200).json(substitutes);
+      res.status(200).json({ success: true, data: substitutes });
     } catch (error) {
       next(error);
     }
@@ -77,7 +77,7 @@ export class LineupController {
   updateLineupPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const player = await this.lineupService.updateLineup(req.params.id, req.body);
-      res.status(200).json(player);
+      res.status(200).json({ success: true, data: player });
     } catch (error) {
       next(error);
     }
@@ -93,7 +93,7 @@ export class LineupController {
   deleteLineupPlayer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       await this.lineupService.deleteLineup(req.params.id);
-      res.status(204).send();
+      res.status(204).json({ success: true });
     } catch (error) {
       next(error);
     }
@@ -105,7 +105,7 @@ export class LineupController {
         req.params.fixtureId,
         req.body
       );
-      res.status(200).json(lineup);
+      res.status(200).json({ success: true, data: lineup });
     } catch (error) {
       next(error);
     }

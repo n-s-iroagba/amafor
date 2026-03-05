@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -54,7 +54,7 @@ export default function GalleryPage() {
   });
 
   // Fetch leagues for filter
-  const { data: leaguesData } = useGet<any[]>('/api/leagues', {
+  const { data: leaguesData } = useGet<any[]>(API_ROUTES.LEAGUES.LIST, {
     params: { limit: 20 }
   });
 

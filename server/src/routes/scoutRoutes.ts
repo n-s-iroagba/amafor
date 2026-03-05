@@ -12,6 +12,9 @@ router.post('/applications', controller.submitApplication);
 // Protected Routes
 router.use(authMiddleware);
 
+// Dashboard
+router.get('/recent-views', rbacMiddleware(['scout']), controller.getRecentViews);
+
 // Reports
 router.get('/reports', rbacMiddleware(['scout', 'admin']), controller.listReports);
 router.post('/reports', rbacMiddleware(['scout']), controller.createReport);

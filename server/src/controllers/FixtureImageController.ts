@@ -18,7 +18,7 @@ export class FixtureImageController {
   createFixtureImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const image = await this.fixtureImageService.createFixtureImage(req.body.images);
-      res.status(201).json(image);
+      res.status(201).json({ success: true, data: image });
     } catch (error) {
       next(error);
     }
@@ -27,7 +27,7 @@ export class FixtureImageController {
   getFixtureImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const image = await this.fixtureImageService.getFixtureImageById(req.params.id);
-      res.status(200).json(image);
+      res.status(200).json({ success: true, data: image });
     } catch (error) {
       next(error);
     }
@@ -43,7 +43,7 @@ export class FixtureImageController {
   getFixtureImagesByFixture = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const images = await this.fixtureImageService.getFixtureImagesByFixture(req.params.fixtureId);
-      res.status(200).json(images);
+      res.status(200).json({ success: true, data: images });
     } catch (error) {
       next(error);
     }
@@ -52,7 +52,7 @@ export class FixtureImageController {
   updateFixtureImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const image = await this.fixtureImageService.updateFixtureImage(req.params.id, req.body);
-      res.status(200).json(image);
+      res.status(200).json({ success: true, data: image });
     } catch (error) {
       next(error);
     }
@@ -68,7 +68,7 @@ export class FixtureImageController {
   deleteFixtureImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       await this.fixtureImageService.deleteFixtureImage(req.params.id);
-      res.status(204).send();
+      res.status(204).json({ success: true });
     } catch (error) {
       next(error);
     }

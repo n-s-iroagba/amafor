@@ -163,7 +163,7 @@ export default function EditTrialist() {
         weight: formData.weight ? parseInt(formData.weight) : null,
       });
 
-      router.push("/sports-admin/trialist");
+      router.push('/dashboard/admin/academy/trialist');
     } catch (error) {
       console.error("Error updating trialist:", error);
       setErrors({ submit: "Failed to update trialist. Please try again." });

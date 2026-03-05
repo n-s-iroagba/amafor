@@ -167,7 +167,7 @@ export default function EditStaff() {
         initials: formData.initials || null,
       });
 
-      router.push("/sports-admin/staff");
+      router.push("/dashboard/admin/academy/staff");
     } catch (error) {
       console.error("Error updating staff:", error);
       setErrors({ submit: "Failed to update staff member. Please try again." });
@@ -381,11 +381,10 @@ export default function EditStaff() {
             <div>
               <div
                 onClick={() => imageInputRef.current?.click()}
-                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-                  imageFile || formData.imageUrl
+                className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile || formData.imageUrl
                     ? "border-green-300 bg-green-50"
                     : "border-indigo-300 bg-indigo-50 hover:border-indigo-400"
-                }`}
+                  }`}
               >
                 <input
                   ref={imageInputRef}

@@ -7,8 +7,8 @@ import { API_ROUTES } from '@/config/routes';
 import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
 interface ClubLeagueStats {
-  id: number;
-  leagueId: number;
+  id: string;
+  leagueId: string;
   position: number;
   points: number;
   goalsFor: number;
@@ -19,7 +19,7 @@ interface ClubLeagueStats {
 }
 
 interface League {
-  id: number;
+  id: string;
   name: string;
   season: string;
 }
@@ -56,7 +56,7 @@ export default function EditLeagueStats() {
     API_ROUTES.LEAGUE_STATS.VIEW(statsId)
   );
   const { put, isPending: isSubmitting } = usePut(
-    API_ROUTES.LEAGUE_STATS.MUTATE(Number(statsId))
+    API_ROUTES.LEAGUE_STATS.MUTATE(statsId)
   );
 
   const isLoading = leaguesLoading || statsLoading;
@@ -98,7 +98,7 @@ export default function EditLeagueStats() {
 
     try {
       await put({
-        leagueId: parseInt(selectedLeagueId),
+        leagueId: selectedLeagueId,
         position: parseInt(position),
         points: parseInt(points),
         goalsFor: parseInt(goalsFor),

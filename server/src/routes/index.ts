@@ -9,6 +9,7 @@ import disputeRoutes from './disputeRoutes';
 import videoRoutes from './videoRoutes';
 import authRoutes from './authRoutes';
 
+import academyRoutes from './academyRoutes';
 import academyStaffRoutes from './academyStaffRoutes';
 import clubLeagueRoutes from './clubLeagueRoutes';
 import feedsRoutes from './feedsRoutes';
@@ -18,6 +19,7 @@ import lineupRoutes from './lineupRoutes';
 import fixtureImageRoutes from './fixtureImageRoutes';
 import leagueRoutes from './leagueRoutes';
 import scoutRoutes from './scoutRoutes';
+import matchSummaryRoutes from './matchSummaryRoutes';
 
 import patronageRoutes from './patronageRoutes';
 import paymentRoutes from './paymentRoutes';
@@ -43,6 +45,7 @@ router.use('/disputes', disputeRoutes);
 router.use('/videos', videoRoutes);
 router.use('/auth', authRoutes);
 
+router.use('/academy', academyRoutes);
 router.use('/academy-staff', academyStaffRoutes);
 router.use('/club-league-stats', clubLeagueRoutes);
 router.use('/leagues', leagueRoutes);
@@ -54,6 +57,7 @@ router.use('/match-gallery', fixtureImageRoutes);
 router.use('/patrons', patronageRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/players', playerRoutes);
+router.use('/match-summaries', matchSummaryRoutes);
 router.use('/system', systemRoutes);
 router.use('/trialists', trialistRoutes);
 router.use('/users', userRoutes);

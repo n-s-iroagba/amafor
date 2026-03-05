@@ -9,7 +9,7 @@ import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 
 
 interface Fixture {
-  id: number;
+  id: string;
   homeTeam: string;
   awayTeam: string;
   date: string;

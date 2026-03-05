@@ -9,20 +9,21 @@ export interface IAdZoneRepository {
   // Standard CRUD
   findById(id: string): Promise<AdZoneModel | null>;
   findAll(): Promise<AdZoneModel[]>;
-  
+  update(id: string, data: Partial<AdZoneAttributes>, options?: any): Promise<[number, AdZoneModel[]]>;
+
   // AdZone specific methods
   findByZone(zone: AdZone): Promise<AdZoneModel | null>;
   findActiveZones(): Promise<AdZoneModel[]>;
   findByType(type: string): Promise<AdZoneModel[]>;
-  
+
   // Price management
   updatePrice(zone: AdZone, pricePerView: number): Promise<boolean>;
   getZonePrice(zone: AdZone): Promise<number | null>;
   getAvailableZonesForBudget(budget: number, impressions: number): Promise<AdZoneModel[]>;
-  
+
   // Status management
   updateStatus(zone: AdZone, status: string): Promise<boolean>;
-  
+
   // Analytics
   getZoneStats(): Promise<{
     total: number;
@@ -74,7 +75,7 @@ export class AdZoneRepository extends BaseRepository<AdZoneModel> implements IAd
   async getAvailableZonesForBudget(budget: number, impressions: number): Promise<AdZoneModel[]> {
     // Calculate maximum price per view based on budget and impressions
     const maxPricePerView = budget / impressions;
-    
+
     return await this.findAll({
       where: {
         status: 'active',
@@ -120,11 +121,11 @@ export class AdZoneRepository extends BaseRepository<AdZoneModel> implements IAd
   }
 
   // Override update to ensure only pricePerView can be updated
-  async update(zone: AdZone, data: Partial<AdZoneAttributes>, options?: any): Promise<[number, AdZoneModel[]]> {
+  async update(id: string, data: Partial<AdZoneAttributes>, options?: any): Promise<[number, AdZoneModel[]]> {
     // Filter out fields that shouldn't be updated
     const updatableFields = ['pricePerView', 'updatedAt'];
     const filteredData: any = {};
-    
+
     Object.keys(data).forEach(key => {
       if (updatableFields.includes(key)) {
         filteredData[key] = (data as any)[key];
@@ -135,6 +136,6 @@ export class AdZoneRepository extends BaseRepository<AdZoneModel> implements IAd
       throw new Error('Only pricePerView can be updated for AdZone');
     }
 
-    return super.update(zone, filteredData, options);
+    return super.update(id, filteredData, options);
   }
 }

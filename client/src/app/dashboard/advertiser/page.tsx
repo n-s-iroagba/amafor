@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import { LayoutDashboard, Megaphone, PlusCircle, TrendingUp, Users, MousePointer2, ChevronRight, BarChart3, AlertCircle, MessageSquare, Loader2, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
@@ -7,14 +7,7 @@ import { API_ROUTES } from '@/config/routes';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
 import { UserStatus } from '@/types';
 
-interface Campaign {
-  id: string;
-  name: string;
-  status: 'active' | 'paused' | 'completed';
-  delivered: number;
-  target: number;
-  spend: number;
-}
+import { AdCampaign } from '@/features/advertisement/types';
 
 interface Dispute {
   id: string;
@@ -23,12 +16,7 @@ interface Dispute {
   date: string;
 }
 
-interface AdvertiserStats {
-  activeCampaigns: number;
-  totalImpressions: number;
-  uniqueViews: number;
-  avgCpv: number;
-}
+
 
 
 /**
@@ -43,7 +31,7 @@ interface AdvertiserStats {
 export default function AdvertiserDashboard() {
   const { user, loading: authLoading } = useAuthContext();
 
-  const { data: campaigns, loading: campaignsLoading } = useGet<Campaign[]>(
+  const { data: campaigns, loading: campaignsLoading } = useGet<AdCampaign[]>(
     API_ROUTES.ADVERTISER.CAMPAIGNS.LIST
   );
 
@@ -55,8 +43,8 @@ export default function AdvertiserDashboard() {
 
   // Calculate stats from campaigns
   const activeCampaigns = campaigns?.filter(c => c.status === 'active').length || 0;
-  const totalImpressions = campaigns?.reduce((sum, c) => sum + c.delivered, 0) || 0;
-  const totalSpend = campaigns?.reduce((sum, c) => sum + c.spend, 0) || 0;
+  const totalImpressions = campaigns?.reduce((sum, c) => sum + (c.viewsDelivered || 0), 0) || 0;
+  const totalSpend = campaigns?.reduce((sum, c) => sum + (c.spent || 0), 0) || 0;
   const avgCpv = totalImpressions > 0 ? totalSpend / totalImpressions : 0;
 
   const stats = [
@@ -159,10 +147,10 @@ export default function AdvertiserDashboard() {
                             <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mb-2">
                               <div
                                 className="bg-[#87CEEB] h-full"
-                                style={{ width: `${(c.delivered / c.target) * 100}%` }}
+                                style={{ width: `${c.targetViews ? ((c.viewsDelivered || 0) / c.targetViews) * 100 : 0}%` }}
                               />
                             </div>
-                            <div className="text-[10px] text-gray-400 font-bold uppercase">{c.delivered.toLocaleString()} / {c.target.toLocaleString()} Views</div>
+                            <div className="text-[10px] text-gray-400 font-bold uppercase">{(c.viewsDelivered || 0).toLocaleString()} / {(c.targetViews || 0).toLocaleString()} Views</div>
                           </td>
                           <td className="px-8 py-6">
                             <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${c.status === 'active' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
@@ -170,7 +158,7 @@ export default function AdvertiserDashboard() {
                               {c.status}
                             </span>
                           </td>
-                          <td className="px-8 py-6 font-mono text-xs font-bold">₦{c.spend.toLocaleString()}</td>
+                          <td className="px-8 py-6 font-mono text-xs font-bold">₦{Number(c.spent || 0).toLocaleString()}</td>
                         </tr>
                       ))}
                     </tbody>

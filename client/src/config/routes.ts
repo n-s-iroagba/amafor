@@ -53,6 +53,7 @@ export const API_ROUTES = {
     },
     ZONES: {
       LIST: "/ads/zones",
+      UPDATE_PRICE: "/ads/zones",
       ADS_FOR_ZONE: (zoneIdentifier: string) =>
         `/ads/zones/${zoneIdentifier}/ads`,
     },
@@ -110,7 +111,7 @@ export const API_ROUTES = {
 
   LEAGUES: {
     CREATE: `/leagues`,
-    MUTATE: (id: number | null) => `/leagues/${id}`,
+    MUTATE: (id: string | number | null) => `/leagues/${id}`,
     LIST: `/leagues`,
     TABLES: `/leagues/tables`,
     TABLE: (id: string | number) => `/leagues/${id}/table`,
@@ -120,20 +121,20 @@ export const API_ROUTES = {
 
   GOALS: {
     CREATE: (fixtureId: string | number) => `/goals/${fixtureId}`,
-    MUTATE: (id: number | null) => `/goals/${id}`,
+    MUTATE: (id: string | number | null) => `/goals/${id}`,
     LIST: (fixtureId: string) => `/goals/fixture/${fixtureId}`,
     VIEW: (id: string) => `/goals/${id}`,
   },
   PLAYERS: {
     CREATE: `/players`,
-    MUTATE: (id: number | null) => `/players/${id}`,
+    MUTATE: (id: string | number | null) => `/players/${id}`,
     DELETE: (id: string | number) => `/players/${id}`,
     LIST: `/players`,
     VIEW: (id: string | number) => `/players/${id}`,
   },
   VIDEOS: {
     CREATE: `/videos`,
-    MUTATE: (id: number | null) => `/videos/${id}`,
+    MUTATE: (id: string | number | null) => `/videos/${id}`,
     LIST: `/videos`,
     VIEW: (id: string) => `/videos/${id}`,
   },
@@ -150,7 +151,7 @@ export const API_ROUTES = {
 
   LEAGUE_STATS: {
     VIEW: (id: string | number) => `/league-stats/${id}`,
-    MUTATE: (id: number | null) => `/league-stats/${id}`,
+    MUTATE: (id: string | number | null) => `/league-stats/${id}`,
   },
 
   MATCH_SUMMARY: {
@@ -162,7 +163,7 @@ export const API_ROUTES = {
   },
   MATCH_GALLERY: {
     CREATE: (fixtureId: string | number) => `/match-gallery/${fixtureId}`,
-    LIST: (fixtureId: string | number) => `/match-gallery/${fixtureId}`,
+    LIST: (fixtureId: string | number) => `/match-gallery/fixture/${fixtureId}`,
     MUTATE: (id: string | number) => `/match-gallery/${id}`,
   },
 
@@ -204,7 +205,7 @@ export const API_ROUTES = {
     SUBSTITUTES: (fixtureId: string | number) =>
       `/lineups/${fixtureId}/substitutes`, // GET substitutes
     BATCH_UPDATE: (fixtureId: string | number) => `/lineups/${fixtureId}/batch`, // POST batch update
-    VIEW: (id: string | number) => `/lineups/${id}`, // GET single lineup player
+    VIEW: (id: string | number) => `/lineups/${id}/player`, // GET single lineup player
     UPDATE: (id: string | number) => `/lineups/${id}`, // PUT update player
     DELETE: (id: string | number) => `/lineups/${id}`, // DELETE player
   },
@@ -222,13 +223,13 @@ export const API_ROUTES = {
 
   ADVERTISER: {
     CAMPAIGNS: {
-      CREATE: "/advertiser/campaigns",
-      LIST: "/advertiser/campaigns",
-      VIEW: (id: string | number) => `/advertiser/campaigns/${id}`,
-      UPDATE: (id: string | number) => `/advertiser/campaigns/${id}`,
-      DELETE: (id: string | number) => `/advertiser/campaigns/${id}`,
+      CREATE: "/ads/campaigns",
+      LIST: "/ads/campaigns",
+      VIEW: (id: string | number) => `/ads/campaigns/${id}`,
+      UPDATE: (id: string | number) => `/ads/campaigns/${id}`,
+      DELETE: (id: string | number) => `/ads/campaigns/${id}`,
       CREATIVES: (id: string | number) =>
-        `/advertiser/campaigns/${id}/creatives`,
+        `/ads/campaigns/${id}/creatives`,
     },
     DISPUTES: {
       CREATE: "/disputes",

@@ -21,6 +21,7 @@ const articleLimiter = rateLimit({
 router.get('/', articleLimiter, articleController.fetchAllPublishedArticles.bind(articleController));
 router.get('/homepage', articleLimiter, articleController.fetchHomepageArticles.bind(articleController));
 router.get('/published', articleLimiter, articleController.fetchAllPublishedArticles.bind(articleController));
+router.get('/unpublished', articleLimiter, articleController.getUnpublishedArticles.bind(articleController));
 router.get('/tag/:tag', articleLimiter, articleController.getArticlesByTag.bind(articleController));
 router.get('/search', articleLimiter, articleController.searchArticles.bind(articleController));
 router.get('/popular-tags', articleLimiter, articleController.getPopularTags.bind(articleController));

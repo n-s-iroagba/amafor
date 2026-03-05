@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
@@ -32,7 +32,7 @@ export default function TrialistDetail() {
     data: trialist,
     loading,
     error,
-  } = useGet<Trialist>(API_ROUTES.TRIALISTS.VIEW(Number(id)));
+  } = useGet<Trialist>(API_ROUTES.TRIALISTS.VIEW(id as string));
 
   const getStatusColor = (status: string) => {
     switch (status) {

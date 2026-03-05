@@ -11,6 +11,7 @@ export interface AdvertiserAttributes {
   website?: string;
   industry?: string;
   address?: string;
+  userId: string;
   status: 'active' | 'inactive' | 'suspended';
   createdAt?: Date;
   updatedAt?: Date;
@@ -27,6 +28,7 @@ class Advertiser extends Model<AdvertiserAttributes, AdvertiserCreationAttribute
   public website?: string;
   public industry?: string;
   public address?: string;
+  public userId!: string;
   public status!: 'active' | 'inactive' | 'suspended';
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -73,6 +75,14 @@ Advertiser.init(
     address: {
       type: DataTypes.TEXT,
       allowNull: true,
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id'
+      }
     },
     status: {
       type: DataTypes.ENUM('active', 'inactive', 'suspended'),

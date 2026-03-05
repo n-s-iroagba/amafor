@@ -8,8 +8,8 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 interface ClubLeagueStats {
-  id: number;
-  leagueId: number;
+  id: string;
+  leagueId: string;
   position: number;
   points: number;
   goalsFor: number;

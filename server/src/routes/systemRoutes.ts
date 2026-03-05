@@ -21,6 +21,7 @@ router.get('/backups/:id/download', authenticate, authorize(['admin']), systemCo
 // Audit Routes (grouped under system for simplicity)
 router.get('/audit/:entityType/:entityId', authenticate, authorize(['admin']), auditController.getEntityHistory);
 router.get('/audit', authenticate, authorize(['admin']), systemController.getAuditLogs);
+router.post('/audit/export', authenticate, authorize(['admin']), auditController.exportAuditLogs);
 
 // System Status/Config Routes
 router.get('/admin/system-status', authenticate, authorize(['admin']), systemController.getConfig);

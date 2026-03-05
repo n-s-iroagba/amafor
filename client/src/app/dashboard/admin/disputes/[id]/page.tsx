@@ -35,22 +35,10 @@ export default function AdminDisputeDetailPage() {
   const [resolutionStatus, setResolutionStatus] = useState<'resolved' | 'closed' | 'investigation'>('resolved');
 
   // Queries
-  const { data: disputeResponse, loading, error, refetch } = useGet<{ success: boolean; data: Dispute }>(
-    API_ROUTES.VIDEOS.VIEW(disputeId).replace('videos', 'disputes') // Hack: reusing existing route structure if clean one not available, but wait, we have ADMIN.DISPUTES? No, we need a VIEW route. 
-    // Actually, the route we added in backend is shared GET /disputes/:id authorised for admin.
-    // Let's us the API_ROUTES.ADVERTISER.DISPUTES.VIEW as it maps to /advertiser/disputes/:id usually, but backend route is /disputes/:id
-    // We'll construct it manually to match backend route `router.get('/:id'...)` at `/api/disputes/:id`
+  const { data: disputeResponse, loading: isLoading, error: fetchError, refetch } = useGet<{ success: boolean; data: Dispute }>(
+    API_ROUTES.ADVERTISER.DISPUTES.VIEW(disputeId)
   );
-  // Correction: Backend route is mounted at /api/disputes.
-  // GET /api/disputes/:id is protected for advertiser/admin.
-  // client URL: /api/disputes/${id}
-  // We can use a direct string or add to ADVERTISERS.DISPUTES.VIEW? 
-  // In routes.ts, ADVERTISER.DISPUTES.VIEW points to `/advertiser/disputes/${id}` which might be wrong if backend is just `/disputes/${id}`.
-  // Let's assume standard API prefix.
-  const API_URL = `/disputes/${disputeId}`;
-
-  const { data: disputeData, loading: isLoading, error: fetchError } = useGet<{ success: boolean; data: Dispute }>(API_URL);
-  const dispute = disputeData?.data;
+  const dispute = disputeResponse?.data;
 
   const { put, isPending: isSubmitting } = usePut(API_ROUTES.ADMIN.DISPUTES.RESOLVE(disputeId));
 

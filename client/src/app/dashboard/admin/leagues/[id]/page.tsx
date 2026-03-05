@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 interface League {
-  id: number;
+  id: string;
   name: string;
   season: string;
   isFriendly: boolean;
@@ -53,7 +53,7 @@ export default function LeagueDetail() {
   const { data: league, loading } = useGet<League>(API_ROUTES.LEAGUES.VIEW(id));
 
   const { delete: deleteLeague, isPending: isDeleting } = useDelete((id) =>
-    API_ROUTES.LEAGUES.MUTATE(Number(id)),
+    API_ROUTES.LEAGUES.MUTATE(id as string),
   );
 
   const handleDelete = async () => {
@@ -113,7 +113,7 @@ export default function LeagueDetail() {
             removed.
           </p>
           <Link
-            href="/sports-admin/leagues"
+            href="/dashboard/admin/leagues"
             className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 font-semibold shadow-lg"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -318,7 +318,7 @@ export default function LeagueDetail() {
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Link
-                  href={`/sports-admin/fixtures`}
+                  href={`/dashboard/admin/leagues/${league.id}/fixtures`}
                   className="group p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 hover:border-blue-300 transition-all duration-300 hover:shadow-md hover:scale-105"
                 >
                   <div className="flex items-center gap-3 mb-3">
@@ -335,7 +335,7 @@ export default function LeagueDetail() {
                 </Link>
 
                 <Link
-                  href={`/sports-admin/lineups?league=${league.id}`}
+                  href={`/dashboard/admin/leagues/${league.id}/fixtures`}
                   className="group p-5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-200 hover:border-purple-300 transition-all duration-300 hover:shadow-md hover:scale-105"
                 >
                   <div className="flex items-center gap-3 mb-3">
@@ -437,11 +437,10 @@ export default function LeagueDetail() {
                     Competition Type
                   </span>
                   <span
-                    className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                      league.isFriendly
+                    className={`text-xs font-semibold px-2 py-1 rounded-full ${league.isFriendly
                         ? "bg-purple-100 text-purple-800"
                         : "bg-green-100 text-green-800"
-                    }`}
+                      }`}
                   >
                     {league.isFriendly ? "Friendly" : "Competitive"}
                   </span>
