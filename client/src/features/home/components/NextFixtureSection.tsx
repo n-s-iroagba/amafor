@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGet } from "@/shared/hooks/useApiQuery";
 import { Fixture } from "@/features/fixture/types";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NextFixtureSection: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -65,9 +66,28 @@ const NextFixtureSection: React.FC = () => {
 
   if (fixtureLoading) {
     return (
-      <section className="py-20 bg-sky-900 border-y border-sky-800/50">
-        <div className="container mx-auto px-4 max-w-7xl animate-pulse">
-          <div className="h-96 bg-sky-800/50 rounded-3xl"></div>
+      <section className="py-20 bg-sky-950 border-y border-sky-900/50 overflow-hidden relative">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-sky-600/10 rounded-full blur-[120px]"></div>
+        <div className="container mx-auto px-4 max-w-6xl animate-pulse">
+          <div className="flex flex-col items-center mb-12">
+            <div className="h-6 w-32 bg-sky-800/40 rounded-full mb-6"></div>
+            <div className="h-10 w-64 bg-sky-800/40 rounded-lg mb-4"></div>
+            <div className="h-4 w-48 bg-sky-800/40 rounded"></div>
+          </div>
+          <div className="h-[400px] bg-sky-900/40 rounded-[2.5rem] border border-white/5 flex items-center justify-around p-12">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-32 h-32 bg-sky-800/40 rounded-full"></div>
+              <div className="h-8 w-32 bg-sky-800/40 rounded"></div>
+            </div>
+            <div className="flex flex-col items-center gap-6">
+              <div className="w-16 h-16 bg-sky-800/40 rounded-full"></div>
+              <div className="h-12 w-48 bg-sky-800/40 rounded-xl"></div>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-32 h-32 bg-sky-800/40 rounded-full"></div>
+              <div className="h-8 w-32 bg-sky-800/40 rounded"></div>
+            </div>
+          </div>
         </div>
       </section>
     );
@@ -92,7 +112,13 @@ const NextFixtureSection: React.FC = () => {
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000"></div>
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="container mx-auto px-4 sm:px-6 relative z-10"
+      >
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-bold tracking-wider mb-6">
@@ -130,7 +156,13 @@ const NextFixtureSection: React.FC = () => {
         </div>
 
         {/* Main Card */}
-        <div className="max-w-6xl mx-auto relative group">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-6xl mx-auto relative group"
+        >
           {/* Card Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-sky-500 via-indigo-500 to-sky-500 rounded-[2.5rem] opacity-30 group-hover:opacity-50 blur-xl transition-opacity duration-500"></div>
 
@@ -223,9 +255,9 @@ const NextFixtureSection: React.FC = () => {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </motion.div>
+      </motion.div>
+    </section >
   );
 };
 

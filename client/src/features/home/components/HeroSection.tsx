@@ -1,6 +1,6 @@
-'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 export default function HeroSection() {
   return (
@@ -18,43 +18,63 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[85vh] py-20">
           {/* LEFT CONTENT */}
           <div className="text-white space-y-6">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-none">
+            <motion.h1
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-none"
+            >
               AMAFOR<br />
               <span className="text-white/90">GLADIATORS</span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-lg sm:text-xl text-white/95 max-w-lg font-light">
+            <motion.p
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="text-lg sm:text-xl text-white/95 max-w-lg font-light"
+            >
               Building champions through dedication, discipline, and elite performance
-            </p>
+            </motion.p>
 
-            <div className="flex flex-wrap gap-4 pt-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className="flex flex-wrap gap-4 pt-6"
+            >
               <Link
                 href="/support"
-                className="bg-white text-sky-600 hover:bg-gray-100 px-10 py-4 font-bold transition"
+                className="bg-white text-sky-600 hover:bg-gray-100 px-10 py-4 font-bold transition-all hover:scale-105 active:scale-95 shadow-lg"
               >
                 SUPPORT THE CLUB
               </Link>
 
               <Link
                 href="/news"
-                className="border-2 border-white text-white hover:bg-white hover:text-sky-600 px-10 py-4 font-bold transition"
+                className="border-2 border-white text-white hover:bg-white hover:text-sky-600 px-10 py-4 font-bold transition-all hover:scale-105 active:scale-95"
               >
                 LATEST NEWS
               </Link>
-            </div>
+            </motion.div>
           </div>
 
           {/* RIGHT IMAGE BLOCK - SIMPLIFIED */}
-          <div className="relative h-[450px] sm:h-[550px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative h-[450px] sm:h-[550px] md:h-[600px] lg:h-[700px] rounded-2xl overflow-hidden shadow-2xl"
+          >
             {/* Direct Image container - no extra nesting */}
             <Image
               src="https://images.unsplash.com/photo-1574629810360-7efbbe195018"
               alt="Football action"
-              height={200}
-              width={800}
+              fill
               priority
+              quality={90}
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
 
             {/* IMAGE CLIP SHAPE */}
@@ -85,7 +105,7 @@ export default function HeroSection() {
                 Season
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

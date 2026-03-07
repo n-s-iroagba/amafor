@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Users, ArrowRight } from 'lucide-react'
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
+import { motion } from 'framer-motion';
 
 
 interface Trialist {
@@ -59,10 +60,27 @@ export default function TrialistsSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
+        >
           {trialists.map((trialist) => (
-            <div
+            <motion.div
               key={trialist.id}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+              }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
               className="group relative bg-gradient-to-br from-gray-50 to-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-sky-500"
             >
               <div className="relative h-80 overflow-hidden bg-gray-900">
@@ -120,9 +138,9 @@ export default function TrialistsSection() {
                   VIEW PROFILE
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="text-center">
           <Link

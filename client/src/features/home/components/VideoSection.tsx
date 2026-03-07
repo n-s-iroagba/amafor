@@ -61,11 +61,27 @@ const VideoSection = () => {
         </div>
 
         {/* Video Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8"
+        >
           {videos.map((video, index) => (
             <motion.div
               key={video.id}
-              whileHover={{ y: -5 }}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+              }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
               className="group cursor-pointer"
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-sky-800 to-sky-900">
@@ -130,7 +146,7 @@ const VideoSection = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* View More Button - Only show if there are videos */}
         {videos.length > 0 && (

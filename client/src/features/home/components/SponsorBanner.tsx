@@ -2,6 +2,7 @@
 
 import Image, { StaticImageData } from "next/image";
 import React from "react";
+import { motion } from "framer-motion";
 
 interface SponsorBannerProps {
   sponsorImage: StaticImageData;
@@ -15,7 +16,10 @@ const SponsorBanner: React.FC<SponsorBannerProps> = ({
   className = "",
 }) => {
   return (
-    <section
+    <motion.section
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
       className={`relative w-full overflow-hidden bg-gradient-to-r from-[#6CABDD] via-[#5fa8dc] to-[#1B365D] ${className}`}
     >
       {/* Top White Fade (Smooth transition from navbar) */}
@@ -47,7 +51,7 @@ const SponsorBanner: React.FC<SponsorBannerProps> = ({
           </p>
 
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight">
-            Dr. Nekezieh Francis Jonathan Ekeh
+            Dr. Nekezieh Francis Jacob Ekeh
           </h1>
         </div>
 
@@ -62,7 +66,7 @@ const SponsorBanner: React.FC<SponsorBannerProps> = ({
           />
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

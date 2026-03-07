@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { PatronWithSubscription } from '@/features/patron/types';
+import { motion } from 'framer-motion';
 
 export default function SupportSection() {
   const { data: topPatrons, loading } = useGet<PatronWithSubscription[]>(
@@ -33,7 +34,13 @@ export default function SupportSection() {
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 lg:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 lg:mb-20"
+        >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-4 sm:mb-6">
             SUPPORT OUR MISSION
           </h2>
@@ -41,15 +48,31 @@ export default function SupportSection() {
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed px-4">
             Your contribution helps develop young talent, improve facilities, and serve our community
           </p>
-        </div>
+        </motion.div>
 
         {/* Top Patrons Grid */}
         {topPatrons && topPatrons.length > 0 && (
           <div className="mb-12 sm:mb-14 lg:mb-16">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 max-w-5xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.1
+                  }
+                }
+              }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8 max-w-5xl mx-auto"
+            >
               {topPatrons.map((patron) => (
-                <div
+                <motion.div
                   key={patron.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                  }}
                   className="group relative"
                 >
                   {/* Glow effect */}
@@ -100,9 +123,9 @@ export default function SupportSection() {
                     {/* Decorative corner */}
                     <div className="absolute bottom-0 right-0 w-16 h-16 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-tl from-sky-500/10 to-transparent rounded-tl-full"></div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         )}
 

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { GraduationCap, Eye, ArrowRight } from 'lucide-react'
 import { ACADEMY_SCOUTING_TEST_IDS } from '../test-ids/academy-scouting-test-ids';
+import { motion } from 'framer-motion';
 
 
 interface FeatureCardProps {
@@ -35,7 +36,12 @@ function FeatureCard({
   linkTestId,
 }: FeatureCardProps) {
   return (
-    <div
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, scale: 0.95, y: 30 },
+        visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+      }}
+      whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradientFrom} ${gradientTo} p-8 md:p-12 text-white group hover:shadow-2xl transition-shadow`}
       data-testid={testId}
       role="article"
@@ -95,7 +101,7 @@ function FeatureCard({
           />
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -108,7 +114,19 @@ export default function AcademyScoutingSection() {
       aria-label="Academy and Pro View Scouting"
     >
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.2
+              }
+            }
+          }}
+          className="grid md:grid-cols-2 gap-8"
+        >
           {/* Academy Card */}
           <FeatureCard
             title="ACADEMY"
@@ -148,7 +166,7 @@ export default function AcademyScoutingSection() {
             testId={ACADEMY_SCOUTING_TEST_IDS.SCOUTING_SECTION}
             linkTestId={ACADEMY_SCOUTING_TEST_IDS.SCOUTING_LINK}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

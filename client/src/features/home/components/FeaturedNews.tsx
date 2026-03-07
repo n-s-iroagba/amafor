@@ -155,15 +155,27 @@ const FeaturedNews: React.FC = () => {
 
         {/* News Grid */}
         <AnimatePresence mode='popLayout'>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          >
             {items.map((item, index) => (
               <motion.article
                 key={`${item.id}-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index % limit * 0.1 }}
-                whileHover={{ y: -4 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
                 className="group relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden h-full"
               >
                 {/* Image Section */}
@@ -233,7 +245,7 @@ const FeaturedNews: React.FC = () => {
                 </div>
               </motion.article>
             ))}
-          </div>
+          </motion.div>
         </AnimatePresence>
 
         {/* View More Button (Replaces Pagination) */}

@@ -35,7 +35,6 @@ export default function Home() {
       <SponsorBanner sponsorImage={sponsor} clubLogo={clubLogo} />
       <Header />
       <HeroSection />
-
       <NextFixtureSection />
       <AcademyScoutingSection />
       <TrialistsSection />

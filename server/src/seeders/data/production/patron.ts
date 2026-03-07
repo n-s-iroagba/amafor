@@ -4,7 +4,7 @@ import { PatronAttributes } from "../../../models/Patron";
 export const productionPatrons: PatronAttributes[] = [
   {
     id: '11111111-1111-1111-1111-111111111111',
-    name: 'Dr. Nekezieh Francis Jonathan Ekeh',
+    name: 'Dr. Nekezieh Francis Jacob Ekeh',
     email: 'nekeziehekeh@amaforgaladiatorsfc.com',
     phoneNumber: '+2348012345678',
     imageUrl: 'https://res.cloudinary.com/dh2cpesxu/image/upload/v1764675944/amafor/cmzjxzz2xfgeyswhqeiv.jpg',

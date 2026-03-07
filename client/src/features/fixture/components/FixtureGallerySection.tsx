@@ -6,6 +6,7 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { FixtureWithLeague, FixtureImage, FixtureStatus } from '../types';
 import { formatDate } from '@/shared/utils';
 import { API_ROUTES } from '@/config/routes';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 export interface FixtureGallery extends FixtureWithLeague {
@@ -65,60 +66,82 @@ export default function FixtureGallerySection() {
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {matchGalleries.map((match) => (
-            <Link
-              key={match.id}
-              href={`/gallery/${match.id}`}
-              className="group bg-gray-800 rounded-lg overflow-hidden hover:ring-4 hover:ring-sky-500 transition-all"
-            >
-              <div className="relative overflow-hidden h-64">
-                {match.images && match.images.length > 0 ? (
-                  <>
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                      style={{ backgroundImage: `url(${match.images[0].url})` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {matchGalleries.map((match) => (
+              <motion.div
+                key={match.id}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                }}
+              >
+                <Link
+                  key={match.id}
+                  href={`/gallery/${match.id}`}
+                  className="group block bg-gray-800 rounded-lg overflow-hidden hover:ring-4 hover:ring-sky-500 transition-all h-full"
+                >
+                  <div className="relative overflow-hidden h-64">
+                    {match.images && match.images.length > 0 ? (
+                      <>
+                        <div
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                          style={{ backgroundImage: `url(${match.images[0].url})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
 
-                    {match.images.length > 1 && (
-                      <div className="absolute top-4 right-4 bg-sky-500 text-white px-3 py-2 rounded-full text-sm font-bold flex items-center gap-2">
-                        <ImageIcon className="w-4 h-4" />
-                        {match.images.length}
+                        {match.images.length > 1 && (
+                          <div className="absolute top-4 right-4 bg-sky-500 text-white px-3 py-2 rounded-full text-sm font-bold flex items-center gap-2">
+                            <ImageIcon className="w-4 h-4" />
+                            {match.images.length}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 bg-gray-700 flex items-center justify-center">
+                        <ImageIcon className="w-16 h-16 text-gray-600" />
                       </div>
                     )}
-                  </>
-                ) : (
-                  <div className="absolute inset-0 bg-gray-700 flex items-center justify-center">
-                    <ImageIcon className="w-16 h-16 text-gray-600" />
                   </div>
-                )}
-              </div>
 
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-3 text-xs text-gray-400 font-semibold uppercase tracking-wider">
-                  <Calendar className="w-4 h-4" />
-                  {formatDate(String(match.matchDate))}
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-3 text-xs text-gray-400 font-semibold uppercase tracking-wider">
+                      <Calendar className="w-4 h-4" />
+                      {formatDate(String(match.matchDate))}
 
-                </div>
+                    </div>
 
-                <div className="text-sky-400 text-xs font-bold uppercase tracking-wider mb-2">
-                  {match.league.name}
-                </div>
+                    <div className="text-sky-400 text-xs font-bold uppercase tracking-wider mb-2">
+                      {match.league.name}
+                    </div>
 
-                <h3 className="text-xl font-black text-white mb-2 group-hover:text-sky-400 transition-colors">
-                  {match.homeTeam} vs {match.awayTeam}
-                </h3>
+                    <h3 className="text-xl font-black text-white mb-2 group-hover:text-sky-400 transition-colors">
+                      {match.homeTeam} vs {match.awayTeam}
+                    </h3>
 
-                {match.homeScore !== undefined && match.awayScore !== undefined && (
-                  <div className="text-2xl font-black text-gray-300">
-                    {match.homeScore} - {match.awayScore}
+                    {match.homeScore !== undefined && match.awayScore !== undefined && (
+                      <div className="text-2xl font-black text-gray-300">
+                        {match.homeScore} - {match.awayScore}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   )

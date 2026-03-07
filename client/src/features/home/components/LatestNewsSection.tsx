@@ -5,7 +5,7 @@ import { ArrowRight, Clock } from 'lucide-react'
 import { Article } from '@/features/articles/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { AnimatePresence, motion } from 'framer-motion';
-import { cleanText} from '@/features/articles/utils';
+import { cleanText } from '@/features/articles/utils';
 import { useRouter } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
 import { formatDate } from '@/shared/utils';
@@ -13,10 +13,10 @@ import { PaginatedData } from '@/shared/types';
 
 export default function LatestNewsSection() {
   const router = useRouter()
-  const { data, loading } = useGet<{data:Article[]}>(API_ROUTES.ARTICLES.PUBLISHED,{
-      params: { limit: 3 },
-      enabled: true 
-    }
+  const { data, loading } = useGet<{ data: Article[] }>(API_ROUTES.ARTICLES.PUBLISHED, {
+    params: { limit: 3 },
+    enabled: true
+  }
   )
   const articles = data?.data || []
 
@@ -59,33 +59,40 @@ export default function LatestNewsSection() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900">LATEST NEWS</h2>
             <div className="h-1.5 sm:h-2 w-16 sm:w-20 lg:w-24 bg-sky-500 mt-3 sm:mt-4"></div>
           </div>
-          <Link 
-            href="/news" 
+          <Link
+            href="/news"
             className="text-sky-500 hover:text-sky-600 font-bold inline-flex items-center gap-2 sm:gap-3 text-base sm:text-lg transition-colors duration-200"
           >
             VIEW ALL
             <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </Link>
         </div>
-        
+
         {/* Articles Grid */}
         <AnimatePresence mode="wait">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
           >
             {articles?.map((article, index) => (
               <motion.article
                 key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+                }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                whileHover={{ y: -5 }}
-                className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-5 lg:p-6 flex flex-col h-full hover:shadow-lg transition-all duration-300 border border-gray-100 relative overflow-hidden group w-full cursor-pointer"
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-5 lg:p-6 flex flex-col h-full hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden group w-full cursor-pointer"
                 onClick={() => handleArticleClick(article.id)}
               >
                 {/* Article Title */}
