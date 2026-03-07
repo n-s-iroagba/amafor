@@ -41,20 +41,20 @@ const VideoSection = () => {
   if (!videos || videos.length === 0) return null;
 
   return (
-    <section className="py-3 bg-gradient-to-br from-sky-900 via-sky-900 to-cyan-900 text-black relative overflow-hidden">
-      {/* Glow overlays */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(14,165,233,0.3)_0%,transparent_50%)] opacity-70"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(6,182,212,0.3)_0%,transparent_50%)] opacity-70"></div>
+    <section className="py-24 bg-sky-950 text-white relative overflow-hidden">
+      {/* Subtle Glow overlays */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(14,165,233,0.1)_0%,transparent_50%)]"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(56,189,248,0.1)_0%,transparent_50%)]"></div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6">
-            <span className="bg-gradient-to-r from-sky-400 via-cyan-300 to-sky-200 bg-clip-text text-sky-900">
+            <span className="text-white">
               Exclusive Content
             </span>
           </h2>
-          <p className="text-xl text-black w-2xl mx-auto font-light">
+          <p className="text-xl text-sky-100/70 max-w-2xl mx-auto font-light leading-relaxed">
             Immerse yourself in premium behind-the-scenes footage and exclusive
             interviews
           </p>
@@ -128,17 +128,17 @@ const VideoSection = () => {
                 </div>
 
                 {/* Info Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-white font-bold text-lg mb-2 group-hover:text-sky-200 transition-colors">
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-sky-950/90 to-transparent">
+                  <h3 className="text-white font-bold text-lg mb-2 group-hover:text-sky-300 transition-colors">
                     {video.title}
                   </h3>
-                  <div className="flex items-center justify-between text-sm text-sky-200">
+                  <div className="flex items-center justify-between text-sm text-sky-200/90">
                     <span className="flex items-center">
-                      <Clock className="w-4 h-4 mr-2" />
+                      <Clock className="w-4 h-4 mr-2 text-sky-400" />
                       {video.duration || 'N/A'}m
                     </span>
                     <span className="flex items-center">
-                      <Users className="w-4 h-4 mr-2" />
+                      <Users className="w-4 h-4 mr-2 text-sky-400" />
                       {Math.floor(Math.random() * 5) + 1}M
                     </span>
                   </div>
@@ -151,8 +151,8 @@ const VideoSection = () => {
         {/* View More Button - Only show if there are videos */}
         {videos.length > 0 && (
           <div className="flex justify-center">
-            <button className="px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition-colors font-semibold">
-              View More
+            <button className="px-10 py-4 bg-white text-sky-900 hover:bg-sky-50 transition-all font-bold rounded-lg shadow-xl hover:scale-105 active:scale-95">
+              VIEW ALL ARCHIVES
             </button>
           </div>
         )}
