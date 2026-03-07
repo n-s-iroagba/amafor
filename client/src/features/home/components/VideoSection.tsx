@@ -50,11 +50,11 @@ const VideoSection = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6">
-            <span className="text-white">
+            <span className="text-black">
               Exclusive Content
             </span>
           </h2>
-          <p className="text-xl text-sky-100/70 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-xl text-black/70 max-w-2xl mx-auto font-light leading-relaxed">
             Immerse yourself in premium behind-the-scenes footage and exclusive
             interviews
           </p>
