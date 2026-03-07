@@ -1,3 +1,15 @@
+/**
+ * Ad Zone Configuration
+ * 
+ * Technical management interface for defining and configuring advertisement placement zones across the platform.
+ * 
+ * @screen SC-096
+ * @implements REQ-ADM-09
+ * @usecase UC-ADM-09 (Manage Ad Zones)
+ * @requires SRS-I-084 (Advertising API - GET /admin/advertising/zones)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-083 Monitor ad zone configuration changes and placement distribution status
+ */
 'use client';
 
 import { useState } from 'react';

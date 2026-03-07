@@ -1,4 +1,17 @@
 "use client";
+/**
+ * Login Page
+ * 
+ * Secure entry point for all users. Supports email/password authentication
+ * with multi-role redirection logic.
+ * 
+ * @screen SC-006
+ * @implements REQ-AUTH-01, REQ-AUTH-02, REQ-AUTH-06, REQ-COM-01
+ * @usecase UC-FAN-08, UC-TRI-03, UC-ADV-03, UC-ACA-01, UC-SCT-01
+ * @requires SRS-I-004 (Auth API - POST /auth/login)
+ * @performance NFR-PERF-01, NFR-SEC-01 (Salted hashing)
+ * @observability SRS-OBS-002 Track login success/failure and role distribution
+ */
 import React, { FormEvent, useState } from "react";
 import {
   Mail,

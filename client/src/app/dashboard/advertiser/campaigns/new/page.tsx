@@ -1,4 +1,16 @@
 
+/**
+ * Launch New Campaign
+ * 
+ * Intake interface for creating new advertising campaigns, including budget setting, targeting, and duration.
+ * 
+ * @screen SC-087
+ * @implements REQ-ADV-02
+ * @usecase UC-ADV-02 (Manage Campaigns)
+ * @requires SRS-I-087 (Campaigns API - POST /advertiser/campaigns)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-086 Monitor campaign creation success and budget allocation patterns
+ */
 'use client';
 import React, { useState } from 'react';
 import { Layout, Upload, Target, CreditCard, Check, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react';

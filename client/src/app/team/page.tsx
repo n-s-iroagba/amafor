@@ -23,13 +23,16 @@ import {
 import Link from "next/link";
 
 /**
- * Page: Team Squad
- * Description: Showcases the team roster including players and coaching staff.
- * Requirements: REQ-PUB-05 (Team Roster)
- * User Story: US-PUB-005 (View Team Squad)
- * User Journey: UJ-PUB-003 (View Team & Players)
- * API: GET /players, GET /academy-staff (Coaches)
- * Hook: useGet(API_ROUTES.PLAYERS.LIST), useGet(API_ROUTES.COACHES.LIST)
+ * Team Squad
+ * 
+ * Showcases the official team roster including elite players and technical coaching staff.
+ * 
+ * @screen SC-124
+ * @implements REQ-PUB-05
+ * @usecase UC-PUB-03 (View Team & Players)
+ * @requires SRS-I-018 (People API - GET /players), SRS-I-019 (Staff API - GET /academy-staff)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-015 Monitor player profile popularity and staff visibility
  */
 export default function TeamSquad() {
   const [selectedTab, setSelectedTab] = useState<"coaches" | "players">(
@@ -203,8 +206,8 @@ export default function TeamSquad() {
             <button
               onClick={() => setSelectedTab("players")}
               className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${selectedTab === "players"
-                  ? "bg-sky-900 text-white shadow-lg"
-                  : "text-sky-400 hover:text-sky-600 bg-sky-50 hover:bg-sky-100"
+                ? "bg-sky-900 text-white shadow-lg"
+                : "text-sky-400 hover:text-sky-600 bg-sky-50 hover:bg-sky-100"
                 }`}
               data-testid="tab-players"
             >
@@ -216,8 +219,8 @@ export default function TeamSquad() {
             <button
               onClick={() => setSelectedTab("coaches")}
               className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${selectedTab === "coaches"
-                  ? "bg-sky-900 text-white shadow-lg"
-                  : "text-sky-400 hover:text-sky-600 bg-sky-50 hover:bg-sky-100"
+                ? "bg-sky-900 text-white shadow-lg"
+                : "text-sky-400 hover:text-sky-600 bg-sky-50 hover:bg-sky-100"
                 }`}
               data-testid="tab-coaches"
             >

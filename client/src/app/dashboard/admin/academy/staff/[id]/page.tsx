@@ -1,3 +1,15 @@
+/**
+ * Academy Staff Detail
+ * 
+ * Comprehensive profile view of a staff member, including roles, contact information, and management actions.
+ * 
+ * @screen SC-015
+ * @implements REQ-ADM-02
+ * @usecase UC-ADM-02 (Manage Academy Staff)
+ * @requires SRS-I-028 (Staff API - GET /admin/academy/staff/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-026 Monitor staff profile views and administrative interactions
+ */
 "use client";
 
 import { useState } from "react";

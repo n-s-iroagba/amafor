@@ -1,3 +1,15 @@
+/**
+ * Admin Article Detail
+ * 
+ * Preview and management console for a specific article, including metadata and publishing controls.
+ * 
+ * @screen SC-028
+ * @implements REQ-CMS-01
+ * @usecase UC-CMS-01 (Manage Articles)
+ * @requires SRS-I-044 (Articles API - GET /admin/articles/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-042 Track editorial review depth and content modification history
+ */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -92,8 +104,8 @@ export default function ArticleDetail() {
 
         <span
           className={`inline-block text-xs px-2 py-1 rounded-full mb-4 ${article.status === ArticleStatus.Published
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
+            ? "bg-green-100 text-green-700"
+            : "bg-yellow-100 text-yellow-700"
             }`}
           data-testid="article-status-badge"
         >

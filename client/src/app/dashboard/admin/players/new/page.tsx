@@ -1,4 +1,16 @@
 // app/players/new/page.tsx
+/**
+ * Create Player Profile
+ * 
+ * Intake form for registering new players into the club system with essential biographical and professional data.
+ * 
+ * @screen SC-070
+ * @implements REQ-ADM-04
+ * @usecase UC-ADM-04 (Manage Players)
+ * @requires SRS-I-035 (Players API - POST /admin/players)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-033 Track player registration volume and data entry accuracy
+ */
 'use client';
 
 import { useState, useRef } from 'react';

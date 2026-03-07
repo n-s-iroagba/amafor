@@ -1,3 +1,15 @@
+/**
+ * Advertiser Dispute Detail
+ * 
+ * Comprehensive view of a specific dispute, including communication history and resolution status.
+ * 
+ * @screen SC-144
+ * @implements REQ-ADV-05
+ * @usecase UC-ADV-05 (Manage Disputes)
+ * @requires SRS-I-119 (Disputes API - GET /advertiser/disputes/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-119 Track administrative review depth of advertiser disputes and resolution latency
+ */
 'use client';
 import React from 'react';
 import { ShieldAlert, ArrowLeft, MessageSquare, ShieldCheck, Clock, Loader2, AlertCircle } from 'lucide-react';

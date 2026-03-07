@@ -1,3 +1,15 @@
+/**
+ * Scout Dashboard Hub
+ * 
+ * Central management console for scouts to monitor scouting assignments, talent alerts, and evaluation KPIs.
+ * 
+ * @screen SC-148
+ * @implements REQ-SCO-02
+ * @usecase UC-SCO-02 (Scout Dashboard)
+ * @requires SRS-I-123 (Scout API - GET /scout/stats)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-123 Monitor scout dashboard load frequency and professional KPI engagement
+ */
 'use client';
 import React from 'react';
 import { Shield, Search, Film, UserSearch, Clock, ChevronRight, FileText, Loader2 } from 'lucide-react';

@@ -1,4 +1,16 @@
 
+/**
+ * Scout Match Evaluation Hub
+ * 
+ * Granular view of a specific match from a scouting perspective, including player lineups and performance triggers.
+ * 
+ * @screen SC-147
+ * @implements REQ-SCO-01
+ * @usecase UC-SCO-01 (Monitor Matches)
+ * @requires SRS-I-122 (Scout API - GET /scout/matches/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-122 Monitor scout evaluation depth and player selection patterns during live matches
+ */
 'use client';
 import React, { useState } from 'react';
 import { Play, Pause, SkipBack, SkipForward, ArrowLeft, Shield, Video, Clock, MessageSquare, Plus, Download, BarChart2 } from 'lucide-react';

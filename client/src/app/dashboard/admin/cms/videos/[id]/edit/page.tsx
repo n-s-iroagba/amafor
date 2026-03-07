@@ -1,4 +1,15 @@
-// app/videos/[id]/edit/page.tsx
+/**
+ * Edit Video Asset
+ * 
+ * Interface for modifying video details, updating source links, and managing visibility settings.
+ * 
+ * @screen SC-033
+ * @implements REQ-CMS-02
+ * @usecase UC-CMS-02 (Manage Videos)
+ * @requires SRS-I-049 (Videos API - PUT /admin/videos/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-047 Monitor video metadata revisions and platform update latency
+ */
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -408,8 +419,8 @@ export default function EditVideo() {
                       setErrors((prev) => ({ ...prev, title: "" }));
                   }}
                   className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.title
-                      ? "border-red-300 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
+                    ? "border-red-300 bg-red-50"
+                    : "border-gray-300 hover:border-gray-400"
                     }`}
                   placeholder="Enter a descriptive title for your video"
                   maxLength={200}
@@ -446,8 +457,8 @@ export default function EditVideo() {
                   }}
                   rows={4}
                   className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.excerpt
-                      ? "border-red-300 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
+                    ? "border-red-300 bg-red-50"
+                    : "border-gray-300 hover:border-gray-400"
                     }`}
                   placeholder="Describe what your video is about..."
                   maxLength={500}
@@ -486,8 +497,8 @@ export default function EditVideo() {
                   min="1"
                   max="1440"
                   className={`w-full px-4 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200 ${errors.duration
-                      ? "border-red-300 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
+                    ? "border-red-300 bg-red-50"
+                    : "border-gray-300 hover:border-gray-400"
                     }`}
                   placeholder="Enter video duration in minutes (optional)"
                 />
@@ -529,8 +540,8 @@ export default function EditVideo() {
                     onClick={() => videoInputRef.current?.click()}
                     disabled={isUploading}
                     className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.video
-                        ? "border-red-300 bg-red-50 text-red-700"
-                        : "border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
+                      ? "border-red-300 bg-red-50 text-red-700"
+                      : "border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
                       } disabled:opacity-50`}
                   >
                     <Video className="w-8 h-8 mx-auto mb-2 opacity-60" />
@@ -614,8 +625,8 @@ export default function EditVideo() {
                     onClick={() => thumbnailInputRef.current?.click()}
                     disabled={isUploading}
                     className={`w-full p-6 border-2 border-dashed rounded-xl text-center transition-all duration-200 ${errors.thumbnail
-                        ? "border-red-300 bg-red-50 text-red-700"
-                        : "border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
+                      ? "border-red-300 bg-red-50 text-red-700"
+                      : "border-gray-300 bg-gray-50 text-gray-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
                       } disabled:opacity-50`}
                   >
                     <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-60" />

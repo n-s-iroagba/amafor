@@ -1,3 +1,15 @@
+/**
+ * Patron Checkout
+ * 
+ * Secure checkout flow for one-time donations and recurring patron subscriptions via Paystack.
+ * 
+ * @screen SC-115
+ * @implements REQ-SUP-02
+ * @usecase UC-SUP-01 (Subscribe)
+ * @requires SRS-I-020 (Payment API - POST /payments/initialize)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-016 Monitor checkout abandonment and payment success rate
+ */
 'use client'
 
 import Link from 'next/link'

@@ -1,3 +1,15 @@
+/**
+ * Compose Match Report
+ * 
+ * Editorial interface for drafting and publishing post-match summaries and technical fixture analyses.
+ * 
+ * @screen SC-058
+ * @implements REQ-SPT-05
+ * @usecase UC-SPT-05 (Manage Match Reports)
+ * @requires SRS-I-067 (Summaries API - POST /admin/leagues/:id/fixtures/:fixtureId/summary)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-065 Monitor report publishing success and editorial completion latency
+ */
 'use client';
 
 import React, { useState, useEffect } from 'react';

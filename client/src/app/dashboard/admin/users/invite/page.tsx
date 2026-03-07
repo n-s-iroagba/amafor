@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * Invite New User
+ * 
+ * Interface for sending system invitations to new administrators, scouts, or technical staff with predefined roles.
+ * 
+ * @screen SC-083
+ * @implements REQ-ADM-05
+ * @usecase UC-ADM-05 (Manage Users)
+ * @requires SRS-I-039 (Users API - POST /admin/users/invite)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-037 Track invitation success rates and role distribution of new invites
+ */
 import React, { useState } from "react";
 import {
   UserPlus,
@@ -169,11 +181,10 @@ export default function InviteUserPage() {
                   key={r.value}
                   type="button"
                   onClick={() => setRole(r.value)}
-                  className={`p-4 border-2 rounded-2xl text-left transition-all ${
-                    role === r.value
+                  className={`p-4 border-2 rounded-2xl text-left transition-all ${role === r.value
                       ? "border-[#87CEEB] text-[#2F4F4F] bg-sky-50"
                       : "border-gray-100 text-gray-400 hover:border-[#87CEEB] hover:text-[#2F4F4F]"
-                  }`}
+                    }`}
                   data-testid={`radio-role-${r.value}`}
                 >
                   <div className="text-xs font-black uppercase tracking-widest">

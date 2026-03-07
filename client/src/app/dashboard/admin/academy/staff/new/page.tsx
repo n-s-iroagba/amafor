@@ -1,3 +1,15 @@
+/**
+ * Create Academy Staff
+ * 
+ * Intake form for adding new coaching or technical staff members to the academy roster.
+ * 
+ * @screen SC-014
+ * @implements REQ-ADM-02
+ * @usecase UC-ADM-02 (Manage Academy Staff)
+ * @requires SRS-I-027 (Staff API - POST /admin/academy/staff)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-025 Monitor staff creation success and form validation errors
+ */
 'use client';
 
 import { useRef, useState } from 'react';

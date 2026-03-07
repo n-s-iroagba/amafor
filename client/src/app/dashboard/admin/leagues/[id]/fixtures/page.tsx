@@ -1,3 +1,15 @@
+/**
+ * League Fixtures List
+ * 
+ * Management console for scheduling and tracking matches within a specific league season.
+ * 
+ * @screen SC-045
+ * @implements REQ-SPT-02
+ * @usecase UC-SPT-02 (Manage Fixtures)
+ * @requires SRS-I-054 (Fixtures API - GET /admin/leagues/:id/fixtures)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-052 Monitor match scheduling frequency and fixture adjustment patterns
+ */
 'use client';
 
 import { useState } from 'react';

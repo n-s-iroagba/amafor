@@ -10,13 +10,16 @@ import { API_ROUTES } from '@/config/routes'
 
 
 /**
- * Page: Patron Wall
- * Description: Public display of active patrons and supporters.
- * Requirements: REQ-SUP-03 (Patron Wall)
- * User Story: US-SUP-003 (View Patron Wall)
- * User Journey: UJ-SUP-002 (View Wall)
- * API: GET /patrons (API_ROUTES.PATRONS.LIST)
- * Hook: useGet('/api/supporters')
+ * Patron Wall
+ * 
+ * Public display of active patrons and supporters, sorted and grouped for visibility.
+ * 
+ * @screen SC-117
+ * @implements REQ-SUP-03
+ * @usecase UC-SUP-03 (View Patron Wall)
+ * @requires SRS-I-022 (Patrons API - GET /patrons)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-018 Monitor wall engagement and supporter scroll depth
  */
 export default function SupporterWall() {
   const { data: supporters, loading, error } = useGet<PatronWithSubscription[]>(API_ROUTES.PATRONS.LIST)

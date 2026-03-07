@@ -1,3 +1,15 @@
+/**
+ * Public Player Profile Hub
+ * 
+ * External-facing interface for fans and the public to view player statistics, career highlights, and biography.
+ * 
+ * @screen SC-152
+ * @implements REQ-PUB-02
+ * @usecase UC-PUB-02 (View Player Profile)
+ * @requires SRS-I-127 (Public API - GET /player/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-127 Track public engagement with player profiles and professional KPI visibility
+ */
 'use client'
 import React from 'react';
 import { notFound, useParams } from 'next/navigation';

@@ -1,3 +1,15 @@
+/**
+ * Advertiser Dashboard Hub
+ * 
+ * Central management console for advertisers to monitor campaign performance, financial balance, and account status.
+ * 
+ * @screen SC-085
+ * @implements REQ-ADV-01
+ * @usecase UC-ADV-01 (Advertiser Dashboard)
+ * @requires SRS-I-085 (Advertiser API - GET /advertiser/stats)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-084 Monitor advertiser dashboard load frequency and KPI engagement
+ */
 'use client';
 
 import { LayoutDashboard, Megaphone, PlusCircle, TrendingUp, Users, MousePointer2, ChevronRight, BarChart3, AlertCircle, MessageSquare, Loader2, Shield } from 'lucide-react';

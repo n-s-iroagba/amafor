@@ -1,4 +1,16 @@
 // app/league-stats/[id]/page.tsx
+/**
+ * League Statistic Detail
+ * 
+ * Comprehensive view of a specific statistical record, including metric definitions and participant performance.
+ * 
+ * @screen SC-062
+ * @implements REQ-SPT-06
+ * @usecase UC-SPT-06 (Manage League Stats)
+ * @requires SRS-I-071 (League Stats API - GET /admin/leagues/:id/league-statistics/:statsId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-069 Track administrative audit of statistical records and participation metrics
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

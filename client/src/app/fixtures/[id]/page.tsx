@@ -29,13 +29,16 @@ import { Lineup } from "@/features/lineup/types";
 import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 /**
- * Page: Fixture Details
- * Description: Detailed view of a specific fixture including lineups, stats, and match events.
- * Requirements: REQ-PUB-02 (Lineups, Goals), REQ-PUB-01 (Details)
- * User Story: US-PUB-002 (View Fixture Details)
- * User Journey: UJ-PUB-001 (Browse Fixtures)
- * API: GET /fixtures/one/:id (API_ROUTES.FIXTURES.VIEW)
- * Hook: useGet(API_ROUTES.FIXTURES.VIEW(id))
+ * Fixture Details
+ * 
+ * Detailed view of a specific match including lineups, stats, and match events.
+ * 
+ * @screen SC-014
+ * @implements REQ-PUB-01, REQ-PUB-02
+ * @usecase UC-PUB-02 (View Fixture Details)
+ * @requires SRS-I-013 (Fixture API - GET /fixtures/one/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-006 Monitor session duration and lineup interaction
  */
 interface FixtureStatisticsData {
   homePossession: number;

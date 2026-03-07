@@ -1,4 +1,16 @@
 // app/dashboard/admin/players/[id]/page.tsx
+/**
+ * Admin Player Detail
+ * 
+ * Comprehensive administrative view of a player's profile, performance metrics, and contract status.
+ * 
+ * @screen SC-071
+ * @implements REQ-ADM-04
+ * @usecase UC-ADM-04 (Manage Players)
+ * @requires SRS-I-036 (Players API - GET /admin/players/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-034 Monitor administrative depth into player profiles and biometric access
+ */
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';

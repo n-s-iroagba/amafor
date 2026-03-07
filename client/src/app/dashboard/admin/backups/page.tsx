@@ -1,3 +1,15 @@
+/**
+ * Database Backup Management
+ * 
+ * Interface for triggering snapshots, viewing backup history, and managing automated recovery points.
+ * 
+ * @screen SC-024
+ * @implements REQ-SYS-02
+ * @usecase UC-SYS-02 (Manage Backups)
+ * @requires SRS-I-096 (Backups API - GET/POST /admin/backups)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-095 Track backup success rates, storage usage trends, and restoration attempts
+ */
 'use client';
 import React, { useState } from 'react';
 import { HardDrive, Plus, Download, Clock, CheckCircle, Loader2, Shield, Database, Trash2 } from 'lucide-react';

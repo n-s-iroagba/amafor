@@ -1,3 +1,15 @@
+/**
+ * Edit Team Profile
+ * 
+ * Interface for modifying team branding, affiliation details, and active competitive status.
+ * 
+ * @screen SC-129
+ * @implements REQ-SPT-07
+ * @usecase UC-SPT-07 (Manage Teams)
+ * @requires SRS-I-076 (Teams API - PUT /admin/teams/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-074 Track team metadata modifications and branding asset updates
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

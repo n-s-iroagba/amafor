@@ -1,3 +1,15 @@
+/**
+ * Edit Coach Profile
+ * 
+ * Interface for modifying technical staff metadata, updating certifications, and managing squad assignments.
+ * 
+ * @screen SC-142
+ * @implements REQ-STA-01
+ * @usecase UC-STA-01 (Manage Coaches)
+ * @requires SRS-I-117 (Coaches API - PUT /admin/coaches/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-117 Track coach metadata modifications and certification update status
+ */
 'use client';
 
 import { useEffect, useRef, useState } from 'react';

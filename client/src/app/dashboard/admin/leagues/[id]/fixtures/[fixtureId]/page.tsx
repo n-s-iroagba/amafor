@@ -1,3 +1,15 @@
+/**
+ * Fixture Detail Overview
+ * 
+ * Central management view for a specific match fixture, providing access to lineups, goals, images, and match reports.
+ * 
+ * @screen SC-047
+ * @implements REQ-SPT-02
+ * @usecase UC-SPT-02 (Manage Fixtures)
+ * @requires SRS-I-056 (Fixtures API - GET /admin/leagues/:id/fixtures/:fixtureId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-054 Monitor administrative engagement with match-specific data modules
+ */
 'use client';
 
 import { useState } from 'react';

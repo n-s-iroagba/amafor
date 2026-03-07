@@ -1,3 +1,15 @@
+/**
+ * Team Roster Management
+ * 
+ * Interface for managing player assignments, transfers, and squad eligibility for a specific team.
+ * 
+ * @screen SC-130
+ * @implements REQ-SPT-07
+ * @usecase UC-SPT-07 (Manage Teams)
+ * @requires SRS-I-077 (Teams API - GET /admin/teams/:id/players)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-075 Monitor squad composition changes and player eligibility status
+ */
 'use client';
 
 import { useState } from 'react';

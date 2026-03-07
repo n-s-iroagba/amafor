@@ -10,13 +10,17 @@ import { API_ROUTES } from '@/config/routes'
 
 
 /**
- * Page: Advertiser Registration
- * Description: Registration form for new business advertisers.
- * Requirements: REQ-ADV-01 (Advertiser Registration)
- * User Story: US-ADV-002 (Register Account)
- * User Journey: UJ-ADV-001 (Registration)
- * API: POST /auth/signup (API-AUTH-006)
- * Hook: usePost(API_ROUTES.AUTH.SIGNUP)
+ * Advertiser Registration
+ * 
+ * Public form for businesses to register as advertisers. Collects business 
+ * details and credentials for manual verification.
+ * 
+ * @screen SC-005
+ * @implements REQ-ADV-01, REQ-ADV-10
+ * @usecase UC-ADV-02 (Register Account)
+ * @requires SRS-I-006 (Auth API - POST /auth/signup)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-008 Monitor registration funnel and verification delay
  */
 export default function AdvertiserRegistration() {
   const [businessName, setBusinessName] = useState('')

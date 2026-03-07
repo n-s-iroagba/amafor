@@ -6,12 +6,16 @@ import { useAuthContext } from "@/shared/hooks/useAuthContext";
 
 
 /**
- * Page: Dashboard Landing
- * Description: Main dashboard entry point, routing users based on role.
- * Requirements: REQ-ADM-01 (Admin Dashboard), REQ-ADV-03 (Advertiser Dashboard)
- * User Story: US-ADM-001, US-ADV-003, US-SCT-001
- * User Journey: UJ-ADM-009, UJ-ADV-002, UJ-SCT-001
- * Role: All Authenticated Users
+ * Roles Selection / Dashboard Landing
+ * 
+ * Central entry point for authenticated users to select their active persona and navigate to role-specific dashboards.
+ * 
+ * @screen SC-125
+ * @implements REQ-AUTH-01
+ * @usecase UC-AUTH-05 (Switch Roles)
+ * @requires None (Client-side routing)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-076 Track role selection patterns and cross-role navigation frequency
  */
 export default function DashboardPage() {
   const router = useRouter();

@@ -1,3 +1,15 @@
+/**
+ * Admin User List
+ * 
+ * Comprehensive directory of all system users with role management, status tracking, and administrative controls.
+ * 
+ * @screen SC-082
+ * @implements REQ-ADM-05
+ * @usecase UC-ADM-05 (Manage Users)
+ * @requires SRS-I-038 (Users API - GET /admin/users)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-036 Monitor user directory access and administrative permission changes
+ */
 'use client';
 
 import React, { useState, useMemo } from 'react';

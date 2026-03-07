@@ -1,3 +1,15 @@
+/**
+ * League Statistics Registry
+ * 
+ * Management console for tracking player and team performance metrics within a specific league season.
+ * 
+ * @screen SC-061
+ * @implements REQ-SPT-06
+ * @usecase UC-SPT-06 (Manage League Stats)
+ * @requires SRS-I-070 (League Stats API - GET /admin/leagues/:id/league-statistics)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-068 Monitor statistical data integrity and administrative review frequency
+ */
 'use client';
 
 import { useEffect } from 'react';

@@ -1,3 +1,15 @@
+/**
+ * System Notification Settings
+ * 
+ * Administrative interface for configuring global notification triggers, templates, and delivery channels.
+ * 
+ * @screen SC-064
+ * @implements REQ-SYS-06
+ * @usecase UC-SYS-06 (Manage Notifications)
+ * @requires SRS-I-100 (Notifications API - GET/PUT /admin/notifications/settings)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-099 Monitor notification delivery success and template modification frequency
+ */
 'use client';
 import React, { useState } from 'react';
 import { Bell, Shield, CreditCard, UserCheck, ArrowLeft, MoreHorizontal, Search, Trash2, Loader2 } from 'lucide-react';

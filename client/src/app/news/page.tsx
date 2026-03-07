@@ -1,6 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+/**
+ * News & Articles Registry
+ * 
+ * Public interface for browsing all club news, announcements, and featured articles.
+ * 
+ * @screen SC-143
+ * @implements REQ-PUB-01
+ * @usecase UC-PUB-01 (Browse News)
+ * @requires SRS-I-118 (News API - GET /news)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-118 Monitor news directory engagement and article click-through rates
+ */
 import { useRouter } from 'next/navigation';
 import { ArrowRight, Star, Clock, TrendingUp, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

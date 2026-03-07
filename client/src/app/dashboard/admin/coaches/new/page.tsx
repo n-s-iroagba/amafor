@@ -1,3 +1,15 @@
+/**
+ * Create New Coach
+ * 
+ * Registration interface for adding new technical staff and coaches to the club registry.
+ * 
+ * @screen SC-140
+ * @implements REQ-STA-01
+ * @usecase UC-STA-01 (Manage Coaches)
+ * @requires SRS-I-115 (Coaches API - POST /admin/coaches)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-115 Monitor coach registration success and profile data validation accuracy
+ */
 'use client';
 
 import { useRef, useState } from 'react';

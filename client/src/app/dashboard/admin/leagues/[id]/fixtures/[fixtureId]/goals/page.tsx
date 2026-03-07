@@ -1,3 +1,15 @@
+/**
+ * Match Goals Registry
+ * 
+ * Administrative list of all goals recorded for a specific match fixture.
+ * 
+ * @screen SC-050
+ * @implements REQ-SPT-03
+ * @usecase UC-SPT-03 (Manage Match Events)
+ * @requires SRS-I-059 (Goals API - GET /admin/leagues/:id/fixtures/:fixtureId/goals)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-057 Track goal recording frequency and event attribution accuracy
+ */
 'use client';
 
 import { useState } from 'react';

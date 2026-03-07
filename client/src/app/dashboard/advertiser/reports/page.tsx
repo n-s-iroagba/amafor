@@ -1,3 +1,15 @@
+/**
+ * Campaign Performance Reports
+ * 
+ * Data-rich interface for generating and viewing detailed performance analytics across all active campaigns.
+ * 
+ * @screen SC-095
+ * @implements REQ-ADV-06
+ * @usecase UC-ADV-06 (View Reports)
+ * @requires SRS-I-094 (Reports API - GET /advertiser/reports)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-093 Monitor report generation frequency and analytical depth engagement
+ */
 'use client';
 import React, { useState, useMemo } from 'react';
 // Added Megaphone to the lucide-react import list to resolve the "Cannot find name 'Megaphone'" error

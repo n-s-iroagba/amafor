@@ -1,4 +1,16 @@
 // app/leagues/page.tsx
+/**
+ * League Management List
+ * 
+ * Administrative directory for managing football leagues, seasons, and competitive structures.
+ * 
+ * @screen SC-041
+ * @implements REQ-SPT-01
+ * @usecase UC-SPT-01 (Manage Leagues)
+ * @requires SRS-I-050 (Leagues API - GET /admin/leagues)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-048 Monitor league directory engagement and competitive structure reviews
+ */
 'use client';
 
 import { useState } from 'react';

@@ -1,3 +1,15 @@
+/**
+ * System Health Dashboard
+ * 
+ * Real-time monitoring of application infrastructure, API connectivity, and service dependencies.
+ * 
+ * @screen SC-040
+ * @implements REQ-SYS-03
+ * @usecase UC-SYS-03 (Monitor System Health)
+ * @requires SRS-I-097 (Health API - GET /admin/health)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-096 Monitor system uptime, service latency, and resource utilization thresholds
+ */
 'use client';
 import React, { useState } from 'react';
 import { Activity, Cpu, RefreshCw, ArrowLeft, ShieldCheck, Globe, Database, Server, Mail, Play, Lock, Loader2 } from 'lucide-react';

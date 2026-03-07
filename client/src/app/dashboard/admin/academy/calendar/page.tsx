@@ -1,3 +1,15 @@
+/**
+ * Academy Training Calendar
+ * 
+ * Administrative interface for scheduling and managing academy training sessions, matches, and events.
+ * 
+ * @screen SC-131
+ * @implements REQ-ACA-01
+ * @usecase UC-ACA-01 (Manage Academy Schedule)
+ * @requires SRS-I-110 (Academy API - GET /admin/academy/calendar)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-110 Monitor schedule density and event modification frequency
+ */
 'use client';
 
 import { useState } from 'react';

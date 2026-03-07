@@ -7,12 +7,16 @@ import { Eye, Database, Video, Shield, ArrowRight, ChevronRight } from 'lucide-r
 
 
 /**
- * Page: Pro View Landing
- * Description: Information page for the professional scout portal "Pro View".
- * Requirements: REQ-SCT-01 (Pro View Access)
- * User Story: US-SCT-001 (View Scout Program)
- * User Journey: UJ-SCT-001 (Scout Registration)
- * API: None (Static)
+ * Pro View Landing
+ * 
+ * Information page and gateway for the professional scout recruitment and verification portal.
+ * 
+ * @screen SC-123
+ * @implements REQ-SCT-01
+ * @usecase UC-SCT-01 (View Scout Program)
+ * @requires None (Static Content)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-014 Track scout intake funnel and conversion rate
  */
 export default function ProViewAccess() {
   return (

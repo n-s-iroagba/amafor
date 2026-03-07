@@ -1,3 +1,15 @@
+/**
+ * Create Subscription Plan
+ * 
+ * Interface for defining new service tiers, including pricing, feature limits, and billing cycles.
+ * 
+ * @screen SC-075
+ * @implements REQ-SYS-08
+ * @usecase UC-SYS-08 (Manage Subscriptions)
+ * @requires SRS-I-103 (Subscriptions API - POST /admin/subscriptions)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-102 Track plan creation success and tier configuration accuracy
+ */
 'use client';
 
 import { useState } from 'react';

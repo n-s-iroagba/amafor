@@ -1,4 +1,16 @@
 
+/**
+ * Scout Player Evaluation Profile
+ * 
+ * Comprehensive scouting hub for a specific player, including historical evaluations, video clips, and professional projections.
+ * 
+ * @screen SC-151
+ * @implements REQ-SCO-04
+ * @usecase UC-SCO-04 (Manage Scouting Talent)
+ * @requires SRS-I-126 (Scout API - GET /scout/players/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-126 Monitor scout depth into talent profiles and evaluation review frequency
+ */
 'use client';
 import { useState } from 'react';
 

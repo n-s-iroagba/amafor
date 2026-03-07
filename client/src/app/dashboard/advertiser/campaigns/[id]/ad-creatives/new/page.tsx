@@ -1,3 +1,15 @@
+/**
+ * Upload New Ad Creative
+ * 
+ * Interface for adding new visual assets (banners, videos) to an advertising campaign with placement optimization.
+ * 
+ * @screen SC-091
+ * @implements REQ-ADV-04
+ * @usecase UC-ADV-04 (Manage Ad Creatives)
+ * @requires SRS-I-090 (Creatives API - POST /advertiser/campaigns/:id/creatives)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-089 Monitor creative upload success and asset validation latency
+ */
 'use client';
 import React, { useState } from 'react';
 import { ArrowLeft, UploadCloud, Loader2, X, FileImage, FileVideo } from 'lucide-react';

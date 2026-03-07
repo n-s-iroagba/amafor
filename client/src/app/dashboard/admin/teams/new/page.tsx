@@ -1,3 +1,15 @@
+/**
+ * Create New Team
+ * 
+ * Registration interface for adding new teams to the system with branding and affiliation details.
+ * 
+ * @screen SC-127
+ * @implements REQ-SPT-07
+ * @usecase UC-SPT-07 (Manage Teams)
+ * @requires SRS-I-074 (Teams API - POST /admin/teams)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-072 Track team registration volume and branding asset upload success
+ */
 'use client';
 
 import { useState } from 'react';

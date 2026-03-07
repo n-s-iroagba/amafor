@@ -1,3 +1,15 @@
+/**
+ * Create Trialist Record
+ * 
+ * Manual intake form for adding trialists or processing paper applications into the digital system.
+ * 
+ * @screen SC-018
+ * @implements REQ-ADM-03
+ * @usecase UC-ADM-03 (Manage Trialists)
+ * @requires SRS-I-031 (Trialist API - POST /admin/academy/trialists)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-029 Track trialist creation volume and form completion time
+ */
 'use client';
 
 import { useRef, useState } from 'react';

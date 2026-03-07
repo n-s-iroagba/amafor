@@ -1,4 +1,16 @@
 // app/players/page.tsx
+/**
+ * Admin Player List
+ * 
+ * Central registry for all club players, enabling administrative oversight of rosters, contracts, and eligibility.
+ * 
+ * @screen SC-069
+ * @implements REQ-ADM-04
+ * @usecase UC-ADM-04 (Manage Players)
+ * @requires SRS-I-034 (Players API - GET /admin/players)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-032 Monitor player registry access and bulk management operations
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

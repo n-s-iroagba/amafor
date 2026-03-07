@@ -9,13 +9,16 @@ import { API_ROUTES } from '@/config/routes';
 import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 /**
- * Page: Article Detail
- * Description: Displays full content of a news article.
- * Requirements: REQ-PUB-03 (Articles)
- * User Story: US-PUB-004 (Read Full Article)
- * User Journey: UJ-PUB-002 (Browse News)
- * API: GET /articles/:id (API_ROUTES.ARTICLES.VIEW)
- * Hook: useGet(API_ROUTES.ARTICLES.VIEW(id))
+ * news/[id]
+ * 
+ * Displays full content of a news article with ad placements.
+ * 
+ * @screen SC-016
+ * @implements REQ-PUB-03
+ * @usecase UC-PUB-04 (Read Full Article)
+ * @requires SRS-I-010 (News API - GET /articles/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-005 Track article read depth and ad viewability
  */
 export default function NewsDetailPage() {
   const params = useParams();

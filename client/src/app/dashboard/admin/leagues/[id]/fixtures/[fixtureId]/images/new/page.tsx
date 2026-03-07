@@ -1,4 +1,16 @@
 // app/match-images/new/page.tsx
+/**
+ * Upload Fixture Image
+ * 
+ * Interface for adding new match photography or visual assets to the fixture gallery.
+ * 
+ * @screen SC-055
+ * @implements REQ-SPT-04
+ * @usecase UC-SPT-04 (Manage Match Media)
+ * @requires SRS-I-064 (Images API - POST /admin/leagues/:id/fixtures/:fixtureId/images)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-062 Monitor media upload success and asset optimization latency
+ */
 'use client';
 
 import { useState } from 'react';

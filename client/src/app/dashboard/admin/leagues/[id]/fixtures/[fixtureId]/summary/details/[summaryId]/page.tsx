@@ -1,4 +1,16 @@
 // app/match-summaries/[id]/page.tsx
+/**
+ * Match Report Detail
+ * 
+ * Comprehensive view of a specific match report, including content, participating contributors, and publishing status.
+ * 
+ * @screen SC-059
+ * @implements REQ-SPT-05
+ * @usecase UC-SPT-05 (Manage Match Reports)
+ * @requires SRS-I-068 (Summaries API - GET /admin/leagues/:id/fixtures/:fixtureId/summary/details/:summaryId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-066 Track administrative review of match reports and content depth
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

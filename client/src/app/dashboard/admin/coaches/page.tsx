@@ -1,3 +1,15 @@
+/**
+ * Admin Coach Registry
+ * 
+ * Directory of all club coaches and technical staff, enabling management of profiles and assignments.
+ * 
+ * @screen SC-139
+ * @implements REQ-STA-01
+ * @usecase UC-STA-01 (Manage Coaches)
+ * @requires SRS-I-109 (Coaches API - GET /admin/coaches)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-109 Monitor coach directory engagement and profile completion status
+ */
 'use client';
 
 import React, { useState } from 'react';

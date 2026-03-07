@@ -1,3 +1,15 @@
+/**
+ * Initiate New Dispute
+ * 
+ * Intake interface for advertisers to raise disputes regarding commercial terms, billing, or ad delivery.
+ * 
+ * @screen SC-094
+ * @implements REQ-ADV-05
+ * @usecase UC-ADV-05 (Manage Disputes)
+ * @requires SRS-I-093 (Disputes API - POST /advertiser/disputes)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-092 Track dispute initiation frequency and categorization accuracy
+ */
 'use client';
 import React, { useState } from 'react';
 

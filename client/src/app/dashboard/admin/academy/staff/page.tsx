@@ -1,3 +1,15 @@
+/**
+ * Academy Staff List
+ * 
+ * Directory of all coaching and academy technical staff with role-based filtering and status overview.
+ * 
+ * @screen SC-013
+ * @implements REQ-ADM-02
+ * @usecase UC-ADM-02 (Manage Academy Staff)
+ * @requires SRS-I-026 (Staff API - GET /admin/academy/staff)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-024 Track staff filtering patterns and directory navigation
+ */
 'use client';
 
 import { useState } from 'react';

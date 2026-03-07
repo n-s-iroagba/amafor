@@ -1,3 +1,15 @@
+/**
+ * Data Retention Policy Settings
+ * 
+ * Compliance interface for defining data lifecycle rules, archival parameters, and deletion schedules.
+ * 
+ * @screen SC-080
+ * @implements REQ-SYS-05
+ * @usecase UC-SYS-05 (Manage Data Retention)
+ * @requires SRS-I-099 (Settings API - GET/PUT /admin/settings/retention)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-098 Monitor policy compliance and automated data lifecycle execution logs
+ */
 'use client';
 
 import { useState } from 'react';

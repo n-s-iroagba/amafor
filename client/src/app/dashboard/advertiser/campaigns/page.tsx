@@ -1,3 +1,15 @@
+/**
+ * Advertiser Campaigns Registry
+ * 
+ * Management console for advertisers to view and manage their advertising campaigns across the platform.
+ * 
+ * @screen SC-086
+ * @implements REQ-ADV-02
+ * @usecase UC-ADV-02 (Manage Campaigns)
+ * @requires SRS-I-086 (Campaigns API - GET /advertiser/campaigns)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-085 Track campaign directory engagement and active campaign distribution
+ */
 'use client';
 import { useState } from 'react';
 import { Plus, Search, Filter, Megaphone, Calendar, TrendingUp, MoreVertical, Loader2 } from 'lucide-react';

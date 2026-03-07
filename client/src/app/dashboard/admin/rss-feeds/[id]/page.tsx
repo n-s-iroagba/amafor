@@ -1,3 +1,15 @@
+/**
+ * RSS Feed Detail
+ * 
+ * Comprehensive view of a specific RSS feed source, including synchronization logs and content history.
+ * 
+ * @screen SC-073A
+ * @implements REQ-SYS-07
+ * @usecase UC-SYS-07 (Manage RSS Feeds)
+ * @requires SRS-I-101 (RSS API - GET /admin/rss-feeds/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-105 Track administrative review of RSS feed performance and sync depth
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

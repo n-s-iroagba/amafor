@@ -1,3 +1,15 @@
+/**
+ * RSS Feed Registry
+ * 
+ * Administrative directory for managing external content syndication and RSS feed sources.
+ * 
+ * @screen SC-073
+ * @implements REQ-SYS-07
+ * @usecase UC-SYS-07 (Manage RSS Feeds)
+ * @requires SRS-I-101 (RSS API - GET /admin/rss-feeds)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-100 Monitor feed synchronization success and content syndication depth
+ */
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';

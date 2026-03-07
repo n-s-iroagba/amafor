@@ -1,3 +1,15 @@
+/**
+ * Admin Team Registry
+ * 
+ * Directory of all football teams participating in AGFC leagues, including club affiliations and status.
+ * 
+ * @screen SC-126
+ * @implements REQ-SPT-07
+ * @usecase UC-SPT-07 (Manage Teams)
+ * @requires SRS-I-073 (Teams API - GET /admin/teams)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-071 Monitor team directory engagement and club registration trends
+ */
 'use client';
 
 import { useState } from 'react';

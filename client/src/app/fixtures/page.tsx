@@ -31,13 +31,16 @@ import { League } from '@/features/league/types';
 import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 /**
- * Page: Fixtures List
- * Description: Displays a list of scheduled, live, and past fixtures. Supports filtering by league, status, and date.
- * Requirements: REQ-PUB-01 (Fixture List)
- * User Story: US-PUB-001 (View Fixture List)
- * User Journey: UJ-PUB-001 (Browse Fixtures)
- * API: GET /fixtures (API_ROUTES.FIXTURES.LIST)
- * Hook: useGet(API_ROUTES.FIXTURES.LIST)
+ * Fixtures List
+ * 
+ * Displays a list of scheduled, live, and past fixtures with advanced filtering.
+ * 
+ * @screen SC-013
+ * @implements REQ-PUB-01
+ * @usecase UC-PUB-01 (View Fixture List)
+ * @requires SRS-I-011 (Fixture API - GET /fixtures), SRS-I-012 (League API - GET /leagues)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-006 Track fixture browsing and filter usage
  */
 export default function FixturesPage() {
   const router = useRouter();

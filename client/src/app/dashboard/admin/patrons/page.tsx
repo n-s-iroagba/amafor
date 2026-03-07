@@ -1,3 +1,15 @@
+/**
+ * Admin Patron Registry
+ * 
+ * Directory of all financial supporters and patrons, enabling administrative oversight of contributions and status.
+ * 
+ * @screen SC-135
+ * @implements REQ-PAT-01
+ * @usecase UC-PAT-01 (Manage Patrons)
+ * @requires SRS-I-108 (Patrons API - GET /admin/patrons)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-108 Monitor patron directory engagement and contribution trends
+ */
 'use client';
 
 import { useState } from 'react';

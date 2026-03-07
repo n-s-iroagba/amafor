@@ -3,12 +3,16 @@ import Link from 'next/link';
 
 
 /**
- * Page: Compliance & Security Policy
- * Description: Public declaration of security standards (ISO 27001, NDPR) and data integrity.
- * Requirements: REQ-SEC-01 (Security Standards), REQ-LEG-02 (Compliance Indicators)
- * User Story: US-SEC-001 (View Security Compliance)
- * User Journey: UJ-PUB-006 (Trust Verification)
- * API: None (Static)
+ * Compliance & Security Policy
+ * 
+ * Public declaration of safety standards (ISO 27001, NDPR) and data integrity 
+ * protocols for the digital ecosystem.
+ * 
+ * @screen SC-011
+ * @implements REQ-SEC-01, REQ-LEG-02
+ * @usecase UC-PUB-06 (Trust Verification)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-010 Monitor policy engagement and trust signal effectiveness
  */
 export default function CompliancePage() {
   const standards = [

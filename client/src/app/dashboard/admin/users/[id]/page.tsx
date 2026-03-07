@@ -1,3 +1,15 @@
+/**
+ * Admin User Detail
+ * 
+ * Detailed view of a user's profile, including their multiple roles, activity logs, and system permissions.
+ * 
+ * @screen SC-084
+ * @implements REQ-ADM-05
+ * @usecase UC-ADM-05 (Manage Users)
+ * @requires SRS-I-040 (Users API - GET /admin/users/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-038 Monitor administrative access to sensitive user profile data
+ */
 'use client';
 
 import React, { useState } from 'react';

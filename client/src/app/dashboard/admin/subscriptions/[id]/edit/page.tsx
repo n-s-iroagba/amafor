@@ -1,3 +1,15 @@
+/**
+ * Edit Subscription Plan
+ * 
+ * Interface for modifying existing subscription tiers, updating pricing, and managing feature availability.
+ * 
+ * @screen SC-076
+ * @implements REQ-SYS-08
+ * @usecase UC-SYS-08 (Manage Subscriptions)
+ * @requires SRS-I-104 (Subscriptions API - PUT /admin/subscriptions/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-103 Monitor pricing revisions and feature availability updates
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

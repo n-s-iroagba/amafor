@@ -1,3 +1,15 @@
+/**
+ * Scout Management Hub
+ * 
+ * Administrative directory for managing professional scouts, their access levels, and verification status.
+ * 
+ * @screen SC-077
+ * @implements REQ-ADM-08
+ * @usecase UC-ADM-08 (Manage Scouts)
+ * @requires SRS-I-082 (Scouts API - GET /admin/scouts)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-081 Monitor scout directory engagement and professional verification trends
+ */
 'use client';
 
 import React from 'react';

@@ -1,3 +1,15 @@
+/**
+ * Create New Fixture
+ * 
+ * Scheduling interface for adding new match fixtures to a league season, including date, time, and venue selection.
+ * 
+ * @screen SC-046
+ * @implements REQ-SPT-02
+ * @usecase UC-SPT-02 (Manage Fixtures)
+ * @requires SRS-I-055 (Fixtures API - POST /admin/leagues/:id/fixtures)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-053 Track fixture creation volume and scheduling accuracy
+ */
 'use client';
 
 import { useState } from 'react';

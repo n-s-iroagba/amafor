@@ -30,13 +30,16 @@ import { FixtureWithLeague, FixtureImage, FixtureStatus } from '@/features/fixtu
 
 
 /**
- * Page: Gallery Detail
- * Description: Displays grid of photos for a specific fixture with lightbox viewing.
- * Requirements: REQ-PUB-07 (Fixture Gallery)
- * User Story: US-PUB-008 (Browse Fixture Gallery)
- * User Journey: UJ-PUB-005 (View Match Gallery)
- * API: GET /fixtures/:id/images (API_ROUTES.FIXTURES.GALLERY)
- * Hook: useGet('/api/fixtures/${fixtureId}/images')
+ * Gallery Detail
+ * 
+ * Displays grid of photos for a specific fixture with lightbox viewing and anti-download measures.
+ * 
+ * @screen SC-017
+ * @implements REQ-PUB-07
+ * @usecase UC-PUB-08 (Browse Fixture Gallery)
+ * @requires SRS-I-014 (Fixture API - GET /fixtures/:id/images)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-009 Monitor photo engagement and system integrity (ADM-11)
  */
 export default function FixtureGalleryPage() {
   const params = useParams();

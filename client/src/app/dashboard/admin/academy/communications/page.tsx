@@ -1,3 +1,15 @@
+/**
+ * Academy Communications Hub
+ * 
+ * Interface for managing internal communications, announcements, and parent/player messaging for the academy.
+ * 
+ * @screen SC-132
+ * @implements REQ-ACA-02
+ * @usecase UC-ACA-02 (Manage Academy Comms)
+ * @requires SRS-I-111 (Academy API - GET /admin/academy/communications)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-111 Track message volume and communication engagement metrics
+ */
 'use client';
 
 import { useState } from 'react';

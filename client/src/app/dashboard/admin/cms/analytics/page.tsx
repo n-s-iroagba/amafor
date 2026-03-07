@@ -32,12 +32,16 @@ interface ArticleAnalytics {
 }
 
 /**
- * Page: Content Analytics
- * Description: Dashboard for viewing article and video performance metrics.
- * Requirements: REQ-CMS-04 (Content Analytics)
- * User Story: US-CMS-004 (View Content Analytics)
- * User Journey: UJ-CMS-001 (Manage Articles)
- * API: GET /articles/analytics (API_ROUTES.ARTICLES.ANALYTICS)
+ * Content Analytics
+ * 
+ * Performance dashboard for monitoring article and video engagement, reading time, and audience demographics.
+ * 
+ * @screen SC-025
+ * @implements REQ-CMS-04
+ * @usecase UC-CMS-04 (View Content Analytics)
+ * @requires SRS-I-041 (Articles API - GET /articles/analytics)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-039 Monitor content reach, completion rates, and trending topics
  */
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState({

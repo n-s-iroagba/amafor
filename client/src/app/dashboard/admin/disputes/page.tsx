@@ -1,3 +1,15 @@
+/**
+ * Dispute Resolution Hub
+ * 
+ * Management console for viewing and resolving disputes raised by advertisers or system users.
+ * 
+ * @screen SC-038
+ * @implements REQ-ADM-07
+ * @usecase UC-ADM-07 (Manage Disputes)
+ * @requires SRS-I-080 (Disputes API - GET /admin/disputes)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-079 Monitor dispute volume, resolution latency, and category distribution
+ */
 'use client';
 import React, { useState } from 'react';
 import { useGet } from '@/shared/hooks/useApiQuery';

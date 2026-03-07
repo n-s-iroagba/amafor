@@ -1,3 +1,15 @@
+/**
+ * Advertiser Dispute Registry
+ * 
+ * Management console for advertisers to track and manage their disputes regarding billing or placement issues.
+ * 
+ * @screen SC-093
+ * @implements REQ-ADV-05
+ * @usecase UC-ADV-05 (Manage Disputes)
+ * @requires SRS-I-092 (Disputes API - GET /advertiser/disputes)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-091 Monitor advertiser-initiated dispute volume and resolution tracking patterns
+ */
 'use client';
 import React from 'react';
 import { ShieldAlert, Search, Filter, ArrowLeft, MessageSquare, Clock, ChevronRight, AlertCircle, Loader2 } from 'lucide-react';

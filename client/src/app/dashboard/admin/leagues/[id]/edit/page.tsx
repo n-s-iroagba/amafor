@@ -1,3 +1,15 @@
+/**
+ * Edit League Configuration
+ * 
+ * Interface for modifying league rules, active status, and competitive parameters.
+ * 
+ * @screen SC-044
+ * @implements REQ-SPT-01
+ * @usecase UC-SPT-01 (Manage Leagues)
+ * @requires SRS-I-053 (Leagues API - PUT /admin/leagues/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-051 Track league metadata modifications and update success rates
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

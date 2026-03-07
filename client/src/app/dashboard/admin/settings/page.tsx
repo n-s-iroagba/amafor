@@ -1,3 +1,15 @@
+/**
+ * Global System Settings
+ * 
+ * Central configuration interface for platform-wide parameters, branding, and operational toggles.
+ * 
+ * @screen SC-079
+ * @implements REQ-SYS-04
+ * @usecase UC-SYS-04 (Update System Settings)
+ * @requires SRS-I-098 (Settings API - GET/PUT /admin/settings)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-097 Track configuration changes and publishing success of system-wide updates
+ */
 'use client';
 
 import { useState } from 'react';

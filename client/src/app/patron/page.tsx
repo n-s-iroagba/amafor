@@ -12,20 +12,16 @@ import { PatronSubscriptionPackage, PatronTier } from '@/features/patron/types'
 /**
  * Patron/Support Page
  * 
- * Allows fans and organizations to support the club through
- * one-time donations or recurring subscription packages.
+ * Overview of patron tiers and support options for the club.
  * 
- * @requirement REQ-SUP-01: Public support/donation page.
+ * @screen SC-116
+ * @implements REQ-SUP-01
+ * @usecase UC-SUP-02 (View Subscription Plans)
+ * @requires SRS-I-021 (Patrons API - GET /patrons/packages)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-017 Track tier selection trends and package visibility
  */
-/**
- * Page: Patron Support Landing
- * Description: Overview of patron tiers and support options.
- * Requirements: REQ-SUP-02 (Subscription Tiers)
- * User Story: US-SUP-002 (View Subscription Plans)
- * User Journey: UJ-SUP-001 (Subscribe)
- * API: GET /patrons/packages (API_ROUTES.PATRONS.PACKAGES)
- * Hook: useGet(API_ROUTES.PATRONS.PACKAGES)
- */
+
 export default function SupportDonate() {
   const { data: patronTiers, loading } = useGet<PatronSubscriptionPackage[]>(API_ROUTES.PATRONS.PACKAGES)
 

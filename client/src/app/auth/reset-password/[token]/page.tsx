@@ -14,13 +14,16 @@ import { useAuthContext } from "@/shared/hooks/useAuthContext";
 import { AuthUser } from "@/shared/types";
 
 /**
- * Page: Reset Password Page
- * Description: Allows users to set a new password using a token received via email.
- * Requirements: REQ-AUTH-03 (Password Reset)
- * User Story: US-AUTH-003 (Reset Forgotten Password)
- * User Journey: UJ-AUTH-003 (Password Recovery)
- * API: POST /auth/reset-password (API-AUTH-005)
- * Hook: usePost(API_ROUTES.AUTH.RESET_PASSWORD)
+ * Reset Password Page
+ * 
+ * Token-guarded form for users to set a new password after recovery request.
+ * 
+ * @screen SC-008
+ * @implements REQ-AUTH-03, REQ-AUTH-05
+ * @usecase UC-FAN-08, UC-TRI-03, UC-ADV-03, UC-ACA-01, UC-SCT-01
+ * @requires SRS-I-007 (Auth API - POST /auth/reset-password)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-003 Track password reset completion and token validity
  */
 interface FormState {
   password: string;
@@ -83,7 +86,9 @@ export default function ResetPasswordPage() {
         const accessToken = response.accessToken;
 
         setUser(user);
-        setAccessToken(acessToken)
+        import("@/shared/lib/axios").then(({ setAccessToken }) => {
+          setAccessToken(accessToken);
+        });
 
         setMessage("Password reset successful! Redirecting...");
 

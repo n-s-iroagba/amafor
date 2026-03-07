@@ -18,12 +18,16 @@ import clubLogo from "@/images/logo.jpeg";
 import SponsorBanner from "@/features/home/components/SponsorBanner";
 
 /**
- * Page: Homepage
- * Description: Landing page with featured news, matches, and call-to-actions.
- * Requirements: REQ-PUB-01 to 09 (General Access)
- * User Story: US-PUB-001 (View Fixture List), US-PUB-003 (Browse News)
- * User Journey: UJ-PUB-001, UJ-PUB-002
- * API: Multiple (News, Fixtures, Videos)
+ * Homepage
+ * 
+ * Club landing page displaying hero section, news highlights, fixtures, 
+ * patron recognition, and academy onboarding CTAs.
+ * 
+ * @screen SC-001
+ * @implements REQ-PUB-01, REQ-PUB-04, REQ-PUB-08, REQ-SUP-06, REQ-SUP-08, REQ-ACA-01
+ * @usecase UC-FAN-01, UC-FAN-07, UC-FAN-08, UC-TRI-03, UC-SCT-01
+ * @performance NFR-PERF-01 (Public pages < 2s load)
+ * @observability SRS-OBS-001 Track homepage visits and CTA conversion
  */
 export default function Home() {
   return (

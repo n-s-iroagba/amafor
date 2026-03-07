@@ -1,3 +1,15 @@
+/**
+ * Edit RSS Feed
+ * 
+ * Interface for modifying RSS feed parameters, update frequency, and syndication rules.
+ * 
+ * @screen SC-073B
+ * @implements REQ-SYS-07
+ * @usecase UC-SYS-07 (Manage RSS Feeds)
+ * @requires SRS-I-106 (RSS API - PUT /admin/rss-feeds/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-106 Monitor feed configuration revisions and synchronization latency
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

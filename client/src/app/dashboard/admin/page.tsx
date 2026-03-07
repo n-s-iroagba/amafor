@@ -1,3 +1,15 @@
+/**
+ * Admin Dashboard Overview
+ * 
+ * Central management hub for AGFC administrators, providing system health, KPIs, and quick access to modules.
+ * 
+ * @screen SC-012
+ * @implements REQ-ADM-01
+ * @usecase UC-ADM-01 (Admin Dashboard)
+ * @requires SRS-I-025 (Admin API - GET /admin/stats)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-023 Monitor dashboard load time and module usage frequency
+ */
 "use client";
 import React from "react";
 import {

@@ -12,13 +12,16 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 
 
 /**
- * Page: Coach Detail
- * Description: Public profile view for coaching staff.
- * Requirements: REQ-PUB-06 (Staff Profiles)
- * User Story: US-PUB-007 (View Coach Profile)
- * User Journey: UJ-PUB-003 (Team Exploration)
- * API: GET /academy-staff/:id (API_ROUTES.COACHES.MUTATE actually VIEW)
- * Hook: useGet(API_ROUTES.COACHES.VIEW)
+ * Coach Detail
+ * 
+ * Public profile view for coaching staff, displaying bio, role, and professional photo.
+ * 
+ * @screen SC-010
+ * @implements REQ-PUB-06
+ * @usecase UC-PUB-07 (View Coach Profile)
+ * @requires SRS-I-015 (Staff API - GET /academy-staff/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-007 Track coach profile views and engagement
  */
 export default function CoachDetail() {
   const params = useParams();

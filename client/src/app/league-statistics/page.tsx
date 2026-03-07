@@ -36,12 +36,16 @@ interface LeagueWithTable extends League {
 
 
 /**
- * Page: Public League Statistics List
- * Description: List of all leagues available for public viewing.
- * Requirements: REQ-PUB-07 (League Stats)
- * User Story: US-PUB-007 (View League Statistics)
- * User Journey: UJ-PUB-004 (View League Statistics)
- * API: GET /leagues (API_ROUTES.LEAGUES.LIST)
+ * League Statistics List
+ * 
+ * Displays performance summaries across all active competitions for Amafor Gladiators FC.
+ * 
+ * @screen SC-019
+ * @implements REQ-PUB-07
+ * @usecase UC-PUB-07 (View League Statistics)
+ * @requires SRS-I-017 (League API - GET /leagues/tables)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-012 Track standings browsing and competition interest
  */
 export default function LeagueStatsPage() {
   const router = useRouter();

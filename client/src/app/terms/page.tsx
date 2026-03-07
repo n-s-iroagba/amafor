@@ -4,12 +4,16 @@ import Link from 'next/link';
 
 
 /**
- * Page: Terms of Service
- * Description: Legal terms and conditions for platform usage.
- * Requirements: REQ-UTL-02 (Legal Pages)
- * User Story: US-UTL-002 (View Terms)
- * User Journey: UJ-UTL-003 (Legal Review)
- * API: None (Static)
+ * Terms of Service
+ * 
+ * Legal master agreement governing platform usage, commercial terms, and patronage protocols.
+ * 
+ * @screen SC-121
+ * @implements REQ-UTL-02
+ * @usecase UC-UTL-02 (View Legal Pages)
+ * @requires None (Static Content)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-022 Track legal agreement acceptance and exit rates
  */
 export default function TermsPage() {
   return (

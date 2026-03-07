@@ -1,3 +1,15 @@
+/**
+ * Edit Ad Creative
+ * 
+ * Interface for modifying existing ad creative metadata, targeting adjustments, and visibility settings.
+ * 
+ * @screen SC-092
+ * @implements REQ-ADV-04
+ * @usecase UC-ADV-04 (Manage Ad Creatives)
+ * @requires SRS-I-091 (Creatives API - PUT /advertiser/campaigns/:id/creatives/:creativeId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-090 Track advertiser revision volume and platform update latency
+ */
 'use client';
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Loader2, Save } from 'lucide-react';

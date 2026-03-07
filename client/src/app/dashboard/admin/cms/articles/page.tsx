@@ -1,3 +1,15 @@
+/**
+ * Admin Article List
+ * 
+ * Editorial control for managing all written content, including news, features, and official club updates.
+ * 
+ * @screen SC-026
+ * @implements REQ-CMS-01
+ * @usecase UC-CMS-01 (Manage Articles)
+ * @requires SRS-I-042 (Articles API - GET /admin/articles)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-040 Track editorial throughput and content distribution status
+ */
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -183,10 +195,9 @@ const ArticleList: React.FC = () => {
                 className={`
                   relative inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base
                   transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50
-                  ${
-                    isActive
-                      ? "bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-200 hover:border-sky-300 hover:bg-sky-50 shadow-sm hover:shadow-md"
+                  ${isActive
+                    ? "bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg"
+                    : "bg-white text-gray-700 border border-gray-200 hover:border-sky-300 hover:bg-sky-50 shadow-sm hover:shadow-md"
                   }
                 `}
                 whileHover={{ y: -2, scale: 1.02 }}
@@ -282,11 +293,10 @@ const ArticleList: React.FC = () => {
             >
               {/* Status badge */}
               <div
-                className={`absolute top-3 sm:top-4 right-3 sm:right-4 z-10 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold shadow-md flex items-center gap-1 ${
-                  article.status === ArticleStatus.Published
-                    ? "bg-gradient-to-r from-green-500 to-green-600"
-                    : "bg-gradient-to-r from-amber-500 to-amber-600"
-                }`}
+                className={`absolute top-3 sm:top-4 right-3 sm:right-4 z-10 text-white text-xs px-2 sm:px-3 py-1 rounded-full font-semibold shadow-md flex items-center gap-1 ${article.status === ArticleStatus.Published
+                  ? "bg-gradient-to-r from-green-500 to-green-600"
+                  : "bg-gradient-to-r from-amber-500 to-amber-600"
+                  }`}
               >
                 {article.status === ArticleStatus.Published ? (
                   <>
@@ -380,11 +390,10 @@ const ArticleList: React.FC = () => {
                 <motion.button
                   key={pageNum}
                   onClick={() => setPage(pageNum)}
-                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50 relative overflow-hidden text-sm sm:text-base min-w-[40px] ${
-                    page === pageNum
-                      ? "bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+                  className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-opacity-50 relative overflow-hidden text-sm sm:text-base min-w-[40px] ${page === pageNum
+                    ? "bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-md"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
                   aria-current={page === pageNum ? "page" : undefined}
                   aria-label={`Go to page ${pageNum}`}
                   whileHover={{ y: -2 }}

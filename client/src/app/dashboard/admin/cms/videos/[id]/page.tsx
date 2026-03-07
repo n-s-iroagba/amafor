@@ -1,4 +1,16 @@
 // app/videos/[id]/page.tsx
+/**
+ * Admin Video Detail
+ * 
+ * Comprehensive management view for a specific video asset, including playback preview and status controls.
+ * 
+ * @screen SC-032
+ * @implements REQ-CMS-02
+ * @usecase UC-CMS-02 (Manage Videos)
+ * @requires SRS-I-048 (Videos API - GET /admin/videos/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-046 Track administrative video preview depth and metadata reviews
+ */
 "use client";
 
 import { useState, useEffect } from "react";

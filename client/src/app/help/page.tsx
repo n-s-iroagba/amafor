@@ -7,12 +7,16 @@ import { useState } from 'react'
 
 
 /**
- * Page: Help & Contact
- * Description: User support portal with FAQs and contact form.
- * Requirements: REQ-SUP-01 (Help Center)
- * User Story: US-SUP-001 (Access FAQs), US-SUP-002 (Contact Support)
- * User Journey: UJ-SUP-001 (Issue Resolution)
- * API: POST /api/contact (Mock/Future)
+ * Help & Contact
+ * 
+ * User support portal with FAQs and standardized contact form for fan engagement.
+ * 
+ * @screen SC-018
+ * @implements REQ-SUP-01
+ * @usecase UC-SUP-01 (Access FAQs), UC-SUP-02 (Contact Support)
+ * @requires SRS-I-016 (Contact API - POST /contact)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-011 Track support ticket volume and FAQ efficacy
  */
 export default function HelpContact() {
   const [name, setName] = useState('')

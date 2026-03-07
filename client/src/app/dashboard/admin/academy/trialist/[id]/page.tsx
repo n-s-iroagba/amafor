@@ -1,3 +1,15 @@
+/**
+ * Trialist Detail
+ * 
+ * Comprehensive view of a trialist's application, contact details, and evaluation history.
+ * 
+ * @screen SC-019
+ * @implements REQ-ADM-03
+ * @usecase UC-ADM-03 (Manage Trialists)
+ * @requires SRS-I-032 (Trialist API - GET /admin/academy/trialists/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-030 Monitor trialist profile reviews and evaluation access
+ */
 'use client';
 
 

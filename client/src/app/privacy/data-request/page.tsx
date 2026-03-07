@@ -7,12 +7,16 @@ import { Shield, Lock, FileText, CheckCircle, AlertTriangle } from 'lucide-react
 
 
 /**
- * Page: Data Subject Request
- * Description: Form for users to request data export or deletion (GDPR/NDPR).
- * Requirements: REQ-DSR-01 (Data Rights)
- * User Story: US-UTL-004 (View Compliance Information)
- * User Journey: UJ-UTL-002 (View Legal Pages)
- * API: POST /privacy/request
+ * Data Subject Request
+ * 
+ * Form for users to exercise their NDPR/GDPR rights (data export, correction, or deletion).
+ * 
+ * @screen SC-118
+ * @implements REQ-DSR-01
+ * @usecase UC-UTL-01 (Manage Data Privacy)
+ * @requires SRS-I-023 (Privacy API - POST /privacy/request)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-019 Track DSR submission volume and resolution status
  */
 export default function DataRequestPage() {
     const [requestType, setRequestType] = useState('access');

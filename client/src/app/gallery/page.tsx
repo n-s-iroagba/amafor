@@ -25,13 +25,16 @@ import { FixtureStatus, FixtureWithLeague, FixtureImage } from '@/features/fixtu
 
 
 /**
- * Page: Gallery List
- * Description: Browsable gallery of match photos organized by fixture.
- * Requirements: REQ-PUB-07 (Fixture Gallery)
- * User Story: US-PUB-008 (Browse Fixture Gallery)
- * User Journey: UJ-PUB-005 (View Match Gallery)
- * API: GET /fixtures/gallery (API_ROUTES.FIXTURES.GALLERY)
- * Hook: useGet(API_ROUTES.FIXTURES.GALLERY)
+ * Gallery List
+ * 
+ * Browsable gallery of match photos organized by fixture.
+ * 
+ * @screen SC-015
+ * @implements REQ-PUB-07
+ * @usecase UC-PUB-08 (Browse Fixture Gallery)
+ * @requires SRS-I-014 (Fixture API - GET /fixtures/gallery)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-009 Track gallery views and anti-download efficacy
  */
 export default function GalleryPage() {
   const [searchTerm, setSearchTerm] = useState('');

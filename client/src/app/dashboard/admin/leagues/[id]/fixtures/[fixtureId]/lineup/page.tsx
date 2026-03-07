@@ -1,3 +1,15 @@
+/**
+ * Match Lineup Management
+ * 
+ * Interface for defining and managing team lineups for a specific match fixture.
+ * 
+ * @screen SC-049
+ * @implements REQ-SPT-02
+ * @usecase UC-SPT-02 (Manage Fixtures)
+ * @requires SRS-I-058 (Lineup API - GET/POST /admin/leagues/:id/fixtures/:fixtureId/lineup)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-056 Monitor lineup entry completion and player eligibility verification
+ */
 'use client';
 
 import React, { useState } from 'react';

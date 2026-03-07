@@ -1,3 +1,15 @@
+/**
+ * Ad Creative Performance Detail
+ * 
+ * Granular performance metrics for a specific ad creative asset within a campaign.
+ * 
+ * @screen SC-145
+ * @implements REQ-ADV-04
+ * @usecase UC-ADV-04 (Manage Ad Creatives)
+ * @requires SRS-I-120 (Creatives API - GET /advertiser/campaigns/:id/creatives/:creativeId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-120 Monitor advertiser engagement with creative-specific analytics
+ */
 'use client';
 import React, { useEffect, useState } from 'react';
 import { ArrowLeft, Loader2, Save, Trash2, ExternalLink } from 'lucide-react';

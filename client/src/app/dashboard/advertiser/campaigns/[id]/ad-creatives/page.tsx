@@ -1,3 +1,15 @@
+/**
+ * Campaign Creative Registry
+ * 
+ * Management console for all visual and interactive ad creatives associated with a specific campaign.
+ * 
+ * @screen SC-090
+ * @implements REQ-ADV-04
+ * @usecase UC-ADV-04 (Manage Ad Creatives)
+ * @requires SRS-I-089 (Creatives API - GET /advertiser/campaigns/:id/creatives)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-088 Track creative library growth and performance-based asset reviews
+ */
 'use client';
 import React from 'react';
 import { PlusCircle, ArrowLeft, Image as ImageIcon, Trash2, Loader2, Eye, MousePointer2 } from 'lucide-react';

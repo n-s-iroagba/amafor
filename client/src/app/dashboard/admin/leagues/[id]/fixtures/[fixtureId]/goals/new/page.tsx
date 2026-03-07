@@ -1,4 +1,16 @@
 // app/goals/new/page.tsx
+/**
+ * Record New Goal
+ * 
+ * Intake form for registering a goal event, including scorer, assist, time, and goal type.
+ * 
+ * @screen SC-051
+ * @implements REQ-SPT-03
+ * @usecase UC-SPT-03 (Manage Match Events)
+ * @requires SRS-I-060 (Goals API - POST /admin/leagues/:id/fixtures/:fixtureId/goals)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-058 Monitor goal entry success and data validation accuracy
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

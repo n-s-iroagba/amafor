@@ -1,3 +1,15 @@
+/**
+ * Scouting Analysis Reports
+ * 
+ * Data-rich interface for generating and viewing detailed talent evaluation reports and performance projections.
+ * 
+ * @screen SC-149
+ * @implements REQ-SCO-03
+ * @usecase UC-SCO-03 (View Scouting Reports)
+ * @requires SRS-I-124 (Scout API - GET /scout/reports)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-124 Track scout analytical depth and report generation frequency
+ */
 'use client';
 import React, { useState } from 'react';
 import { FileText, Download, Trash2, Search, ArrowLeft, Shield, Eye, Filter, Loader2, AlertCircle } from 'lucide-react';

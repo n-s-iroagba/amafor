@@ -1,3 +1,15 @@
+/**
+ * Campaign Performance Overview
+ * 
+ * Comprehensive view of a specific advertising campaign, providing performance metrics, budget tracking, and creative access.
+ * 
+ * @screen SC-088
+ * @implements REQ-ADV-02
+ * @usecase UC-ADV-02 (Manage Campaigns)
+ * @requires SRS-I-088 (Campaigns API - GET /advertiser/campaigns/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-087 Monitor advertiser engagement with campaign-specific performance data
+ */
 'use client';
 import { useState } from 'react';
 import { ArrowLeft, Megaphone, Play, Pause, BarChart3, TrendingUp, Users, MousePointer2, Download, ShieldCheck, Target, Loader2, CheckCircle } from 'lucide-react';

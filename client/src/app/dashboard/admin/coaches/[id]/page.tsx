@@ -1,4 +1,16 @@
 // app/coaches/[id]/page.tsx
+/**
+ * Admin Coach Detail
+ * 
+ * Comprehensive management hub for a coach's professional profile, including certifications and squad assignments.
+ * 
+ * @screen SC-141
+ * @implements REQ-STA-01
+ * @usecase UC-STA-01 (Manage Coaches)
+ * @requires SRS-I-116 (Coaches API - GET /admin/coaches/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-116 Monitor administrative depth into coach profiles and assignment history
+ */
 'use client';
 
 

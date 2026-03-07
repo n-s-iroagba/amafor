@@ -9,13 +9,16 @@ import { Footer } from '@/shared/components/Footer';
 import { Header } from '@/shared/components/Header';
 
 /**
- * Page: Pro View Application
- * Description: Application form for professional scouts to request access.
- * Requirements: REQ-SCT-01 (Application Form)
- * User Story: US-SCT-001 (Apply for Access)
- * User Journey: UJ-SCT-001 (Scout Registration)
- * API: POST /scout/applications (API_ROUTES.SCOUT.APPLY)
- * Hook: usePost(API_ROUTES.SCOUT.APPLY)
+ * Pro View Application
+ * 
+ * Secure intake form for professional scouts to request access to restricted biometric and performance data.
+ * 
+ * @screen SC-120
+ * @implements REQ-SCT-01
+ * @usecase UC-SCT-02 (Apply for Access)
+ * @requires SRS-I-024 (Scout API - POST /scout/applications)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-021 Monitor scout intake funnel and verification latency
  */
 
 export default function ProViewApplication() {

@@ -1,3 +1,15 @@
+/**
+ * Subscription Plan Registry
+ * 
+ * Management console for defining and tracking recurring revenue plans, features, and pricing tiers.
+ * 
+ * @screen SC-074
+ * @implements REQ-SYS-08
+ * @usecase UC-SYS-08 (Manage Subscriptions)
+ * @requires SRS-I-102 (Subscriptions API - GET /admin/subscriptions)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-101 Monitor subscription plan popularity and tier distribution trends
+ */
 'use client';
 
 import { useState } from 'react';

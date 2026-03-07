@@ -1,4 +1,16 @@
 
+/**
+ * Scout Match Monitoring Registry
+ * 
+ * Specialized directory for scouts to track upcoming and historical matches for talent evaluation.
+ * 
+ * @screen SC-146
+ * @implements REQ-SCO-01
+ * @usecase UC-SCO-01 (Monitor Matches)
+ * @requires SRS-I-121 (Scout API - GET /scout/matches)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-121 Track scout engagement with match schedules and evaluation triggers
+ */
 'use client';
 
 import { Play, Clock, ArrowLeft, Shield } from 'lucide-react';

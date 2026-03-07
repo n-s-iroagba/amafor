@@ -1,3 +1,15 @@
+/**
+ * Edit Fixture Details
+ * 
+ * Interface for modifying match fixture parameters such as rescheduling, venue changes, or status updates.
+ * 
+ * @screen SC-048
+ * @implements REQ-SPT-02
+ * @usecase UC-SPT-02 (Manage Fixtures)
+ * @requires SRS-I-057 (Fixtures API - PUT /admin/leagues/:id/fixtures/:fixtureId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-055 Track fixture modification frequency and update success rates
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

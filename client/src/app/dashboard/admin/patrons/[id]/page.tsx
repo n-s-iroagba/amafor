@@ -1,3 +1,15 @@
+/**
+ * Admin Patron Detail
+ * 
+ * Comprehensive management hub for a supporter's profile, including contribution history and recognition status.
+ * 
+ * @screen SC-137
+ * @implements REQ-PAT-01
+ * @usecase UC-PAT-01 (Manage Patrons)
+ * @requires SRS-I-113 (Patrons API - GET /admin/patrons/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-113 Monitor administrative depth into patron profiles and contribution reconciliation
+ */
 'use client';
 
 import { API_ROUTES } from '@/config/routes';

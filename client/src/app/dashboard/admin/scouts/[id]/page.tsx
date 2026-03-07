@@ -1,3 +1,15 @@
+/**
+ * Scout Detail Overview
+ * 
+ * Comprehensive administrative view of a professional scout's profile, application history, and data access permissions.
+ * 
+ * @screen SC-078
+ * @implements REQ-ADM-08
+ * @usecase UC-ADM-08 (Manage Scouts)
+ * @requires SRS-I-083 (Scouts API - GET /admin/scouts/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-082 Track administrative review depth of scout profiles and credential verification
+ */
 'use client';
 
 import React from 'react';

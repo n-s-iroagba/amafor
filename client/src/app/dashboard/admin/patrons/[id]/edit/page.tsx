@@ -1,3 +1,15 @@
+/**
+ * Edit Patron Profile
+ * 
+ * Interface for modifying supporter metadata, contribution terms, and visibility on the Patron Wall.
+ * 
+ * @screen SC-138
+ * @implements REQ-PAT-01
+ * @usecase UC-PAT-01 (Manage Patrons)
+ * @requires SRS-I-114 (Patrons API - PUT /admin/patrons/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-114 Track patron metadata modifications and update success rates
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

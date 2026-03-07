@@ -1,3 +1,15 @@
+/**
+ * System Audit Logs
+ * 
+ * Administrative interface for reviewing system-wide activity, user actions, and security-relevant events.
+ * 
+ * @screen SC-023
+ * @implements REQ-SYS-01
+ * @usecase UC-SYS-01 (View Audit Logs)
+ * @requires SRS-I-095 (Audit API - GET /admin/audit-logs)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-094 Monitor audit log entry volume and administrative search patterns
+ */
 'use client';
 import React, { useState } from 'react';
 import { Shield, FileSearch, Download, Filter, Calendar, Clock, User, Activity, Loader2, Search } from 'lucide-react';

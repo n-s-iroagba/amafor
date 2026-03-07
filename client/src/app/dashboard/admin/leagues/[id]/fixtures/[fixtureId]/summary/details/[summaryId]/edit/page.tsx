@@ -1,4 +1,16 @@
 // app/match-summaries/[id]/edit/page.tsx
+/**
+ * Edit Match Report
+ * 
+ * Interface for modifying match reports, updating technical analysis, and managing publishing parameters.
+ * 
+ * @screen SC-060
+ * @implements REQ-SPT-05
+ * @usecase UC-SPT-05 (Manage Match Reports)
+ * @requires SRS-I-069 (Summaries API - PUT /admin/leagues/:id/fixtures/:fixtureId/summary/details/:summaryId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-067 Monitor editorial revision volume and publishing delays
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

@@ -16,13 +16,16 @@ import { usePost } from '@/shared/hooks/useApiQuery';
 
 
 /**
- * Page: Forgot Password Page
- * Description: Allows users to request a password reset link via email.
- * Requirements: REQ-AUTH-03 (Password Reset)
- * User Story: US-AUTH-003 (Reset Forgotten Password)
- * User Journey: UJ-AUTH-003 (Password Recovery)
- * API: POST /auth/forgot-password (API-AUTH-004)
- * Hook: usePost(API_ROUTES.AUTH.FORGOT_PASSWORD)
+ * Forgot Password Page
+ * 
+ * Public form for users to request a password reset link via email.
+ * 
+ * @screen SC-007
+ * @implements REQ-AUTH-03, REQ-AUTH-04
+ * @usecase UC-FAN-08, UC-TRI-03, UC-ADV-03, UC-ACA-01, UC-SCT-01
+ * @requires SRS-I-005 (Auth API - POST /auth/forgot-password)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-003 Monitor recovery requests and potential abuse
  */
 interface FormState {
   email: string;

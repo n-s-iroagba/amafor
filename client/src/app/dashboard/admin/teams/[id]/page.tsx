@@ -1,3 +1,15 @@
+/**
+ * Admin Team Detail
+ * 
+ * Comprehensive management hub for a specific team, including roster overview and administrative actions.
+ * 
+ * @screen SC-128
+ * @implements REQ-SPT-07
+ * @usecase UC-SPT-07 (Manage Teams)
+ * @requires SRS-I-075 (Teams API - GET /admin/teams/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-073 Monitor administrative depth into team profiles and roster management modules
+ */
 'use client';
 
 import Link from 'next/link';

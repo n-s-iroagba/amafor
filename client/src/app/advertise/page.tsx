@@ -9,12 +9,16 @@ import { adZones } from '@/features/advertisement/data'
 
 
 /**
- * Page: Advertising Landing Page
- * Description: Information page for potential advertisers showcasing ad zones and pricing.
- * Requirements: REQ-ADV-01 (Advertiser Reference)
- * User Story: US-ADV-001 (View Advertising Options)
- * User Journey: UJ-ADV-001 (Registration)
- * API: None (Static Content)
+ * Advertising Landing Page
+ * 
+ * Public informational page for potential advertisers showcasing ad zones, 
+ * metrics, and registration call-to-actions.
+ * 
+ * @screen SC-004
+ * @implements REQ-ADV-01, REQ-ADV-10
+ * @usecase UC-ADV-01 (Become an Advertiser)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-008 Monitor advertising zone interest and registration conversion
  */
 export default function AdvertiseInfo() {
   return (

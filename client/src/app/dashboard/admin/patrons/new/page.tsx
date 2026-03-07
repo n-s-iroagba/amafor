@@ -1,3 +1,15 @@
+/**
+ * Create New Patron
+ * 
+ * Intake interface for registering new financial supporters and configuring contribution terms.
+ * 
+ * @screen SC-136
+ * @implements REQ-PAT-01
+ * @usecase UC-PAT-01 (Manage Patrons)
+ * @requires SRS-I-112 (Patrons API - POST /admin/patrons)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-112 Track patron registration success and contribution configuration accuracy
+ */
 'use client';
 
 import { useState } from 'react';

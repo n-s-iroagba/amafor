@@ -10,13 +10,17 @@ import { API_ROUTES } from '@/config/routes';
 
 
 /**
- * Page: Trialist Application
- * Description: Public form for aspiring players to apply for academy trials.
- * Requirements: REQ-ACA-02 (Trial Application)
- * User Story: US-ACA-002 (Apply for Trial)
- * User Journey: UJ-ACA-002 (Application Submission)
- * API: POST /trialists (API_ROUTES.TRIALISTS.CREATE)
- * Hook: usePost(API_ROUTES.TRIALISTS.CREATE)
+ * Trialist Application
+ * 
+ * Multi-step public form for prospective academy players. Collects bio-data, 
+ * position, guardian consent, and medical declarations.
+ * 
+ * @screen SC-003
+ * @implements REQ-ACA-02, REQ-ACA-03, REQ-ACA-04, NFR-COM-02
+ * @usecase UC-TRI-01 (Apply for Academy)
+ * @requires SRS-I-010 (Trialist API - POST /trialists)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-006 Track application completion rate and drop-off points
  */
 export default function TrialistApplication() {
     const [formData, setFormData] = useState({

@@ -1,3 +1,15 @@
+/**
+ * Edit Fixture Media
+ * 
+ * Interface for modifying match photography metadata, alt text, and visibility settings.
+ * 
+ * @screen SC-056
+ * @implements REQ-SPT-04
+ * @usecase UC-SPT-04 (Manage Match Media)
+ * @requires SRS-I-065 (Images API - PUT /admin/leagues/:id/fixtures/:fixtureId/images/:imageId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-063 Monitor media asset modifications and update success rates
+ */
 "use client";
 
 import { useState, useEffect } from "react";

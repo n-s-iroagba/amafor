@@ -6,12 +6,10 @@ import {
   Mail,
   CheckCircle,
   RefreshCw,
-  Lock,
   AlertCircle,
   Loader2,
   ArrowRight,
   Shield,
-  UserCheck
 } from 'lucide-react';
 import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
@@ -21,13 +19,16 @@ import { useAuthContext } from '@/shared/hooks/useAuthContext';
 
 
 /**
- * Page: Verify Email Page
- * Description: Verifies user email address using a token/code.
- * Requirements: REQ-AUTH-01 (Email Verification)
- * User Story: US-AUTH-001 (Sign Up Verification)
- * User Journey: UJ-AUTH-001 (User Registration)
- * API: POST /auth/verify-email, POST /auth/resend-verification-code
- * Hook: usePost(API_ROUTES.AUTH.VERIFY_EMAIL), usePost(API_ROUTES.AUTH.RESEND_VERIFICATION_CODE)
+ * Verify Email Page
+ * 
+ * Secure form for validating user email addresses via 6-digit OTP code.
+ * 
+ * @screen SC-009
+ * @implements REQ-AUTH-01
+ * @usecase UC-FAN-08, UC-TRI-03, UC-ADV-03, UC-ACA-01, UC-SCT-01
+ * @requires SRS-I-008 (Auth API - POST /auth/verify-email), SRS-I-009 (Auth API - POST /auth/resend-verification-code)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-001 Track verification success rate and resend frequency
  */
 const VerifyEmail = () => {
   const params = useParams();
@@ -57,7 +58,9 @@ const VerifyEmail = () => {
         const accessToken = data.accessToken;
 
         setUser(user);
-        setAccessToken(accessToken)
+        import("@/shared/lib/axios").then(({ setAccessToken }) => {
+          setAccessToken(accessToken);
+        });
         setVerifySuccess(true);
 
 

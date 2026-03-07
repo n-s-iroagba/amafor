@@ -1,3 +1,15 @@
+/**
+ * Dispute Detail Management
+ * 
+ * Interface for reviewing dispute evidence, communication logs, and issuing administrative resolutions.
+ * 
+ * @screen SC-039
+ * @implements REQ-ADM-07
+ * @usecase UC-ADM-07 (Manage Disputes)
+ * @requires SRS-I-081 (Disputes API - GET /admin/disputes/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-080 Monitor administrative review depth of disputes and resolution outcomes
+ */
 'use client';
 import React, { useState } from 'react';
 import { ShieldAlert, ArrowLeft, CheckCircle, Clock, ShieldCheck, MessageSquare, AlertCircle, Loader2 } from 'lucide-react';

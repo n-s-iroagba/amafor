@@ -4,12 +4,16 @@ import Link from 'next/link';
 
 
 /**
- * Page: Privacy Policy
- * Description: Legal privacy policy outlining data collection and usage.
- * Requirements: REQ-UTL-02 (Legal Pages)
- * User Story: US-UTL-002 (View Privacy Policy)
- * User Journey: UJ-UTL-003 (Legal Review)
- * API: None (Static)
+ * Privacy Policy
+ * 
+ * Comprehensive legal disclosure of data collection, storage, and processing protocols.
+ * 
+ * @screen SC-119
+ * @implements REQ-UTL-02
+ * @usecase UC-UTL-02 (View Legal Pages)
+ * @requires None (Static Content)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-020 Track legal page readability and scroll engagement
  */
 export default function PrivacyPage() {
   return (

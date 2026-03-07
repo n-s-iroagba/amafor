@@ -1,3 +1,15 @@
+/**
+ * Match Report Registry
+ * 
+ * Administrative list of all post-match summaries, editorial reports, and technical analyses for a fixture.
+ * 
+ * @screen SC-057
+ * @implements REQ-SPT-05
+ * @usecase UC-SPT-05 (Manage Match Reports)
+ * @requires SRS-I-066 (Summaries API - GET /admin/leagues/:id/fixtures/:fixtureId/summary)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-064 Track report generation frequency and editorial coverage status
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

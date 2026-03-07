@@ -36,13 +36,16 @@ type RSSResponse = {
 
 
 /**
- * Page: Featured News
- * Description: Curated list of high-priority news items and external RSS feeds.
- * Requirements: REQ-PUB-04 (News Feed), REQ-INT-01 (RSS Integration)
- * User Story: US-PUB-005 (View Featured News)
- * User Journey: UJ-PUB-002 (Browse News)
- * API: GET /featured-news (API_ROUTES.FEATURED_NEWS.LIST)
- * Hook: useGet(API_ROUTES.FEATURED_NEWS.LIST)
+ * Featured News
+ * 
+ * Curated list of high-priority news items and external RSS feeds.
+ * 
+ * @screen SC-012
+ * @implements REQ-PUB-04, REQ-INT-01
+ * @usecase UC-PUB-05 (View Featured News)
+ * @requires SRS-I-010 (News API - GET /featured-news)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-005 Monitor news engagement and RSS feed health
  */
 const FeaturedNews = () => {
   const [page, setPage] = useState(1);

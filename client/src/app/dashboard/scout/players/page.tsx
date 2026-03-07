@@ -1,4 +1,16 @@
 
+/**
+ * Scout Talent Registry
+ * 
+ * Specialized directory for scouts to manage their monitored players, evaluation status, and scouting notes.
+ * 
+ * @screen SC-150
+ * @implements REQ-SCO-04
+ * @usecase UC-SCO-04 (Manage Scouting Talent)
+ * @requires SRS-I-125 (Scout API - GET /scout/players)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-125 Monitor talent pool scale and scout-to-player engagement ratios
+ */
 'use client';
 import React, { useState } from 'react';
 import { Search, Filter, Download, ArrowLeft, Shield, UserCheck } from 'lucide-react';

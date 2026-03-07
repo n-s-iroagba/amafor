@@ -1,4 +1,16 @@
 // app/league-stats/[id]/edit/page.tsx
+/**
+ * Edit League Statistics
+ * 
+ * Interface for correcting performance metrics, player stats, and league-wide leaderboards.
+ * 
+ * @screen SC-063
+ * @implements REQ-SPT-06
+ * @usecase UC-SPT-06 (Manage League Stats)
+ * @requires SRS-I-072 (League Stats API - PUT /admin/leagues/:id/league-statistics/:statsId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-070 Monitor statistical revision volume and data update latency
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

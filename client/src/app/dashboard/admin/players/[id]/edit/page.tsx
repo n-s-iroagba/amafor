@@ -1,4 +1,16 @@
 // app/players/[id]/edit/page.tsx
+/**
+ * Edit Player Profile
+ * 
+ * Interface for modifying player biographical data, professional standing, and academy progression.
+ * 
+ * @screen SC-072
+ * @implements REQ-ADM-04
+ * @usecase UC-ADM-04 (Manage Players)
+ * @requires SRS-I-037 (Players API - PUT /admin/players/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-035 Track player record modifications and biometric data updates
+ */
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

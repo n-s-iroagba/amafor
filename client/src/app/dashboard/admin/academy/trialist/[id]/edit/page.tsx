@@ -1,3 +1,15 @@
+/**
+ * Edit Trialist Record
+ * 
+ * Interface for updating trialist information, evaluation scores, and admission status.
+ * 
+ * @screen SC-020
+ * @implements REQ-ADM-03
+ * @usecase UC-ADM-03 (Manage Trialists)
+ * @requires SRS-I-033 (Trialist API - PUT /admin/academy/trialists/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-031 Track trialist status updates and modification audit trail
+ */
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";

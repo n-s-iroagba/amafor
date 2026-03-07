@@ -1,4 +1,16 @@
 // app/sports-admin/leagues/[id]/page.tsx
+/**
+ * League Detail Overview
+ *
+ * Central hub for a specific league, providing access to fixtures, standings, and administrative controls.
+ *
+ * @screen SC-043
+ * @implements REQ-SPT-01
+ * @usecase UC-SPT-01 (Manage Leagues)
+ * @requires SRS-I-052 (Leagues API - GET /admin/leagues/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-050 Monitor administrative depth into league specific modules and participant engagement
+ */
 "use client";
 
 import { useState } from "react";

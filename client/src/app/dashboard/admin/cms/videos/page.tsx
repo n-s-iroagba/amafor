@@ -1,4 +1,16 @@
 // app/videos/page.tsx
+/**
+ * Admin Video List
+ * 
+ * Multimedia management console for organizing club videos, match highlights, and academy training content.
+ * 
+ * @screen SC-030
+ * @implements REQ-CMS-02
+ * @usecase UC-CMS-02 (Manage Videos)
+ * @requires SRS-I-046 (Videos API - GET /admin/videos)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-044 Track video library growth and categorization trends
+ */
 "use client";
 
 import { useState, useEffect } from "react";

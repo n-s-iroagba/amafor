@@ -1,3 +1,15 @@
+/**
+ * Edit Goal Event
+ * 
+ * Interface for correcting goal data, scorer attribution, or assist information.
+ * 
+ * @screen SC-053
+ * @implements REQ-SPT-03
+ * @usecase UC-SPT-03 (Manage Match Events)
+ * @requires SRS-I-062 (Goals API - PUT /admin/leagues/:id/fixtures/:fixtureId/goals/:goalId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-060 Monitor match event modifications and update success rates
+ */
 'use client';
 
 import { useState, useEffect } from 'react';

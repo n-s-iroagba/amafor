@@ -1,3 +1,15 @@
+/**
+ * Admin Advertiser Management
+ * 
+ * Registry of all commercial partners and advertisers, enabling administrative oversite of account status and verification.
+ * 
+ * @screen SC-021
+ * @implements REQ-ADM-06
+ * @usecase UC-ADM-06 (Manage Advertisers)
+ * @requires SRS-I-078 (Advertisers API - GET /admin/advertisers)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-077 Monitor advertiser directory engagement and onboarding status frequency
+ */
 'use client';
 import React from 'react';
 import { Briefcase, ArrowLeft, ExternalLink, ShieldAlert, BadgeCheck, ChevronRight, Loader2 } from 'lucide-react';

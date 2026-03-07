@@ -1,4 +1,16 @@
 // app/goals/[id]/page.tsx
+/**
+ * Goal Event Detail
+ * 
+ * Comprehensive view of a specific goal event, including participating players and match timestamp.
+ * 
+ * @screen SC-052
+ * @implements REQ-SPT-03
+ * @usecase UC-SPT-03 (Manage Match Events)
+ * @requires SRS-I-061 (Goals API - GET /admin/leagues/:id/fixtures/:fixtureId/goals/:goalId)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-059 Track administrative review of match events and attribution corrections
+ */
 'use client';
 
 import { useState } from 'react';

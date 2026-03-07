@@ -1,3 +1,15 @@
+/**
+ * Edit Academy Staff
+ * 
+ * Interface for modifying existing staff member profiles, credentials, and academy assignments.
+ * 
+ * @screen SC-016
+ * @implements REQ-ADM-02
+ * @usecase UC-ADM-02 (Manage Academy Staff)
+ * @requires SRS-I-029 (Staff API - PUT /admin/academy/staff/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-027 Track staff data modifications and update success rates
+ */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -382,8 +394,8 @@ export default function EditStaff() {
               <div
                 onClick={() => imageInputRef.current?.click()}
                 className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${imageFile || formData.imageUrl
-                    ? "border-green-300 bg-green-50"
-                    : "border-indigo-300 bg-indigo-50 hover:border-indigo-400"
+                  ? "border-green-300 bg-green-50"
+                  : "border-indigo-300 bg-indigo-50 hover:border-indigo-400"
                   }`}
               >
                 <input

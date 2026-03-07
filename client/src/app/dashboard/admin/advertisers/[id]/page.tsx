@@ -1,3 +1,15 @@
+/**
+ * Admin Advertiser Detail
+ * 
+ * Comprehensive view of an advertiser's account, including campaign history, financial standing, and verification docs.
+ * 
+ * @screen SC-022
+ * @implements REQ-ADM-06
+ * @usecase UC-ADM-06 (Manage Advertisers)
+ * @requires SRS-I-079 (Advertisers API - GET /admin/advertisers/:id)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-078 Track administrative review depth of advertiser profiles and document verification
+ */
 'use client';
 import React, { useState } from 'react';
 import { ArrowLeft, XCircle, ShieldAlert, Briefcase, ExternalLink, BadgeCheck, FileText, Globe, Loader2 } from 'lucide-react';

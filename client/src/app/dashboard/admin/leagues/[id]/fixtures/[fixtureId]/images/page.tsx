@@ -1,3 +1,15 @@
+/**
+ * Fixture Media Gallery
+ * 
+ * Management console for match-specific images, photography, and visual assets.
+ * 
+ * @screen SC-054
+ * @implements REQ-SPT-04
+ * @usecase UC-SPT-04 (Manage Match Media)
+ * @requires SRS-I-063 (Images API - GET /admin/leagues/:id/fixtures/:fixtureId/images)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-061 Track media library growth and asset categorization trends
+ */
 'use client';
 
 import { useState } from 'react';

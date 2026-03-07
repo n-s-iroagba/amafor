@@ -1,4 +1,16 @@
 // app/leagues/new/page.tsx
+/**
+ * Create New League
+ * 
+ * Configuration interface for defining new competitive leagues, including rules, participant types, and season bounds.
+ * 
+ * @screen SC-042
+ * @implements REQ-SPT-01
+ * @usecase UC-SPT-01 (Manage Leagues)
+ * @requires SRS-I-051 (Leagues API - POST /admin/leagues)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-049 Track league creation success and configuration accuracy
+ */
 'use client';
 
 import { useState } from 'react';

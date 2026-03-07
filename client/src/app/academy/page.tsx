@@ -10,13 +10,17 @@ import { API_ROUTES } from "@/config/routes";
 import { PaginatedData } from "@/shared/types/common";
 
 /**
- * Page: Academy Hub
- * Description: Public landing page for the youth academy, showcasing philosophy, curriculum, and staff.
- * Requirements: REQ-ACA-01 (Academy Information)
- * User Story: US-ACA-001 (View Academy Info)
- * User Journey: UJ-ACA-001 (Academy Discovery)
- * API: GET /api/academy/staff (API_ROUTES.ACADEMY.STAFF.LIST)
- * Hook: useGet(API_ROUTES.ACADEMY.STAFF.LIST)
+ * Academy Hub
+ * 
+ * Public landing page for the youth academy, showcasing philosophy, 
+ * curriculum, eligibility, and professional staff profiles.
+ * 
+ * @screen SC-002
+ * @implements REQ-ACA-01, REQ-ACS-01
+ * @usecase UC-TRI-03 (Academy Information), UC-ACA-06 (Manage Coaches)
+ * @requires SRS-I-001 (Academy Staff API - GET /academy/staff)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-005 Track academy info engagement and application intent
  */
 import { useSearchParams } from "next/navigation";
 

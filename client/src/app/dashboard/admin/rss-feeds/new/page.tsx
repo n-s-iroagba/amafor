@@ -1,3 +1,15 @@
+/**
+ * Register New RSS Feed
+ * 
+ * Interface for adding new external content sources for platform syndication.
+ * 
+ * @screen SC-073C
+ * @implements REQ-SYS-07
+ * @usecase UC-SYS-07 (Manage RSS Feeds)
+ * @requires SRS-I-107 (RSS API - POST /admin/rss-feeds)
+ * @performance NFR-PERF-01
+ * @observability SRS-OBS-107 Track feed registration success and initial synchronization metrics
+ */
 'use client';
 
 import { useState } from 'react';
