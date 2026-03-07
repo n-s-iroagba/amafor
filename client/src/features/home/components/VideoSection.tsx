@@ -54,7 +54,7 @@ const VideoSection = () => {
               Exclusive Content
             </span>
           </h2>
-          <p className="text-xl text-black/70 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-xl text-black max-w-2xl mx-auto font-light leading-relaxed">
             Immerse yourself in premium behind-the-scenes footage and exclusive
             interviews
           </p>
