@@ -17,15 +17,6 @@ import Link from 'next/link';
 import { ArrowLeft, Settings, Globe, Image as ImageIcon, Mail, Save, Loader2, CheckCircle, AlertCircle, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: System Settings (Admin)
- * Screen ID: SC-133
- * Description: Global system configuration — site name, logos, contact info, feature flags.
- * BRD Requirements: N/A (internal ops)
- * User Journey: UJ-ADM-009 (System Administration)
- * Route: /dashboard/admin/settings
- */
-
 interface SiteConfig {
     siteName: string;
     tagline: string;

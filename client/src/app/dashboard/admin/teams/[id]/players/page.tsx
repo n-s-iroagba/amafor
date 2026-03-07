@@ -18,15 +18,6 @@ import { useParams } from 'next/navigation';
 import { ArrowLeft, Users, Star, X, Plus, Search, Loader2, AlertCircle, ArrowRightLeft } from 'lucide-react';
 import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Team Players (Admin)
- * Screen ID: SC-130
- * Description: Manage player assignment within a team — add, transfer, remove, assign captain.
- * BRD Requirements: BR-TM-02, BR-TM-03, BR-TM-04, BR-TM-07
- * User Journey: UJ-ADM-013 (Manage Teams)
- * Route: /dashboard/admin/teams/[id]/players
- */
-
 interface Player { id: string; name: string; position: string; squadNumber: number; teamId?: string; teamName?: string; isCaptain?: boolean; }
 interface Team { id: string; name: string; players: Player[]; }
 

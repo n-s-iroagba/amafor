@@ -29,11 +29,6 @@ interface Dispute {
     createdAt: string;
 }
 
-/**
- * Page: Admin Disputes List
- * Description: List of all disputes for admin review.
- * API: GET /disputes/admin/all (API_ROUTES.ADMIN.DISPUTES.LIST)
- */
 export default function AdminDisputesPage() {
     const [filter, setFilter] = useState('all');
     const [search, setSearch] = useState('');

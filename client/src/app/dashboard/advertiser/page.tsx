@@ -31,18 +31,6 @@ interface Dispute {
   date: string;
 }
 
-
-
-
-/**
- * Page: Advertiser Dashboard Overview
- * Description: Main dashboard for advertisers showing key metrics, recent campaigns, and active disputes.
- * Requirements: REQ-ADV-05 (Performance Summary), REQ-ADV-03 (Active Campaigns Status)
- * User Story: US-ADV-006 (Track Performance)
- * User Journey: UJ-ADV-002 (Campaign Management)
- * API: GET /ads/campaigns/active, GET /advertiser/disputes
- * Hook: useGet(API_ROUTES.ADVERTISER.CAMPAIGNS.LIST), useGet(API_ROUTES.ADVERTISER.DISPUTES.LIST)
- */
 export default function AdvertiserDashboard() {
   const router = useRouter();
   const { user, loading: authLoading } = useRoleGuard(['advertiser', 'commercial_manager'] as UserRole[]);

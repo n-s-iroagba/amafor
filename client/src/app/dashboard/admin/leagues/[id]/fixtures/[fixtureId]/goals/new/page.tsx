@@ -19,7 +19,6 @@ import { API_ROUTES } from '@/config/routes';
 import { Player } from '@/features/player/types';
 import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 
-
 interface Fixture {
   id: string;
   homeTeam: string;
@@ -41,15 +40,6 @@ interface GoalFormState {
   otherScorer: string;
 }
 
-
-/**
- * Page: New Goal
- * Description: Form to record a new goal in a fixture.
- * Requirements: REQ-ADM-10 (Goal Tracking)
- * User Story: US-ADM-013 (Record Goal)
- * User Journey: UJ-ADM-006 (Match Day Ops)
- * API: POST /goals (API_ROUTES.GOALS.CREATE)
- */
 export default function NewGoal() {
   const router = useRouter();
   const params = useParams();

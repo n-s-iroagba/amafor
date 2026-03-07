@@ -17,15 +17,6 @@ import Link from 'next/link';
 import { ArrowLeft, MessageSquare, MessageCircle, Mail, Smartphone, Send, Users, Loader2, CheckCircle, AlertCircle, ChevronDown } from 'lucide-react';
 import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Communications Hub
- * Screen ID: SC-132
- * Description: Send WhatsApp/SMS/Email messages to guardians and trialists from a unified hub.
- * BRD Requirements: BR-ADV-05, BR-ADV-06
- * User Journey: UJ-ADM-005 (Manage Academy)
- * Route: /dashboard/admin/academy/communications
- */
-
 interface Recipient { id: string; name: string; guardianName?: string; phone?: string; email?: string; }
 
 const CHANNELS = [

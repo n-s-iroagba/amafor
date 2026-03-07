@@ -17,7 +17,6 @@ import { useRouter } from 'next/navigation';
 import { ArrowRight, Star, Clock, TrendingUp, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { PaginatedData } from '@/shared/types';
@@ -28,18 +27,6 @@ import { Article } from '@/features/articles/types';
 import { formatDate } from '@/shared/utils';
 import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
-
-
-
-/**
- * Page: News List
- * Description: Displays paginated list of club news articles.
- * Requirements: REQ-PUB-03 (Articles)
- * User Story: US-PUB-003 (Browse News)
- * User Journey: UJ-PUB-002 (Browse News)
- * API: GET /articles/published (API_ROUTES.ARTICLES.PUBLISHED)
- * Hook: useGet(API_ROUTES.ARTICLES.PUBLISHED)
- */
 const ArticleList: React.FC = () => {
   const router = useRouter();
   const limit = 10;
@@ -53,7 +40,6 @@ const ArticleList: React.FC = () => {
 
   const articles = data?.data;
   const totalPages = data?.totalPages;
-
 
   const handleArticleClick = (id: number | string) => {
     router.push(`/news/${id}`);
@@ -254,7 +240,5 @@ const ArticleList: React.FC = () => {
     </>
   );
 };
-
-
 
 export default ArticleList;

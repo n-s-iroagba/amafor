@@ -35,14 +35,6 @@ import { API_ROUTES } from "@/config/routes";
 import { uploadFile } from "@/shared/utils";
 import Image from "next/image";
 
-/**
- * Page: Upload Video
- * Description: Form to upload new video content via URL.
- * Requirements: REQ-CMS-05 (Manage Videos)
- * User Story: US-CMS-005 (Manage Videos)
- * User Journey: UJ-CMS-002 (Manage Videos)
- * API: POST /videos (API_ROUTES.VIDEOS.CREATE)
- */
 export default function NewVideo() {
   const router = useRouter();
 

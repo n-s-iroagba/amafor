@@ -20,17 +20,6 @@ import { useParams } from 'next/navigation';
 import { API_ROUTES } from '@/config/routes';
 import Link from 'next/link';
 
-
-/**
- * Page: Scout Player Detail
- * Description: Full scouting profile for a verified player. Displays performance metrics,
- *              physical profile, and career stats. Allows generation of a branded PDF dossier
- *              that can be saved to the secure vault.
- * BRD Requirements: BR-TP-01 (verified player profiles), BR-TP-02 (Pro View access), BR-TP-03 (branded PDF dossier generation)
- * User Journey: UJ-SCT-001 (Scout Dashboard)
- * User Story: US-SCT-002 (Browse Player Database)
- * API: GET /players/:id (API_ROUTES.PLAYERS.VIEW)
- */
 export default function PlayerScoutProfile() {
   const { id } = useParams();
   const { data: player, loading } = useGet<any>(API_ROUTES.PLAYERS.VIEW(id as string));

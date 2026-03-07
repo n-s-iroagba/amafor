@@ -33,14 +33,6 @@ interface AdCreative {
     format: string; // e.g., "300x250"
 }
 
-/**
- * Page: Campaign Creatives
- * Description: Manage media assets for a specific campaign.
- * Requirements: REQ-ADV-08 (Creative Management)
- * User Story: US-ADV-008 (Manage Ad Creatives)
- * User Journey: UJ-ADV-002 (Manage Ad Campaigns)
- * API: GET /advertiser/campaigns/:id/creatives (API_ROUTES.ADVERTISER.CAMPAIGNS.CREATIVES)
- */
 export default function CreativesListPage() {
     const params = useParams();
     const campaignId = params.id as string;

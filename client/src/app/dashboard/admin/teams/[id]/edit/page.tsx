@@ -18,15 +18,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Shield, Upload, Loader2, AlertCircle, Trash2 } from 'lucide-react';
 import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Edit Team
- * Screen ID: SC-129
- * Description: Update team name, logo, description, and deactivation.
- * BRD Requirements: BR-TM-01, BR-TM-05, BR-TM-08
- * User Journey: UJ-ADM-013 (Manage Teams)
- * Route: /dashboard/admin/teams/[id]/edit
- */
-
 interface Team { id: string; name: string; logo?: string; description?: string; isActive: boolean; playerCount: number; }
 
 export default function EditTeamPage() {

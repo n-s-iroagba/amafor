@@ -32,14 +32,6 @@ interface AcademyStaff {
   yearsOfExperience?: number;
 }
 
-/**
- * Page: Edit Staff
- * Description: Form to update academy staff details and qualifications.
- * Requirements: REQ-ACA-02 (Staff Management)
- * User Story: US-ACA-003 (Update Staff)
- * User Journey: UJ-ACA-004 (Academy Admin)
- * API: PUT /academy/staff/:id (API_ROUTES.ACADEMY.STAFF.UPDATE)
- */
 export default function EditStaff() {
   const router = useRouter();
   const params = useParams();

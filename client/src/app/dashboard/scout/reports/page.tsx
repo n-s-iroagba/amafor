@@ -18,17 +18,6 @@ import { useDelete, useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { LoadingSpinner } from '@/shared/components/LoadingStates';
 
-
-/**
- * Page: Scout Reports Vault
- * Description: Archive of generated scout reports and player dossiers. Supports search,
- *              preview, download, and deletion of saved reports. Reports are retained 365 days.
- * BRD Requirements: BR-TP-03 (branded PDF summaries), BR-TP-13 (Scouting Reports as structured records)
- * User Journey: UJ-SCT-001 (Scout Dashboard)
- * User Story: US-SCT-004 (Manage Reports)
- * API: GET /scout/reports (API_ROUTES.SCOUT.REPORTS)
- * Hook: useGet(API_ROUTES.SCOUT.REPORTS)
- */
 export default function ScoutReportsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const { data: reportsData, loading, refetch } = useGet<any[]>(API_ROUTES.SCOUT.REPORTS);

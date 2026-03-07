@@ -54,14 +54,6 @@ interface ValidationErrors {
   general?: string;
 }
 
-/**
- * Page: Edit Article
- * Description: Interface for updating existing article content.
- * Requirements: REQ-CMS-03 (Edit Article)
- * User Story: US-CMS-003 (Edit Article)
- * User Journey: UJ-CMS-001 (Manage Articles)
- * API: PUT /articles/:id (API_ROUTES.ARTICLES.MUTATE)
- */
 export default function EditArticlePage() {
   const { id } = useParams();
   const router = useRouter();

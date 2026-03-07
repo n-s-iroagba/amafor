@@ -38,12 +38,6 @@ const ROLES: { value: UserRole; label: string; description: string }[] = [
   },
 ];
 
-/**
- * Page: Invite User
- * Description: Form to invite a new user by email. Creates an unverified account
- *              and sends a verification email — the invited user must verify before logging in.
- * API: POST /auth/invite
- */
 export default function InviteUserPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");

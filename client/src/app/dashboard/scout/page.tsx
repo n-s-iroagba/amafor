@@ -30,17 +30,6 @@ interface RecentView {
   imageUrl: string;
 }
 
-
-/**
- * Page: Scout Dashboard Overview
- * Description: Central hub for authenticated scouts. Shows pending-approval banner for unverified
- *              scouts, or quick-action cards and recently viewed players for approved scouts.
- * BRD Requirements: BR-TP-01, BR-TP-02, BR-TP-04, BR-TP-12, BR-TP-13, BR-TP-14
- * User Journey: UJ-SCT-001 (Scout Dashboard)
- * User Story: US-SCT-001 (Access Scout Portal)
- * API: GET /scout/recent-views (API_ROUTES.SCOUT.RECENT_VIEWS)
- * Hook: useGet(API_ROUTES.SCOUT.RECENT_VIEWS)
- */
 export default function ScoutDashboard() {
   const router = useRouter();
   const { user, loading: authLoading } = useRoleGuard(['scout'] as UserRole[]);

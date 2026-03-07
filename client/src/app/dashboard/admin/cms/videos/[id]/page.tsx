@@ -30,14 +30,6 @@ interface Video {
   updatedAt: string;
 }
 
-/**
- * Page: CMS Video Detail
- * Description: View video details and status.
- * Requirements: REQ-CMS-05 (Manage Videos)
- * User Story: US-CMS-005 (Manage Videos)
- * User Journey: UJ-CMS-002 (Manage Videos)
- * API: GET /videos/:id (API_ROUTES.VIDEOS.VIEW)
- */
 export default function VideoDetail() {
   const router = useRouter();
   const params = useParams();

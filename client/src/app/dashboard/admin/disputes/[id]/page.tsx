@@ -31,12 +31,6 @@ interface Dispute {
   createdAt: string;
 }
 
-/**
- * Page: Admin Dispute Detail
- * Description: View dispute details and resolve them.
- * API: GET /disputes/:id (Shared/Admin route)
- *      PUT /disputes/admin/:id/resolve (API_ROUTES.ADMIN.DISPUTES.RESOLVE)
- */
 export default function AdminDisputeDetailPage() {
   const params = useParams();
   const router = useRouter();

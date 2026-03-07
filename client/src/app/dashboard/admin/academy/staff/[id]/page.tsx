@@ -43,15 +43,6 @@ import { AcademyStaff } from "@/features/academy/types";
 import { API_ROUTES } from "@/config/routes";
 import { DeletionConfirmationModal } from "@/shared/components/DeleteModal";
 
-/**
- * Page: Staff Details
- * Description: Detailed view of academy staff profile, credentials, and experience.
- * Requirements: REQ-ACA-02 (Staff Management)
- * User Story: US-ACA-002 (View Staff Profile)
- * User Journey: UJ-ACA-004 (Academy Admin)
- * API: GET /academy/staff/:id (API_ROUTES.STAFF.VIEW)
- * Hook: useGet(API_ROUTES.STAFF.VIEW)
- */
 export default function StaffDetailsPage() {
   const params = useParams();
   const router = useRouter();

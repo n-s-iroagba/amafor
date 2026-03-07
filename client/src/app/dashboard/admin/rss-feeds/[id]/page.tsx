@@ -35,7 +35,6 @@ import { RssFeedSourceCategory } from '@/shared/types';
 import { API_ROUTES } from '@/config/routes';
 import { useDelete, useGet } from '@/shared/hooks/useApiQuery';
 
-
 // Updated interface matching your Sequelize model exactly
 interface RssFeedSource {
   id: number;
@@ -46,15 +45,6 @@ interface RssFeedSource {
   updatedAt: Date;
 }
 
-
-/**
- * Page: RSS Feed Detail
- * Description: View details of a specific RSS feed source.
- * Requirements: REQ-ADM-17 (Feed Management)
- * User Story: US-ADM-017 (Manage RSS Feeds)
- * User Journey: UJ-ADM-008 (Manage RSS Feeds)
- * API: GET /feeds/:id (API_ROUTES.FEEDS.VIEW)
- */
 export default function FeedDetailPage() {
   const router = useRouter();
   const params = useParams();

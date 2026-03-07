@@ -21,8 +21,6 @@ import { API_ROUTES } from '@/config/routes';
 import Image from 'next/image';
 import { uploadFile } from '@/shared/utils';
 
-
-
 interface Coach {
   id: number;
   name: string;
@@ -31,15 +29,6 @@ interface Coach {
   bio?: string;
 }
 
-
-/**
- * Page: Edit Coach
- * Description: Admin form to modify coach profile details.
- * Requirements: REQ-ADM-09 (Staff Management)
- * User Story: US-ADM-011 (Update Coach)
- * User Journey: UJ-ADM-006 (Team Management)
- * API: PUT /coaches/:id (API_ROUTES.COACHES.MUTATE)
- */
 export default function EditCoach() {
   const router = useRouter();
   const params = useParams();

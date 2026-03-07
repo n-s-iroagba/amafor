@@ -18,15 +18,6 @@ import { ArrowLeft, Shield, Plus, Users, ChevronRight, Search, Loader2, AlertCir
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
-/**
- * Page: Team List & Management (Admin)
- * Screen ID: SC-126
- * Description: Lists all teams with player count and links to team management.
- * BRD Requirements: BR-TM-01, BR-TM-05
- * User Journey: UJ-ADM-013 (Manage Teams)
- * Route: /dashboard/admin/teams
- */
-
 interface Team {
     id: string;
     name: string;

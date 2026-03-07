@@ -35,14 +35,6 @@ interface PaginatedData<T> {
   pagination: any;
 }
 
-/**
- * Page: Video Management
- * Description: List and manage uploaded video content.
- * Requirements: REQ-CMS-05 (Manage Videos)
- * User Story: US-CMS-005 (Manage Videos)
- * User Journey: UJ-CMS-002 (Manage Videos)
- * API: GET /videos (API_ROUTES.VIDEOS.LIST)
- */
 export default function VideoLibrary() {
   const router = useRouter();
 

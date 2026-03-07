@@ -19,15 +19,6 @@ import { API_ROUTES } from '@/config/routes';
 import { Player } from '@/features/player/types';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Player Detail
- * Description: Comprehensive player information including bio-data, performance metrics, and professional status.
- * Requirements: REQ-PUB-05 (Player Profiles), REQ-SCT-02 (Player Stats)
- * User Story: US-PUB-006 (View Player Stats)
- * User Journey: UJ-PUB-003 (Team Exploration)
- * API: GET /players/:id (API_ROUTES.PLAYERS.VIEW)
- * Hook: useGet(API_ROUTES.PLAYERS.VIEW)
- */
 const PlayerPage: React.FC = () => {
   const params = useParams();
   const { id } = params;

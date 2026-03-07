@@ -19,19 +19,8 @@ import { useParams } from 'next/navigation';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
-
 // Changed params to optional to resolve TS error in index.tsx
 
-/**
- * Page: Scout Match Analysis
- * Description: Stream-only match viewing for scouting purposes. Scouts can log timestamped
- *              events and add tactical notes. No downloads or offline storage (BR-TP-14).
- *              Matches are available for streaming within 30 minutes of final whistle (BR-TP-05).
- * BRD Requirements: BR-TP-02 (Pro View portal), BR-TP-05 (30-min archive SLA), BR-TP-12 (match-level scouting), BR-TP-14 (stream-only)
- * User Journey: UJ-SCT-001 (Scout Dashboard)
- * User Story: US-SCT-003 (Watch Match Replays)
- * API: GET /videos/:id (API_ROUTES.VIDEOS.VIEW)
- */
 export default function MatchAnalysisPage({ params }: { params?: { id: string } }) {
   const urlParams = useParams();
   const matchId = params?.id || (urlParams.id as string);

@@ -28,15 +28,6 @@ interface FixtureImage {
     createdAt?: string;
 }
 
-
-/**
- * Page: Fixture Gallery Management
- * Description: Manage photos associated with a specific fixture.
- * Requirements: REQ-ADM-08 (Fixture Images)
- * User Story: US-ADM-008 (Manage Fixture Images)
- * User Journey: UJ-ADM-002 (Manage Fixtures)
- * API: GET /fixtures/gallery (API_ROUTES.FIXTURES.GALLERY)
- */
 export default function ImageGalleryPage() {
     const params = useParams();
     const fixtureId = params.fixtureId as string;

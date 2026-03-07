@@ -17,15 +17,6 @@ import Link from 'next/link';
 import { ArrowLeft, Database, Save, Loader2, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Data Retention Settings
- * Screen ID: SC-134
- * Description: Configure data retention periods per data category.
- * BRD Requirements: BR-DSR-01, BR-AD-12
- * User Journey: UJ-ADM-009 (System Administration)
- * Route: /dashboard/admin/settings/retention
- */
-
 interface RetentionPolicy {
     userRecordsDays: number;
     auditLogDays: number;

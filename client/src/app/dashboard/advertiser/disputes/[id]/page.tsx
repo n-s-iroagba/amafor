@@ -32,11 +32,6 @@ interface Dispute {
     updatedAt: string;
 }
 
-/**
- * Page: Advertiser Dispute Detail
- * Description: View dispute status and admin response.
- * API: GET /disputes/:id (API_ROUTES.ADVERTISER.DISPUTES.VIEW)
- */
 export default function AdvertiserDisputeDetailPage() {
     const params = useParams();
     const disputeId = params.id as string;

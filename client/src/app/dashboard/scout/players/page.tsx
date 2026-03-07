@@ -18,16 +18,6 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
-
-/**
- * Page: Scout Player Database
- * Description: Searchable, filterable database of all players for scouting purposes.
- *              Supports position-based filtering and CSV export of the roster.
- * BRD Requirements: BR-TP-01 (verified player profiles), BR-TP-02 (Pro View access), BR-TP-03 (PDF dossier entry)
- * User Journey: UJ-SCT-001 (Scout Dashboard)
- * User Story: US-SCT-002 (Browse Player Database)
- * API: GET /players (API_ROUTES.PLAYERS.LIST)
- */
 export default function PlayerScoutingPage() {
   const [filter, setFilter] = useState('ALL');
 

@@ -46,14 +46,6 @@ interface Video {
   updatedAt: Date;
 }
 
-/**
- * Page: Edit Video
- * Description: Form to update video metadata.
- * Requirements: REQ-CMS-05 (Manage Videos)
- * User Story: US-CMS-005 (Manage Videos)
- * User Journey: UJ-CMS-002 (Manage Videos)
- * API: PUT /videos/:id (API_ROUTES.VIDEOS.MUTATE)
- */
 export default function EditVideo() {
   const router = useRouter();
   const params = useParams();

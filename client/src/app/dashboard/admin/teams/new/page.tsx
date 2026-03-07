@@ -18,14 +18,6 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Shield, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { usePost } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: New Team
- * Screen ID: SC-127
- * Description: Form to create a new team with name, logo, and description.
- * BRD Requirements: BR-TM-01, BR-TM-08
- * User Journey: UJ-ADM-013 (Manage Teams)
- * Route: /dashboard/admin/teams/new
- */
 export default function NewTeamPage() {
     const router = useRouter();
     const [name, setName] = useState('');

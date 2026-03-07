@@ -38,14 +38,6 @@ interface Trialist {
   notes?: string;
 }
 
-/**
- * Page: Edit Trialist
- * Description: Form to update trialist info, status, and attached media.
- * Requirements: REQ-ACA-01 (Trialist Management)
- * User Story: US-ACA-006 (Update Trialist)
- * User Journey: UJ-ACA-001 (Recruitment)
- * API: PUT /academy/trialists/:id (API_ROUTES.TRIALISTS.UPDATE)
- */
 export default function EditTrialist() {
   const router = useRouter();
   const params = useParams();

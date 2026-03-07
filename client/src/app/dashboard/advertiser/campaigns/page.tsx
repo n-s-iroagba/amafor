@@ -18,16 +18,6 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { AdCampaign } from '@/features/advertisement/types';
 
-
-/**
- * Page: Campaign List
- * Description: List of all advertising campaigns with status filters and search.
- * Requirements: REQ-ADV-03 (View Active & History)
- * User Story: US-ADV-004 (Manage Campaigns)
- * User Journey: UJ-ADV-002 (Campaign Management)
- * API: GET /advertiser/campaigns (API_ROUTES.ADVERTISER.CAMPAIGNS.LIST)
- * Hook: useGet(API_ROUTES.ADVERTISER.CAMPAIGNS.LIST)
- */
 export default function CampaignsPage() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');

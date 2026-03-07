@@ -17,15 +17,6 @@ import { useParams } from 'next/navigation';
 import { ArrowLeft, Shield, Users, Star, Edit, Loader2, AlertCircle, ChevronRight } from 'lucide-react';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Team Detail (Admin)
- * Screen ID: SC-128
- * Description: Team profile with assigned players, captain, and history tabs.
- * BRD Requirements: BR-TM-02, BR-TM-03, BR-TM-07, BR-TM-09
- * User Journey: UJ-ADM-013 (Manage Teams)
- * Route: /dashboard/admin/teams/[id]
- */
-
 interface Player { id: string; name: string; position: string; squadNumber: number; imageUrl?: string; isCaptain?: boolean; }
 interface TeamDetail { id: string; name: string; logo?: string; description?: string; isActive: boolean; players: Player[]; createdAt: string; }
 

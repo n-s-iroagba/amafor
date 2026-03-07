@@ -30,14 +30,6 @@ interface MatchImage {
   createdAt: string;
 }
 
-/**
- * Page: Edit Fixture Image
- * Description: Form to update image metadata (caption).
- * Requirements: REQ-ADM-08 (Fixture Images)
- * User Story: US-ADM-008 (Manage Fixture Images)
- * User Journey: UJ-ADM-002 (Manage Fixtures)
- * API: PUT /match-gallery/:id (API_ROUTES.MATCH_GALLERY.MUTATE)
- */
 export default function EditImagePage() {
   const router = useRouter();
   const params = useParams();

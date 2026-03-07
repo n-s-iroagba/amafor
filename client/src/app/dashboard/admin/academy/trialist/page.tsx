@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 import { API_ROUTES } from '@/config/routes';
 import { useGet, useDelete } from '@/shared/hooks/useApiQuery';
 
-
 interface Trialist {
   id: string;
   firstName: string;
@@ -44,16 +43,6 @@ interface TrialistResponse {
   data: Trialist[];
 }
 
-
-/**
- * Page: Trialist Management
- * Description: Review and manage applications from aspiring academy players.
- * Requirements: REQ-ADM-09 (Academy Applications)
- * User Story: US-ADM-009 (Review Applications)
- * User Journey: UJ-ADM-006 (Talent ID)
- * API: GET /trialists (API_ROUTES.TRIALISTS.LIST), DELETE /trialists
- * Hook: useGet(API_ROUTES.TRIALISTS.LIST), useDelete(API_ROUTES.TRIALISTS.LIST)
- */
 export default function TrialistsList() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');

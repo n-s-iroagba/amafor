@@ -20,15 +20,6 @@ import {
 } from 'lucide-react';
 import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 
-/**
- * Page: Academy Calendar
- * Screen ID: SC-131
- * Description: Training and match attendance calendar. Academy staff log attendance and schedule trial days.
- * BRD Requirements: BR-ADV-03, BR-ADV-04
- * User Journey: UJ-ADM-005 (Manage Academy)
- * Route: /dashboard/admin/academy/calendar
- */
-
 interface Session {
     id: string;
     date: string;

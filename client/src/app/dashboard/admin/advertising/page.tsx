@@ -21,15 +21,6 @@ import {
 import { useGet, usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
-/**
- * Page: Advertising Overview (Admin)
- * Screen ID: SC-125
- * Description: Ad zone management and per-view rate configuration for all ad zones.
- * BRD Requirements: BR-AD-11, BR-AD-17
- * User Journey: UJ-ADM-011 (Manage Advertisers)
- * Route: /dashboard/admin/advertising
- */
-
 interface AdZone {
     id: string;
     identifier: string;

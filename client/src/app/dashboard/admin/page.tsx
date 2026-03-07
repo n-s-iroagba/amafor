@@ -62,15 +62,6 @@ interface DashboardStats {
   timestamp: string;
 }
 
-/**
- * Page: Admin Dashboard Overview
- * Description: System-wide command center for administrators. Displays key metrics for revenue, security, and infrastructure.
- * Requirements: REQ-ADM-02 (Admin Dashboard), REQ-ADM-01 (RBAC Entry)
- * User Story: US-ADM-001 (Overview)
- * User Journey: UJ-ADM-001 (System Administration)
- * API: GET /analytics/dashboard (API_ROUTES.ANALYTICS.DASHBOARD)
- * Hook: useGet(API_ROUTES.ANALYTICS.DASHBOARD)
- */
 export default function AdminDashboard() {
   const pathname = usePathname();
   const router = useRouter();

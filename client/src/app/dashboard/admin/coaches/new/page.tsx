@@ -20,16 +20,6 @@ import { API_ROUTES } from '@/config/routes';
 import { uploadFile } from '@/shared/utils';
 import Image from 'next/image';
 
-
-
-/**
- * Page: New Coach
- * Description: Registration form for new coaching staff.
- * Requirements: REQ-ADM-09 (Staff Management)
- * User Story: US-ADM-012 (Register Coach)
- * User Journey: UJ-ADM-006 (Team Management)
- * API: POST /coaches (API_ROUTES.COACHES.CREATE)
- */
 export default function NewCoach() {
   const router = useRouter();
   const [name, setName] = useState('');
