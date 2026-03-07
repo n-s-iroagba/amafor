@@ -83,7 +83,7 @@ export default function LeagueDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-50 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="relative">
             <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
@@ -99,7 +99,7 @@ export default function LeagueDetail() {
 
   if (!league) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-50 flex items-center justify-center p-4">
         <div className="text-center max-w-md">
           <div className="relative inline-block mb-6">
             <AlertCircle className="w-16 h-16 text-red-400 relative z-10" />
@@ -135,7 +135,7 @@ export default function LeagueDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-50 py-6 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-8">
@@ -438,8 +438,8 @@ export default function LeagueDetail() {
                   </span>
                   <span
                     className={`text-xs font-semibold px-2 py-1 rounded-full ${league.isFriendly
-                        ? "bg-purple-100 text-purple-800"
-                        : "bg-green-100 text-green-800"
+                      ? "bg-purple-100 text-purple-800"
+                      : "bg-green-100 text-green-800"
                       }`}
                   >
                     {league.isFriendly ? "Friendly" : "Competitive"}

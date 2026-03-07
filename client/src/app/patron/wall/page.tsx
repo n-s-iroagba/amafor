@@ -62,7 +62,7 @@ export default function SupporterWall() {
       case 'Patron': return 'text-sky-600 bg-sky-50'
       case 'Supporter': return 'text-sky-500 bg-sky-50'
       case 'Advocate': return 'text-sky-600 bg-sky-50'
-      default: return 'text-slate-600 bg-slate-50'
+      default: return 'text-sky-600 bg-sky-50'
     }
   }
 
@@ -71,11 +71,11 @@ export default function SupporterWall() {
     return (
       <>
         <Header />
-        <main className="py-16 bg-slate-50 min-h-screen">
+        <main className="py-16 bg-sky-50 min-h-screen">
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center justify-center py-20">
-              <Loader2 className="w-12 h-12 text-slate-700 animate-spin mb-4" />
-              <p className="text-slate-600">Loading supporters...</p>
+              <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
+              <p className="text-sky-600">Loading supporters...</p>
             </div>
           </div>
         </main>
@@ -89,7 +89,7 @@ export default function SupporterWall() {
     return (
       <>
         <Header />
-        <main className="py-16 bg-slate-50 min-h-screen">
+        <main className="py-16 bg-sky-50 min-h-screen">
           <div className="container mx-auto px-4">
             <div className="bg-red-50 border border-red-200 rounded-xl p-8 max-w-4xl mx-auto text-center">
               <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
@@ -114,23 +114,23 @@ export default function SupporterWall() {
     return (
       <>
         <Header />
-        <main className="py-16 bg-slate-50 min-h-screen">
+        <main className="py-16 bg-sky-50 min-h-screen">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Heart className="w-12 h-12 text-sky-700" />
                 <h1 className="font-heading text-4xl md:text-5xl">Supporter Wall</h1>
               </div>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              <p className="text-xl text-sky-600 max-w-3xl mx-auto">
                 Thank you to all our amazing supporters who make Amafor Gladiators FC possible.
                 Your generosity helps us develop young talent and serve our community.
               </p>
             </div>
 
             <div className="bg-white rounded-lg shadow-card p-12 max-w-4xl mx-auto text-center">
-              <Heart className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-slate-700 mb-2">No supporters yet</h3>
-              <p className="text-slate-500 mb-6">
+              <Heart className="w-16 h-16 text-sky-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-sky-700 mb-2">No supporters yet</h3>
+              <p className="text-sky-500 mb-6">
                 Be the first to support Amafor Gladiators FC!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -160,14 +160,14 @@ export default function SupporterWall() {
     <>
       <Header />
 
-      <main className="py-16 bg-slate-50 min-h-screen">
+      <main className="py-16 bg-sky-50 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Heart className="w-12 h-12 text-sky-700" />
               <h1 className="font-heading text-4xl md:text-5xl">Supporter Wall</h1>
             </div>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+            <p className="text-xl text-sky-600 max-w-3xl mx-auto">
               Thank you to all our amazing supporters who make Amafor Gladiators FC possible.
               Your generosity helps us develop young talent and serve our community.
             </p>
@@ -179,26 +179,26 @@ export default function SupporterWall() {
               <div className="text-3xl font-bold text-sky-700 mb-1 font-heading">
                 {supporters.length}
               </div>
-              <div className="text-sm text-slate-600">Total Supporters</div>
+              <div className="text-sm text-sky-600">Total Supporters</div>
             </div>
             <div className="bg-white rounded-lg shadow-card p-6 text-center">
               <div className="text-3xl font-bold text-sky-700 mb-1 font-heading">
                 {supporters.filter(s => s.subscription.tier === PatronTier.SPONSOR_GRAND_PATRON).length}
               </div>
-              <div className="text-sm text-slate-600">Grand Patrons</div>
+              <div className="text-sm text-sky-600">Grand Patrons</div>
             </div>
             <div className="bg-white rounded-lg shadow-card p-6 text-center">
               <div className="text-3xl font-bold text-sky-700 mb-1 font-heading">
                 {supporters.filter(s => s.subscription.tier === PatronTier.PATRON).length}
               </div>
-              <div className="text-sm text-slate-600">Patrons</div>
+              <div className="text-sm text-sky-600">Patrons</div>
             </div>
 
             <div className="bg-white rounded-lg shadow-card p-6 text-center">
               <div className="text-3xl font-bold text-sky-500 mb-1 font-heading">
                 {supporters.filter(s => s.subscription.tier === PatronTier.SUPPORTER).length}
               </div>
-              <div className="text-sm text-slate-600">Supporters</div>
+              <div className="text-sm text-sky-600">Supporters</div>
             </div>
           </div>
 
@@ -220,7 +220,7 @@ export default function SupporterWall() {
                       {groupedSupporters[letter].map((supporter, index) => (
                         <div
                           key={`${letter}-${index}`}
-                          className="bg-slate-50 rounded-lg p-4 hover:shadow-md transition-shadow"
+                          className="bg-sky-50 rounded-lg p-4 hover:shadow-md transition-shadow"
                           data-testid="supporter-card"
                         >
                           <div className="flex items-start justify-between gap-3">
@@ -241,14 +241,14 @@ export default function SupporterWall() {
                 ))
             ) : (
               <div className="text-center py-8">
-                <p className="text-slate-500">No supporters to display.</p>
+                <p className="text-sky-500">No supporters to display.</p>
               </div>
             )}
           </div>
 
           {/* CTA */}
           <div className="text-center mt-12">
-            <p className="text-slate-600 mb-4">Want to see your name on the Supporter Wall?</p>
+            <p className="text-sky-600 mb-4">Want to see your name on the Supporter Wall?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/patron/checkout"

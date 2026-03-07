@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { syncDatabase, User } from './models';
 import FeaturedNewsService from '@services/FeaturedNewsService';
 import { runSeeders } from './scripts/seed';
+import { startSubscriptionCron } from './jobs/subscriptionCron';
 
 
 
@@ -69,6 +70,9 @@ const startServer = async () => {
     FeaturedNewsService.warmCache().catch(err => {
       console.error('Failed to warm up FeaturedNews cache:', err);
     });
+
+    // Start background jobs
+    startSubscriptionCron();
 
     // Start server
     server = app.listen(PORT, () => {

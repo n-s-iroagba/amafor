@@ -57,10 +57,10 @@ const VerifyEmail = () => {
         const accessToken = data.accessToken;
 
         setUser(user);
-        localStorage.setItem('accessToken', accessToken);
+        setAccessToken(accessToken)
         setVerifySuccess(true);
 
-        // Auto-redirect based on role
+
         setTimeout(() => {
           router.push('/dashboard')
         }, 3000);
@@ -236,10 +236,10 @@ const VerifyEmail = () => {
 
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 p-4">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-slate-400 animate-spin mx-auto mb-4" />
-          <p className="text-slate-600">Loading verification...</p>
+          <Loader2 className="w-12 h-12 text-sky-400 animate-spin mx-auto mb-4" />
+          <p className="text-sky-600">Loading verification...</p>
         </div>
       </div>
     );
@@ -247,8 +247,8 @@ const VerifyEmail = () => {
 
   if (verifySuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 p-4">
+        <div className="bg-white rounded-2xl shadow-lg border border-sky-200 relative max-w-md w-full p-8">
           {/* Success Icon */}
           <div className="flex justify-center mb-6">
             <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center">
@@ -256,14 +256,14 @@ const VerifyEmail = () => {
             </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+          <h1 className="text-2xl font-bold text-sky-900 mb-2 text-center">
             Email Verified Successfully!
           </h1>
-          <p className="text-slate-600 text-center mb-8">
+          <p className="text-sky-600 text-center mb-8">
             Your email has been verified. Redirecting to your dashboard...
           </p>
 
-          <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600 mb-6">
+          <div className="bg-sky-50 rounded-xl p-4 text-sm text-sky-600 mb-6">
             <ul className="space-y-2">
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -282,7 +282,7 @@ const VerifyEmail = () => {
 
           <button
             onClick={() => router.push('/')}
-            className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium"
+            className="w-full py-3 border border-sky-300 text-sky-700 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 font-medium"
           >
             <ArrowRight className="w-5 h-5 rotate-180" />
             Go to Home
@@ -293,19 +293,19 @@ const VerifyEmail = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg border border-sky-200 relative max-w-md w-full p-8">
         {/* Logo/Icon Header */}
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-sky-700 to-sky-900 rounded-full flex items-center justify-center">
             <Mail className="w-8 h-8 text-white" />
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+        <h1 className="text-2xl font-bold text-sky-900 mb-2 text-center">
           Verify Your Email
         </h1>
-        <p className="text-slate-600 text-center mb-8">
+        <p className="text-sky-600 text-center mb-8">
           Enter the 6-digit code sent to your email
         </p>
 
@@ -335,9 +335,9 @@ const VerifyEmail = () => {
                 onChange={(e) => handleChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 onFocus={(e) => e.target.select()}
-                className={`w-12 h-12 text-center text-lg font-semibold text-slate-800 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all ${digit
-                  ? 'border-slate-300 bg-white'
-                  : 'border-slate-200 bg-slate-50'
+                className={`w-12 h-12 text-center text-lg font-semibold text-sky-800 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-200 transition-all ${digit
+                  ? 'border-sky-300 bg-white'
+                  : 'border-sky-200 bg-sky-50'
                   } ${verifying ? 'opacity-50' : ''}`}
                 disabled={verifying}
                 data-testid={`verify-code-input-${index}`}
@@ -349,7 +349,7 @@ const VerifyEmail = () => {
           <button
             type="submit"
             disabled={verifying || code.join('').length !== 6}
-            className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+            className="w-full py-3 bg-gradient-to-r from-sky-700 to-sky-800 text-white rounded-xl hover:from-sky-800 hover:to-sky-900 disabled:from-sky-400 disabled:to-sky-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
             data-testid="verify-email-btn"
           >
             {verifying ? (
@@ -367,15 +367,15 @@ const VerifyEmail = () => {
         </form>
 
         {/* Resend Section */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
+        <div className="mt-8 pt-6 border-t border-sky-200">
           <div className="text-center">
-            <p className="text-slate-600 mb-3">
+            <p className="text-sky-600 mb-3">
               {canResend ? (
                 "Didn't receive a code?"
               ) : (
                 <>
                   Resend code in{' '}
-                  <span className="font-semibold text-slate-800">
+                  <span className="font-semibold text-sky-800">
                     {formatTime(timeLeft)}
                   </span>
                 </>
@@ -386,7 +386,7 @@ const VerifyEmail = () => {
               onClick={handleResendCode}
               disabled={!canResend || resending}
               className={`w-full py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${canResend && !resending
-                ? 'bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-800 shadow-sm hover:shadow'
+                ? 'bg-sky-100 text-sky-700 hover:bg-sky-200 hover:text-sky-800 shadow-sm hover:shadow'
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}
             >
@@ -406,8 +406,8 @@ const VerifyEmail = () => {
         </div>
 
         {/* Security Note */}
-        <div className="mt-8 pt-6 border-t border-slate-200">
-          <div className="flex items-center justify-center gap-2 text-sm text-slate-500">
+        <div className="mt-8 pt-6 border-t border-sky-200">
+          <div className="flex items-center justify-center gap-2 text-sm text-sky-500">
             <Shield className="w-4 h-4" />
             <span>Your information is secure and encrypted</span>
           </div>
@@ -417,7 +417,7 @@ const VerifyEmail = () => {
         <div className="mt-6">
           <button
             onClick={() => router.push('/login')}
-            className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+            className="w-full py-3 border border-sky-300 text-sky-700 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
           >
             <ArrowRight className="w-5 h-5 rotate-180" />
             Back to Login

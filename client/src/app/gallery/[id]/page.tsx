@@ -113,11 +113,11 @@ export default function FixtureGalleryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-slate-700 animate-spin mb-4" />
-            <p className="text-slate-600">Loading match gallery...</p>
+            <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
+            <p className="text-sky-600">Loading match gallery...</p>
           </div>
         </div>
       </div>
@@ -126,11 +126,11 @@ export default function FixtureGalleryPage() {
 
   if (error || !fixture) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-slate-700 hover:text-slate-900 mb-8"
+            className="flex items-center gap-2 text-sky-700 hover:text-sky-900 mb-8"
           >
             <ChevronLeft className="h-5 w-5" />
             Back to Gallery
@@ -159,13 +159,13 @@ export default function FixtureGalleryPage() {
   const selectedImage = images?.[selectedImageIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
       {/* Header with fixture info */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+      <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-slate-300 hover:text-white mb-6 transition-colors"
+            className="flex items-center gap-2 text-sky-300 hover:text-white mb-6 transition-colors"
             data-testid="back-button"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -194,11 +194,11 @@ export default function FixtureGalleryPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-slate-300 mb-2">
+              <div className="flex items-center gap-2 text-sky-300 mb-2">
                 <Calendar className="h-5 w-5" />
                 <span>{formatDate(String(fixture.matchDate))}</span>
               </div>
-              <div className="flex items-center gap-2 text-slate-300">
+              <div className="flex items-center gap-2 text-sky-300">
                 <MapPin className="h-5 w-5" />
                 <span>{fixture.venue}</span>
               </div>
@@ -212,7 +212,7 @@ export default function FixtureGalleryPage() {
                     <Home className="h-8 w-8 text-white" />
                   </div>
                   <div className="font-bold text-lg">{fixture.homeTeam}</div>
-                  <div className="text-sm text-slate-300">Home</div>
+                  <div className="text-sm text-sky-300">Home</div>
                 </div>
 
                 <div className="text-center px-6">
@@ -223,7 +223,7 @@ export default function FixtureGalleryPage() {
                       <div className="text-5xl font-bold mb-2">
                         {fixture.homeScore} - {fixture.awayScore}
                       </div>
-                      <div className="text-sm text-slate-300">Final Score</div>
+                      <div className="text-sm text-sky-300">Final Score</div>
                     </>
                   )}
                 </div>
@@ -233,7 +233,7 @@ export default function FixtureGalleryPage() {
                     <GlobeIcon className="h-8 w-8 text-white" />
                   </div>
                   <div className="font-bold text-lg">{fixture.awayTeam}</div>
-                  <div className="text-sm text-slate-300">Away</div>
+                  <div className="text-sm text-sky-300">Away</div>
                 </div>
               </div>
             </div>
@@ -243,23 +243,23 @@ export default function FixtureGalleryPage() {
 
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Stats and Actions */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6 mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <Images className="h-5 w-5 text-slate-600" />
+                <Images className="h-5 w-5 text-sky-600" />
                 <div>
-                  <div className="text-2xl font-bold text-slate-800">{images?.length || 0}</div>
-                  <div className="text-sm text-slate-600">Photos</div>
+                  <div className="text-2xl font-bold text-sky-800">{images?.length || 0}</div>
+                  <div className="text-sm text-sky-600">Photos</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Eye className="h-5 w-5 text-slate-600" />
+                <Eye className="h-5 w-5 text-sky-600" />
                 <div>
-                  <div className="text-2xl font-bold text-slate-800">
+                  <div className="text-2xl font-bold text-sky-800">
                     {Math.floor(Math.random() * 1000) + 500}
                   </div>
-                  <div className="text-sm text-slate-600">Views</div>
+                  <div className="text-sm text-sky-600">Views</div>
                 </div>
               </div>
             </div>
@@ -267,12 +267,12 @@ export default function FixtureGalleryPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={handleShareFixture}
-                className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors flex items-center gap-2 font-medium"
+                className="px-5 py-2.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded-lg transition-colors flex items-center gap-2 font-medium"
               >
                 <Share2 className="h-5 w-5" />
                 Share
               </button>
-              <button className="px-5 py-2.5 bg-slate-700 hover:bg-slate-800 text-white rounded-lg transition-colors flex items-center gap-2 font-medium">
+              <button className="px-5 py-2.5 bg-sky-700 hover:bg-sky-800 text-white rounded-lg transition-colors flex items-center gap-2 font-medium">
                 <Download className="h-5 w-5" />
                 Download All
               </button>
@@ -286,8 +286,8 @@ export default function FixtureGalleryPage() {
             {/* Selected Image View */}
             {selectedImage && (
               <div className="mb-8">
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                  <div className="relative aspect-[16/9] bg-slate-100">
+                <div className="bg-white rounded-xl shadow-sm border border-sky-200 overflow-hidden">
+                  <div className="relative aspect-[16/9] bg-sky-100">
                     {/* In real app, use next/image */}
                     <div
                       className="w-full h-full bg-cover bg-center"
@@ -305,21 +305,21 @@ export default function FixtureGalleryPage() {
                   <div className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                       <div>
-                        <h3 className="text-xl font-semibold text-slate-800 mb-2">
+                        <h3 className="text-xl font-semibold text-sky-800 mb-2">
                           Photo {selectedImageIndex + 1} of {images.length}
                         </h3>
-                        <p className="text-slate-600">{selectedImage.description}</p>
+                        <p className="text-sky-600">{selectedImage.description}</p>
                       </div>
                       <div className="flex items-center gap-3">
-                        <button className="p-2.5 text-slate-600 hover:text-slate-800">
+                        <button className="p-2.5 text-sky-600 hover:text-sky-800">
                           <Heart className="h-5 w-5" />
                         </button>
-                        <button className="p-2.5 text-slate-600 hover:text-slate-800">
+                        <button className="p-2.5 text-sky-600 hover:text-sky-800">
                           <Bookmark className="h-5 w-5" />
                         </button>
                         <button
                           onClick={() => handleDownloadImage(selectedImage.url, selectedImage.description)}
-                          className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors flex items-center gap-2"
+                          className="px-4 py-2.5 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded-lg transition-colors flex items-center gap-2"
                         >
                           <Download className="h-4 w-4" />
                           Download
@@ -334,7 +334,7 @@ export default function FixtureGalleryPage() {
                   <button
                     onClick={() => setSelectedImageIndex(prev => Math.max(0, prev - 1))}
                     disabled={selectedImageIndex === 0}
-                    className="p-3 rounded-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="p-3 rounded-full bg-white border border-sky-300 text-sky-700 hover:bg-sky-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <LeftIcon className="h-5 w-5" />
                   </button>
@@ -345,8 +345,8 @@ export default function FixtureGalleryPage() {
                         key={index}
                         onClick={() => setSelectedImageIndex(index)}
                         className={`w-2.5 h-2.5 rounded-full transition-colors ${index === selectedImageIndex
-                          ? 'bg-slate-800'
-                          : 'bg-slate-300 hover:bg-slate-400'
+                          ? 'bg-sky-800'
+                          : 'bg-sky-300 hover:bg-sky-400'
                           }`}
                       />
                     ))}
@@ -355,7 +355,7 @@ export default function FixtureGalleryPage() {
                   <button
                     onClick={() => setSelectedImageIndex(prev => Math.min(images.length - 1, prev + 1))}
                     disabled={selectedImageIndex === images.length - 1}
-                    className="p-3 rounded-full bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="p-3 rounded-full bg-white border border-sky-300 text-sky-700 hover:bg-sky-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -365,15 +365,15 @@ export default function FixtureGalleryPage() {
 
             {/* Thumbnail Grid */}
             <div className="mb-12">
-              <h3 className="text-xl font-semibold text-slate-800 mb-6">All Fixture Photos</h3>
+              <h3 className="text-xl font-semibold text-sky-800 mb-6">All Fixture Photos</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {images.map((image, index) => (
                   <button
                     key={image.id}
                     onClick={() => setSelectedImageIndex(index)}
                     className={`group relative aspect-square rounded-lg overflow-hidden transition-all ${index === selectedImageIndex
-                      ? 'ring-2 ring-slate-800 ring-offset-2'
-                      : 'hover:ring-2 hover:ring-slate-400'
+                      ? 'ring-2 ring-sky-800 ring-offset-2'
+                      : 'hover:ring-2 hover:ring-sky-400'
                       }`}
                     data-testid="gallery-thumbnail"
                   >
@@ -392,32 +392,32 @@ export default function FixtureGalleryPage() {
             </div>
           </>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-            <Images className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-700 mb-2">No photos available</h3>
-            <p className="text-slate-500 mb-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-12 text-center">
+            <Images className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-sky-700 mb-2">No photos available</h3>
+            <p className="text-sky-500 mb-6">
               There are no photos uploaded for this match yet.
             </p>
           </div>
         )}
 
         {/* Related Fixtures */}
-        <div className="mt-12 pt-8 border-t border-slate-200">
-          <h3 className="text-xl font-semibold text-slate-800 mb-6">More from this league</h3>
+        <div className="mt-12 pt-8 border-t border-sky-200">
+          <h3 className="text-xl font-semibold text-sky-800 mb-6">More from this league</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* You would fetch related fixtures here */}
             <button
               onClick={() => router.push('/gallery')}
-              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-left hover:shadow-md hover:border-slate-300 transition-all group"
+              className="bg-white rounded-xl shadow-sm border border-sky-200 p-6 text-left hover:shadow-md hover:border-sky-300 transition-all group"
             >
               <div className="flex items-center justify-between mb-4">
-                <h4 className="font-bold text-slate-800">Browse all fixtures</h4>
-                <ChevronRight className="h-5 w-5 text-slate-400 group-hover:text-slate-600 transition-colors" />
+                <h4 className="font-bold text-sky-800">Browse all fixtures</h4>
+                <ChevronRight className="h-5 w-5 text-sky-400 group-hover:text-sky-600 transition-colors" />
               </div>
-              <p className="text-slate-600 text-sm mb-4">
+              <p className="text-sky-600 text-sm mb-4">
                 View photos from all matches in our gallery
               </p>
-              <div className="flex items-center gap-2 text-slate-500 text-sm">
+              <div className="flex items-center gap-2 text-sky-500 text-sm">
                 <Images className="h-4 w-4" />
                 <span>Explore complete match gallery</span>
               </div>
@@ -431,7 +431,7 @@ export default function FixtureGalleryPage() {
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" data-testid="lightbox-modal">
           <button
             onClick={() => setLightboxOpen(false)}
-            className="absolute top-4 right-4 text-white p-2 hover:text-slate-300"
+            className="absolute top-4 right-4 text-white p-2 hover:text-sky-300"
           >
             ✕
           </button>
@@ -449,7 +449,7 @@ export default function FixtureGalleryPage() {
 
           <div className="absolute bottom-4 left-4 right-4 text-white text-center">
             <p className="text-lg font-medium mb-2">{selectedImage.description}</p>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-sky-300">
               Photo {selectedImageIndex + 1} of {images?.length}
             </p>
           </div>
@@ -458,7 +458,7 @@ export default function FixtureGalleryPage() {
           <button
             onClick={() => setSelectedImageIndex(prev => Math.max(0, prev - 1))}
             disabled={selectedImageIndex === 0}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white p-4 hover:text-slate-300 disabled:opacity-50"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white p-4 hover:text-sky-300 disabled:opacity-50"
           >
             <LeftIcon className="h-8 w-8" />
           </button>
@@ -466,7 +466,7 @@ export default function FixtureGalleryPage() {
           <button
             onClick={() => setSelectedImageIndex(prev => Math.min(images?.length - 1 || 0, prev + 1))}
             disabled={selectedImageIndex === (images?.length || 1) - 1}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white p-4 hover:text-slate-300 disabled:opacity-50"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white p-4 hover:text-sky-300 disabled:opacity-50"
           >
             <ChevronRight className="h-8 w-8" />
           </button>

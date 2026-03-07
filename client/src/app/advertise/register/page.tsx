@@ -63,14 +63,14 @@ export default function AdvertiserRegistration() {
     return (
       <>
         <Header />
-        <main className="py-24 bg-slate-50 min-h-screen">
+        <main className="py-24 bg-sky-50 min-h-screen">
           <div className="container mx-auto px-4 max-w-2xl text-center">
             <div className="bg-white p-12 rounded-lg shadow-card">
               <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-4xl">⏳</span>
               </div>
-              <h1 className="text-3xl font-heading text-slate-800 mb-4" data-testid="success-message">Application Received</h1>
-              <p className="text-lg text-slate-600 mb-8 max-w-lg mx-auto">
+              <h1 className="text-3xl font-heading text-sky-800 mb-4" data-testid="success-message">Application Received</h1>
+              <p className="text-lg text-sky-600 mb-8 max-w-lg mx-auto">
                 Thank you for registering. Your account is currently <strong>Awaiting Verification</strong>.
                 <br /><br />
                 Our Commercial Manager will review your business details and approve your account within 24-48 hours.
@@ -92,17 +92,17 @@ export default function AdvertiserRegistration() {
     <>
       <Header />
 
-      <main className="py-16 bg-slate-50 min-h-screen">
+      <main className="py-16 bg-sky-50 min-h-screen">
         <div className="container mx-auto px-4 max-w-2xl">
           <Link href="/advertise" className="inline-flex items-center gap-2 text-sky-500 hover:text-sky-700 mb-8 font-semibold transition-colors">
             <ArrowLeft className="w-5 h-5" />
             Back to Advertise Info
           </Link>
 
-          <div className="bg-white border border-slate-200 p-8 rounded-lg shadow-card">
+          <div className="bg-white border border-sky-200 p-8 rounded-lg shadow-card">
             <h1 className="text-3xl font-heading text-sky-500 mb-2">Register as an Advertiser</h1>
             <div className="h-1 w-16 bg-sky-700 mb-6"></div>
-            <p className="text-slate-600 mb-8 leading-relaxed">
+            <p className="text-sky-600 mb-8 leading-relaxed">
               Complete the form below to create your advertiser account.
               Your account will be reviewed and verified within 24-48 hours.
             </p>
@@ -123,7 +123,7 @@ export default function AdvertiserRegistration() {
                   placeholder="Enter your business or company name"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="business-name-input"
                 />
@@ -138,7 +138,7 @@ export default function AdvertiserRegistration() {
                   placeholder="Full name of primary contact"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="contact-name-input"
                 />
@@ -153,11 +153,11 @@ export default function AdvertiserRegistration() {
                   placeholder="business@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="business-email-input"
                 />
-                <p className="text-sm text-slate-500 mt-2">
+                <p className="text-sm text-sky-500 mt-2">
                   This will be your login email and where we send campaign notifications
                 </p>
               </div>
@@ -171,7 +171,7 @@ export default function AdvertiserRegistration() {
                   placeholder="+234 XXX XXX XXXX"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="business-phone-input"
                 />
@@ -186,7 +186,7 @@ export default function AdvertiserRegistration() {
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="password-input"
                 />
@@ -201,7 +201,7 @@ export default function AdvertiserRegistration() {
                   placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                   required
                   data-testid="confirm-password-input"
                 />
@@ -217,7 +217,7 @@ export default function AdvertiserRegistration() {
               <button
                 type="submit"
                 disabled={!businessName || !contactName || !email || !phone || !password || !confirmPassword || isPending}
-                className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-colors font-semibold"
+                className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-sky-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-colors font-semibold"
                 data-testid="submit-registration"
               >
                 {isPending ? 'Submitting...' : 'Submit Application'}
@@ -225,7 +225,7 @@ export default function AdvertiserRegistration() {
             </form>
           </div>
 
-          <div className="mt-8 text-center text-slate-600">
+          <div className="mt-8 text-center text-sky-600">
             <p>Already have an account?{' '}
               <Link href="/auth/login" className="text-sky-700 hover:text-sky-800 font-semibold">
                 Log in here

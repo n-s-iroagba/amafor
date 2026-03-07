@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { ArrowLeft, Check, Trophy, Heart, Shield, Lock, CreditCard } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
+import React, { useState, useMemo } from 'react'
 import { Header } from '@/shared/components/Header'
 import { Footer } from '@/shared/components/Footer'
 import { useGet } from '@/shared/hooks/useApiQuery'
@@ -16,17 +17,21 @@ const PaymentButton = dynamic(
   { ssr: false }
 )
 
-export default function PatronCheckout() {
+const PatronCheckoutInner = () => {
+  const searchParams = useSearchParams()
   const { data: patronTiers } = useGet<PatronSubscriptionPackage[]>(API_ROUTES.PATRONS.PACKAGES)
 
-  const [donationType, setDonationType] = useState<'subscription' | 'donation'>('subscription')
-  const [selectedTier, setSelectedTier] = useState<string>('')
-  const [selectedFrequency, setSelectedFrequency] = useState<string>('monthly')
-  const [customAmount, setCustomAmount] = useState<string>('')
+  const [donationType, setDonationType] = useState<'subscription' | 'donation'>(
+    (searchParams.get('type') as 'subscription' | 'donation') || 'subscription'
+  )
+  const [selectedTier, setSelectedTier] = useState<string>(searchParams.get('tier') || '')
+  const [selectedFrequency, setSelectedFrequency] = useState<string>(searchParams.get('frequency') || 'monthly')
+  const [customAmount, setCustomAmount] = useState<string>(searchParams.get('amount') || '')
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
+  const [name, setName] = useState(searchParams.get('name') || '')
+  const [email, setEmail] = useState(searchParams.get('email') || '')
+  const [phone, setPhone] = useState(searchParams.get('phone') || '')
+  const subscriptionId = searchParams.get('subscriptionId') || undefined
 
   // Group tiers by unique tier name
   const uniqueTiers = useMemo(() => {
@@ -85,25 +90,27 @@ export default function PatronCheckout() {
         type: donationType,
         tier: donationType === 'subscription' ? selectedTier : 'one-time',
         frequency: donationType === 'subscription' ? selectedFrequency : 'one-time',
+        subscriptionId: subscriptionId, // pass down if it exists
         custom_fields: [
           { display_name: "Name", variable_name: "name", value: name },
           { display_name: "Phone", variable_name: "phone", value: phone },
           { display_name: "Type", variable_name: "type", value: donationType },
-          { display_name: "Frequency", variable_name: "frequency", value: selectedFrequency }
+          { display_name: "Frequency", variable_name: "frequency", value: selectedFrequency },
+          ...(subscriptionId ? [{ display_name: "Subscription ID", variable_name: "subscriptionId", value: subscriptionId }] : [])
         ]
       }
     }
-  }, [isValidForm, donationType, tierData, customAmount, email, name, phone, selectedTier, selectedFrequency])
+  }, [isValidForm, donationType, tierData, customAmount, email, name, phone, selectedTier, selectedFrequency, subscriptionId])
 
   return (
     <>
       <Header />
 
-      <main className="bg-slate-50 min-h-screen pb-20 pt-8 sm:pt-12">
+      <main className="bg-sky-50 min-h-screen pb-20 pt-8 sm:pt-12">
         <div className="container mx-auto px-4 max-w-6xl">
 
           {/* Breadcrumb */}
-          <Link href="/patron/wall" className="inline-flex items-center gap-2 text-slate-500 hover:text-sky-700 mb-8 transition-colors group font-medium">
+          <Link href="/patron/wall" className="inline-flex items-center gap-2 text-sky-500 hover:text-sky-700 mb-8 transition-colors group font-medium">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Supporter Wall
           </Link>
@@ -112,10 +119,10 @@ export default function PatronCheckout() {
 
             {/* Left Column: Form */}
             <div className="lg:col-span-7 xl:col-span-8">
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-sky-100">
 
                 {/* Header */}
-                <div className="bg-gradient-to-r from-sky-900 to-slate-900 p-8 text-white relative overflow-hidden">
+                <div className="bg-gradient-to-r from-sky-900 to-sky-900 p-8 text-white relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                   <h1 className="text-3xl font-bold mb-2 relative z-10">Support the Team</h1>
                   <p className="text-sky-200 relative z-10">Your contribution helps us build champions.</p>
@@ -124,12 +131,12 @@ export default function PatronCheckout() {
                 <div className="p-6 sm:p-8 space-y-8">
 
                   {/* Donation Type Toggle */}
-                  <div className="bg-slate-100 p-1 rounded-xl flex">
+                  <div className="bg-sky-100 p-1 rounded-xl flex">
                     <button
                       onClick={() => setDonationType('subscription')}
                       className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm sm:text-base transition-all ${donationType === 'subscription'
                         ? 'bg-white text-sky-700 shadow-md transform scale-[1.02]'
-                        : 'text-slate-500 hover:text-slate-700'
+                        : 'text-sky-500 hover:text-sky-700'
                         }`}
                       data-testid="type-toggle-subscription"
                     >
@@ -140,7 +147,7 @@ export default function PatronCheckout() {
                       onClick={() => setDonationType('donation')}
                       className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm sm:text-base transition-all ${donationType === 'donation'
                         ? 'bg-white text-sky-700 shadow-md transform scale-[1.02]'
-                        : 'text-slate-500 hover:text-slate-700'
+                        : 'text-sky-500 hover:text-sky-700'
                         }`}
                       data-testid="type-toggle-donation"
                     >
@@ -154,23 +161,23 @@ export default function PatronCheckout() {
                     {donationType === 'subscription' ? (
                       <div>
                         <div className="flex justify-between items-center mb-4">
-                          <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                          <h3 className="text-lg font-bold text-sky-800 flex items-center gap-2">
                             <Shield className="w-5 h-5 text-sky-600" />
                             Select Membership Tier
                           </h3>
 
                           {/* Frequency Toggle */}
-                          <div className="flex items-center gap-2 bg-slate-100 rounded-lg p-1 text-xs font-bold">
+                          <div className="flex items-center gap-2 bg-sky-100 rounded-lg p-1 text-xs font-bold">
                             <button
                               onClick={() => setSelectedFrequency('monthly')}
-                              className={`px-3 py-1.5 rounded-md transition-all ${selectedFrequency === 'monthly' ? 'bg-white shadow text-sky-700' : 'text-slate-500'}`}
+                              className={`px-3 py-1.5 rounded-md transition-all ${selectedFrequency === 'monthly' ? 'bg-white shadow text-sky-700' : 'text-sky-500'}`}
                               data-testid="frequency-monthly"
                             >
                               MONTHLY
                             </button>
                             <button
                               onClick={() => setSelectedFrequency('yearly')}
-                              className={`px-3 py-1.5 rounded-md transition-all ${selectedFrequency === 'yearly' ? 'bg-white shadow text-sky-700' : 'text-slate-500'}`}
+                              className={`px-3 py-1.5 rounded-md transition-all ${selectedFrequency === 'yearly' ? 'bg-white shadow text-sky-700' : 'text-sky-500'}`}
                               data-testid="frequency-yearly"
                             >
                               YEARLY
@@ -190,19 +197,19 @@ export default function PatronCheckout() {
                                 onClick={() => setSelectedTier(tierName)}
                                 className={`group relative text-left p-4 rounded-xl border-2 transition-all ${selectedTier === tierName
                                   ? 'border-sky-600 bg-sky-50 shadow-md'
-                                  : 'border-slate-100 hover:border-sky-200 hover:bg-slate-50'
+                                  : 'border-sky-100 hover:border-sky-200 hover:bg-sky-50'
                                   }`}
                                 data-testid="tier-selection-btn"
                               >
                                 <div className="flex justify-between items-center">
                                   <div>
-                                    <div className={`font-bold text-lg capitalize ${selectedTier === tierName ? 'text-sky-900' : 'text-slate-700'}`}>
+                                    <div className={`font-bold text-lg capitalize ${selectedTier === tierName ? 'text-sky-900' : 'text-sky-700'}`}>
                                       {tierName.replace(/_/g, ' ')}
                                     </div>
-                                    <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">{selectedFrequency}</div>
+                                    <div className="text-sm text-sky-500 font-medium uppercase tracking-wider">{selectedFrequency}</div>
                                   </div>
                                   <div className="text-right">
-                                    <div className="text-xl font-black text-slate-900">{formatCurrency(pkg.miniumumAmount)}</div>
+                                    <div className="text-xl font-black text-sky-900">{formatCurrency(pkg.miniumumAmount)}</div>
                                     {selectedTier === tierName && (
                                       <div className="bg-sky-600 text-white text-xs px-2 py-1 rounded-full inline-block mt-1">Selected</div>
                                     )}
@@ -220,13 +227,13 @@ export default function PatronCheckout() {
                           Enter Donation Amount
                         </h3>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xl">₦</span>
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sky-400 font-bold text-xl">₦</span>
                           <input
                             type="number"
                             value={customAmount}
                             onChange={(e) => setCustomAmount(e.target.value)}
                             placeholder="5,000"
-                            className="w-full pl-10 pr-4 py-4 rounded-lg border-2 border-sky-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-100 outline-none text-2xl font-bold text-slate-800 placeholder:text-slate-300 bg-white"
+                            className="w-full pl-10 pr-4 py-4 rounded-lg border-2 border-sky-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-100 outline-none text-2xl font-bold text-sky-800 placeholder:text-sky-300 bg-white"
                             data-testid="custom-amount-input"
                           />
                         </div>
@@ -236,38 +243,38 @@ export default function PatronCheckout() {
                   </div>
 
                   {/* User Details */}
-                  <div className="border-t border-slate-100 pt-8">
-                    <h3 className="text-lg font-bold text-slate-800 mb-6">Your Details</h3>
+                  <div className="border-t border-sky-100 pt-8">
+                    <h3 className="text-lg font-bold text-sky-800 mb-6">Your Details</h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="md:col-span-2">
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Full Name</label>
+                        <label className="block text-xs font-bold text-sky-500 uppercase tracking-wider mb-2">Full Name</label>
                         <input
                           type="text"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
+                          className="w-full px-4 py-3 rounded-lg border border-sky-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
                           placeholder="John Doe"
                           data-testid="checkout-name"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
+                        <label className="block text-xs font-bold text-sky-500 uppercase tracking-wider mb-2">Email Address</label>
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
+                          className="w-full px-4 py-3 rounded-lg border border-sky-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
                           placeholder="john@example.com"
                           data-testid="checkout-email"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Phone Number</label>
+                        <label className="block text-xs font-bold text-sky-500 uppercase tracking-wider mb-2">Phone Number</label>
                         <input
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
+                          className="w-full px-4 py-3 rounded-lg border border-sky-200 focus:border-sky-600 focus:ring-4 focus:ring-sky-50 outline-none transition-all font-medium"
                           placeholder="+234..."
                           data-testid="checkout-phone"
                         />
@@ -282,7 +289,7 @@ export default function PatronCheckout() {
                       paymentDetails={paymentPayload!}
                       type={donationType}
                     />
-                    <div className="flex items-center justify-center gap-2 mt-4 text-xs text-slate-400 font-medium">
+                    <div className="flex items-center justify-center gap-2 mt-4 text-xs text-sky-400 font-medium">
                       <Lock className="w-3 h-3" />
                       SECURE PAYMENT BY PAYSTACK
                     </div>
@@ -296,30 +303,30 @@ export default function PatronCheckout() {
             <div className="lg:col-span-5 xl:col-span-4 space-y-6">
 
               {/* Summary Card */}
-              <div className="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 sticky top-24">
-                <h3 className="text-lg font-bold text-slate-800 mb-6 pb-4 border-b border-slate-100">Order Summary</h3>
+              <div className="bg-white rounded-2xl shadow-lg border border-sky-100 p-6 sticky top-24">
+                <h3 className="text-lg font-bold text-sky-800 mb-6 pb-4 border-b border-sky-100">Order Summary</h3>
 
                 <div className="space-y-4 mb-8">
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-slate-600">Type</span>
-                    <span className="font-bold text-slate-900 capitalize">{donationType}</span>
+                    <span className="text-sky-600">Type</span>
+                    <span className="font-bold text-sky-900 capitalize">{donationType}</span>
                   </div>
                   {donationType === 'subscription' && (
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-600">Plan</span>
-                      <span className="font-bold text-slate-900 capitalize">{selectedTier?.replace(/_/g, ' ') || '-'}</span>
+                      <span className="text-sky-600">Plan</span>
+                      <span className="font-bold text-sky-900 capitalize">{selectedTier?.replace(/_/g, ' ') || '-'}</span>
                     </div>
                   )}
                   {donationType === 'subscription' && tierData && (
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-600">Billing</span>
-                      <span className="font-bold text-slate-900 capitalize">{tierData.frequency}</span>
+                      <span className="text-sky-600">Billing</span>
+                      <span className="font-bold text-sky-900 capitalize">{tierData.frequency}</span>
                     </div>
                   )}
                 </div>
 
-                <div className="bg-slate-50 rounded-xl p-4 flex justify-between items-center mb-6">
-                  <span className="text-slate-600 font-medium">Total</span>
+                <div className="bg-sky-50 rounded-xl p-4 flex justify-between items-center mb-6">
+                  <span className="text-sky-600 font-medium">Total</span>
                   <span className="text-2xl font-black text-sky-700">
                     {donationType === 'subscription'
                       ? (tierData ? formatCurrency(tierData.miniumumAmount) : '₦0.00')
@@ -330,10 +337,10 @@ export default function PatronCheckout() {
                 {/* Benefits List (Only for Subscription) */}
                 {donationType === 'subscription' && tierData && tierData.benefits && (
                   <div className="animate-in fade-in slide-in-from-top-2">
-                    <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">INCLUDED BENEFITS</div>
+                    <div className="text-xs font-bold text-sky-400 uppercase tracking-wider mb-3">INCLUDED BENEFITS</div>
                     <ul className="space-y-3">
                       {tierData.benefits.map((benefit, i) => (
-                        <li key={i} className="flex gap-3 text-sm text-slate-700">
+                        <li key={i} className="flex gap-3 text-sm text-sky-700">
                           <Check className="w-5 h-5 text-sky-500 shrink-0" />
                           <span className="leading-tight">{benefit}</span>
                         </li>
@@ -356,5 +363,13 @@ export default function PatronCheckout() {
       </main>
       <Footer />
     </>
+  )
+}
+
+export default function PatronCheckout() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-sky-50"><div className="animate-pulse bg-sky-200 h-12 w-12 rounded-full"></div></div>}>
+      <PatronCheckoutInner />
+    </React.Suspense>
   )
 }

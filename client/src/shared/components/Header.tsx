@@ -7,7 +7,7 @@ import { useHeaderLogic } from '../hooks/useHeaderLogic';
 import { HeaderErrorUI } from './HeaderErrorUI';
 import { HEADER_TEST_IDS } from '../test-ids/header-test-ids';
 import Logo from './Logo';
-
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 
 
@@ -64,82 +64,87 @@ export function Header() {
   }
 
   return (
-    <header
-      className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
-      data-testid={HEADER_TEST_IDS.ROOT}
-      role="banner"
-      aria-label="Site header"
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-3 group"
-            onClick={handleLogoClick}
-            data-testid={HEADER_TEST_IDS.LOGO_LINK}
-            aria-label="Amafor Gladiators FC Home"
-          >
-            <div className="relative w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0">
-              <Logo />
-            </div>
-            <div className="hidden sm:block">
-              <div className="text-gray-900 font-black text-lg leading-tight tracking-tight">
-                AMAFOR GLADIATORS
+    <>
+      <header
+        className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
+        data-testid={HEADER_TEST_IDS.ROOT}
+        role="banner"
+        aria-label="Site header"
+      >
+        <div className="w-full bg-sky-50 border-b border-gray-100 flex justify-center">
+          <AdDisplay identifier="TP_BAN" className="my-2" showLabel={true} />
+        </div>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 group"
+              onClick={handleLogoClick}
+              data-testid={HEADER_TEST_IDS.LOGO_LINK}
+              aria-label="Amafor Gladiators FC Home"
+            >
+              <div className="relative w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0">
+                <Logo />
               </div>
-              <div className="text-sky-500 text-xs font-bold uppercase tracking-wider">
-                FOOTBALL CLUB
+              <div className="hidden sm:block">
+                <div className="text-gray-900 font-black text-lg leading-tight tracking-tight">
+                  AMAFOR GLADIATORS
+                </div>
+                <div className="text-sky-500 text-xs font-bold uppercase tracking-wider">
+                  FOOTBALL CLUB
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <nav
-            className="hidden lg:flex items-center gap-1"
-            data-testid={HEADER_TEST_IDS.NAVIGATION_DESKTOP}
-            aria-label="Main navigation"
-            role="navigation"
-          >
-            {NAVIGATION_ITEMS.map((item) => (
-              <DesktopNavItem
-                key={item.name}
-                item={item}
-                pathname={pathname}
-                isLoading={isLoading}
-                onNavigate={(href, name) => handleNavigation(href, name, 'desktop')}
+            {/* Desktop Navigation */}
+            <nav
+              className="hidden lg:flex items-center gap-1"
+              data-testid={HEADER_TEST_IDS.NAVIGATION_DESKTOP}
+              aria-label="Main navigation"
+              role="navigation"
+            >
+              {NAVIGATION_ITEMS.map((item) => (
+                <DesktopNavItem
+                  key={item.name}
+                  item={item}
+                  pathname={pathname}
+                  isLoading={isLoading}
+                  onNavigate={(href, name) => handleNavigation(href, name, 'desktop')}
+                />
+              ))}
+            </nav>
+
+            {/* Desktop Login Button */}
+            <div className="hidden lg:flex items-center gap-4">
+              <LoginButton
+                source="desktop"
+                onClick={() => handleLoginClick('desktop')}
               />
-            ))}
-          </nav>
+            </div>
 
-          {/* Desktop Login Button */}
-          <div className="hidden lg:flex items-center gap-4">
-            <LoginButton
-              source="desktop"
-              onClick={() => handleLoginClick('desktop')}
+            {/* Mobile Menu Button */}
+            <MobileMenuButton
+              isOpen={mobileMenuOpen}
+              isLoading={isLoading}
+              onToggle={handleMobileMenuToggle}
             />
           </div>
 
-          {/* Mobile Menu Button */}
-          <MobileMenuButton
+          {/* Mobile Menu Panel */}
+          <MobileMenuPanel
             isOpen={mobileMenuOpen}
+            pathname={pathname}
             isLoading={isLoading}
-            onToggle={handleMobileMenuToggle}
+            onNavigate={(href, name) => handleNavigation(href, name, 'mobile')}
+            onLogin={() => handleLoginClick('mobile')}
           />
+
+          {/* Loading indicator */}
+          {isLoading && <LoadingOverlay />}
         </div>
-
-        {/* Mobile Menu Panel */}
-        <MobileMenuPanel
-          isOpen={mobileMenuOpen}
-          pathname={pathname}
-          isLoading={isLoading}
-          onNavigate={(href, name) => handleNavigation(href, name, 'mobile')}
-          onLogin={() => handleLoginClick('mobile')}
-        />
-
-        {/* Loading indicator */}
-        {isLoading && <LoadingOverlay />}
-      </div>
-    </header>
+      </header>
+    </>
   )
 }
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { X, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAdServe } from '../hooks/useAdServe'; // Adjust path
+import { useAdServe } from '../hooks/useAdServe';
 
 interface AdDisplayProps {
   identifier: string; // The AdZone ID (e.g., 'TP_BAN')
@@ -12,15 +12,15 @@ interface AdDisplayProps {
   showLabel?: boolean;
 }
 
-const AdDisplay: React.FC<AdDisplayProps> = ({ 
-  identifier, 
-  tags = [], 
+const AdDisplay: React.FC<AdDisplayProps> = ({
+  identifier,
+  tags = [],
   className = '',
-  showLabel = true 
+  showLabel = true
 }) => {
   // 1. Logic extracted to custom hook
   const { adData, loading, isError, getDimensions } = useAdServe(identifier, tags);
-  
+
   // 2. Local UI state (visibility)
   const [isVisible, setIsVisible] = useState(true);
 
@@ -47,12 +47,12 @@ const AdDisplay: React.FC<AdDisplayProps> = ({
           className={`relative flex flex-col items-center justify-center my-6 ${className}`}
         >
           {showLabel && (
-            <div 
+            <div
               className="flex justify-between items-center text-[10px] text-gray-400 mb-1 px-1 uppercase tracking-wider font-medium w-full"
               style={{ maxWidth: width }}
             >
               <span>Advertisement</span>
-              <button 
+              <button
                 onClick={handleClose}
                 className="hover:text-gray-600 transition-colors"
                 aria-label="Close ad"
@@ -64,7 +64,7 @@ const AdDisplay: React.FC<AdDisplayProps> = ({
 
           {loading ? (
             // Skeleton State
-            <div 
+            <div
               className="bg-gray-100 animate-pulse rounded-lg border border-gray-200"
               style={{ width: '100%', maxWidth: width, height: height }}
             />

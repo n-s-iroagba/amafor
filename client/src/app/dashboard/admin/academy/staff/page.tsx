@@ -160,11 +160,11 @@ export default function AcademyStaffPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-slate-700 animate-spin mb-4" />
-            <p className="text-slate-600">Loading academy staff...</p>
+            <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
+            <p className="text-sky-600">Loading academy staff...</p>
           </div>
         </div>
       </div>
@@ -173,7 +173,7 @@ export default function AcademyStaffPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="bg-red-50 border border-red-200 rounded-xl p-6 mt-8">
             <div className="flex items-start gap-3">
@@ -196,14 +196,14 @@ export default function AcademyStaffPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+      <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">Academy Staff</h1>
-              <p className="text-slate-300">
+              <p className="text-sky-300">
                 Manage the coaching, medical, and administrative staff of the academy
               </p>
             </div>
@@ -231,69 +231,69 @@ export default function AcademyStaffPage() {
       <div className="container mx-auto max-w-7xl px-4 py-8">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-slate-800">
+                <div className="text-2xl font-bold text-sky-800">
                   {staffData?.length || 0}
                 </div>
-                <div className="text-sm text-slate-600">Total Staff</div>
+                <div className="text-sm text-sky-600">Total Staff</div>
               </div>
-              <Users className="h-8 w-8 text-slate-400" />
+              <Users className="h-8 w-8 text-sky-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-slate-800">
+                <div className="text-2xl font-bold text-sky-800">
                   {staffData?.filter(s => s.category === 'coaching').length || 0}
                 </div>
-                <div className="text-sm text-slate-600">Coaching Staff</div>
+                <div className="text-sm text-sky-600">Coaching Staff</div>
               </div>
-              <Award className="h-8 w-8 text-slate-400" />
+              <Award className="h-8 w-8 text-sky-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-slate-800">
+                <div className="text-2xl font-bold text-sky-800">
                   {staffData?.filter(s => s.category === 'medical').length || 0}
                 </div>
-                <div className="text-sm text-slate-600">Medical Staff</div>
+                <div className="text-sm text-sky-600">Medical Staff</div>
               </div>
-              <Stethoscope className="h-8 w-8 text-slate-400" />
+              <Stethoscope className="h-8 w-8 text-sky-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold text-slate-800">
+                <div className="text-2xl font-bold text-sky-800">
                   {Math.round(
                     (staffData?.reduce((sum, staff) => sum + (staff.yearsOfExperience || 0), 0) || 0) /
                     (staffData?.length || 1)
                   )}
                 </div>
-                <div className="text-sm text-slate-600">Avg. Experience (years)</div>
+                <div className="text-sm text-sky-600">Avg. Experience (years)</div>
               </div>
-              <Briefcase className="h-8 w-8 text-slate-400" />
+              <Briefcase className="h-8 w-8 text-sky-400" />
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-slate-400" />
+                <Search className="h-5 w-5 text-sky-400" />
               </div>
               <input
                 type="text"
                 placeholder="Search staff by name, role, or bio..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
                 data-testid="input-search-academy-staff"
               />
             </div>
@@ -303,7 +303,7 @@ export default function AcademyStaffPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
               >
                 <option value="all">All Categories</option>
                 <option value="coaching">Coaching</option>
@@ -319,7 +319,7 @@ export default function AcademyStaffPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
               >
                 <option value="name_asc">Name (A-Z)</option>
                 <option value="name_desc">Name (Z-A)</option>
@@ -330,17 +330,17 @@ export default function AcademyStaffPage() {
           </div>
 
           {/* Results Info */}
-          <div className="mt-4 pt-4 border-t border-slate-200">
+          <div className="mt-4 pt-4 border-t border-sky-200">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-sky-600">
                 Showing {sortedStaff.length} of {staffData?.length || 0} staff members
               </div>
               <div className="flex items-center gap-4">
-                <button className="flex items-center gap-2 text-sm text-slate-700 hover:text-slate-900">
+                <button className="flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900">
                   <Download className="h-4 w-4" />
                   Export
                 </button>
-                <button className="flex items-center gap-2 text-sm text-slate-700 hover:text-slate-900">
+                <button className="flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900">
                   <Share2 className="h-4 w-4" />
                   Share
                 </button>
@@ -353,14 +353,14 @@ export default function AcademyStaffPage() {
         {sortedStaff.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {sortedStaff.map((staff) => (
-              <div key={staff.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden group hover:shadow-md transition-shadow" data-testid={`academy-staff-item-${staff.id}`}>
+              <div key={staff.id} className="bg-white rounded-xl shadow-sm border border-sky-200 overflow-hidden group hover:shadow-md transition-shadow" data-testid={`academy-staff-item-${staff.id}`}>
                 <div className="p-6">
                   {/* Staff Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         {staff.imageUrl ? (
-                          <div className="w-16 h-16 rounded-full overflow-hidden bg-slate-100">
+                          <div className="w-16 h-16 rounded-full overflow-hidden bg-sky-100">
                             <Image
                               src={staff.imageUrl}
                               alt={staff.name}
@@ -374,18 +374,18 @@ export default function AcademyStaffPage() {
                             {staff.initials || staff.name.charAt(0)}
                           </div>
                         )}
-                        <div className="absolute -bottom-1 -right-1 p-1 bg-white rounded-full border border-slate-200">
+                        <div className="absolute -bottom-1 -right-1 p-1 bg-white rounded-full border border-sky-200">
                           {getCategoryIcon(staff.category)}
                         </div>
                       </div>
                       <div>
-                        <h3 className="font-bold text-slate-800 text-lg">{staff.name}</h3>
+                        <h3 className="font-bold text-sky-800 text-lg">{staff.name}</h3>
                         <div className="flex items-center gap-2 mt-1">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(staff.category)}`}>
                             {staff.category || 'General'}
                           </span>
                           {staff.yearsOfExperience && (
-                            <span className="text-xs text-slate-600">
+                            <span className="text-xs text-sky-600">
                               {staff.yearsOfExperience}+ years
                             </span>
                           )}
@@ -393,16 +393,16 @@ export default function AcademyStaffPage() {
                       </div>
                     </div>
                     <div className="relative">
-                      <button className="p-1 hover:bg-slate-100 rounded">
-                        <MoreVertical className="h-5 w-5 text-slate-400" />
+                      <button className="p-1 hover:bg-sky-100 rounded">
+                        <MoreVertical className="h-5 w-5 text-sky-400" />
                       </button>
                     </div>
                   </div>
 
                   {/* Role */}
                   <div className="mb-4">
-                    <h4 className="font-semibold text-slate-700 mb-1">{staff.role}</h4>
-                    <p className="text-sm text-slate-600 line-clamp-2">{staff.bio}</p>
+                    <h4 className="font-semibold text-sky-700 mb-1">{staff.role}</h4>
+                    <p className="text-sm text-sky-600 line-clamp-2">{staff.bio}</p>
                   </div>
 
                   {/* Qualifications */}
@@ -418,7 +418,7 @@ export default function AcademyStaffPage() {
                           </span>
                         ))}
                         {staff.qualifications.length > 3 && (
-                          <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">
+                          <span className="px-2 py-1 bg-sky-100 text-sky-600 rounded text-xs font-medium">
                             +{staff.qualifications.length - 3} more
                           </span>
                         )}
@@ -427,10 +427,10 @@ export default function AcademyStaffPage() {
                   )}
 
                   {/* Actions */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                  <div className="flex items-center justify-between pt-4 border-t border-sky-100">
                     <button
                       onClick={() => handleViewDetails(staff)}
-                      className="px-3 py-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors flex items-center gap-1 text-sm"
+                      className="px-3 py-1.5 text-sky-700 hover:text-sky-900 hover:bg-sky-100 rounded-lg transition-colors flex items-center gap-1 text-sm"
                     >
                       <Eye className="h-4 w-4" />
                       View
@@ -457,10 +457,10 @@ export default function AcademyStaffPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-            <Users className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-700 mb-2">No staff found</h3>
-            <p className="text-slate-500 mb-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-12 text-center">
+            <Users className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-sky-700 mb-2">No staff found</h3>
+            <p className="text-sky-500 mb-6">
               {staffData?.length === 0
                 ? "No staff members have been added yet."
                 : "Try adjusting your search or filters."}
@@ -468,7 +468,7 @@ export default function AcademyStaffPage() {
             {staffData?.length === 0 && (
               <Link
                 href="/dashboard/admin/academy/staff/new"
-                className="inline-block px-6 py-3 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium"
+                className="inline-block px-6 py-3 bg-sky-700 text-white rounded-lg hover:bg-sky-800 transition-colors font-medium"
               >
                 Add First Staff Member
               </Link>

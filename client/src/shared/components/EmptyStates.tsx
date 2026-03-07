@@ -19,28 +19,28 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action, type }: EmptyStateProps) {
   return (
-    <div 
+    <div
       className="flex flex-col items-center justify-center py-16 px-4 text-center"
       data-testid={EMPTY_STATE_TEST_IDS.ROOT(type)}
       role="status"
       aria-live="polite"
       aria-label={`Empty state: ${title}`}
     >
-      <div 
-        className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6"
+      <div
+        className="w-24 h-24 bg-sky-100 rounded-full flex items-center justify-center mb-6"
         data-testid={EMPTY_STATE_TEST_IDS.ICON(type)}
         aria-hidden="true"
       >
-        {icon || <FileQuestion className="w-12 h-12 text-slate-400" />}
+        {icon || <FileQuestion className="w-12 h-12 text-sky-400" />}
       </div>
-      <h3 
+      <h3
         className="text-2xl mb-3 text-sky-500"
         data-testid={EMPTY_STATE_TEST_IDS.TITLE(type)}
       >
         {title}
       </h3>
-      <p 
-        className="text-slate-600 mb-6 max-w-md"
+      <p
+        className="text-sky-600 mb-6 max-w-md"
         data-testid={EMPTY_STATE_TEST_IDS.DESCRIPTION(type)}
       >
         {description}
@@ -90,7 +90,7 @@ export function EmptyState({ icon, title, description, action, type }: EmptyStat
 export function EmptySearchResults({ query }: { query: string }) {
   return (
     <EmptyState
-      icon={<Search className="w-12 h-12 text-slate-400" />}
+      icon={<Search className="w-12 h-12 text-sky-400" />}
       title="No Results Found"
       description={`We couldn't find anything matching "${query}". Try searching with different keywords or check your spelling.`}
       type="search-results"
@@ -101,7 +101,7 @@ export function EmptySearchResults({ query }: { query: string }) {
 export function EmptyNewsList() {
   return (
     <EmptyState
-      icon={<FileQuestion className="w-12 h-12 text-slate-400" />}
+      icon={<FileQuestion className="w-12 h-12 text-sky-400" />}
       title="No Articles Yet"
       description="Check back soon for the latest news and updates from Amafor Gladiators FC."
       action={{

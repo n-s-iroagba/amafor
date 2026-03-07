@@ -54,7 +54,7 @@ export function Alert({ type, title, message, onClose }: AlertProps) {
         {onClose && (
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-sky-400 hover:text-sky-600 transition-colors"
             aria-label="Close"
           >
             <XCircle className="w-5 h-5" />

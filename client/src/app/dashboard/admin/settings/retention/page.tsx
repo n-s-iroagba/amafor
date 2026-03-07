@@ -68,20 +68,20 @@ export default function DataRetentionSettingsPage() {
         setTimeout(() => setSaved(false), 3000);
     };
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-slate-400" /></div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-sky-400" /></div>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
+            <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
                 <div className="container mx-auto max-w-4xl px-4 py-8">
-                    <Link href="/dashboard/admin/settings" className="inline-flex items-center text-slate-400 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                    <Link href="/dashboard/admin/settings" className="inline-flex items-center text-sky-400 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
                         <ArrowLeft className="w-3 h-3 mr-2" /> System Settings
                     </Link>
                     <div className="flex items-center gap-3 mb-2">
                         <div className="bg-sky-600 p-2 rounded-xl"><Database className="w-5 h-5 text-white" /></div>
                         <h1 className="text-3xl font-bold">Data Retention Policy</h1>
                     </div>
-                    <p className="text-slate-300 text-sm">Configure how long each data category is kept before automated purge. All values in days.</p>
+                    <p className="text-sky-300 text-sm">Configure how long each data category is kept before automated purge. All values in days.</p>
                 </div>
             </div>
 
@@ -98,7 +98,7 @@ export default function DataRetentionSettingsPage() {
                 {saved && <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-6 flex items-center gap-3"><CheckCircle className="w-5 h-5 text-green-600" /><p className="text-sm text-green-800 font-medium">Retention policy updated. Scheduled purge jobs reconfigured.</p></div>}
 
                 <form onSubmit={handleSave}>
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 divide-y divide-slate-100">
+                    <div className="bg-white rounded-xl shadow-sm border border-sky-200 divide-y divide-sky-100">
                         {CATEGORIES.map(cat => {
                             const val = (current as any)[cat.key] ?? cat.minDays;
                             const hasError = Boolean(validationErrors[cat.key]);
@@ -106,11 +106,11 @@ export default function DataRetentionSettingsPage() {
                                 <div key={cat.key} className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2">
-                                            <p className="font-semibold text-slate-800">{cat.label}</p>
-                                            {cat.brd && <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">{cat.brd}</span>}
+                                            <p className="font-semibold text-sky-800">{cat.label}</p>
+                                            {cat.brd && <span className="text-xs bg-sky-100 text-sky-600 px-2 py-0.5 rounded-full font-medium">{cat.brd}</span>}
                                         </div>
-                                        <p className="text-xs text-slate-500 mt-1">{cat.desc}</p>
-                                        <p className="text-xs text-slate-400 mt-0.5">Minimum: {cat.minDays} days ({Math.round(cat.minDays / 365 * 10) / 10} years)</p>
+                                        <p className="text-xs text-sky-500 mt-1">{cat.desc}</p>
+                                        <p className="text-xs text-sky-400 mt-0.5">Minimum: {cat.minDays} days ({Math.round(cat.minDays / 365 * 10) / 10} years)</p>
                                         {hasError && <p className="text-xs text-red-600 mt-1 font-medium">{validationErrors[cat.key]}</p>}
                                     </div>
                                     <div className="flex items-center gap-3">
@@ -121,11 +121,11 @@ export default function DataRetentionSettingsPage() {
                                                 step={1}
                                                 value={val}
                                                 onChange={e => setValue(cat.key, e.target.value)}
-                                                className={`w-28 px-4 py-2 border rounded-lg text-sm text-right focus:outline-none focus:ring-2 ${hasError ? 'border-red-300 focus:ring-red-200' : 'border-slate-300 focus:ring-sky-200'}`}
+                                                className={`w-28 px-4 py-2 border rounded-lg text-sm text-right focus:outline-none focus:ring-2 ${hasError ? 'border-red-300 focus:ring-red-200' : 'border-sky-300 focus:ring-sky-200'}`}
                                             />
                                         </div>
-                                        <span className="text-sm text-slate-500 w-10">days</span>
-                                        <span className="text-xs text-slate-400 w-16">
+                                        <span className="text-sm text-sky-500 w-10">days</span>
+                                        <span className="text-xs text-sky-400 w-16">
                                             ≈ {Math.round(val / 365 * 10) / 10}y
                                         </span>
                                     </div>
@@ -135,11 +135,11 @@ export default function DataRetentionSettingsPage() {
                     </div>
 
                     <div className="flex items-center justify-between mt-6">
-                        <p className="text-xs text-slate-400">Changes take effect on the next scheduled purge run (nightly at 02:00 WAT).</p>
+                        <p className="text-xs text-sky-400">Changes take effect on the next scheduled purge run (nightly at 02:00 WAT).</p>
                         <button
                             type="submit"
                             disabled={saving || Object.keys(validationErrors).length > 0}
-                            className="px-8 py-3 bg-slate-800 text-white rounded-xl text-sm font-bold hover:bg-slate-700 transition-colors flex items-center gap-2 shadow-lg disabled:opacity-50"
+                            className="px-8 py-3 bg-sky-800 text-white rounded-xl text-sm font-bold hover:bg-sky-700 transition-colors flex items-center gap-2 shadow-lg disabled:opacity-50"
                         >
                             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                             Save Retention Policy

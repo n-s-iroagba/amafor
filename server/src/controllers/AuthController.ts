@@ -197,7 +197,7 @@ export class AuthController {
         data: {
           user: {
             id: result.user.id,
-            userType: result.user.role,
+            userType: result.user.roles[0],
             username: result.user.username,
           },
           accessToken: result.accessToken,

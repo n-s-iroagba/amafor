@@ -27,10 +27,10 @@ const PlayerPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-sky-50 flex items-center justify-center">
         <div className="flex flex-col items-center">
           <div className="w-16 h-16 border-4 border-sky-400/20 border-t-sky-400 rounded-full animate-spin mb-4" />
-          <p className="text-slate-500 font-medium animate-pulse">Fetching Talent Dossier...</p>
+          <p className="text-sky-500 font-medium animate-pulse">Fetching Talent Dossier...</p>
         </div>
       </div>
     );
@@ -67,13 +67,13 @@ const PlayerPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-sky-50">
       {/* Hero Section */}
-      <div className="bg-slate-900 text-white pt-20 pb-32">
+      <div className="bg-sky-900 text-white pt-20 pb-32">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-12">
             <div className="relative">
-              <div className="w-48 h-48 md:w-64 md:h-64 rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl skew-y-2 hover:skew-y-0 transition-transform duration-500 bg-slate-800">
+              <div className="w-48 h-48 md:w-64 md:h-64 rounded-[2.5rem] overflow-hidden border-4 border-white/10 shadow-2xl skew-y-2 hover:skew-y-0 transition-transform duration-500 bg-sky-800">
                 {player.imageUrl ? (
                   <img
                     src={player.imageUrl}
@@ -82,11 +82,11 @@ const PlayerPage: React.FC = () => {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <Shirt className="h-24 w-24 text-slate-700" />
+                    <Shirt className="h-24 w-24 text-sky-700" />
                   </div>
                 )}
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-sky-400 text-slate-900 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shadow-lg" data-testid="player-jersey">
+              <div className="absolute -bottom-4 -right-4 bg-sky-400 text-sky-900 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black shadow-lg" data-testid="player-jersey">
                 #{player.jerseyNumber || '??'}
               </div>
             </div>
@@ -96,16 +96,16 @@ const PlayerPage: React.FC = () => {
                 <Shield className="w-3.5 h-3.5" /> Verified Athlete
               </div>
               <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tighter uppercase whitespace-pre-wrap" data-testid="player-name">{player.name}</h1>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-slate-400">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sky-400">
                 <div className="flex items-center gap-2">
                   <Shirt className="h-5 w-5 text-sky-400" />
                   <span className="font-bold uppercase tracking-tight">{player.position}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-400">
+                <div className="flex items-center gap-2 text-sky-400">
                   <MapPin className="h-5 w-5 text-sky-400" />
                   <span className="font-bold uppercase tracking-tight">{player.nationality || 'Unspecified'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-400">
+                <div className="flex items-center gap-2 text-sky-400">
                   <Activity className="h-5 w-5 text-sky-400" />
                   <span className="font-bold uppercase tracking-tight">{player.status}</span>
                 </div>
@@ -122,25 +122,25 @@ const PlayerPage: React.FC = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-testid="player-stats-grid">
               {performanceStats.map((stat, i) => (
-                <div key={i} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
+                <div key={i} className="bg-white p-6 rounded-3xl shadow-sm border border-sky-100 hover:shadow-md transition-shadow group">
                   <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                     <stat.icon className="w-5 h-5" />
                   </div>
-                  <div className="text-2xl font-black text-slate-900">{stat.value}</div>
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+                  <div className="text-2xl font-black text-sky-900">{stat.value}</div>
+                  <div className="text-[10px] font-bold text-sky-400 uppercase tracking-widest">{stat.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Biography */}
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-sky-100">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/20">
+                <div className="w-12 h-12 bg-sky-900 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-sky-900/20">
                   <Award className="w-6 h-6" />
                 </div>
-                <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Professional Profile</h2>
+                <h2 className="text-2xl font-black text-sky-900 uppercase tracking-tight">Professional Profile</h2>
               </div>
-              <p className="text-slate-600 leading-relaxed text-lg whitespace-pre-wrap">
+              <p className="text-sky-600 leading-relaxed text-lg whitespace-pre-wrap">
                 {player.biography || player.bio || 'Professional background information is currently being updated for this athlete.'}
               </p>
             </div>
@@ -148,19 +148,19 @@ const PlayerPage: React.FC = () => {
 
           {/* Sidebar */}
           <div className="space-y-8">
-            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
-              <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-8 flex items-center">
+            <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-sky-100">
+              <h3 className="text-sm font-black text-sky-400 uppercase tracking-[0.2em] mb-8 flex items-center">
                 <Activity className="w-5 h-5 mr-3 text-sky-400" /> Vital Statistics
               </h3>
               <div className="space-y-6">
                 <div className="flex items-center justify-between group">
                   <div className="flex items-center gap-4">
-                    <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-slate-100 transition-colors">
-                      <Calendar className="w-5 h-5 text-slate-400" />
+                    <div className="p-3 bg-sky-50 rounded-xl group-hover:bg-sky-100 transition-colors">
+                      <Calendar className="w-5 h-5 text-sky-400" />
                     </div>
                     <div>
-                      <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Date of Birth</div>
-                      <div className="font-bold text-slate-900">{player.dateOfBirth ? formatDate(player.dateOfBirth) : 'N/A'}</div>
+                      <div className="text-[10px] font-black text-sky-400 uppercase tracking-widest">Date of Birth</div>
+                      <div className="font-bold text-sky-900">{player.dateOfBirth ? formatDate(player.dateOfBirth) : 'N/A'}</div>
                     </div>
                   </div>
                   {player.dateOfBirth && (
@@ -171,44 +171,44 @@ const PlayerPage: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-4 group">
-                  <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-slate-100 transition-colors">
-                    <Shield className="w-5 h-5 text-slate-400" />
+                  <div className="p-3 bg-sky-50 rounded-xl group-hover:bg-sky-100 transition-colors">
+                    <Shield className="w-5 h-5 text-sky-400" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Height</div>
-                    <div className="font-bold text-slate-900">{player.height ? `${player.height}m` : 'N/A'}</div>
+                    <div className="text-[10px] font-black text-sky-400 uppercase tracking-widest">Height</div>
+                    <div className="font-bold text-sky-900">{player.height ? `${player.height}m` : 'N/A'}</div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4 group">
-                  <div className="p-3 bg-slate-50 rounded-xl group-hover:bg-slate-100 transition-colors">
-                    <MapPin className="w-5 h-5 text-slate-400" />
+                  <div className="p-3 bg-sky-50 rounded-xl group-hover:bg-sky-100 transition-colors">
+                    <MapPin className="w-5 h-5 text-sky-400" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nationality</div>
-                    <div className="font-bold text-slate-900">{player.nationality || 'N/A'}</div>
+                    <div className="text-[10px] font-black text-sky-400 uppercase tracking-widest">Nationality</div>
+                    <div className="font-bold text-sky-900">{player.nationality || 'N/A'}</div>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-12 pt-12 border-t border-slate-50">
-                <button className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20 active:scale-95 duration-200">
+              <div className="mt-12 pt-12 border-t border-sky-50">
+                <button className="w-full bg-sky-900 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-sky-800 transition-colors shadow-lg shadow-sky-900/20 active:scale-95 duration-200">
                   Request Full Metrics
                 </button>
               </div>
             </div>
 
             {/* Pro-View CTA */}
-            <div className="bg-sky-400 p-8 rounded-[2.5rem] shadow-lg shadow-sky-400/20 text-slate-900 relative overflow-hidden group">
+            <div className="bg-sky-400 p-8 rounded-[2.5rem] shadow-lg shadow-sky-400/20 text-sky-900 relative overflow-hidden group">
               <Shield className="absolute -bottom-4 -right-4 w-32 h-32 text-sky-300 opacity-20 blur-sm group-hover:scale-110 transition-transform duration-700" />
               <div className="relative z-10">
                 <h3 className="text-xl font-black uppercase tracking-tight mb-2">Professional View</h3>
-                <p className="text-xs font-bold text-slate-900/70 mb-6 tracking-tight leading-relaxed">
+                <p className="text-xs font-bold text-sky-900/70 mb-6 tracking-tight leading-relaxed">
                   Are you a scout or agent? Access full performance logs, video archives, and biometric data.
                 </p>
                 <div
                   onClick={() => window.location.href = '/pro-view'}
-                  className="inline-flex items-center gap-2 bg-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 cursor-pointer transition-colors"
+                  className="inline-flex items-center gap-2 bg-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-sky-50 cursor-pointer transition-colors"
                   data-testid="pro-view-cta"
                 >
                   Apply for Access

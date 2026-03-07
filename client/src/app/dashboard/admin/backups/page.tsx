@@ -243,7 +243,7 @@ export default function BackupsPage() {
       </div>
 
       {/* Compliance Note */}
-      <div className="mt-8 flex items-center gap-2 text-xs text-slate-500 bg-slate-100 p-4 rounded-lg">
+      <div className="mt-8 flex items-center gap-2 text-xs text-sky-500 bg-sky-100 p-4 rounded-lg">
         <Shield className="w-4 h-4" />
         <span>Database backups are encrypted at rest and stored in multiple geographic locations per ISO 27001:2022 requirements (BR-SEC-04).</span>
       </div>

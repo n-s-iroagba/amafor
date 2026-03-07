@@ -225,7 +225,7 @@ export default function AuditTrailDashboard() {
       </div>
 
       {/* ISO Compliance Note */}
-      <div className="mt-8 flex items-center gap-2 text-xs text-slate-500 bg-slate-100 p-4 rounded-lg">
+      <div className="mt-8 flex items-center gap-2 text-xs text-sky-500 bg-sky-100 p-4 rounded-lg">
         <Shield className="w-4 h-4" />
         <span>All audit entries are immutably stored per ISO 27001:2022 and NDPR compliance requirements (BR-SEC-03). Logs retained for 7 years.</span>
       </div>

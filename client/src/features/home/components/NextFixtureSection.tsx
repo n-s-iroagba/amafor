@@ -65,9 +65,9 @@ const NextFixtureSection: React.FC = () => {
 
   if (fixtureLoading) {
     return (
-      <section className="py-20 bg-slate-900 border-y border-slate-800/50">
+      <section className="py-20 bg-sky-900 border-y border-sky-800/50">
         <div className="container mx-auto px-4 max-w-7xl animate-pulse">
-          <div className="h-96 bg-slate-800/50 rounded-3xl"></div>
+          <div className="h-96 bg-sky-800/50 rounded-3xl"></div>
         </div>
       </section>
     );
@@ -86,7 +86,7 @@ const NextFixtureSection: React.FC = () => {
   }
 
   return (
-    <section className="relative py-8 overflow-hidden bg-slate-950">
+    <section className="relative py-8 overflow-hidden bg-sky-950">
       {/* Dynamic Background Elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-sky-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob"></div>
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000"></div>
@@ -100,11 +100,11 @@ const NextFixtureSection: React.FC = () => {
             <span>NEXT MATCHDAY</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-black text-black tracking-tight mb-4">
-            <span className="text-black bg-clip-text bg-gradient-to-r from-white to-slate-400">
+            <span className="text-black bg-clip-text bg-gradient-to-r from-white to-sky-400">
               The Big Showdown
             </span>
           </h2>
-          <div className="flex items-center justify-center gap-6 text-slate-400">
+          <div className="flex items-center justify-center gap-6 text-sky-400">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-sky-500" />
               <span className="text-sm md:text-base font-medium">
@@ -115,7 +115,7 @@ const NextFixtureSection: React.FC = () => {
                 })}
               </span>
             </div>
-            <div className="w-1 h-1 rounded-full bg-slate-600"></div>
+            <div className="w-1 h-1 rounded-full bg-sky-600"></div>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-sky-500" />
               <span className="text-sm md:text-base font-medium">
@@ -134,7 +134,7 @@ const NextFixtureSection: React.FC = () => {
           {/* Card Glow */}
           <div className="absolute -inset-1 bg-gradient-to-r from-sky-500 via-indigo-500 to-sky-500 rounded-[2.5rem] opacity-30 group-hover:opacity-50 blur-xl transition-opacity duration-500"></div>
 
-          <div className="relative bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-14 overflow-hidden">
+          <div className="relative bg-sky-900/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-14 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-8">
@@ -159,24 +159,24 @@ const NextFixtureSection: React.FC = () => {
 
               {/* VS / Timer */}
               <div className="flex flex-col items-center justify-center shrink-0 w-full md:w-auto">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-800 rounded-full flex items-center justify-center border-4 border-slate-900 shadow-xl z-20 mb-8">
-                  <span className="text-2xl md:text-3xl font-black text-slate-200 italic">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-sky-800 rounded-full flex items-center justify-center border-4 border-sky-900 shadow-xl z-20 mb-8">
+                  <span className="text-2xl md:text-3xl font-black text-sky-200 italic">
                     VS
                   </span>
                 </div>
 
                 {/* Countdown */}
-                <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 rounded-2xl bg-slate-950/50 border border-white/5 backdrop-blur-sm">
+                <div className="flex items-center gap-3 md:gap-4 p-4 md:p-6 rounded-2xl bg-sky-950/50 border border-white/5 backdrop-blur-sm">
                   <TimeUnit value={timeLeft.days} label="DAYS" />
-                  <div className="text-2xl md:text-3xl font-light text-slate-600 pb-4">
+                  <div className="text-2xl md:text-3xl font-light text-sky-600 pb-4">
                     :
                   </div>
                   <TimeUnit value={timeLeft.hours} label="HRS" />
-                  <div className="text-2xl md:text-3xl font-light text-slate-600 pb-4">
+                  <div className="text-2xl md:text-3xl font-light text-sky-600 pb-4">
                     :
                   </div>
                   <TimeUnit value={timeLeft.minutes} label="MINS" />
-                  <div className="text-2xl md:text-3xl font-light text-slate-600 pb-4">
+                  <div className="text-2xl md:text-3xl font-light text-sky-600 pb-4">
                     :
                   </div>
                   <TimeUnit value={timeLeft.seconds} label="SECS" />
@@ -197,7 +197,7 @@ const NextFixtureSection: React.FC = () => {
                 <h3 className="text-2xl md:text-4xl font-black text-black mb-2 tracking-tight">
                   {fixture.awayTeam}
                 </h3>
-                <p className="text-slate-900 font-bold tracking-widest text-sm">
+                <p className="text-sky-900 font-bold tracking-widest text-sm">
                   AWAY
                 </p>
               </div>
@@ -205,7 +205,7 @@ const NextFixtureSection: React.FC = () => {
 
             {/* Stadium / Location */}
             <div className="mt-12 pt-8 border-t border-white/10 flex flex-col items-center text-center">
-              <div className="inline-flex items-center gap-2 text-slate-400 mb-8">
+              <div className="inline-flex items-center gap-2 text-sky-400 mb-8">
                 <MapPin className="w-4 h-4" />
                 <span className="text-sm font-medium tracking-wide uppercase">
                   {fixture.venue || "Home Ground"}
@@ -214,7 +214,7 @@ const NextFixtureSection: React.FC = () => {
 
               <Link
                 href={`/fixtures/${fixture.id}`}
-                className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-slate-950 font-bold text-lg rounded-full overflow-hidden transition-all hover:bg-sky-50 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
+                className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-sky-950 font-bold text-lg rounded-full overflow-hidden transition-all hover:bg-sky-50 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   MATCH CENTER
@@ -231,10 +231,10 @@ const NextFixtureSection: React.FC = () => {
 
 const TimeUnit = ({ value, label }: { value: number; label: string }) => (
   <div className="flex flex-col items-center min-w-[60px] md:min-w-[80px]">
-    <span className="text-3xl md:text-5xl font-black text-black bg-clip-text bg-gradient-to-b from-white to-slate-400 tabular-nums leading-none mb-2">
+    <span className="text-3xl md:text-5xl font-black text-black bg-clip-text bg-gradient-to-b from-white to-sky-400 tabular-nums leading-none mb-2">
       {String(value).padStart(2, "0")}
     </span>
-    <span className="text-[10px] md:text-xs font-bold text-slate-500 tracking-[0.2em]">
+    <span className="text-[10px] md:text-xs font-bold text-sky-500 tracking-[0.2em]">
       {label}
     </span>
   </div>

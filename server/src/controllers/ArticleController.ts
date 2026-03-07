@@ -374,7 +374,7 @@ export class ArticleController {
 
         const authorId = (req as any).user?.id || 'system';
 
-        const article = await this.articleService.createWithAudit(req.body, authorId);
+        const article = await this.articleService.createArticle({ ...req.body, authorId });
 
         ApiResponse.success(res, {
           message: 'Article created successfully',
@@ -400,7 +400,7 @@ export class ArticleController {
       try {
         const { id } = req.params;
         const authorId = (req as any).user?.id || 'system';
-        const article = await this.articleService.updateWithAudit(id, req.body, authorId);
+        const article = await this.articleService.updateArticle(id, { ...req.body, authorId });
 
         ApiResponse.success(res, {
           message: 'Article updated successfully',
@@ -476,6 +476,7 @@ export class ArticleController {
 
         const filterOptions = {
           ...filters,
+          tag: filters.tag as any, // Cast to bypass strict tag type
           status: ArticleStatus.DRAFT // Fetch drafts instead of published
         };
 

@@ -14,6 +14,7 @@ import { Footer } from '@/shared/components/Footer';
 import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget';
 import { Article } from '@/features/articles/types';
 import { formatDate } from '@/shared/utils';
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 
 
@@ -62,6 +63,8 @@ const ArticleList: React.FC = () => {
           </h1>
         </motion.div>
 
+        <AdDisplay identifier="SIDEBAR" className="mb-8" />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {[...Array(6)].map((_, i) => (
             <ArticleSkeleton key={i} />
@@ -87,6 +90,8 @@ const ArticleList: React.FC = () => {
             </span>
           </h1>
         </motion.div>
+
+        <AdDisplay identifier="SIDEBAR" className="mb-8" />
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-center px-4 py-3 rounded-lg mb-6">

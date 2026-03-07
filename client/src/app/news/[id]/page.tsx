@@ -6,6 +6,7 @@ import { Article } from '@/features/articles/types';
 import { cleanText } from '@/features/articles/utils';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 /**
  * Page: Article Detail
@@ -113,6 +114,8 @@ export default function NewsDetailPage() {
                 </p>
               )}
 
+              <AdDisplay identifier="MID_ART" className="my-4" />
+
               {/* Content */}
               <div className="prose prose-sky max-w-none min-h-[10rem] break-words" data-testid="article-content">
                 <div
@@ -122,9 +125,10 @@ export default function NewsDetailPage() {
                 />
               </div>
 
-
             </div>
           </article>
+
+          <AdDisplay identifier="ART_FOOT" className="my-6" />
 
           {/* Back button */}
           <div className="mt-6">

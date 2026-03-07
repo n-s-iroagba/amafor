@@ -83,11 +83,11 @@ export default function ResetPasswordPage() {
         const accessToken = response.accessToken;
 
         setUser(user);
-        localStorage.setItem("accessToken", accessToken);
+        setAccessToken(acessToken)
 
         setMessage("Password reset successful! Redirecting...");
 
-        // Navigate based on UserRole
+
         setTimeout(() => {
           router.push("/dashboard");
         }, 2000);
@@ -102,14 +102,14 @@ export default function ResetPasswordPage() {
   if (!isMounted) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <div className="bg-white rounded-2xl shadow-sm border-2 border-slate-50 relative max-w-md w-full p-8">
+    <div className="min-h-screen flex items-center justify-center bg-sky-50 p-4">
+      <div className="bg-white rounded-2xl shadow-sm border-2 border-sky-50 relative max-w-md w-full p-8">
         {/* Decorative Corner Borders */}
-        <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-slate-800 opacity-20" />
-        <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-slate-800 opacity-20" />
+        <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-sky-800 opacity-20" />
+        <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-sky-800 opacity-20" />
 
-        <h1 className="text-2xl font-bold text-slate-900 mb-8 text-center flex items-center justify-center gap-2">
-          <UserCircle className="w-8 h-8 text-slate-700" />
+        <h1 className="text-2xl font-bold text-sky-900 mb-8 text-center flex items-center justify-center gap-2">
+          <UserCircle className="w-8 h-8 text-sky-700" />
           {message ? "Success!" : "New Password"}
         </h1>
 
@@ -144,7 +144,7 @@ export default function ResetPasswordPage() {
               },
             ].map(({ label, name, type, Icon }) => (
               <div key={name}>
-                <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                <label className="block text-sm font-medium text-sky-700 mb-2 flex items-center gap-2">
                   <Icon className="w-4 h-4" />
                   {label}
                 </label>
@@ -154,11 +154,10 @@ export default function ResetPasswordPage() {
                   value={form[name as keyof FormState]}
                   onChange={handleChange}
                   required
-                  className={`w-full p-3 rounded-xl border-2 ${
-                    error?.toLowerCase().includes(name)
-                      ? "border-red-300"
-                      : "border-slate-100"
-                  } focus:border-slate-500 focus:ring-2 focus:ring-slate-200 transition-all`}
+                  className={`w-full p-3 rounded-xl border-2 ${error?.toLowerCase().includes(name)
+                    ? "border-red-300"
+                    : "border-sky-100"
+                    } focus:border-sky-500 focus:ring-2 focus:ring-sky-200 transition-all`}
                   data-testid={`${name}-input`}
                 />
               </div>
@@ -167,7 +166,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={resetLoading}
-              className="w-full py-3 bg-slate-700 text-white rounded-xl hover:bg-slate-800 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 bg-sky-700 text-white rounded-xl hover:bg-sky-800 disabled:bg-sky-400 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
               data-testid="reset-password-btn"
             >
               {resetLoading ? (
@@ -183,7 +182,7 @@ export default function ResetPasswordPage() {
         ) : (
           <button
             onClick={() => router.push("/login")}
-            className="w-full py-3 bg-slate-700 text-white rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+            className="w-full py-3 bg-sky-700 text-white rounded-xl hover:bg-sky-800 transition-all flex items-center justify-center gap-2"
           >
             <RefreshCw className="w-5 h-5" />
             Go to Login

@@ -26,6 +26,7 @@ import { useGet } from "@/shared/hooks/useApiQuery";
 import { API_ROUTES } from "@/config/routes";
 import { FixtureWithLeague, FixtureStatus } from "@/features/fixture/types";
 import { Lineup } from "@/features/lineup/types";
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 /**
  * Page: Fixture Details
@@ -180,11 +181,11 @@ export default function FixtureDetailsPage() {
     return (
       <div
         key={player.id}
-        className="bg-white rounded-lg border border-slate-200 p-4 hover:shadow-md transition-shadow"
+        className="bg-white rounded-lg border border-sky-200 p-4 hover:shadow-md transition-shadow"
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center">
               {player.imageUrl ? (
                 <Image
                   src={player.imageUrl}
@@ -194,11 +195,11 @@ export default function FixtureDetailsPage() {
                   className="rounded-full object-cover"
                 />
               ) : (
-                <User className="h-6 w-6 text-slate-400" />
+                <User className="h-6 w-6 text-sky-400" />
               )}
             </div>
             <div>
-              <h4 className="font-semibold text-slate-800">{player.name}</h4>
+              <h4 className="font-semibold text-sky-800">{player.name}</h4>
               <div className="flex items-center gap-2 mt-1">
                 <span
                   className={`px-2 py-0.5 rounded-full text-xs font-medium ${getPositionColor(player.position as string)}`}
@@ -206,7 +207,7 @@ export default function FixtureDetailsPage() {
                   {player.position.replace("_", " ")}
                 </span>
                 {player.jerseyNumber && (
-                  <span className="px-2 py-0.5 bg-slate-100 text-slate-700 rounded-full text-xs font-medium">
+                  <span className="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full text-xs font-medium">
                     #{player.jerseyNumber}
                   </span>
                 )}
@@ -222,7 +223,7 @@ export default function FixtureDetailsPage() {
 
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="space-y-1">
-            <div className="flex items-center gap-1 text-slate-600">
+            <div className="flex items-center gap-1 text-sky-600">
               <Target className="h-3 w-3" />
               <span>Form:</span>
               <span
@@ -231,29 +232,28 @@ export default function FixtureDetailsPage() {
                 {player.form || "N/A"}
               </span>
             </div>
-            <div className="flex items-center gap-1 text-slate-600">
+            <div className="flex items-center gap-1 text-sky-600">
               <Activity className="h-3 w-3" />
               <span>Status:</span>
               <span
-                className={`font-medium ${
-                  player.status === "ACTIVE"
-                    ? "text-green-600"
-                    : player.status === "INJURED"
-                      ? "text-red-600"
-                      : "text-yellow-600"
-                }`}
+                className={`font-medium ${player.status === "ACTIVE"
+                  ? "text-green-600"
+                  : player.status === "INJURED"
+                    ? "text-red-600"
+                    : "text-yellow-600"
+                  }`}
               >
                 {player.status}
               </span>
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-slate-600">
+            <div className="text-sky-600">
               <span className="font-medium">
                 {player.heightInCm || "N/A"} cm
               </span>
             </div>
-            <div className="text-slate-600">
+            <div className="text-sky-600">
               <span className="font-medium">{player.nationality || "N/A"}</span>
             </div>
           </div>
@@ -264,11 +264,11 @@ export default function FixtureDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-slate-700 animate-spin mb-4" />
-            <p className="text-slate-600">Loading fixture details...</p>
+            <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
+            <p className="text-sky-600">Loading fixture details...</p>
           </div>
         </div>
       </div>
@@ -277,11 +277,11 @@ export default function FixtureDetailsPage() {
 
   if (error || !fixture) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-slate-700 hover:text-slate-900 mb-8"
+            className="flex items-center gap-2 text-sky-700 hover:text-sky-900 mb-8"
           >
             <ChevronLeft className="h-5 w-5" />
             Back to Fixtures
@@ -310,13 +310,13 @@ export default function FixtureDetailsPage() {
   const statusDisplay = getStatusColor(fixture.status);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+      <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
         <div className="container mx-auto max-w-7xl px-4 py-6">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-slate-300 hover:text-white mb-6 transition-colors"
+            className="flex items-center gap-2 text-sky-300 hover:text-white mb-6 transition-colors"
             data-testid="back-button"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -348,7 +348,7 @@ export default function FixtureDetailsPage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-slate-300">
+              <div className="flex flex-wrap items-center gap-4 text-sky-300">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-5 w-5" />
                   <span>{formatDate(String(fixture.matchDate))}</span>
@@ -368,7 +368,7 @@ export default function FixtureDetailsPage() {
                     <Home className="h-8 w-8 text-white" />
                   </div>
                   <div className="font-bold text-lg">{fixture.homeTeam}</div>
-                  <div className="text-sm text-slate-300">Home</div>
+                  <div className="text-sm text-sky-300">Home</div>
                 </div>
 
                 <div className="text-center px-6">
@@ -379,7 +379,7 @@ export default function FixtureDetailsPage() {
                       <div className="text-5xl font-bold mb-2">
                         {fixture.homeScore || 0} - {fixture.awayScore || 0}
                       </div>
-                      <div className="text-sm text-slate-300">Final Score</div>
+                      <div className="text-sm text-sky-300">Final Score</div>
                     </>
                   )}
                 </div>
@@ -389,7 +389,7 @@ export default function FixtureDetailsPage() {
                     <GlobeIcon className="h-8 w-8 text-white" />
                   </div>
                   <div className="font-bold text-lg">{fixture.awayTeam}</div>
-                  <div className="text-sm text-slate-300">Away</div>
+                  <div className="text-sm text-sky-300">Away</div>
                 </div>
               </div>
             </div>
@@ -398,8 +398,10 @@ export default function FixtureDetailsPage() {
       </div>
 
       <div className="container mx-auto max-w-7xl px-4 py-8">
+        <AdDisplay identifier="SIDEBAR" className="mb-8" />
+
         {/* Tabs */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-sky-200 mb-8">
           <div className="flex overflow-x-auto">
             {[
               { id: "overview", label: "Overview", icon: Eye },
@@ -412,11 +414,10 @@ export default function FixtureDetailsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 px-6 py-4 border-b-2 font-medium transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? "border-blue-600 text-blue-700 bg-blue-50"
-                      : "border-transparent text-slate-600 hover:text-slate-800 hover:bg-slate-50"
-                  }`}
+                  className={`flex items-center gap-2 px-6 py-4 border-b-2 font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
+                    ? "border-blue-600 text-blue-700 bg-blue-50"
+                    : "border-transparent text-sky-600 hover:text-sky-800 hover:bg-sky-50"
+                    }`}
                 >
                   <Icon className="h-5 w-5" />
                   {tab.label}
@@ -431,55 +432,55 @@ export default function FixtureDetailsPage() {
               <div className="space-y-6">
                 {/* Fixture Summary */}
                 <div>
-                  <h3 className="text-xl font-semibold text-slate-800 mb-4">
+                  <h3 className="text-xl font-semibold text-sky-800 mb-4">
                     Fixture Summary
                   </h3>
-                  <div className="bg-slate-50 rounded-lg p-6">
-                    <p className="text-slate-700">
+                  <div className="bg-sky-50 rounded-lg p-6">
+                    <p className="text-sky-700">
                       {fixture.status === FixtureStatus.SCHEDULED
                         ? `Upcoming match between ${fixture.homeTeam} and ${fixture.awayTeam} at ${fixture.venue}.`
                         : `Fixture played on ${formatDate(String(fixture.matchDate))} at ${fixture.venue}. ` +
-                          `${fixture.homeTeam} ${fixture.status === FixtureStatus.WON ? "won" : fixture.status === FixtureStatus.LOST ? "lost" : "drew"} ` +
-                          `with a score of ${fixture.homeScore || 0}-${fixture.awayScore || 0}.`}
+                        `${fixture.homeTeam} ${fixture.status === FixtureStatus.WON ? "won" : fixture.status === FixtureStatus.LOST ? "lost" : "drew"} ` +
+                        `with a score of ${fixture.homeScore || 0}-${fixture.awayScore || 0}.`}
                     </p>
                   </div>
                 </div>
 
                 {/* Quick Stats */}
                 <div>
-                  <h3 className="text-xl font-semibold text-slate-800 mb-4">
+                  <h3 className="text-xl font-semibold text-sky-800 mb-4">
                     Quick Stats
                   </h3>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
-                      <div className="text-2xl font-bold text-slate-800 mb-1">
+                    <div className="bg-white border border-sky-200 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-sky-800 mb-1">
                         {fixture.statistics?.homePossession || "50"}%
                       </div>
-                      <div className="text-sm text-slate-600">
+                      <div className="text-sm text-sky-600">
                         Possession (Home)
                       </div>
                     </div>
-                    <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
-                      <div className="text-2xl font-bold text-slate-800 mb-1">
+                    <div className="bg-white border border-sky-200 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-sky-800 mb-1">
                         {fixture.statistics?.homeShots || "0"}
                       </div>
-                      <div className="text-sm text-slate-600">
+                      <div className="text-sm text-sky-600">
                         Total Shots (Home)
                       </div>
                     </div>
-                    <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
-                      <div className="text-2xl font-bold text-slate-800 mb-1">
+                    <div className="bg-white border border-sky-200 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-sky-800 mb-1">
                         {fixture.statistics?.homeCorners || "0"}
                       </div>
-                      <div className="text-sm text-slate-600">
+                      <div className="text-sm text-sky-600">
                         Corners (Home)
                       </div>
                     </div>
-                    <div className="bg-white border border-slate-200 rounded-lg p-4 text-center">
-                      <div className="text-2xl font-bold text-slate-800 mb-1">
+                    <div className="bg-white border border-sky-200 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold text-sky-800 mb-1">
                         {fixture.statistics?.homeFouls || "0"}
                       </div>
-                      <div className="text-sm text-slate-600">Fouls (Home)</div>
+                      <div className="text-sm text-sky-600">Fouls (Home)</div>
                     </div>
                   </div>
                 </div>
@@ -492,21 +493,19 @@ export default function FixtureDetailsPage() {
                 <div className="flex items-center gap-4 mb-6">
                   <button
                     onClick={() => setSelectedTeam("home")}
-                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                      selectedTeam === "home"
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                    }`}
+                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${selectedTeam === "home"
+                      ? "bg-blue-600 text-white"
+                      : "bg-sky-100 text-sky-700 hover:bg-sky-200"
+                      }`}
                   >
                     {fixture.homeTeam} Lineup
                   </button>
                   <button
                     onClick={() => setSelectedTeam("away")}
-                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                      selectedTeam === "away"
-                        ? "bg-blue-600 text-white"
-                        : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                    }`}
+                    className={`px-6 py-3 rounded-lg font-medium transition-colors ${selectedTeam === "away"
+                      ? "bg-blue-600 text-white"
+                      : "bg-sky-100 text-sky-700 hover:bg-sky-200"
+                      }`}
                   >
                     {fixture.awayTeam} Lineup
                   </button>
@@ -515,7 +514,7 @@ export default function FixtureDetailsPage() {
                 {/* Lineup Display */}
                 {homeLineup.length > 0 ? (
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-800 mb-4">
+                    <h3 className="text-lg font-semibold text-sky-800 mb-4">
                       {selectedTeam === "home"
                         ? fixture.homeTeam
                         : fixture.awayTeam}{" "}
@@ -532,7 +531,7 @@ export default function FixtureDetailsPage() {
 
                         return (
                           <div key={positionCategory}>
-                            <h4 className="text-md font-medium text-slate-700 mb-3 capitalize">
+                            <h4 className="text-md font-medium text-sky-700 mb-3 capitalize">
                               {positionCategory.toLowerCase()}s (
                               {players.length})
                             </h4>
@@ -546,11 +545,11 @@ export default function FixtureDetailsPage() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Users className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-slate-700 mb-2">
+                    <Users className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-sky-700 mb-2">
                       No lineup data
                     </h3>
-                    <p className="text-slate-500">
+                    <p className="text-sky-500">
                       Lineup information is not available for this match.
                     </p>
                   </div>
@@ -560,32 +559,32 @@ export default function FixtureDetailsPage() {
 
             {activeTab === "stats" && (
               <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-slate-800 mb-4">
+                <h3 className="text-xl font-semibold text-sky-800 mb-4">
                   Fixture Statistics
                 </h3>
 
                 {fixture.statistics ? (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Home Team Stats */}
-                    <div className="bg-white border border-slate-200 rounded-lg p-6">
-                      <h4 className="font-semibold text-slate-800 mb-4">
+                    <div className="bg-white border border-sky-200 rounded-lg p-6">
+                      <h4 className="font-semibold text-sky-800 mb-4">
                         {fixture.homeTeam}
                       </h4>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Possession</span>
+                          <span className="text-sky-600">Possession</span>
                           <span className="font-semibold">
                             {fixture.statistics.homePossession}%
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Shots</span>
+                          <span className="text-sky-600">Shots</span>
                           <span className="font-semibold">
                             {fixture.statistics.homeShots}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">
+                          <span className="text-sky-600">
                             Shots on Target
                           </span>
                           <span className="font-semibold">
@@ -593,13 +592,13 @@ export default function FixtureDetailsPage() {
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Corners</span>
+                          <span className="text-sky-600">Corners</span>
                           <span className="font-semibold">
                             {fixture.statistics.homeCorners}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Fouls</span>
+                          <span className="text-sky-600">Fouls</span>
                           <span className="font-semibold">
                             {fixture.statistics.homeFouls}
                           </span>
@@ -608,25 +607,25 @@ export default function FixtureDetailsPage() {
                     </div>
 
                     {/* Away Team Stats */}
-                    <div className="bg-white border border-slate-200 rounded-lg p-6">
-                      <h4 className="font-semibold text-slate-800 mb-4">
+                    <div className="bg-white border border-sky-200 rounded-lg p-6">
+                      <h4 className="font-semibold text-sky-800 mb-4">
                         {fixture.awayTeam}
                       </h4>
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Possession</span>
+                          <span className="text-sky-600">Possession</span>
                           <span className="font-semibold">
                             {fixture.statistics.awayPossession}%
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Shots</span>
+                          <span className="text-sky-600">Shots</span>
                           <span className="font-semibold">
                             {fixture.statistics.awayShots}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">
+                          <span className="text-sky-600">
                             Shots on Target
                           </span>
                           <span className="font-semibold">
@@ -634,13 +633,13 @@ export default function FixtureDetailsPage() {
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Corners</span>
+                          <span className="text-sky-600">Corners</span>
                           <span className="font-semibold">
                             {fixture.statistics.awayCorners}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-600">Fouls</span>
+                          <span className="text-sky-600">Fouls</span>
                           <span className="font-semibold">
                             {fixture.statistics.awayFouls}
                           </span>
@@ -650,8 +649,8 @@ export default function FixtureDetailsPage() {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <BarChart3 className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-500">
+                    <BarChart3 className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+                    <p className="text-sky-500">
                       Fixture statistics are not available.
                     </p>
                   </div>
@@ -661,11 +660,11 @@ export default function FixtureDetailsPage() {
 
             {activeTab === "timeline" && (
               <div className="text-center py-12">
-                <Clock className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-slate-700 mb-2">
+                <Clock className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-sky-700 mb-2">
                   Fixture Timeline
                 </h3>
-                <p className="text-slate-500">
+                <p className="text-sky-500">
                   Fixture timeline and events will be displayed here.
                 </p>
               </div>
@@ -684,11 +683,11 @@ export default function FixtureDetailsPage() {
             </button>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-2">
+            <button className="px-4 py-2.5 border border-sky-300 text-sky-700 rounded-lg hover:bg-sky-50 transition-colors flex items-center gap-2">
               <Download className="h-4 w-4" />
               Export
             </button>
-            <button className="px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-2">
+            <button className="px-4 py-2.5 border border-sky-300 text-sky-700 rounded-lg hover:bg-sky-50 transition-colors flex items-center gap-2">
               <Share2 className="h-4 w-4" />
               Share
             </button>

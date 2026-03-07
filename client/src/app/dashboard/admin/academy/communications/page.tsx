@@ -19,7 +19,7 @@ interface Recipient { id: string; name: string; guardianName?: string; phone?: s
 const CHANNELS = [
     { id: 'whatsapp', label: 'WhatsApp', icon: MessageCircle, color: 'text-green-600', bg: 'bg-green-50 border-green-200' },
     { id: 'email', label: 'Email', icon: Mail, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
-    { id: 'sms', label: 'SMS', icon: Smartphone, color: 'text-slate-600', bg: 'bg-slate-50 border-slate-200' },
+    { id: 'sms', label: 'SMS', icon: Smartphone, color: 'text-sky-600', bg: 'bg-sky-50 border-sky-200' },
 ];
 
 const TEMPLATES = [
@@ -55,17 +55,17 @@ export default function CommunicationsHubPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
+            <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
                 <div className="container mx-auto max-w-7xl px-4 py-8">
-                    <Link href="/dashboard/admin" className="inline-flex items-center text-slate-400 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                    <Link href="/dashboard/admin" className="inline-flex items-center text-sky-400 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
                         <ArrowLeft className="w-3 h-3 mr-2" /> Central Command
                     </Link>
                     <div className="flex items-center gap-3 mb-2">
                         <div className="bg-sky-600 p-2 rounded-xl"><MessageSquare className="w-5 h-5 text-white" /></div>
                         <h1 className="text-3xl font-bold">Communications Hub</h1>
                     </div>
-                    <p className="text-slate-300 text-sm">
+                    <p className="text-sky-300 text-sm">
                         Send WhatsApp → Email → SMS fallback messages to trialists and guardians (BR-ADV-05, BR-ADV-06).
                     </p>
                 </div>
@@ -75,8 +75,8 @@ export default function CommunicationsHubPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Compose Panel */}
                     <div className="lg:col-span-2">
-                        <form onSubmit={handleSend} className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 space-y-6">
-                            <h2 className="font-bold text-slate-800 text-lg">Compose Message</h2>
+                        <form onSubmit={handleSend} className="bg-white rounded-xl shadow-sm border border-sky-200 p-8 space-y-6">
+                            <h2 className="font-bold text-sky-800 text-lg">Compose Message</h2>
 
                             {sent && (
                                 <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
@@ -93,7 +93,7 @@ export default function CommunicationsHubPage() {
 
                             {/* Channel selector */}
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-3">Channel (fallback: WhatsApp → Email → SMS)</label>
+                                <label className="block text-sm font-semibold text-sky-700 mb-3">Channel (fallback: WhatsApp → Email → SMS)</label>
                                 <div className="grid grid-cols-3 gap-3">
                                     {CHANNELS.map(ch => {
                                         const Icon = ch.icon;
@@ -103,7 +103,7 @@ export default function CommunicationsHubPage() {
                                                 type="button"
                                                 onClick={() => setChannel(ch.id)}
                                                 className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 transition-colors text-sm font-semibold
-                          ${channel === ch.id ? `${ch.bg} border-current ${ch.color}` : 'border-slate-200 text-slate-400 hover:border-slate-300'}`}
+                          ${channel === ch.id ? `${ch.bg} border-current ${ch.color}` : 'border-sky-200 text-sky-400 hover:border-sky-300'}`}
                                             >
                                                 <Icon className="w-5 h-5" /> {ch.label}
                                             </button>
@@ -114,7 +114,7 @@ export default function CommunicationsHubPage() {
 
                             {/* Group */}
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">Recipients</label>
+                                <label className="block text-sm font-semibold text-sky-700 mb-2">Recipients</label>
                                 <div className="flex items-center gap-3">
                                     {(['trialists', 'guardians', 'all'] as const).map(g => (
                                         <button
@@ -122,52 +122,52 @@ export default function CommunicationsHubPage() {
                                             type="button"
                                             onClick={() => setGroup(g)}
                                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize
-                        ${group === g ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                        ${group === g ? 'bg-sky-800 text-white' : 'bg-sky-100 text-sky-600 hover:bg-sky-200'}`}
                                         >
                                             {g === 'all' ? 'All' : g.charAt(0).toUpperCase() + g.slice(1)}
                                         </button>
                                     ))}
-                                    {loading ? <Loader2 className="w-4 h-4 animate-spin text-slate-400" /> : <span className="text-sm text-slate-500">{recipients?.length ?? 0} recipients</span>}
+                                    {loading ? <Loader2 className="w-4 h-4 animate-spin text-sky-400" /> : <span className="text-sm text-sky-500">{recipients?.length ?? 0} recipients</span>}
                                 </div>
                             </div>
 
                             {/* Template */}
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">Template</label>
+                                <label className="block text-sm font-semibold text-sky-700 mb-2">Template</label>
                                 <div className="relative">
                                     <select
                                         value={templateId}
                                         onChange={e => handleTemplateChange(e.target.value)}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200 appearance-none"
+                                        className="w-full px-4 py-3 border border-sky-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200 appearance-none"
                                     >
                                         {TEMPLATES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
                                     </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sky-400 pointer-events-none" />
                                 </div>
                             </div>
 
                             {/* Message body */}
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                                <label className="block text-sm font-semibold text-sky-700 mb-2">
                                     Message Body
-                                    <span className="ml-2 text-xs font-normal text-slate-400">Use &#123;name&#125;, &#123;guardian&#125;, &#123;date&#125; as merge tags</span>
+                                    <span className="ml-2 text-xs font-normal text-sky-400">Use &#123;name&#125;, &#123;guardian&#125;, &#123;date&#125; as merge tags</span>
                                 </label>
                                 <textarea
                                     value={body}
                                     onChange={e => setBody(e.target.value)}
                                     rows={5}
                                     required
-                                    className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200 resize-none"
+                                    className="w-full px-4 py-3 border border-sky-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200 resize-none"
                                 />
-                                <p className="text-xs text-slate-400 mt-1">{body.length} characters</p>
+                                <p className="text-xs text-sky-400 mt-1">{body.length} characters</p>
                             </div>
 
-                            <div className="flex items-center justify-end gap-4 pt-4 border-t border-slate-200">
-                                <span className="text-xs text-slate-400">Sending via <strong>{CHANNELS.find(c => c.id === channel)?.label}</strong> to <strong>{recipients?.length ?? 0}</strong> recipient(s)</span>
+                            <div className="flex items-center justify-end gap-4 pt-4 border-t border-sky-200">
+                                <span className="text-xs text-sky-400">Sending via <strong>{CHANNELS.find(c => c.id === channel)?.label}</strong> to <strong>{recipients?.length ?? 0}</strong> recipient(s)</span>
                                 <button
                                     type="submit"
                                     disabled={sending || !body.trim()}
-                                    className="px-8 py-3 bg-slate-800 text-white rounded-lg text-sm font-bold hover:bg-slate-700 transition-colors flex items-center gap-2 disabled:opacity-50"
+                                    className="px-8 py-3 bg-sky-800 text-white rounded-lg text-sm font-bold hover:bg-sky-700 transition-colors flex items-center gap-2 disabled:opacity-50"
                                 >
                                     {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                                     Send Message
@@ -177,26 +177,26 @@ export default function CommunicationsHubPage() {
                     </div>
 
                     {/* Recipient Preview */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                    <div className="bg-white rounded-xl shadow-sm border border-sky-200 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-sky-200 flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <Users className="w-4 h-4 text-slate-500" />
-                                <h3 className="font-bold text-slate-800">Recipients</h3>
+                                <Users className="w-4 h-4 text-sky-500" />
+                                <h3 className="font-bold text-sky-800">Recipients</h3>
                             </div>
-                            {loading && <Loader2 className="w-4 h-4 animate-spin text-slate-400" />}
+                            {loading && <Loader2 className="w-4 h-4 animate-spin text-sky-400" />}
                         </div>
-                        <div className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
+                        <div className="divide-y divide-sky-100 max-h-96 overflow-y-auto">
                             {(recipients ?? []).length === 0 ? (
-                                <div className="p-8 text-center"><p className="text-sm text-slate-500">No recipients found.</p></div>
+                                <div className="p-8 text-center"><p className="text-sm text-sky-500">No recipients found.</p></div>
                             ) : (recipients ?? []).slice(0, 20).map(r => (
                                 <div key={r.id} className="px-6 py-3">
-                                    <p className="text-sm font-medium text-slate-800">{r.name}</p>
-                                    {r.guardianName && <p className="text-xs text-slate-500">Guardian: {r.guardianName}</p>}
-                                    {r.email && <p className="text-xs text-slate-400">{r.email}</p>}
+                                    <p className="text-sm font-medium text-sky-800">{r.name}</p>
+                                    {r.guardianName && <p className="text-xs text-sky-500">Guardian: {r.guardianName}</p>}
+                                    {r.email && <p className="text-xs text-sky-400">{r.email}</p>}
                                 </div>
                             ))}
                             {(recipients?.length ?? 0) > 20 && (
-                                <div className="px-6 py-3 text-xs text-slate-400">+ {(recipients?.length ?? 0) - 20} more…</div>
+                                <div className="px-6 py-3 text-xs text-sky-400">+ {(recipients?.length ?? 0) - 20} more…</div>
                             )}
                         </div>
                     </div>

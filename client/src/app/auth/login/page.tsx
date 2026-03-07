@@ -18,6 +18,7 @@ import { API_ROUTES } from "@/config/routes";
 import { usePost } from "@/shared/hooks/useApiQuery";
 import { AuthUser } from "@/shared/types";
 import { useAuthContext } from "@/shared/hooks/useAuthContext";
+import { setAccessToken } from "@/shared/lib/axios";
 
 /**
  * Page: Login Page
@@ -57,19 +58,14 @@ export default function LoginPage() {
   const router = useRouter();
   const { setUser } = useAuthContext();
 
+
   // Redirect on success
   React.useEffect(() => {
     if (loginSuccess && successUser) {
-      console.log("Login Success! User:", successUser); // DEBUG
+
       const timer = setTimeout(() => {
-        // Determine dashboard based on role
-        if (successUser.role === "admin") {
-          router.push("/dashboard/admin");
-        } else if (successUser.role === "scout") {
-          router.push("/dashboard/scout");
-        } else if (successUser.role === "advertiser") {
-          router.push("/dashboard/advertiser");
-        }
+        // Redirect to unified dashboard entry point for role evaluation
+        router.push("/dashboard");
       }, 1500);
       return () => clearTimeout(timer);
     }
@@ -87,9 +83,10 @@ export default function LoginPage() {
       if (data && "user" in data) {
         const user: AuthUser = data.user;
         const accessToken = data.accessToken;
+        setAccessToken(accessToken)
 
         setUser(user);
-        localStorage.setItem("accessToken", accessToken);
+
         setSuccessUser(user);
         setLoginSuccess(true);
       } else if (data && "verificationToken" in data) {
@@ -152,19 +149,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg border border-sky-200 relative max-w-md w-full p-8">
         {/* Logo/Icon Header */}
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-sky-700 to-sky-900 rounded-full flex items-center justify-center">
             <UserCircle className="w-8 h-8 text-white" />
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+        <h1 className="text-2xl font-bold text-sky-900 mb-2 text-center">
           {loginSuccess ? "Welcome Back!" : "Sign In"}
         </h1>
-        <p className="text-slate-600 text-center mb-8">
+        <p className="text-sky-600 text-center mb-8">
           {loginSuccess
             ? `Welcome, ${successUser?.username || "User"}!`
             : "Enter your credentials to continue"}
@@ -189,15 +186,15 @@ export default function LoginPage() {
               <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-10 h-10 text-green-500" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              <h3 className="text-lg font-semibold text-sky-900 mb-2">
                 Login Successful!
               </h3>
-              <p className="text-slate-600">
+              <p className="text-sky-600">
                 Redirecting you to your dashboard...
               </p>
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600">
+            <div className="bg-sky-50 rounded-xl p-4 text-sm text-sky-600">
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -205,7 +202,7 @@ export default function LoginPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Role: {successUser?.role}</span>
+                  <span>Roles: {successUser?.roles.join(', ')}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Loader2 className="w-4 h-4 text-blue-500 mt-0.5 animate-spin flex-shrink-0" />
@@ -219,23 +216,22 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+                <label className="block text-sm font-medium text-sky-700">
                   Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                    <Mail className="w-5 h-5 text-slate-400" />
+                    <Mail className="w-5 h-5 text-sky-400" />
                   </div>
                   <input
                     type="email"
                     name="email"
                     value={loginRequest.email}
                     onChange={handleChange}
-                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${
-                      validationErrors.email
-                        ? "border-red-300"
-                        : "border-slate-200"
-                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    className={`w-full pl-11 pr-4 py-3 rounded-xl border ${validationErrors.email
+                      ? "border-red-300"
+                      : "border-sky-200"
+                      } focus:border-sky-400 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all`}
                     placeholder="you@example.com"
                     disabled={loginLoading}
                     data-testid="email-input"
@@ -250,23 +246,22 @@ export default function LoginPage() {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+                <label className="block text-sm font-medium text-sky-700">
                   Password
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                    <Lock className="w-5 h-5 text-slate-400" />
+                    <Lock className="w-5 h-5 text-sky-400" />
                   </div>
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={loginRequest.password}
                     onChange={handleChange}
-                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${
-                      validationErrors.password
-                        ? "border-red-300"
-                        : "border-slate-200"
-                    } focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all`}
+                    className={`w-full pl-11 pr-12 py-3 rounded-xl border ${validationErrors.password
+                      ? "border-red-300"
+                      : "border-sky-200"
+                      } focus:border-sky-400 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all`}
                     placeholder="Enter your password"
                     disabled={loginLoading}
                     data-testid="password-input"
@@ -274,7 +269,7 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sky-400 hover:text-sky-600"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -296,7 +291,7 @@ export default function LoginPage() {
                 disabled={
                   loginLoading || !loginRequest.email || !loginRequest.password
                 }
-                className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+                className="w-full py-3 bg-gradient-to-r from-sky-700 to-sky-800 text-white rounded-xl hover:from-sky-800 hover:to-sky-900 disabled:from-sky-400 disabled:to-sky-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
                 data-testid="login-btn"
               >
                 {loginLoading ? (
@@ -313,10 +308,10 @@ export default function LoginPage() {
               </button>
             </form>
 
-            <div className="mt-8 pt-6 border-t border-slate-200 space-y-4">
+            <div className="mt-8 pt-6 border-t border-sky-200 space-y-4">
               <button
                 onClick={handleForgotPassword}
-                className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+                className="w-full py-3 border border-sky-300 text-sky-700 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 font-medium text-sm"
                 data-testid="forgot-password-link"
               >
                 <Lock className="w-5 h-5" />
@@ -337,11 +332,11 @@ export default function LoginPage() {
 
         {/* Footer note */}
         {!loginSuccess && (
-          <div className="mt-8 text-center text-sm text-slate-500">
+          <div className="mt-8 text-center text-sm text-sky-500">
             Need help?{" "}
             <a
               href="/contact"
-              className="text-slate-700 hover:text-slate-900 font-medium"
+              className="text-sky-700 hover:text-sky-900 font-medium"
             >
               Contact Support
             </a>

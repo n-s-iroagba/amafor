@@ -27,7 +27,7 @@ export default function AdvertiseInfo() {
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-5xl font-heading mb-6">Advertise with Amafor Gladiators FC</h1>
             <div className="h-1 w-16 bg-sky-600 mx-auto mb-6"></div>
-            <p className="text-xl text-slate-200 max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-xl text-sky-200 max-w-3xl mx-auto mb-8 leading-relaxed">
               Reach thousands of passionate football fans across Nigeria and beyond.
               Get your brand in front of an engaged audience that loves the beautiful game.
             </p>
@@ -53,7 +53,7 @@ export default function AdvertiseInfo() {
                   <Target className="w-8 h-8 text-sky-700" />
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Targeted Reach</h3>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-sky-600 leading-relaxed">
                   Target specific content categories to reach the right audience for your business
                 </p>
               </div>
@@ -62,7 +62,7 @@ export default function AdvertiseInfo() {
                   <TrendingUp className="w-8 h-8 text-sky-700" />
                 </div>
                 <h3 className="text-xl font-heading text-sky-500 mb-3">Measurable Results</h3>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-sky-600 leading-relaxed">
                   Real-time performance tracking and detailed analytics for every campaign
                 </p>
               </div>
@@ -71,29 +71,29 @@ export default function AdvertiseInfo() {
         </section>
 
         {/* Ad Zones */}
-        <section className="py-20 bg-slate-50">
+        <section className="py-20 bg-sky-50">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-heading text-sky-500 text-center mb-12">Available Ad Zones</h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {adZones.map((zone) => (
-                <div key={zone.id} className="bg-white border border-slate-200 p-8 rounded-lg shadow-card" data-testid={`ad-zone-${zone.id}`}>
+                <div key={zone.id} className="bg-white border border-sky-200 p-8 rounded-lg shadow-card" data-testid={`ad-zone-${zone.id}`}>
                   <h3 className="text-2xl font-heading text-sky-500 mb-4">{zone.name}</h3>
-                  <p className="text-slate-600 mb-6 leading-relaxed">{zone.description}</p>
+                  <p className="text-sky-600 mb-6 leading-relaxed">{zone.description}</p>
 
                   <div className="space-y-3 mb-6">
-                    <div className="flex justify-between py-2 border-b border-slate-200">
-                      <span className="text-slate-600">Dimensions:</span>
+                    <div className="flex justify-between py-2 border-b border-sky-200">
+                      <span className="text-sky-600">Dimensions:</span>
                       <span className="font-semibold text-sky-500">{zone.dimensions}px</span>
                     </div>
 
-                    <div className="flex justify-between py-2 border-b border-slate-200">
-                      <span className="text-slate-600">Max Size:</span>
+                    <div className="flex justify-between py-2 border-b border-sky-200">
+                      <span className="text-sky-600">Max Size:</span>
                       <span className="font-semibold text-sky-500">{zone.maxSize}</span>
                     </div>
 
                   </div>
 
-                  <div className="bg-slate-100 h-32 flex items-center justify-center text-slate-500 border border-slate-200 rounded-lg">
+                  <div className="bg-sky-100 h-32 flex items-center justify-center text-sky-500 border border-sky-200 rounded-lg">
                     {zone.dimensions} Preview
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export default function AdvertiseInfo() {
                   </div>
                   <div>
                     <h3 className="text-xl font-heading text-sky-500 mb-2">{item.title}</h3>
-                    <p className="text-slate-600 leading-relaxed">{item.description}</p>
+                    <p className="text-sky-600 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               ))}
@@ -180,11 +180,11 @@ export default function AdvertiseInfo() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-slate-50">
+        <section className="py-20 bg-sky-50">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-4xl font-heading text-sky-500 mb-6">Ready to Get Started?</h2>
-              <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+              <p className="text-xl text-sky-600 mb-8 leading-relaxed">
                 Join local businesses already advertising with Amafor Gladiators FC.
                 Register today and launch your first campaign.
               </p>
@@ -196,7 +196,7 @@ export default function AdvertiseInfo() {
                 Register Now
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <p className="text-slate-600">
+              <p className="text-sky-600">
                 Questions? Contact us at{' '}
                 <a href="mailto:advertise@amaforgladiatorsfc.com" className="text-sky-700 hover:text-sky-800 font-semibold">
                   advertise@amaforgladiatorsfc.com

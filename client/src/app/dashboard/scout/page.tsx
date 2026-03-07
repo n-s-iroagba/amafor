@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
-import { UserStatus } from '@/types';
+import { UserStatus, UserRole } from '@/shared/types';
+import { useRoleGuard } from '@/shared/hooks/useRoleGuard';
+import { LogOut, Users as UsersIcon } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 interface RecentView {
   id: string;
@@ -27,7 +30,8 @@ interface RecentView {
  * Hook: useGet(API_ROUTES.SCOUT.RECENT_VIEWS)
  */
 export default function ScoutDashboard() {
-  const { user, loading: authLoading } = useAuthContext();
+  const router = useRouter();
+  const { user, loading: authLoading } = useRoleGuard(['scout'] as UserRole[]);
 
   const { data: recentlyViewed, loading: viewsLoading } = useGet<RecentView[]>(
     API_ROUTES.SCOUT.RECENT_VIEWS,
@@ -41,10 +45,24 @@ export default function ScoutDashboard() {
       {/* Mini Sidebar for Dashboard */}
       <aside className="w-20 bg-[#2F4F4F] hidden lg:flex flex-col items-center py-8 space-y-8">
         <Shield className="w-8 h-8 text-[#87CEEB]" />
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
           <Link href="/dashboard/scout" className="p-3 bg-[#87CEEB] rounded-xl block text-[#2F4F4F]" data-testid="sidebar-link-scout-home"><UserSearch className="w-6 h-6" /></Link>
           <Link href="/dashboard/scout/reports" className="p-3 text-white/50 hover:text-white block" data-testid="sidebar-link-scout-reports"><FileText className="w-6 h-6" /></Link>
           <Link href="/dashboard/scout/matches" className="p-3 text-white/50 hover:text-white block" data-testid="sidebar-link-scout-matches"><Film className="w-6 h-6" /></Link>
+        </div>
+
+        <div className="pb-8 space-y-6 flex flex-col items-center">
+          {user && user.roles.length > 1 && (
+            <Link href="/dashboard" className="p-3 text-[#87CEEB] hover:bg-white/5 rounded-xl block" title="Switch Role">
+              <UsersIcon className="w-6 h-6" />
+            </Link>
+          )}
+          <button
+            onClick={() => router.push('/auth/login')}
+            className="p-3 text-white/40 hover:text-white block"
+          >
+            <LogOut className="w-6 h-6" />
+          </button>
         </div>
       </aside>
 

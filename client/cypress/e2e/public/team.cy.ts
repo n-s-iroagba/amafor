@@ -7,7 +7,7 @@ describe('Team & Profiles', () => {
         });
 
         it('should display the players tab by default and show players', () => {
-            cy.get('[data-testid="tab-players"]').should('have.class', 'bg-slate-900');
+            cy.get('[data-testid="tab-players"]').should('have.class', 'bg-sky-900');
             // Assuming there are players mocked or seeded
             // We can check if the player list container exists. The cards have data-testid="player-card"
             // If empty logic triggers, we should check that too.
@@ -15,7 +15,7 @@ describe('Team & Profiles', () => {
 
         it('should switch to coaches tab', () => {
             cy.get('[data-testid="tab-coaches"]').click();
-            cy.get('[data-testid="tab-coaches"]').should('have.class', 'bg-slate-900');
+            cy.get('[data-testid="tab-coaches"]').should('have.class', 'bg-sky-900');
         });
 
         it('should open player modal on click', () => {

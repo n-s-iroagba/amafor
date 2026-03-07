@@ -5,6 +5,7 @@ export const developmentAdvertisers: AdvertiserAttributes[] = [
   {
     // Fixturees the advertiserId used in developmentAdCampaigns
     id: 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+    userId: '123e4567-e89b-12d3-a456-426614174000',
     companyName: 'TopMedia Agency',
     contactPerson: 'Chinedu Obi',
     companyEmail: 'chinedu@topmedia.ng',
@@ -18,6 +19,7 @@ export const developmentAdvertisers: AdvertiserAttributes[] = [
   },
   {
     id: 'e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0',
+    userId: '123e4567-e89b-12d3-a456-426614174001',
     companyName: 'NextGen Beverages',
     contactPerson: 'Alice Johnson',
     companyEmail: 'partnerships@nextgen.com',
@@ -31,6 +33,7 @@ export const developmentAdvertisers: AdvertiserAttributes[] = [
   },
   {
     id: 'd0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
+    userId: '123e4567-e89b-12d3-a456-426614174002',
     companyName: 'EduTech Systems',
     contactPerson: 'Musa Ibrahim',
     companyEmail: 'musa@edutech.ng',

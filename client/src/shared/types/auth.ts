@@ -1,4 +1,13 @@
-export type UserRole = "admin" | "scout" | "advertiser";
+export type UserRole =
+  | "admin"
+  | "scout"
+  | "advertiser"
+  | "academy_staff"
+  | "commercial_manager"
+  | "sports_admin"
+  | "finance_officer"
+  | "it_security"
+  | "fan";
 
 export enum UserStatus {
   ACTIVE = "active",
@@ -10,7 +19,7 @@ export interface AuthUser {
   id: string;
   username: string;
   avatarUrl?: string;
-  role: UserRole;
+  roles: UserRole[];
   status: UserStatus;
   emailVerified: boolean;
 }

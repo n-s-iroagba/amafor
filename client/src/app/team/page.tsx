@@ -73,13 +73,13 @@ export default function TeamSquad() {
       case "forward":
         return "from-orange-500 to-amber-600 bg-orange-500";
       default:
-        return "from-slate-500 to-slate-600 bg-slate-500";
+        return "from-sky-500 to-sky-600 bg-sky-500";
     }
   };
 
   if (playersLoading || coachesLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-sky-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-sky-400/20 border-t-sky-400 rounded-full animate-spin mx-auto mb-6" />
           <p className="text-sky-400 font-black uppercase text-[10px] tracking-[0.3em]">
@@ -106,11 +106,11 @@ export default function TeamSquad() {
 
     return (
       <div
-        className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-slate-100"
+        className="group relative bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer hover:-translate-y-2 border border-sky-100"
         onClick={() => setSelectedMember(member)}
         data-testid="player-card"
       >
-        <div className="relative h-80 w-full overflow-hidden bg-slate-100">
+        <div className="relative h-80 w-full overflow-hidden bg-sky-100">
           {member.imageUrl ? (
             <Image
               fill
@@ -119,15 +119,15 @@ export default function TeamSquad() {
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-              <Users className="w-20 h-20 text-slate-300" />
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-sky-100 to-sky-200">
+              <Users className="w-20 h-20 text-sky-300" />
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-sky-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {isPlayer && (
-            <div className="absolute top-6 right-6 w-12 h-12 bg-white rounded-2xl shadow-lg flex items-center justify-center font-black text-slate-900 text-lg group-hover:bg-sky-400 group-hover:text-white transition-colors">
+            <div className="absolute top-6 right-6 w-12 h-12 bg-white rounded-2xl shadow-lg flex items-center justify-center font-black text-sky-900 text-lg group-hover:bg-sky-400 group-hover:text-white transition-colors">
               {player.jerseyNumber}
             </div>
           )}
@@ -147,10 +147,10 @@ export default function TeamSquad() {
               {isPlayer ? player.position : coach.role}
             </span>
           </div>
-          <h3 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight truncate group-hover:text-sky-500 transition-colors">
+          <h3 className="text-xl font-black text-sky-900 mb-2 uppercase tracking-tight truncate group-hover:text-sky-500 transition-colors">
             {member.name}
           </h3>
-          <div className="flex items-center gap-4 text-slate-400 font-bold text-[10px] uppercase tracking-widest">
+          <div className="flex items-center gap-4 text-sky-400 font-bold text-[10px] uppercase tracking-widest">
             {isPlayer && player.nationality && (
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5" /> {player.nationality}
@@ -169,12 +169,12 @@ export default function TeamSquad() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-sky-50 flex flex-col">
       <Header />
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative py-24 bg-slate-900 overflow-hidden">
+        <section className="relative py-24 bg-sky-900 overflow-hidden">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-sky-400/5 -skew-x-12 transform origin-top-right pointer-events-none" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
@@ -188,7 +188,7 @@ export default function TeamSquad() {
                 </span>{" "}
                 Squad
               </h1>
-              <p className="text-xl text-slate-400 font-medium leading-relaxed mb-12">
+              <p className="text-xl text-sky-400 font-medium leading-relaxed mb-12">
                 Meet the world-class professionals committed to excellence. Our
                 technical staff and elite athletes pushing boundaries every
                 match day.
@@ -199,14 +199,13 @@ export default function TeamSquad() {
 
         {/* Tab Navigation */}
         <div className="container mx-auto px-4 -mt-10 relative z-20 mb-20">
-          <div className="max-w-md mx-auto bg-white p-3 rounded-[2.5rem] shadow-2xl border border-slate-100 flex gap-2">
+          <div className="max-w-md mx-auto bg-white p-3 rounded-[2.5rem] shadow-2xl border border-sky-100 flex gap-2">
             <button
               onClick={() => setSelectedTab("players")}
-              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                selectedTab === "players"
-                  ? "bg-slate-900 text-white shadow-lg"
-                  : "text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100"
-              }`}
+              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${selectedTab === "players"
+                  ? "bg-sky-900 text-white shadow-lg"
+                  : "text-sky-400 hover:text-sky-600 bg-sky-50 hover:bg-sky-100"
+                }`}
               data-testid="tab-players"
             >
               <Users
@@ -216,11 +215,10 @@ export default function TeamSquad() {
             </button>
             <button
               onClick={() => setSelectedTab("coaches")}
-              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                selectedTab === "coaches"
-                  ? "bg-slate-900 text-white shadow-lg"
-                  : "text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100"
-              }`}
+              className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-[1.8rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${selectedTab === "coaches"
+                  ? "bg-sky-900 text-white shadow-lg"
+                  : "text-sky-400 hover:text-sky-600 bg-sky-50 hover:bg-sky-100"
+                }`}
               data-testid="tab-coaches"
             >
               <Shield
@@ -235,28 +233,28 @@ export default function TeamSquad() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {selectedTab === "players"
               ? playersData.map((player) => (
-                  <MemberCard key={player.id} member={player} type="player" />
-                ))
+                <MemberCard key={player.id} member={player} type="player" />
+              ))
               : coachesData.map((coach) => (
-                  <MemberCard key={coach.id} member={coach} type="coach" />
-                ))}
+                <MemberCard key={coach.id} member={coach} type="coach" />
+              ))}
           </div>
 
           {((selectedTab === "players" && playersData.length === 0) ||
             (selectedTab === "coaches" && coachesData.length === 0)) && (
-            <div className="text-center py-32 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
-              <Users className="w-20 h-20 text-slate-100 mx-auto mb-6" />
-              <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tight">
-                Personnel Manifest empty
-              </h3>
-              <p className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
-                No active profiles detected in the database
-              </p>
-            </div>
-          )}
+              <div className="text-center py-32 bg-white rounded-[3rem] border-2 border-dashed border-sky-200">
+                <Users className="w-20 h-20 text-sky-100 mx-auto mb-6" />
+                <h3 className="text-2xl font-black text-sky-900 mb-2 uppercase tracking-tight">
+                  Personnel Manifest empty
+                </h3>
+                <p className="text-sky-400 font-bold uppercase text-[10px] tracking-widest">
+                  No active profiles detected in the database
+                </p>
+              </div>
+            )}
 
           {/* Detailed Statistics Dashboard */}
-          <div className="mt-32 bg-slate-900 rounded-[3.5rem] p-12 md:p-20 relative overflow-hidden shadow-2xl">
+          <div className="mt-32 bg-sky-900 rounded-[3.5rem] p-12 md:p-20 relative overflow-hidden shadow-2xl">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-400/10 via-transparent to-transparent pointer-events-none" />
             <div className="relative z-10">
               <h2 className="text-center text-sky-400 font-black text-xs uppercase tracking-[0.4em] mb-16">
@@ -267,7 +265,7 @@ export default function TeamSquad() {
                   <div className="text-6xl font-black text-white mb-2 tracking-tighter">
                     {playersData.length}
                   </div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                  <div className="text-sky-400 font-bold uppercase text-[10px] tracking-widest">
                     Active Assets
                   </div>
                 </div>
@@ -275,7 +273,7 @@ export default function TeamSquad() {
                   <div className="text-6xl font-black text-white mb-2 tracking-tighter">
                     {coachesData.length}
                   </div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                  <div className="text-sky-400 font-bold uppercase text-[10px] tracking-widest">
                     Technical Staff
                   </div>
                 </div>
@@ -283,7 +281,7 @@ export default function TeamSquad() {
                   <div className="text-6xl font-black text-white mb-2 tracking-tighter">
                     {new Set(playersData.map((p) => p.nationality)).size}
                   </div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                  <div className="text-sky-400 font-bold uppercase text-[10px] tracking-widest">
                     Territories
                   </div>
                 </div>
@@ -291,17 +289,17 @@ export default function TeamSquad() {
                   <div className="text-6xl font-black text-white mb-2 tracking-tighter">
                     {playersData.length > 0
                       ? Math.round(
-                          playersData.reduce(
-                            (acc, p) =>
-                              p.dateOfBirth
-                                ? acc + calculateAge(p.dateOfBirth)
-                                : acc,
-                            0,
-                          ) / playersData.filter((p) => p.dateOfBirth).length,
-                        )
+                        playersData.reduce(
+                          (acc, p) =>
+                            p.dateOfBirth
+                              ? acc + calculateAge(p.dateOfBirth)
+                              : acc,
+                          0,
+                        ) / playersData.filter((p) => p.dateOfBirth).length,
+                      )
                       : 0}
                   </div>
-                  <div className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+                  <div className="text-sky-400 font-bold uppercase text-[10px] tracking-widest">
                     Avg Age Profiling
                   </div>
                 </div>
@@ -315,20 +313,20 @@ export default function TeamSquad() {
       {selectedMember && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
           <div
-            className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl"
+            className="absolute inset-0 bg-sky-900/95 backdrop-blur-xl"
             onClick={() => setSelectedMember(null)}
           />
 
           <div className="relative bg-white w-full max-w-5xl max-h-full overflow-hidden rounded-[3.5rem] shadow-2xl flex flex-col md:flex-row animate-in fade-in zoom-in duration-300">
             <button
               onClick={() => setSelectedMember(null)}
-              className="absolute top-8 right-8 z-20 w-12 h-12 bg-slate-900/10 hover:bg-slate-900/20 text-slate-900 rounded-2xl flex items-center justify-center transition-all duration-200"
+              className="absolute top-8 right-8 z-20 w-12 h-12 bg-sky-900/10 hover:bg-sky-900/20 text-sky-900 rounded-2xl flex items-center justify-center transition-all duration-200"
               data-testid="modal-close-btn"
             >
               <X className="w-6 h-6" />
             </button>
 
-            <div className="relative w-full md:w-1/2 h-80 md:h-[700px] bg-slate-100">
+            <div className="relative w-full md:w-1/2 h-80 md:h-[700px] bg-sky-100">
               {selectedMember.imageUrl ? (
                 <Image
                   fill
@@ -337,8 +335,8 @@ export default function TeamSquad() {
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-slate-200">
-                  <Users className="w-32 h-32 text-slate-300" />
+                <div className="w-full h-full flex items-center justify-center bg-sky-200">
+                  <Users className="w-32 h-32 text-sky-300" />
                 </div>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent md:hidden" />
@@ -353,7 +351,7 @@ export default function TeamSquad() {
                     ? selectedMember.position
                     : selectedMember.role}
                 </span>
-                <h2 className="text-5xl font-black text-slate-900 uppercase tracking-tight leading-none mb-4">
+                <h2 className="text-5xl font-black text-sky-900 uppercase tracking-tight leading-none mb-4">
                   {selectedMember.name}
                 </h2>
                 {"jerseyNumber" in selectedMember && (
@@ -367,10 +365,10 @@ export default function TeamSquad() {
                 {"nationality" in selectedMember &&
                   selectedMember.nationality && (
                     <div>
-                      <p className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-1.5">
+                      <p className="text-sky-400 font-black text-[10px] uppercase tracking-widest mb-1.5">
                         Territory
                       </p>
-                      <p className="text-slate-900 font-black tracking-tight flex items-center gap-2 uppercase">
+                      <p className="text-sky-900 font-black tracking-tight flex items-center gap-2 uppercase">
                         <MapPin className="w-4 h-4 text-sky-400" />{" "}
                         {selectedMember.nationality}
                       </p>
@@ -379,10 +377,10 @@ export default function TeamSquad() {
                 {"dateOfBirth" in selectedMember &&
                   selectedMember.dateOfBirth && (
                     <div>
-                      <p className="text-slate-400 font-black text-[10px] uppercase tracking-widest mb-1.5">
+                      <p className="text-sky-400 font-black text-[10px] uppercase tracking-widest mb-1.5">
                         Age Profiling
                       </p>
-                      <p className="text-slate-900 font-black tracking-tight flex items-center gap-2 uppercase">
+                      <p className="text-sky-900 font-black tracking-tight flex items-center gap-2 uppercase">
                         <Calendar className="w-4 h-4 text-sky-400" />{" "}
                         {calculateAge(selectedMember.dateOfBirth)} YEARS
                       </p>
@@ -392,20 +390,20 @@ export default function TeamSquad() {
 
               <div className="space-y-8">
                 <div>
-                  <h4 className="flex items-center gap-2 text-slate-900 font-black text-xs uppercase tracking-widest mb-4">
+                  <h4 className="flex items-center gap-2 text-sky-900 font-black text-xs uppercase tracking-widest mb-4">
                     <Info className="w-4 h-4 text-sky-400" /> Operational Bio
                   </h4>
-                  <p className="text-slate-600 font-medium leading-relaxed text-lg italic">
+                  <p className="text-sky-600 font-medium leading-relaxed text-lg italic">
                     {selectedMember.bio ||
                       "No biographical data initialized for this personnel profile."}
                   </p>
                 </div>
 
-                <div className="pt-8 border-t border-slate-100 flex gap-4">
+                <div className="pt-8 border-t border-sky-100 flex gap-4">
                   {"position" in selectedMember && (
                     <Link
                       href={`/player/${selectedMember.id}`}
-                      className="inline-flex items-center justify-center gap-3 bg-slate-900 hover:bg-slate-800 text-white px-10 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest shadow-xl shadow-slate-900/20 active:scale-95 duration-200"
+                      className="inline-flex items-center justify-center gap-3 bg-sky-900 hover:bg-sky-800 text-white px-10 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest shadow-xl shadow-sky-900/20 active:scale-95 duration-200"
                       data-testid="modal-full-metrics-link"
                     >
                       Full Performance Metrics
@@ -414,7 +412,7 @@ export default function TeamSquad() {
                   )}
                   <button
                     onClick={() => setSelectedMember(null)}
-                    className="flex-1 md:flex-none inline-flex items-center justify-center gap-3 bg-slate-50 hover:bg-slate-100 text-slate-900 px-10 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest border border-slate-200 active:scale-95 duration-200"
+                    className="flex-1 md:flex-none inline-flex items-center justify-center gap-3 bg-sky-50 hover:bg-sky-100 text-sky-900 px-10 py-5 rounded-2xl transition-all font-black text-xs uppercase tracking-widest border border-sky-200 active:scale-95 duration-200"
                   >
                     Close Dossier
                   </button>

@@ -43,22 +43,17 @@ export const authorize = (roles: string[]) => {
             return res.status(401).json({ success: false, message: 'User not authenticated' });
         }
 
-        // Check if user has any of the required roles
-        // Assuming user.roles is an array of strings or user.userType matches
-        // This logic might need adjustment based on real role system
-        const userRoles = user.roles || [];
-        const hasRole = roles.some(role => userRoles.includes(role) || user.userType === role);
+        // Assuming user.roles is an array of strings
+        const userRoles: string[] = user.roles || [];
 
-        if (!roles.includes('admin') && !hasRole) { // Admin bypass? Or checks?
-            // Simplest check:
-            if (!roles.some(role => userRoles.includes(role) || user.userType === role)) {
-                return res.status(403).json({ success: false, message: `User role ${user.userType} is not authorized to access this route` });
+        // If roles parameter is empty, any authenticated user can access
+        if (roles.length > 0) {
+            // Check if there is an intersection between allowed roles and user roles
+            const isAuthorized = roles.some(role => userRoles.includes(role));
+
+            if (!isAuthorized) {
+                return res.status(403).json({ success: false, message: `User roles [${userRoles.join(', ')}] are not authorized to access this route` });
             }
-        }
-
-        // Better logic:
-        if (roles.length > 0 && !roles.some(role => userRoles.includes(role) || user.userType === role)) {
-            return res.status(403).json({ success: false, message: `User role ${user.userType} is not authorized to access this route` });
         }
 
         next();

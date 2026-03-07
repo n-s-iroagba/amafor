@@ -28,14 +28,14 @@ export default function DataRequestPage() {
         return (
             <>
                 <Header />
-                <main className="py-24 bg-slate-50 min-h-screen">
+                <main className="py-24 bg-sky-50 min-h-screen">
                     <div className="container mx-auto px-4 max-w-2xl text-center">
                         <div className="bg-white p-12 rounded-lg shadow-card">
                             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle className="w-10 h-10 text-green-600" />
                             </div>
-                            <h1 className="text-3xl font-heading text-slate-800 mb-4">Request Submitted</h1>
-                            <p className="text-lg text-slate-600 mb-8 max-w-lg mx-auto">
+                            <h1 className="text-3xl font-heading text-sky-800 mb-4">Request Submitted</h1>
+                            <p className="text-lg text-sky-600 mb-8 max-w-lg mx-auto">
                                 Your Data Subject Request (DSR) has been received.
                                 <br /><br />
                                 Our Data Protection Officer (DPO) will review your request and respond within 30 days as required by NDPR.
@@ -58,11 +58,11 @@ export default function DataRequestPage() {
     return (
         <>
             <Header />
-            <main className="py-16 bg-slate-50 min-h-screen">
+            <main className="py-16 bg-sky-50 min-h-screen">
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="text-center mb-12">
-                        <h1 className="text-4xl font-heading text-slate-900 mb-4">Privacy & Data Rights Portal</h1>
-                        <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+                        <h1 className="text-4xl font-heading text-sky-900 mb-4">Privacy & Data Rights Portal</h1>
+                        <p className="text-xl text-sky-600 max-w-2xl mx-auto">
                             Exercise your rights under the Nigeria Data Protection Regulation (NDPR).
                             Manage your personal data, request copies, or ask for deletion.
                         </p>
@@ -70,10 +70,10 @@ export default function DataRequestPage() {
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="md:col-span-1 space-y-6">
-                            <div className="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                            <div className="bg-white p-6 rounded-lg shadow-sm border border-sky-200">
                                 <Shield className="w-8 h-8 text-sky-700 mb-4" />
                                 <h3 className="font-bold text-lg mb-2">Your Rights</h3>
-                                <ul className="text-sm text-slate-600 space-y-2">
+                                <ul className="text-sm text-sky-600 space-y-2">
                                     <li>• Right to Access</li>
                                     <li>• Right to Rectification</li>
                                     <li>• Right to Erasure</li>
@@ -96,22 +96,22 @@ export default function DataRequestPage() {
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">First Name</label>
-                                            <input type="text" required className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent" />
+                                            <label className="block text-sm font-semibold text-sky-700 mb-2">First Name</label>
+                                            <input type="text" required className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent" />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
-                                            <input type="text" required className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent" />
+                                            <label className="block text-sm font-semibold text-sky-700 mb-2">Last Name</label>
+                                            <input type="text" required className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent" />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Email Associated with Account</label>
-                                        <input type="email" required className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent" />
+                                        <label className="block text-sm font-semibold text-sky-700 mb-2">Email Associated with Account</label>
+                                        <input type="email" required className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent" />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Request Type</label>
+                                        <label className="block text-sm font-semibold text-sky-700 mb-2">Request Type</label>
                                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                             {['access', 'rectify', 'delete'].map((type) => (
                                                 <div
@@ -119,13 +119,13 @@ export default function DataRequestPage() {
                                                     onClick={() => setRequestType(type)}
                                                     className={`cursor-pointer border rounded-lg p-4 text-center transition-all ${requestType === type
                                                         ? 'border-sky-600 bg-sky-50 text-sky-800 ring-1 ring-sky-600'
-                                                        : 'border-slate-200 hover:border-slate-300'
+                                                        : 'border-sky-200 hover:border-sky-300'
                                                         }`}
                                                 >
                                                     <div className="font-semibold capitalize mb-1">
                                                         {type === 'access' ? 'Export Data' : type === 'rectify' ? 'Correction' : 'Deletion'}
                                                     </div>
-                                                    <div className="text-xs text-slate-500">
+                                                    <div className="text-xs text-sky-500">
                                                         {type === 'access' ? 'Get a copy of your data' : type === 'rectify' ? 'Update your info' : 'Remove your account'}
                                                     </div>
                                                 </div>
@@ -134,10 +134,10 @@ export default function DataRequestPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-slate-700 mb-2">Additional Details</label>
+                                        <label className="block text-sm font-semibold text-sky-700 mb-2">Additional Details</label>
                                         <textarea
                                             rows={4}
-                                            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
+                                            className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:ring-2 focus:ring-sky-700 focus:border-transparent"
                                             placeholder="Please provide any specific details to help us fulfill your request..."
                                         ></textarea>
                                     </div>

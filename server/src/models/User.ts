@@ -1,7 +1,16 @@
 import sequelize from '@config/database';
 import { DataTypes, Model, Optional } from 'sequelize';
 
-export type UserRole = 'admin' | 'scout' | 'advertiser';
+export type UserRole =
+  | 'admin'
+  | 'scout'
+  | 'advertiser'
+  | 'academy_staff'
+  | 'commercial_manager'
+  | 'sports_admin'
+  | 'finance_officer'
+  | 'it_security'
+  | 'fan';
 
 export enum UserStatus {
   ACTIVE = 'active',
@@ -17,7 +26,7 @@ export interface UserAttributes {
   lastName: string;
   phone?: string;
   avatarUrl?: string;
-  role: UserRole;
+  roles: UserRole[];
   status: UserStatus;
   emailVerified: boolean;
   verificationToken?: string;
@@ -43,7 +52,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   public lastName!: string;
   public phone?: string;
   public avatarUrl?: string;
-  public role!: UserRole;
+  public roles!: UserRole[];
   public status!: UserStatus;
   public emailVerified!: boolean;
   public verificationToken?: string;
@@ -93,10 +102,10 @@ User.init(
       type: DataTypes.STRING(500),
       allowNull: true,
     },
-    role: {
-      type: DataTypes.ENUM('admin', 'scout', 'advertiser'),
+    roles: {
+      type: DataTypes.JSON,
       allowNull: false,
-      defaultValue: 'advertiser',
+      defaultValue: ['fan'],
     },
     status: {
       type: DataTypes.ENUM(...Object.values(UserStatus)),
@@ -152,7 +161,7 @@ User.init(
     paranoid: true,
     indexes: [
       { fields: ['email'] },
-      { fields: ['role'] },
+      { fields: ['roles'] },
       { fields: ['createdAt'] },
     ],
   }

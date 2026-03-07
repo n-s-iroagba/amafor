@@ -11,6 +11,7 @@ import {
   Currency,
 } from '@models/Payment';
 import { AdCampaign, CampaignStatus } from '@models/AdCampaign';
+import { PatronSubscription, SubscriptionStatus, SubscriptionFrequency } from '@models/PatronSubscription';
 
 import { User } from '@models/User';
 import logger from '@utils/logger';
@@ -438,6 +439,29 @@ export class PaymentService {
       } else if (payment.type === PaymentType.DONATION) {
         // Log donation payment completion
         logger.info('Donation payment completed', { paymentId: payment.id });
+
+        // If this donation is for a subscription (i.e. existing patron renewals or new subscriptions with ID pushed metadata)
+        if (payment.subscriptionId) {
+          const subscription = await PatronSubscription.findByPk(payment.subscriptionId);
+          if (subscription) {
+            const now = new Date();
+            const nextBillingDate = new Date(now);
+
+            if (subscription.frequency === SubscriptionFrequency.MONTHLY) {
+              nextBillingDate.setMonth(nextBillingDate.getMonth() + 1);
+            } else if (subscription.frequency === SubscriptionFrequency.YEARLY) {
+              nextBillingDate.setFullYear(nextBillingDate.getFullYear() + 1);
+            }
+
+            await subscription.update({
+              status: SubscriptionStatus.ACTIVE,
+              nextBillingDate: nextBillingDate,
+              paymentReference: payment.reference,
+            });
+
+            logger.info('Subscription renewed successfully', { subscriptionId: subscription.id, nextBillingDate });
+          }
+        }
       }
     } catch (error: any) {
       logger.error('Failed to handle post-payment actions', {

@@ -44,7 +44,7 @@ export default function PaymentButton(props: PaymentButtonProps) {
             disabled={isPending || !props.paymentDetails}
             className="w-full"
         >
-            <div className={`w-full bg-sky-600 hover:bg-sky-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-all font-bold text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 ${isPending ? 'opacity-70 cursor-wait' : ''}`}>
+            <div className={`w-full bg-sky-600 hover:bg-sky-700 disabled:bg-sky-300 disabled:cursor-not-allowed text-white px-6 py-4 rounded-lg transition-all font-bold text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 ${isPending ? 'opacity-70 cursor-wait' : ''}`}>
                 {isPending ? (
                     'Processing...'
                 ) : (

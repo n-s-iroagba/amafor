@@ -76,19 +76,19 @@ export default function HelpContact() {
     <>
       <Header />
 
-      <main className="py-16 bg-slate-50 min-h-screen">
+      <main className="py-16 bg-sky-50 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h1 className="text-5xl font-heading text-sky-500 mb-2">Help & Contact</h1>
             <div className="h-1 w-16 bg-sky-700 mx-auto mb-6"></div>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-sky-600 max-w-2xl mx-auto leading-relaxed">
               Have a question? We're here to help. Check our FAQs or get in touch with our team.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Form */}
-            <div className="bg-white border border-slate-200 p-8 rounded-lg shadow-card">
+            <div className="bg-white border border-sky-200 p-8 rounded-lg shadow-card">
               <div className="flex items-center gap-3 mb-6">
                 <MessageCircle className="w-7 h-7 text-sky-700" />
                 <h2 className="text-2xl font-heading text-sky-500">Send Us a Message</h2>
@@ -108,7 +108,7 @@ export default function HelpContact() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
+                    className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
                     required
                     data-testid="input-name"
                   />
@@ -120,7 +120,7 @@ export default function HelpContact() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
+                    className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
                     required
                     data-testid="input-email"
                   />
@@ -132,7 +132,7 @@ export default function HelpContact() {
                     type="text"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
+                    className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700"
                     required
                     data-testid="input-subject"
                   />
@@ -143,7 +143,7 @@ export default function HelpContact() {
                   <textarea
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 min-h-32"
+                    className="w-full px-4 py-3 border border-sky-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-700 min-h-32"
                     required
                     data-testid="textarea-message"
                   />
@@ -152,7 +152,7 @@ export default function HelpContact() {
                 <button
                   type="submit"
                   disabled={!name || !email || !subject || !message}
-                  className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg transition-colors font-semibold"
+                  className="w-full bg-sky-700 hover:bg-sky-800 disabled:bg-sky-300 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg transition-colors font-semibold"
                   data-testid="btn-send-message"
                 >
                   Send Message
@@ -163,7 +163,7 @@ export default function HelpContact() {
             {/* Contact Info & FAQs */}
             <div className="space-y-8">
               {/* Contact Information */}
-              <div className="bg-white border border-slate-200 p-8 rounded-lg shadow-card">
+              <div className="bg-white border border-sky-200 p-8 rounded-lg shadow-card">
                 <h2 className="text-2xl font-heading text-sky-500 mb-6">Contact Information</h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
@@ -188,7 +188,7 @@ export default function HelpContact() {
                     <MapPin className="w-5 h-5 text-sky-700 mt-1" />
                     <div>
                       <div className="font-semibold text-sky-500">Address</div>
-                      <p className="text-slate-600">
+                      <p className="text-sky-600">
                         Amafor Gladiators FC Stadium<br />
                         Lagos, Nigeria
                       </p>
@@ -198,16 +198,16 @@ export default function HelpContact() {
               </div>
 
               {/* Quick FAQs */}
-              <div className="bg-white border border-slate-200 p-8 rounded-lg shadow-card">
+              <div className="bg-white border border-sky-200 p-8 rounded-lg shadow-card">
                 <div className="flex items-center gap-3 mb-6">
                   <HelpCircle className="w-7 h-7 text-sky-700" />
                   <h2 className="text-2xl font-heading text-sky-500">Frequently Asked Questions</h2>
                 </div>
                 <div className="space-y-4">
                   {faqs.slice(0, 4).map((faq, index) => (
-                    <div key={index} className="border-b border-slate-200 pb-4 last:border-0 last:pb-0">
+                    <div key={index} className="border-b border-sky-200 pb-4 last:border-0 last:pb-0">
                       <h3 className="font-semibold text-sky-500 mb-2">{faq.question}</h3>
-                      <p className="text-sm text-slate-600">{faq.answer}</p>
+                      <p className="text-sm text-sky-600">{faq.answer}</p>
                     </div>
                   ))}
                 </div>

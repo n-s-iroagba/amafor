@@ -24,11 +24,11 @@ export function LoadingSpinner({ size = 'md', text }: LoadingSpinnerProps) {
 export function SkeletonCard() {
   return (
     <div className="bg-white rounded-lg shadow-card p-6 animate-pulse">
-      <div className="h-48 bg-slate-200 rounded-lg mb-4"></div>
-      <div className="h-4 bg-slate-200 rounded w-3/4 mb-3"></div>
-      <div className="h-4 bg-slate-200 rounded w-1/2 mb-3"></div>
-      <div className="h-3 bg-slate-200 rounded w-full mb-2"></div>
-      <div className="h-3 bg-slate-200 rounded w-5/6"></div>
+      <div className="h-48 bg-sky-200 rounded-lg mb-4"></div>
+      <div className="h-4 bg-sky-200 rounded w-3/4 mb-3"></div>
+      <div className="h-4 bg-sky-200 rounded w-1/2 mb-3"></div>
+      <div className="h-3 bg-sky-200 rounded w-full mb-2"></div>
+      <div className="h-3 bg-sky-200 rounded w-5/6"></div>
     </div>
   );
 }
@@ -39,10 +39,10 @@ export function SkeletonList({ count = 3 }: { count?: number }) {
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="bg-white rounded-lg shadow-card p-4 animate-pulse mb-4">
           <div className="flex gap-4">
-            <div className="w-16 h-16 bg-slate-200 rounded-full shrink-0"></div>
+            <div className="w-16 h-16 bg-sky-200 rounded-full shrink-0"></div>
             <div className="flex-1">
-              <div className="h-4 bg-slate-200 rounded w-1/3 mb-2"></div>
-              <div className="h-3 bg-slate-200 rounded w-2/3"></div>
+              <div className="h-4 bg-sky-200 rounded w-1/3 mb-2"></div>
+              <div className="h-3 bg-sky-200 rounded w-2/3"></div>
             </div>
           </div>
         </div>
@@ -56,19 +56,19 @@ export function SkeletonTable() {
     <div className="bg-white rounded-lg shadow-card overflow-hidden">
       <div className="animate-pulse">
         {/* Header */}
-        <div className="bg-slate-100 p-4 flex gap-4">
-          <div className="h-4 bg-slate-200 rounded w-24"></div>
-          <div className="h-4 bg-slate-200 rounded w-32"></div>
-          <div className="h-4 bg-slate-200 rounded w-20"></div>
-          <div className="h-4 bg-slate-200 rounded w-20"></div>
+        <div className="bg-sky-100 p-4 flex gap-4">
+          <div className="h-4 bg-sky-200 rounded w-24"></div>
+          <div className="h-4 bg-sky-200 rounded w-32"></div>
+          <div className="h-4 bg-sky-200 rounded w-20"></div>
+          <div className="h-4 bg-sky-200 rounded w-20"></div>
         </div>
         {/* Rows */}
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="border-t border-slate-200 p-4 flex gap-4">
-            <div className="h-3 bg-slate-200 rounded w-24"></div>
-            <div className="h-3 bg-slate-200 rounded w-32"></div>
-            <div className="h-3 bg-slate-200 rounded w-20"></div>
-            <div className="h-3 bg-slate-200 rounded w-20"></div>
+          <div key={i} className="border-t border-sky-200 p-4 flex gap-4">
+            <div className="h-3 bg-sky-200 rounded w-24"></div>
+            <div className="h-3 bg-sky-200 rounded w-32"></div>
+            <div className="h-3 bg-sky-200 rounded w-20"></div>
+            <div className="h-3 bg-sky-200 rounded w-20"></div>
           </div>
         ))}
       </div>
@@ -78,7 +78,7 @@ export function SkeletonTable() {
 
 export function LoadingPage({ text = 'Loading...' }: { text?: string }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+    <div className="min-h-screen flex items-center justify-center bg-sky-50">
       <LoadingSpinner size="lg" text={text} />
     </div>
   );

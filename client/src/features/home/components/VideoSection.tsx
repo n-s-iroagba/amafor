@@ -41,7 +41,7 @@ const VideoSection = () => {
   if (!videos || videos.length === 0) return null;
 
   return (
-    <section className="py-3 bg-gradient-to-br from-slate-900 via-sky-900 to-cyan-900 text-black relative overflow-hidden">
+    <section className="py-3 bg-gradient-to-br from-sky-900 via-sky-900 to-cyan-900 text-black relative overflow-hidden">
       {/* Glow overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(14,165,233,0.3)_0%,transparent_50%)] opacity-70"></div>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(6,182,212,0.3)_0%,transparent_50%)] opacity-70"></div>
@@ -68,20 +68,20 @@ const VideoSection = () => {
               whileHover={{ y: -5 }}
               className="group cursor-pointer"
             >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-800 to-slate-900">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-sky-800 to-sky-900">
                 <div className="mb-3 p-4 pb-0">
                   <span
                     className={`inline-block px-3 py-1 text-xs font-semibold rounded-full backdrop-blur-sm ${index % 3 === 0
-                        ? 'bg-sky-500/80'
-                        : index % 3 === 1
-                          ? 'bg-cyan-500/80'
-                          : 'bg-blue-500/80'
+                      ? 'bg-sky-500/80'
+                      : index % 3 === 1
+                        ? 'bg-cyan-500/80'
+                        : 'bg-blue-500/80'
                       }`}
                   >
                     {video.excerpt}
                   </span>
                 </div>
-                <div className="relative h-80 w-full bg-slate-700 overflow-hidden">
+                <div className="relative h-80 w-full bg-sky-700 overflow-hidden">
                   <Image
                     height={100}
                     width={100}

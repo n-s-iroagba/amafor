@@ -45,20 +45,20 @@ export default function SystemSettingsPage() {
         setTimeout(() => setSaved(false), 3000);
     };
 
-    if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-slate-400" /></div>;
+    if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-sky-400" /></div>;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-            <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
+            <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
                 <div className="container mx-auto max-w-4xl px-4 py-8">
-                    <Link href="/dashboard/admin" className="inline-flex items-center text-slate-400 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
+                    <Link href="/dashboard/admin" className="inline-flex items-center text-sky-400 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors">
                         <ArrowLeft className="w-3 h-3 mr-2" /> Central Command
                     </Link>
                     <div className="flex items-center gap-3 mb-2">
                         <div className="bg-sky-600 p-2 rounded-xl"><Settings className="w-5 h-5 text-white" /></div>
                         <h1 className="text-3xl font-bold">System Settings</h1>
                     </div>
-                    <p className="text-slate-300 text-sm">Global site configuration, feature flags, and contact details.</p>
+                    <p className="text-sky-300 text-sm">Global site configuration, feature flags, and contact details.</p>
                 </div>
             </div>
 
@@ -68,23 +68,23 @@ export default function SystemSettingsPage() {
 
                 <form onSubmit={handleSave} className="space-y-6">
                     {/* Site Identity */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-                        <h2 className="flex items-center gap-2 font-bold text-slate-800 text-lg mb-6"><Globe className="w-5 h-5 text-slate-500" /> Site Identity</h2>
+                    <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-8">
+                        <h2 className="flex items-center gap-2 font-bold text-sky-800 text-lg mb-6"><Globe className="w-5 h-5 text-sky-500" /> Site Identity</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">Site Name</label>
-                                <input type="text" value={current.siteName ?? ''} onChange={e => set('siteName', e.target.value)} className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200" />
+                                <label className="block text-sm font-semibold text-sky-700 mb-2">Site Name</label>
+                                <input type="text" value={current.siteName ?? ''} onChange={e => set('siteName', e.target.value)} className="w-full px-4 py-3 border border-sky-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">Tagline</label>
-                                <input type="text" value={current.tagline ?? ''} onChange={e => set('tagline', e.target.value)} className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200" />
+                                <label className="block text-sm font-semibold text-sky-700 mb-2">Tagline</label>
+                                <input type="text" value={current.tagline ?? ''} onChange={e => set('tagline', e.target.value)} className="w-full px-4 py-3 border border-sky-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200" />
                             </div>
                         </div>
                     </div>
 
                     {/* Contact Info */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-                        <h2 className="flex items-center gap-2 font-bold text-slate-800 text-lg mb-6"><Mail className="w-5 h-5 text-slate-500" /> Contact Information</h2>
+                    <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-8">
+                        <h2 className="flex items-center gap-2 font-bold text-sky-800 text-lg mb-6"><Mail className="w-5 h-5 text-sky-500" /> Contact Information</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {[
                                 { key: 'contactEmail', label: 'Contact Email', type: 'email' },
@@ -94,12 +94,12 @@ export default function SystemSettingsPage() {
                                 { key: 'instagramHandle', label: 'Instagram Handle', type: 'text' },
                             ].map(({ key, label, type }) => (
                                 <div key={key}>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">{label}</label>
+                                    <label className="block text-sm font-semibold text-sky-700 mb-2">{label}</label>
                                     <input
                                         type={type}
                                         value={(current as any)[key] ?? ''}
                                         onChange={e => set(key as keyof SiteConfig, e.target.value)}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200"
+                                        className="w-full px-4 py-3 border border-sky-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-200"
                                     />
                                 </div>
                             ))}
@@ -107,8 +107,8 @@ export default function SystemSettingsPage() {
                     </div>
 
                     {/* Feature Flags */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-                        <h2 className="flex items-center gap-2 font-bold text-slate-800 text-lg mb-6"><ToggleRight className="w-5 h-5 text-slate-500" /> Feature Flags</h2>
+                    <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-8">
+                        <h2 className="flex items-center gap-2 font-bold text-sky-800 text-lg mb-6"><ToggleRight className="w-5 h-5 text-sky-500" /> Feature Flags</h2>
                         <div className="space-y-4">
                             {([
                                 { key: 'whatsappWidget', label: 'WhatsApp Contact Widget', desc: 'Show floating WhatsApp CTA on public pages' },
@@ -119,15 +119,15 @@ export default function SystemSettingsPage() {
                             ] as { key: keyof SiteConfig['features']; label: string; desc: string }[]).map(flag => {
                                 const enabled = current.features?.[flag.key] ?? false;
                                 return (
-                                    <div key={flag.key} className="flex items-center justify-between p-4 rounded-lg border border-slate-200">
+                                    <div key={flag.key} className="flex items-center justify-between p-4 rounded-lg border border-sky-200">
                                         <div>
-                                            <p className="font-semibold text-slate-800">{flag.label}</p>
-                                            <p className="text-xs text-slate-500 mt-0.5">{flag.desc}</p>
+                                            <p className="font-semibold text-sky-800">{flag.label}</p>
+                                            <p className="text-xs text-sky-500 mt-0.5">{flag.desc}</p>
                                         </div>
                                         <button
                                             type="button"
                                             onClick={() => setFeature(flag.key, !enabled)}
-                                            className={`transition-colors ${enabled ? 'text-green-600' : 'text-slate-300'}`}
+                                            className={`transition-colors ${enabled ? 'text-green-600' : 'text-sky-300'}`}
                                             aria-label={`Toggle ${flag.label}`}
                                         >
                                             {enabled ? <ToggleRight className="w-8 h-8" /> : <ToggleLeft className="w-8 h-8" />}
@@ -139,19 +139,19 @@ export default function SystemSettingsPage() {
                     </div>
 
                     {/* Sub-section links */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                        <h2 className="flex items-center gap-2 font-bold text-slate-800 mb-4"><Settings className="w-4 h-4" /> Advanced Settings</h2>
-                        <Link href="/dashboard/admin/settings/retention" className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
+                    <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
+                        <h2 className="flex items-center gap-2 font-bold text-sky-800 mb-4"><Settings className="w-4 h-4" /> Advanced Settings</h2>
+                        <Link href="/dashboard/admin/settings/retention" className="flex items-center justify-between p-4 rounded-lg border border-sky-200 hover:bg-sky-50 transition-colors">
                             <div>
-                                <p className="font-semibold text-slate-800">Data Retention Policy</p>
-                                <p className="text-xs text-slate-500 mt-0.5">Configure retention periods for user records, audit logs, campaign data (BR-AD-12, BR-DSR)</p>
+                                <p className="font-semibold text-sky-800">Data Retention Policy</p>
+                                <p className="text-xs text-sky-500 mt-0.5">Configure retention periods for user records, audit logs, campaign data (BR-AD-12, BR-DSR)</p>
                             </div>
-                            <ArrowLeft className="w-4 h-4 text-slate-400 rotate-180" />
+                            <ArrowLeft className="w-4 h-4 text-sky-400 rotate-180" />
                         </Link>
                     </div>
 
                     <div className="flex justify-end">
-                        <button type="submit" disabled={saving} className="px-8 py-3 bg-slate-800 text-white rounded-xl text-sm font-bold hover:bg-slate-700 transition-colors flex items-center gap-2 shadow-lg disabled:opacity-50">
+                        <button type="submit" disabled={saving} className="px-8 py-3 bg-sky-800 text-white rounded-xl text-sm font-bold hover:bg-sky-700 transition-colors flex items-center gap-2 shadow-lg disabled:opacity-50">
                             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                             Save All Settings
                         </button>

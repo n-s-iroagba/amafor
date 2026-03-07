@@ -111,7 +111,7 @@ export default function LeagueStatsPage() {
     if (position === 3) return 'bg-orange-100 text-orange-800';
     if (position <= 4) return 'bg-blue-100 text-blue-800';
     if (position >= 8) return 'bg-red-100 text-red-800';
-    return 'bg-slate-100 text-slate-800';
+    return 'bg-sky-100 text-sky-800';
   };
 
   // Toggle league expansion
@@ -135,11 +135,11 @@ export default function LeagueStatsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-slate-700 animate-spin mb-4" />
-            <p className="text-slate-600">Loading league statistics...</p>
+            <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
+            <p className="text-sky-600">Loading league statistics...</p>
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default function LeagueStatsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
         <div className="container mx-auto max-w-7xl px-4 py-8">
           <div className="bg-red-50 border border-red-200 rounded-xl p-6 mt-8">
             <div className="flex items-start gap-3">
@@ -171,12 +171,12 @@ export default function LeagueStatsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+      <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
         <div className="container mx-auto max-w-7xl px-4 py-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">League Statistics</h1>
-          <p className="text-slate-300 text-lg max-w-3xl">
+          <p className="text-sky-300 text-lg max-w-3xl">
             Track Amafor Gladiators FC performance across all competitions.
             View standings, statistics, and progress in every league.
           </p>
@@ -186,66 +186,66 @@ export default function LeagueStatsPage() {
       {/* Summary Stats */}
       <div className="container mx-auto max-w-7xl px-4 py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-3xl font-bold text-slate-800">
+                <div className="text-3xl font-bold text-sky-800">
                   {summaryStats.totalLeagues}
                 </div>
-                <div className="text-sm text-slate-600">Total Leagues</div>
+                <div className="text-sm text-sky-600">Total Leagues</div>
               </div>
-              <Trophy className="h-10 w-10 text-slate-400" />
+              <Trophy className="h-10 w-10 text-sky-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-3xl font-bold text-slate-800">
+                <div className="text-3xl font-bold text-sky-800">
                   {summaryStats.activeLeagues}
                 </div>
-                <div className="text-sm text-slate-600">Active Leagues</div>
+                <div className="text-sm text-sky-600">Active Leagues</div>
               </div>
-              <Target className="h-10 w-10 text-slate-400" />
+              <Target className="h-10 w-10 text-sky-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-3xl font-bold text-slate-800">
+                <div className="text-3xl font-bold text-sky-800">
                   {summaryStats.totalPoints}
                 </div>
-                <div className="text-sm text-slate-600">Total Points</div>
+                <div className="text-sm text-sky-600">Total Points</div>
               </div>
-              <TrendingUp className="h-10 w-10 text-slate-400" />
+              <TrendingUp className="h-10 w-10 text-sky-400" />
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-3xl font-bold text-slate-800">
+                <div className="text-3xl font-bold text-sky-800">
                   {summaryStats.totalGoals}
                 </div>
-                <div className="text-sm text-slate-600">Total Goals</div>
+                <div className="text-sm text-sky-600">Total Goals</div>
               </div>
-              <TargetIcon className="h-10 w-10 text-slate-400" />
+              <TargetIcon className="h-10 w-10 text-sky-400" />
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-slate-400" />
+                <Search className="h-5 w-5 text-sky-400" />
               </div>
               <input
                 type="text"
                 placeholder="Search leagues..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
                 data-testid="search-leagues"
               />
             </div>
@@ -253,13 +253,13 @@ export default function LeagueStatsPage() {
             {/* Status Filter */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Filter className="h-5 w-5 text-slate-600" />
-                <label className="text-sm font-medium text-slate-700">League Status</label>
+                <Filter className="h-5 w-5 text-sky-600" />
+                <label className="text-sm font-medium text-sky-700">League Status</label>
               </div>
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value as any)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
               >
                 <option value="all">All Leagues</option>
                 <option value="active">Active Only</option>
@@ -270,13 +270,13 @@ export default function LeagueStatsPage() {
             {/* Sort By */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="h-5 w-5 text-slate-600" />
-                <label className="text-sm font-medium text-slate-700">Sort By</label>
+                <TrendingUp className="h-5 w-5 text-sky-600" />
+                <label className="text-sm font-medium text-sky-700">Sort By</label>
               </div>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-slate-500 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
               >
                 <option value="position_asc">Position (Best First)</option>
                 <option value="position_desc">Position (Worst First)</option>
@@ -287,14 +287,14 @@ export default function LeagueStatsPage() {
           </div>
 
           {/* Results Info */}
-          <div className="mt-4 pt-4 border-t border-slate-200">
+          <div className="mt-4 pt-4 border-t border-sky-200">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-sky-600">
                 Showing {sortedLeagues?.length || 0} of {leaguesData?.length || 0} leagues
               </div>
               <button
                 onClick={() => refetch()}
-                className="flex items-center gap-2 text-sm text-slate-700 hover:text-slate-900 font-medium"
+                className="flex items-center gap-2 text-sm text-sky-700 hover:text-sky-900 font-medium"
               >
                 <RefreshCw className="h-4 w-4" />
                 Refresh Data
@@ -311,12 +311,12 @@ export default function LeagueStatsPage() {
             const isExpanded = expandedLeagues.includes(league.id.toString());
 
             return (
-              <div key={league.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden" data-testid="league-item">
+              <div key={league.id} className="bg-white rounded-xl shadow-sm border border-sky-200 overflow-hidden" data-testid="league-item">
                 {/* League Header */}
                 <div className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-sky-100 to-sky-200 flex items-center justify-center">
                         {league.logo ? (
                           <Image
                             src={league.logo}
@@ -326,12 +326,12 @@ export default function LeagueStatsPage() {
                             className="object-contain"
                           />
                         ) : (
-                          <Trophy className="h-8 w-8 text-slate-600" />
+                          <Trophy className="h-8 w-8 text-sky-600" />
                         )}
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-slate-800">{league.name}</h3>
-                        <div className="flex items-center gap-4 text-sm text-slate-600 mt-1">
+                        <h3 className="text-xl font-bold text-sky-800">{league.name}</h3>
+                        <div className="flex items-center gap-4 text-sm text-sky-600 mt-1">
                           <span>Season: {league.season || '2023/24'}</span>
                           <span>•</span>
 
@@ -342,38 +342,38 @@ export default function LeagueStatsPage() {
                     <div className="flex items-center gap-6">
                       {/* Amafor Position */}
                       <div className="text-center">
-                        <div className="text-3xl font-bold text-slate-800">
+                        <div className="text-3xl font-bold text-sky-800">
                           #{amaforPosition}
                         </div>
-                        <div className="text-sm text-slate-600">Position</div>
+                        <div className="text-sm text-sky-600">Position</div>
                       </div>
 
                       {/* Amafor Points */}
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-slate-800">
+                        <div className="text-2xl font-bold text-sky-800">
                           {amaforStats?.points || 0}
                         </div>
-                        <div className="text-sm text-slate-600">Points</div>
+                        <div className="text-sm text-sky-600">Points</div>
                       </div>
 
                       {/* Performance Trend */}
                       <div className="text-center">
                         {getTrendIcon(league)}
-                        <div className="text-sm text-slate-600 mt-1">Trend</div>
+                        <div className="text-sm text-sky-600 mt-1">Trend</div>
                       </div>
 
                       {/* Actions */}
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => toggleLeagueExpansion(league.id.toString())}
-                          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors text-sm font-medium flex items-center gap-2"
+                          className="px-4 py-2 bg-sky-100 hover:bg-sky-200 text-sky-700 rounded-lg transition-colors text-sm font-medium flex items-center gap-2"
                         >
                           {isExpanded ? 'Hide Table' : 'View Table'}
                           <ChevronRight className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                         </button>
                         <Link
                           href={`/league-statistics/${league.id}`}
-                          className="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-lg transition-colors text-sm font-medium"
+                          className="px-4 py-2 bg-sky-700 hover:bg-sky-800 text-white rounded-lg transition-colors text-sm font-medium"
                         >
                           Details
                         </Link>
@@ -384,35 +384,35 @@ export default function LeagueStatsPage() {
 
                 {/* Expanded Table Preview */}
                 {isExpanded && league.table && (
-                  <div className="border-t border-slate-200">
+                  <div className="border-t border-sky-200">
                     <div className="p-6">
-                      <h4 className="font-semibold text-slate-800 mb-4">
+                      <h4 className="font-semibold text-sky-800 mb-4">
                         League Table Preview
                       </h4>
 
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead>
-                            <tr className="border-b border-slate-200">
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">Pos</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">Team</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">P</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">W</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">D</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">L</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">GF</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">GA</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">GD</th>
-                              <th className="text-left py-3 px-4 text-sm font-medium text-slate-600">Pts</th>
+                            <tr className="border-b border-sky-200">
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">Pos</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">Team</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">P</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">W</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">D</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">L</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">GF</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">GA</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">GD</th>
+                              <th className="text-left py-3 px-4 text-sm font-medium text-sky-600">Pts</th>
                             </tr>
                           </thead>
                           <tbody>
                             {league.table.slice(0, 5).map((team) => (
                               <tr
                                 key={team.team}
-                                className={`border-b border-slate-100 last:border-b-0 ${team.team === 'Amafor Gladiators'
+                                className={`border-b border-sky-100 last:border-b-0 ${team.team === 'Amafor Gladiators'
                                   ? 'bg-blue-50'
-                                  : 'hover:bg-slate-50'
+                                  : 'hover:bg-sky-50'
                                   }`}
                               >
                                 <td className="py-3 px-4">
@@ -420,7 +420,7 @@ export default function LeagueStatsPage() {
                                     {team.position}
                                   </span>
                                 </td>
-                                <td className="py-3 px-4 font-medium text-slate-800">
+                                <td className="py-3 px-4 font-medium text-sky-800">
                                   <div className="flex items-center gap-3">
                                     {team.team === 'Amafor Gladiators' && (
                                       <Shield className="h-4 w-4 text-blue-600" />
@@ -428,12 +428,12 @@ export default function LeagueStatsPage() {
                                     {team.team}
                                   </div>
                                 </td>
-                                <td className="py-3 px-4 text-slate-700">{team.played}</td>
-                                <td className="py-3 px-4 text-slate-700">{team.won}</td>
-                                <td className="py-3 px-4 text-slate-700">{team.draw}</td>
-                                <td className="py-3 px-4 text-slate-700">{team.lost}</td>
-                                <td className="py-3 px-4 text-slate-700 font-medium">{team.goalsFor}</td>
-                                <td className="py-3 px-4 text-slate-700">{team.goalsAgainst}</td>
+                                <td className="py-3 px-4 text-sky-700">{team.played}</td>
+                                <td className="py-3 px-4 text-sky-700">{team.won}</td>
+                                <td className="py-3 px-4 text-sky-700">{team.draw}</td>
+                                <td className="py-3 px-4 text-sky-700">{team.lost}</td>
+                                <td className="py-3 px-4 text-sky-700 font-medium">{team.goalsFor}</td>
+                                <td className="py-3 px-4 text-sky-700">{team.goalsAgainst}</td>
                                 <td className="py-3 px-4">
                                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${team.goalDifference > 0
                                     ? 'bg-green-100 text-green-800'
@@ -444,7 +444,7 @@ export default function LeagueStatsPage() {
                                     {team.goalDifference > 0 ? '+' : ''}{team.goalDifference}
                                   </span>
                                 </td>
-                                <td className="py-3 px-4 font-bold text-slate-800">{team.points}</td>
+                                <td className="py-3 px-4 font-bold text-sky-800">{team.points}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -468,10 +468,10 @@ export default function LeagueStatsPage() {
           })}
 
           {sortedLeagues?.length === 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-              <Trophy className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-slate-700 mb-2">No leagues found</h3>
-              <p className="text-slate-500">
+            <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-12 text-center">
+              <Trophy className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-sky-700 mb-2">No leagues found</h3>
+              <p className="text-sky-500">
                 {leaguesData?.length === 0
                   ? "No league statistics available yet."
                   : "Try adjusting your filters to see more results."}
@@ -481,28 +481,28 @@ export default function LeagueStatsPage() {
         </div>
 
         {/* Legend */}
-        <div className="mt-12 pt-8 border-t border-slate-200">
-          <h4 className="text-lg font-semibold text-slate-800 mb-4">Table Legend</h4>
+        <div className="mt-12 pt-8 border-t border-sky-200">
+          <h4 className="text-lg font-semibold text-sky-800 mb-4">Table Legend</h4>
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded-full bg-yellow-100"></div>
-              <span className="text-sm text-slate-600">1st Place (Champions)</span>
+              <span className="text-sm text-sky-600">1st Place (Champions)</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded-full bg-gray-100"></div>
-              <span className="text-sm text-slate-600">2nd Place</span>
+              <span className="text-sm text-sky-600">2nd Place</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded-full bg-orange-100"></div>
-              <span className="text-sm text-slate-600">3rd Place</span>
+              <span className="text-sm text-sky-600">3rd Place</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded-full bg-blue-100"></div>
-              <span className="text-sm text-slate-600">European Places</span>
+              <span className="text-sm text-sky-600">European Places</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded-full bg-red-100"></div>
-              <span className="text-sm text-slate-600">Relegation Zone</span>
+              <span className="text-sm text-sky-600">Relegation Zone</span>
             </div>
           </div>
         </div>

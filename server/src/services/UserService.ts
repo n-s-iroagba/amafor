@@ -33,7 +33,7 @@ export class UserService {
         // Map if it's an advertiser to provide a flat structure for the review page if needed,
         // or just let the frontend handle nested data if it's updated.
         // Actually, the AdvertiserReviewDetail page expects a flat Advertiser object.
-        if (user.role === 'advertiser') {
+        if (user.roles.includes('advertiser')) {
           return {
             id: user.id,
             name: user.advertiserProfile?.companyName || `${user.firstName} ${user.lastName}`,
@@ -76,7 +76,7 @@ export class UserService {
         await this.auditService.logAction({
           userId,
           userEmail: updatedUser.email,
-          userType: updatedUser.role || 'advertiser',
+          userType: updatedUser.roles[0] || 'advertiser',
           action: AuditAction.UPDATE,
           entityType: EntityType.USER,
           entityId: userId,
@@ -111,7 +111,7 @@ export class UserService {
         const user = updatedUsers[0];
 
         // Also update Advertiser status if it exists
-        if (user.role === 'advertiser') {
+        if (user.roles.includes('advertiser')) {
           await Advertiser.update(
             { status: status === UserStatus.ACTIVE ? 'active' : 'suspended' },
             { where: { userId: targetUserId } }

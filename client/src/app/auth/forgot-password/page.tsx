@@ -89,19 +89,19 @@ export default function ForgotPasswordPage() {
   if (!isMounted) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <div className="bg-white rounded-2xl shadow-lg border border-slate-200 relative max-w-md w-full p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-sky-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg border border-sky-200 relative max-w-md w-full p-8">
         {/* Logo/Icon Header */}
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-900 rounded-full flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-sky-700 to-sky-900 rounded-full flex items-center justify-center">
             <Shield className="w-8 h-8 text-white" />
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold text-slate-900 mb-2 text-center">
+        <h1 className="text-2xl font-bold text-sky-900 mb-2 text-center">
           Reset Your Password
         </h1>
-        <p className="text-slate-600 text-center mb-8">
+        <p className="text-sky-600 text-center mb-8">
           Enter your email to receive a password reset link
         </p>
 
@@ -123,12 +123,12 @@ export default function ForgotPasswordPage() {
           <>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-slate-700">
+                <label className="block text-sm font-medium text-sky-700">
                   Email Address
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                    <Mail className="w-5 h-5 text-slate-400" />
+                    <Mail className="w-5 h-5 text-sky-400" />
                   </div>
                   <input
                     type="email"
@@ -136,7 +136,7 @@ export default function ForgotPasswordPage() {
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-slate-400 focus:ring-2 focus:ring-slate-200 focus:outline-none transition-all"
+                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-sky-200 focus:border-sky-400 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
                     placeholder="you@example.com"
                     disabled={submitting}
                     data-testid="email-input"
@@ -147,7 +147,7 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 disabled={submitting || !form.email}
-                className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 disabled:from-slate-400 disabled:to-slate-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+                className="w-full py-3 bg-gradient-to-r from-sky-700 to-sky-800 text-white rounded-xl hover:from-sky-800 hover:to-sky-900 disabled:from-sky-400 disabled:to-sky-500 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
                 data-testid="send-reset-btn"
               >
                 {submitting ? (
@@ -164,10 +164,10 @@ export default function ForgotPasswordPage() {
               </button>
             </form>
 
-            <div className="mt-8 pt-6 border-t border-slate-200">
+            <div className="mt-8 pt-6 border-t border-sky-200">
               <button
                 onClick={() => router.push('/login')}
-                className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium"
+                className="w-full py-3 border border-sky-300 text-sky-700 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 font-medium"
               >
                 <ArrowRight className="w-5 h-5 rotate-180" />
                 Back to Login
@@ -180,16 +180,16 @@ export default function ForgotPasswordPage() {
               <div className="w-20 h-20 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-10 h-10 text-green-500" />
               </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              <h3 className="text-lg font-semibold text-sky-900 mb-2">
                 Check Your Email
               </h3>
-              <p className="text-slate-600">
+              <p className="text-sky-600">
                 We've sent a password reset link to<br />
-                <span className="font-medium text-slate-800">{form.email}</span>
+                <span className="font-medium text-sky-800">{form.email}</span>
               </p>
             </div>
 
-            <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600">
+            <div className="bg-sky-50 rounded-xl p-4 text-sm text-sky-600">
               <ul className="space-y-2">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
@@ -209,7 +209,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-4">
               <button
                 onClick={() => router.push('/login')}
-                className="w-full py-3 bg-gradient-to-r from-slate-700 to-slate-800 text-white rounded-xl hover:from-slate-800 hover:to-slate-900 transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
+                className="w-full py-3 bg-gradient-to-r from-sky-700 to-sky-800 text-white rounded-xl hover:from-sky-800 hover:to-sky-900 transition-all flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow"
               >
                 <ArrowRight className="w-5 h-5 rotate-180" />
                 Return to Login
@@ -220,7 +220,7 @@ export default function ForgotPasswordPage() {
                   setMessage('');
                   setForm({ email: '' });
                 }}
-                className="w-full py-3 border border-slate-300 text-slate-700 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2 font-medium"
+                className="w-full py-3 border border-sky-300 text-sky-700 rounded-xl hover:bg-sky-50 transition-all flex items-center justify-center gap-2 font-medium"
               >
                 <RefreshCw className="w-5 h-5" />
                 Try Another Email
@@ -231,8 +231,8 @@ export default function ForgotPasswordPage() {
 
         {/* Footer note */}
         {!message && (
-          <div className="mt-8 text-center text-sm text-slate-500">
-            Need help? <a href="/contact" className="text-slate-700 hover:text-slate-900 font-medium">Contact Support</a>
+          <div className="mt-8 text-center text-sm text-sky-500">
+            Need help? <a href="/contact" className="text-sky-700 hover:text-sky-900 font-medium">Contact Support</a>
           </div>
         )}
       </div>

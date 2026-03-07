@@ -471,6 +471,80 @@ class EmailService {
     }
   }
 
+  async sendSubscriptionRenewalEmail(to: string, patronName: string, tier: string, amount: number, paymentLink: string): Promise<void> {
+    try {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            ${this.getBaseEmailStyles()}
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">
+                <h1 style="margin: 0;">Subscription Renewal Due</h1>
+                <p style="margin: 10px 0 0 0; opacity: 0.9;">Maintain your elite status in our community!</p>
+              </div>
+              
+              <div class="content">
+                <p>Hello ${patronName || 'Patron'},</p>
+                
+                <p>Your <strong>${tier.replace(/_/g, ' ')}</strong> subscription is due for renewal. Thank you for your continued support, it makes everything we do possible.</p>
+                
+                <div class="details-box">
+                  <h3 class="mt-0">Renewal Details</h3>
+                  <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid #eee;">
+                      <td style="padding: 8px 0; font-weight: 600;">Amount Due:</td>
+                      <td style="padding: 8px 0; color: #007bff; font-weight: bold; font-size: 18px;">NGN ${amount.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 8px 0; font-weight: 600;">Subscription Tier:</td>
+                      <td style="padding: 8px 0; text-transform: capitalize;">${tier.replace(/_/g, ' ')}</td>
+                    </tr>
+                  </table>
+                </div>
+                
+                <div class="text-center" style="margin-top: 30px;">
+                  <a href="${paymentLink}" class="button success" style="font-size: 16px; padding: 15px 30px;">Pay Now</a>
+                </div>
+                
+                <p style="margin-top: 30px;">If the button above does not work, copy and paste the following link into your browser:</p>
+                <p style="word-break: break-all; color: #007bff; background: #f8f9fa; padding: 10px; border-radius: 4px;">${paymentLink}</p>
+                
+              </div>
+              
+              <div class="footer">
+                <p>If you've already completed this payment or no longer wish to continue your subscription, please ignore this email.</p>
+                <p>&copy; ${new Date().getFullYear()} Palm Web Tv. All rights reserved.</p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `
+
+      await this.sendEmail({
+        to,
+        subject: `Your ${tier.replace(/_/g, ' ').toUpperCase()} Subscription is Due for Renewal`,
+        html,
+      })
+
+      logger.info('Subscription renewal email sent successfully', {
+        to,
+        tier,
+      })
+    } catch (error: any) {
+      logger.error('Error sending subscription renewal email:', {
+        to,
+        tier,
+        error: error.message,
+      })
+      throw error
+    }
+  }
+
   async sendFailedPaymentEmail({
     to,
     advertiserName,

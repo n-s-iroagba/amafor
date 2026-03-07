@@ -64,11 +64,11 @@ export class AuthService {
         passwordHash,
         firstName: data.firstName ?? data.email.split('@')[0],
         lastName: data.lastName ?? '',
-        role: data.role,
+        roles: [data.role],
         status: UserStatus.PENDING_VERIFICATION,
         emailVerified: false,
         metadata: { invited: true, tempPassword: true },
-      } as UserCreationAttributes);
+      } as unknown as UserCreationAttributes);
 
       // Trigger the same verification email flow as signupAdvertiser
       const { verificationToken, id } = await this.verificationService.initiateEmailVerificationProcess(user);
@@ -76,7 +76,7 @@ export class AuthService {
       await this.auditService.logAction({
         userId: user.id,
         userEmail: user.email,
-        userType: user.role,
+        userType: user.roles[0],
         action: AuditAction.CREATE,
         entityType: EntityType.USER,
         entityId: user.id,
@@ -134,11 +134,11 @@ export class AuthService {
         firstName,
         lastName,
         phone: data.contact_phone,
-        role: 'advertiser' as UserRole,
+        roles: ['advertiser' as UserRole],
         status: UserStatus.PENDING_VERIFICATION,
         emailVerified: false,
         metadata: {},
-      } as UserCreationAttributes);
+      } as unknown as UserCreationAttributes);
 
       // 6. Create the Advertiser profile row
       await Advertiser.create({
@@ -157,7 +157,7 @@ export class AuthService {
       await this.auditService.logAction({
         userId: user.id,
         userEmail: user.email,
-        userType: user.role,
+        userType: user.roles[0],
         action: AuditAction.CREATE,
         entityType: EntityType.USER,
         entityId: user.id,
@@ -215,7 +215,7 @@ export class AuthService {
         user: {
           id: user.id,
           username: user.email,
-          role: user.role,
+          roles: user.roles,
           status: user.status,
           emailVerified: user.emailVerified,
         } as AuthUser,
@@ -251,7 +251,7 @@ export class AuthService {
       const newAccessToken = this.tokenService.generateAccessToken({
         id: user.id,
         email: user.email,
-        role: user.role as any,
+        role: user.roles[0] as any,
         permissions: [],
       });
 
@@ -291,7 +291,7 @@ export class AuthService {
       const returnUser: AuthUser = {
         id: user.id,
         username: user.email,
-        role: user.role,
+        roles: user.roles,
         status: user.status,
         emailVerified: user.emailVerified,
         avatarUrl: user.avatarUrl,
@@ -385,7 +385,7 @@ export class AuthService {
       const returnUser: AuthUser = {
         id: user.id,
         username: user.email,
-        role: user.role,
+        roles: user.roles,
         status: user.status,
         emailVerified: user.emailVerified,
       };
@@ -411,7 +411,7 @@ export class AuthService {
       return {
         id: user.id,
         username: user.email,
-        role: user.role,
+        roles: user.roles,
         status: user.status,
         emailVerified: user.emailVerified,
         avatarUrl: user.avatarUrl,
@@ -427,7 +427,7 @@ export class AuthService {
     const payload = {
       id: user.id,
       email: user.email,
-      role: user.role as any,
+      role: user.roles[0] as unknown as string,
       permissions: [] as string[],
     };
     const accessToken = this.tokenService.generateAccessToken(payload);

@@ -156,7 +156,7 @@ function AboutSection({ onSocialClick }: AboutSectionProps) {
   return (
     <div data-testid={FOOTER_TEST_IDS.ABOUT_SECTION}>
       <h3 className="text-xl font-heading mb-4">Amafor Gladiators FC</h3>
-      <p className="text-slate-300 text-sm leading-relaxed mb-4">
+      <p className="text-sky-300 text-sm leading-relaxed mb-4">
         Building champions through dedication, discipline, and elite performance
         since our founding.
       </p>
@@ -259,7 +259,7 @@ function NavLink({ href, name, onClick }: NavLinkProps) {
   return (
     <Link
       href={href}
-      className="text-slate-300 hover:text-sky-400 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-sky-900 rounded"
+      className="text-sky-300 hover:text-sky-400 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-sky-900 rounded"
       data-testid={FOOTER_TEST_IDS.NAV_LINK(name)}
       onClick={(e) => {
         e.preventDefault();
@@ -294,7 +294,7 @@ function ContactSection({
   return (
     <div data-testid={FOOTER_TEST_IDS.CONTACT_SECTION}>
       <h3 className="text-lg font-heading mb-4">Contact</h3>
-      <ul className="space-y-2 text-sm text-slate-300">
+      <ul className="space-y-2 text-sm text-sky-300">
         <li>{CONTACT_INFO.address}</li>
         <li>{CONTACT_INFO.city}</li>
         <li className="pt-2">
@@ -360,7 +360,7 @@ function LegalSection() {
   const { handleLegalLinkClick } = useFooterLogic();
 
   return (
-    <div className="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-300">
+    <div className="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-sky-300">
       <p
         data-testid={FOOTER_TEST_IDS.COPYRIGHT}
         aria-label={`Copyright ${new Date().getFullYear()} Amafor Gladiators FC`}

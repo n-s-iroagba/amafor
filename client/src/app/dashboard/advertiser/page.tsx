@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { useAuthContext } from '@/shared/hooks/useAuthContext';
-import { UserStatus } from '@/types';
+import { UserStatus, UserRole } from '@/shared/types';
+import { useRoleGuard } from '@/shared/hooks/useRoleGuard';
+import { LogOut, Users as UsersIcon } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 import { AdCampaign } from '@/features/advertisement/types';
 
@@ -29,7 +32,8 @@ interface Dispute {
  * Hook: useGet(API_ROUTES.ADVERTISER.CAMPAIGNS.LIST), useGet(API_ROUTES.ADVERTISER.DISPUTES.LIST)
  */
 export default function AdvertiserDashboard() {
-  const { user, loading: authLoading } = useAuthContext();
+  const router = useRouter();
+  const { user, loading: authLoading } = useRoleGuard(['advertiser', 'commercial_manager'] as UserRole[]);
 
   const { data: campaigns, loading: campaignsLoading } = useGet<AdCampaign[]>(
     API_ROUTES.ADVERTISER.CAMPAIGNS.LIST
@@ -81,10 +85,24 @@ export default function AdvertiserDashboard() {
         <div className="bg-[#87CEEB] p-2 rounded-lg">
           <LayoutDashboard className="w-6 h-6 text-[#2F4F4F]" />
         </div>
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1">
           <Link href="/dashboard/advertiser/campaigns" className="p-3 text-white/50 hover:text-white block"><Megaphone className="w-6 h-6" /></Link>
           <Link href="/dashboard/advertiser/reports" className="p-3 text-white/50 hover:text-white block"><BarChart3 className="w-6 h-6" /></Link>
           <Link href="/dashboard/advertiser/disputes" className="p-3 text-white/50 hover:text-white block"><AlertCircle className="w-6 h-6" /></Link>
+        </div>
+
+        <div className="pb-8 space-y-6 flex flex-col items-center">
+          {user && user.roles.length > 1 && (
+            <Link href="/dashboard" className="p-3 text-[#87CEEB] hover:bg-white/5 rounded-xl block" title="Switch Role">
+              <UsersIcon className="w-6 h-6" />
+            </Link>
+          )}
+          <button
+            onClick={() => router.push('/auth/login')}
+            className="p-3 text-white/40 hover:text-white block"
+          >
+            <LogOut className="w-6 h-6" />
+          </button>
         </div>
       </aside>
 

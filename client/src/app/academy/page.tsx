@@ -65,7 +65,7 @@ function AcademyContent() {
     <>
       <Header />
 
-      <main className="py-16 bg-slate-50 min-h-screen">
+      <main className="py-16 bg-sky-50 min-h-screen">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl mb-8 font-heading">
             Youth Academy
@@ -81,7 +81,7 @@ function AcademyContent() {
                   href={`${sec.id}`}
                   className={`px-6 py-3 rounded-lg transition-colors whitespace-nowrap flex items-center gap-2 ${activeSection === sec.id
                     ? "bg-sky-700 text-white font-medium"
-                    : "bg-white text-slate-700 hover:bg-slate-100"
+                    : "bg-white text-sky-700 hover:bg-sky-100"
                     }`}
                   aria-current={activeSection === sec.id ? "page" : undefined}
                   data-testid={`nav-item-${sec.name.toLowerCase()}`}
@@ -124,7 +124,7 @@ function AcademyContent() {
                   <h2 className="text-3xl font-heading">Coaching Staff</h2>
                   <button
                     onClick={() => refetchStaff()}
-                    className="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                    className="px-4 py-2 text-sm bg-sky-100 hover:bg-sky-200 rounded-lg transition-colors"
                     data-testid="btn-refresh-staff"
                   >
                     Refresh Staff
@@ -134,7 +134,7 @@ function AcademyContent() {
                 {staffLoading && (
                   <div className="flex flex-col items-center justify-center py-12">
                     <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
-                    <p className="text-slate-600">Loading staff members...</p>
+                    <p className="text-sky-600">Loading staff members...</p>
                   </div>
                 )}
 
@@ -159,7 +159,7 @@ function AcademyContent() {
                       staffData.map((staff) => (
                         <div
                           key={staff.id}
-                          className="bg-slate-50 p-6 rounded-lg shadow-card hover:shadow-lg transition-shadow"
+                          className="bg-sky-50 p-6 rounded-lg shadow-card hover:shadow-lg transition-shadow"
                           data-testid={`staff-card-${staff.id}`}
                         >
                           <div className="w-20 h-20 bg-gradient-to-br from-sky-600 to-sky-800 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
@@ -183,11 +183,11 @@ function AcademyContent() {
                               ))}
                             </div>
                           )}
-                          <p className="text-sm text-slate-600 text-center">
+                          <p className="text-sm text-sky-600 text-center">
                             {staff.bio}
                           </p>
                           {staff.yearsOfExperience && (
-                            <p className="text-xs text-slate-500 text-center mt-3">
+                            <p className="text-xs text-sky-500 text-center mt-3">
                               {staff.yearsOfExperience}+ years experience
                             </p>
                           )}
@@ -195,8 +195,8 @@ function AcademyContent() {
                       ))
                     ) : (
                       <div className="col-span-full text-center py-8">
-                        <Users className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                        <p className="text-slate-500">No staff members found</p>
+                        <Users className="w-12 h-12 text-sky-300 mx-auto mb-4" />
+                        <p className="text-sky-500">No staff members found</p>
                       </div>
                     )}
                   </div>
@@ -206,7 +206,7 @@ function AcademyContent() {
                 {!staffLoading && !staffError && !staffData && (
                   <div className="grid md:grid-cols-2 gap-6">
                     {/* Keep your existing hardcoded staff as fallback */}
-                    <div className="bg-slate-50 p-6 rounded-lg shadow-card">
+                    <div className="bg-sky-50 p-6 rounded-lg shadow-card">
                       <div className="w-20 h-20 bg-gradient-to-br from-sky-600 to-sky-800 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-2xl font-bold">
                         SA
                       </div>
@@ -216,7 +216,7 @@ function AcademyContent() {
                       <p className="text-sky-700 text-center mb-3 font-medium">
                         Academy Director
                       </p>
-                      <p className="text-sm text-slate-600 text-center">F.</p>
+                      <p className="text-sm text-sky-600 text-center">F.</p>
                     </div>
                     {/* ... other hardcoded staff cards ... */}
                   </div>
@@ -234,11 +234,11 @@ function AcademyContent() {
             )}
 
             {/* Contact CTA */}
-            <div className="mt-12 pt-8 border-t border-slate-200">
+            <div className="mt-12 pt-8 border-t border-sky-200">
               <h3 className="text-2xl mb-4 font-heading">
                 Interested in Joining Our Academy?
               </h3>
-              <p className="text-slate-700 mb-6">
+              <p className="text-sky-700 mb-6">
                 Contact us to learn more about trial dates and enrollment
                 information.
               </p>
@@ -281,7 +281,7 @@ export default function AcademyHub() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="min-h-screen flex items-center justify-center bg-sky-50">
           <Loader2 className="w-10 h-10 text-sky-700 animate-spin" />
         </div>
       }

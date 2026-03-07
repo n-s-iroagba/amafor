@@ -61,7 +61,7 @@ export class UserRepository extends BaseRepository<User> {
         await this.auditLogRepository.create({
           userId: user.id,
           userEmail: user.email,
-          userType: user.role,
+          userType: user.roles && user.roles.length > 0 ? user.roles[0] : 'fan',
           action: 'create',
           entityType: 'user',
           entityId: user.id,
@@ -119,7 +119,7 @@ export class UserRepository extends BaseRepository<User> {
         await this.auditLogRepository.create({
           userId: auditData.userId || id,
           userEmail: auditData.userEmail || user.email,
-          userType: auditData.userType || user.role,
+          userType: auditData.userType || (user.roles && user.roles.length > 0 ? user.roles[0] : 'fan'),
           action: 'update',
           entityType: 'user',
           entityId: id,

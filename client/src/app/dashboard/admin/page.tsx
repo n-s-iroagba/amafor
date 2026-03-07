@@ -30,6 +30,9 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useGet } from "@/shared/hooks/useApiQuery";
 import { API_ROUTES } from "@/config/routes";
+import { useRoleGuard } from "@/shared/hooks/useRoleGuard";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
+import { UserRole } from "@/shared/types";
 
 interface DashboardStats {
   users: {
@@ -59,6 +62,7 @@ interface DashboardStats {
 export default function AdminDashboard() {
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useRoleGuard(['admin', 'sports_admin', 'finance_officer', 'it_security'] as UserRole[]);
 
   const { data: stats, loading } = useGet<DashboardStats>(
     API_ROUTES.ANALYTICS.DASHBOARD,
@@ -320,8 +324,18 @@ export default function AdminDashboard() {
           ))}
         </nav>
 
-        {/* Logout */}
-        <div className="p-2 lg:p-3 border-t border-white/10 shrink-0">
+        {/* Role Switcher & Logout */}
+        <div className="p-2 lg:p-3 border-t border-white/10 shrink-0 space-y-1">
+          {user && user.roles.length > 1 && (
+            <Link
+              href="/dashboard"
+              className="w-full flex items-center justify-center lg:justify-start gap-0 lg:gap-3 px-3 py-3 rounded-xl text-[#87CEEB] hover:bg-white/5 transition-all font-black text-[10px] uppercase tracking-widest"
+              data-testid="admin-switch-role-btn"
+            >
+              <Users className="w-4 h-4 shrink-0" />
+              <span className="hidden lg:inline">Switch Role</span>
+            </Link>
+          )}
           <button
             onClick={handleLogout}
             className="w-full flex items-center justify-center lg:justify-start gap-0 lg:gap-3 px-3 py-3 rounded-xl text-white/40 hover:text-white hover:bg-red-500/20 transition-all font-black text-[10px] uppercase tracking-widest"
