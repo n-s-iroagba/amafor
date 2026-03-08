@@ -15,7 +15,7 @@ import React, { useState } from 'react';
  * @observability SRS-OBS-140 Monitor multimedia engagement and video play rates
  */
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Filter, Search, ArrowRight, Video as VideoIcon } from 'lucide-react';
+import { Play, Video as VideoIcon } from 'lucide-react';
 
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';

@@ -4,7 +4,7 @@ import { FeaturedNewsAttributes } from "../../../models/FeaturedNews";
 export const developmentFeaturedNewss: FeaturedNewsAttributes[] = [
   {
     id: '3a7a7a7a-7a7a-7a7a-7a7a-7a7a7a7a7a71',
-    rssFeedSourceId: '2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f61', // Matches Goal.com Nigeria UUID
+    rssFeedSourceId: '2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f61', // Matches Sportskeeda UUID
     originalId: 'https://www.goal.com/en-ng/news/super-eagles-qualify-afcon/12345abcde',
     title: 'Super Eagles secure AFCON ticket with game to spare',
     summary: 'Nigeria have booked their place in the next Africa Cup of Nations after a hard-fought draw in Sierra Leone.',
