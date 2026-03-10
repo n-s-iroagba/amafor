@@ -1,13 +1,13 @@
 // app/coaches/[id]/page.tsx
 'use client';
 
-
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
 import { Coach } from '@/features/coach/types';
 import { ErrorAlert } from '@/shared/components/Alerts';
 import { useGet } from '@/shared/hooks/useApiQuery';
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 
 
@@ -81,6 +81,9 @@ export default function CoachDetail() {
             Back to coaches
           </Link>
         </div>
+
+        {/* Sidebar ad — displayed between back-link and coach card */}
+        <AdDisplay identifier="SIDEBAR" className="mb-6" />
 
         {/* Coach Card */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">

@@ -28,9 +28,13 @@ export class VerificationService {
 
   constructor() {
     this.emailService = new EmailService('');
-    this.tokenService = new TokenService('aba', '');
+    this.tokenService = new TokenService(
+      process.env.JWT_REFRESH_SECRET,
+      process.env.JWT_RESET_PASSWORD_SECRET,
+      process.env.JWT_EMAIL_VERIFICATION_SECRET
+    );
     this.config = {
-      jwtSecret: 'a',
+      jwtSecret: process.env.JWT_SECRET || 'ababana',
       clientUrl: process.env.NODE_ENV === 'production' ? 'https://www.palmwebtv.com' : 'http://localhost:5000',
       tokenExpiration: {
         verification: 0,

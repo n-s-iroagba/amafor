@@ -4,6 +4,7 @@ import { Header } from '@/shared/components/Header'
 import { Footer } from '@/shared/components/Footer'
 import Link from 'next/link'
 import { Eye, Database, Video, Shield, ArrowRight, ChevronRight } from 'lucide-react'
+import AdDisplay from '@/features/advertisement/component/AdDisplay'
 
 
 /**
@@ -110,6 +111,9 @@ export default function ProViewAccess() {
             </div>
           </div>
         </section>
+
+        {/* Native ad — between features grid and eligibility section */}
+        <AdDisplay identifier="NATIVE" className="my-4" />
 
         {/* Who Can Apply */}
         <section className="py-20 bg-sky-50">

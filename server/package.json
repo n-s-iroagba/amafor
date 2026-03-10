@@ -12,8 +12,10 @@
     "start": "node dist/index.js",
     "lint": "eslint . --ext .ts",
     "migrate": "npx sequelize-cli db:migrate",
-    "prod": "node dist/scripts/seed.js",
-    "seed": "npx ts-node -r tsconfig-paths/register src/scripts/seed.ts"
+    "seed": "npx ts-node -r tsconfig-paths/register src/scripts/seed.ts",
+    "seed:dev": "NODE_ENV=development npx ts-node -r tsconfig-paths/register src/scripts/seed.ts",
+    "seed:prod": "NODE_ENV=production node dist/scripts/seed.js",
+    "seed:test": "NODE_ENV=test npx ts-node -r tsconfig-paths/register src/scripts/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.975.0",

@@ -1,0 +1,8 @@
+# Service-specific API contract fragment
+# For the full system-wide OpenAPI spec, see: ../../07-interface-specification/api-contracts/openapi.yaml
+
+openapi: 3.1.0
+info:
+  title: "{Service Name} API"
+  version: "0.1.0"
+paths: {}

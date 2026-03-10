@@ -1,12 +1,12 @@
 /**
  * Admin User List
- * 
+ *
  * Comprehensive directory of all system users with role management, status tracking, and administrative controls.
- * 
+ *
  * @screen SC-082
  * @implements REQ-ADM-05
  * @usecase UC-ADM-05 (Manage Users)
- * @requires SRS-I-038 (Users API - GET /admin/users)
+ * @requires SRS-I-038 (Users API - GET /users)
  * @performance NFR-PERF-01
  * @observability SRS-OBS-036 Monitor user directory access and administrative permission changes
  */
@@ -18,33 +18,51 @@ import Link from 'next/link';
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
+/**
+ * Mirrors the server-side UserAttributes shape for list items.
+ * `roles` is a string[] — the server model stores roles as a JSON array.
+ */
 interface User {
-  id: number;
-  name: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  role: string;
+  roles: string[];   // multi-role: ['admin', 'scout'], ['fan'], etc.
   status: string;
   createdAt: string;
 }
 
+/** Returns a capitalised display string for the primary (first) role. */
+function getPrimaryRole(roles: string[]): string {
+  if (!roles || roles.length === 0) return 'No Role';
+  return roles[0].replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+const ROLE_FILTER_MAP: Record<string, string> = {
+  Admins: 'admin',
+  Scouts: 'scout',
+  Advertisers: 'advertiser',
+  'Academy Staff': 'academy_staff',
+  'Sports Admin': 'sports_admin',
+};
+
 export default function UserManagementPage() {
-  const { data: usersData, loading, error } = useGet<User[]>(API_ROUTES.USERS.LIST);
+  const { data: usersData, loading } = useGet<User[]>(API_ROUTES.USERS.LIST);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('All Roles');
 
-  // Fallback to empty array if data isn't in expected format or null
   const users = Array.isArray(usersData) ? usersData : [];
 
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
+      const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
       const matchesSearch =
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        fullName.includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesRole = roleFilter === 'All Roles' ||
-        (roleFilter === 'Admins' && user.role === 'Admin') ||
-        (roleFilter === 'Scouts' && user.role === 'Scout') ||
-        (roleFilter === 'Advertisers' && user.role === 'Advertiser');
+      const matchesRole =
+        roleFilter === 'All Roles' ||
+        user.roles.includes(ROLE_FILTER_MAP[roleFilter] ?? '');
 
       return matchesSearch && matchesRole;
     });
@@ -89,9 +107,9 @@ export default function UserManagementPage() {
               onChange={(e) => setRoleFilter(e.target.value)}
             >
               <option>All Roles</option>
-              <option>Scouts</option>
-              <option>Advertisers</option>
-              <option>Admins</option>
+              {Object.keys(ROLE_FILTER_MAP).map(label => (
+                <option key={label}>{label}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -104,7 +122,7 @@ export default function UserManagementPage() {
               <thead className="bg-[#2F4F4F] text-[#87CEEB]">
                 <tr className="text-[10px] font-black uppercase tracking-widest">
                   <th className="px-10 py-6">User Entity</th>
-                  <th className="px-10 py-6">Role & Permissions</th>
+                  <th className="px-10 py-6">Role(s) & Permissions</th>
                   <th className="px-10 py-6">Status</th>
                   <th className="px-10 py-6">Joined Date</th>
                   <th className="px-10 py-6"></th>
@@ -116,10 +134,12 @@ export default function UserManagementPage() {
                     <td className="px-10 py-8">
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 rounded-2xl bg-[#87CEEB]/10 flex items-center justify-center text-[#2F4F4F] font-black text-lg shadow-inner">
-                          {user.name.charAt(0).toUpperCase()}
+                          {user.firstName?.charAt(0).toUpperCase() ?? '?'}
                         </div>
                         <div>
-                          <div className="font-bold text-[#2F4F4F] text-lg leading-tight">{user.name}</div>
+                          <div className="font-bold text-[#2F4F4F] text-lg leading-tight">
+                            {user.firstName} {user.lastName}
+                          </div>
                           <div className="flex items-center text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">
                             <Mail className="w-3 h-3 mr-1.5" /> {user.email}
                           </div>
@@ -127,13 +147,19 @@ export default function UserManagementPage() {
                       </div>
                     </td>
                     <td className="px-10 py-8">
-                      <div className="flex flex-col">
-                        <span className="text-xs font-black text-[#2F4F4F] uppercase tracking-widest">{user.role}</span>
-                        <span className="text-[9px] text-gray-400 font-bold uppercase mt-1">Level {user.role === 'Admin' ? '3' : '1'} Access</span>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs font-black text-[#2F4F4F] uppercase tracking-widest">
+                          {getPrimaryRole(user.roles)}
+                        </span>
+                        {user.roles.length > 1 && (
+                          <span className="text-[9px] text-gray-400 font-bold uppercase">
+                            +{user.roles.length - 1} more role{user.roles.length > 2 ? 's' : ''}
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-10 py-8">
-                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${user.status === 'Active' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'
+                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${user.status === 'active' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'
                         }`}>
                         {user.status || 'Pending'}
                       </span>

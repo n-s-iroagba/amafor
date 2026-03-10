@@ -36,13 +36,14 @@ export class AuthController {
   }
 
   /**
-   * Invite a new user (admin / scout) — sends a verification email.
+   * Invite a new non-fan user (admin, scout, academy_staff, etc.) — sends a verification email.
+   * Only admins can call this endpoint (enforced by middleware).
    * @api POST /auth/invite
    */
   async inviteUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, role, firstName, lastName } = req.body;
-      const response = await this.authService.inviteUser({ email, role, firstName, lastName });
+      const { email, roles, firstName, lastName } = req.body;
+      const response = await this.authService.inviteUser({ email, roles, firstName, lastName });
       res.status(201).json(response);
     } catch (error) {
       console.error(error);

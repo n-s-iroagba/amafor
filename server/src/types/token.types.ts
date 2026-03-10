@@ -3,7 +3,7 @@ import { StringValue } from 'ms';
 export interface JwtPayload {
 
     email: string;
-    role: string;
+    roles: string[];
     permissions?: string[];
     tokenType?: 'access' | 'refresh' | 'reset_password' | 'email_verification';
     purpose?: string;
@@ -20,7 +20,7 @@ export interface JwtPayload {
     };
 }
 
-export interface EmailVerificationTokenPayload extends Omit<JwtPayload, 'role' | 'tokenType' | 'purpose'> {
+export interface EmailVerificationTokenPayload extends Omit<JwtPayload, 'roles' | 'tokenType' | 'purpose'> {
 
     email: string;
     verificationToken: string;
@@ -34,7 +34,7 @@ export interface AccessTokenPayload extends JwtPayload {
 
 }
 
-export interface ResetPasswordTokenPayload extends Omit<JwtPayload, 'role'> {
+export interface ResetPasswordTokenPayload extends Omit<JwtPayload, 'roles'> {
     id: string;
     email: string;
     requestId?: string;

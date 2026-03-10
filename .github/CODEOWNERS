@@ -1,0 +1,11 @@
+# Default owners
+* @team-leads
+
+# Documentation
+/docs/ @docs-reviewers
+
+# Server
+/server/ @backend-team
+
+# Client
+/client/ @frontend-team

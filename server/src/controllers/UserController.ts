@@ -9,10 +9,8 @@ export class UserController {
   }
 
   /**
-   * Get current user profile
+   * Get current user's own profile.
    * @api GET /users/profile
-   * @apiName API-USER-001
-   * @apiGroup Users
    * @srsRequirement REQ-AUTH-02
    */
   public getProfile = async (req: Request, res: Response, next: NextFunction) => {
@@ -26,10 +24,10 @@ export class UserController {
   };
 
   /**
-   * Update user profile
+   * Update the current user's own profile.
+   * Roles and passwordHash are stripped inside UserService.updateUserProfile — users cannot
+   * elevate their own privileges via this endpoint.
    * @api PATCH /users/profile
-   * @apiName API-USER-002
-   * @apiGroup Users
    * @srsRequirement REQ-AUTH-02
    */
   public updateProfile = async (req: Request, res: Response, next: NextFunction) => {
@@ -43,18 +41,31 @@ export class UserController {
   };
 
   /**
-   * Verify user account (Admin only)
+   * Admin-only: update any user (including role changes).
+   * @api PUT /users/:id
+   * @srsRequirement REQ-ADM-05
+   */
+  public updateUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const adminId = (req as any).user.id;
+      const updatedUser = await this.userService.adminUpdateUser(id, req.body, adminId);
+      res.status(200).json({ success: true, data: updatedUser });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Admin-only: verify / change a user's status (active / suspended).
    * @api PATCH /users/:userId/verify
-   * @apiName API-USER-003
-   * @apiGroup Users
    * @srsRequirement REQ-ADM-06, REQ-ADM-11
    */
   public verifyUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const adminId = (req as any).user.id;
       const { userId } = req.params;
-      const { status } = req.body; // 'APPROVED' | 'REJECTED'
-
+      const { status } = req.body;
       const user = await this.userService.verifyUser(adminId, userId, status);
       res.status(200).json({ success: true, data: user });
     } catch (error) {
@@ -63,10 +74,8 @@ export class UserController {
   };
 
   /**
-   * Get pending advertisers
+   * Admin-only: list pending advertisers awaiting verification.
    * @api GET /users/pending-advertisers
-   * @apiName API-USER-004
-   * @apiGroup Users
    * @srsRequirement REQ-ADM-06
    */
   public getPendingAdvertisers = async (req: Request, res: Response, next: NextFunction) => {
@@ -78,6 +87,11 @@ export class UserController {
     }
   };
 
+  /**
+   * Admin-only: list all users.
+   * @api GET /users
+   * @srsRequirement REQ-ADM-05
+   */
   public listUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await this.userService.getAllUsers(req.query);
@@ -87,6 +101,11 @@ export class UserController {
     }
   };
 
+  /**
+   * Admin-only: get a single user by id.
+   * @api GET /users/:id
+   * @srsRequirement REQ-ADM-05
+   */
   public getUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
@@ -97,6 +116,11 @@ export class UserController {
     }
   };
 
+  /**
+   * Admin-only: create a user directly (no invite email).
+   * @api POST /users
+   * @srsRequirement REQ-ADM-05
+   */
   public createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await this.userService.createUser(req.body);
@@ -106,6 +130,11 @@ export class UserController {
     }
   };
 
+  /**
+   * Admin-only: soft-delete a user.
+   * @api DELETE /users/:id
+   * @srsRequirement REQ-ADM-05
+   */
   public deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

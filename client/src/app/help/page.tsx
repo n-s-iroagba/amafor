@@ -183,8 +183,11 @@ export default function HelpContact() {
                     <Phone className="w-5 h-5 text-sky-700 mt-1" />
                     <div>
                       <div className="font-semibold text-sky-500">Phone</div>
-                      <a href="tel:+234XXXXXXXXXX" className="text-sky-700 hover:text-sky-800">
-                        +234 XXX XXX XXXX
+                      <a
+                        href={`tel:+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? ''}`}
+                        className="text-sky-700 hover:text-sky-800"
+                      >
+                        {process.env.NEXT_PUBLIC_PHONE_DISPLAY ?? 'Contact us'}
                       </a>
                     </div>
                   </div>

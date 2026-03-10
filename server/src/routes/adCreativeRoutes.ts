@@ -15,7 +15,7 @@ router.get('/:id', adCreativeController.getAdCreativeById.bind(adCreativeControl
 router.post(
     '/',
     authenticate,
-    authorize(['admin', 'advertiser']),
+    authorize(['advertiser']),
     validate(adCreativeSchema.createAdCreative),
     adCreativeController.createAdCreative.bind(adCreativeController)
 );
@@ -23,7 +23,7 @@ router.post(
 router.put(
     '/:id',
     authenticate,
-    authorize(['admin', 'advertiser']),
+    authorize(['advertiser']),
     validate(adCreativeSchema.updateAdCreative),
     adCreativeController.updateAdCreative.bind(adCreativeController)
 );
@@ -31,7 +31,7 @@ router.put(
 router.delete(
     '/:id',
     authenticate,
-    authorize(['admin']),
+    authorize(['advertiser']),
     adCreativeController.deleteAdCreative.bind(adCreativeController)
 );
 

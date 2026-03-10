@@ -55,7 +55,7 @@ class EmailService {
   constructor(private readonly url: string) {
     this.config = this.getEmailConfig()
     this.transporter = this.createTransporter()
-    this.clientUrl = process.env.NODE_ENV === 'production' ? 'https://www.amaforgaladiatorsfc.com' : 'http://localhost:3000'
+    this.clientUrl = process.env.NODE_ENV === 'production' ? process.env.PROD_CLIENT_URL as string : process.env.DEV_CLIENT_URL as string
   }
 
   // Singleton pattern for EmailService
@@ -78,7 +78,7 @@ class EmailService {
         user: process.env.SMTP_USER || '',
         pass: process.env.SMTP_PASS || '',
       },
-      from: process.env.SMTP_FROM || 'do-not-reply@palmwebtv.com'
+      from: process.env.SMTP_FROM as string
     }
   }
 

@@ -25,6 +25,7 @@ import VideoCard from '@/features/videos/components/VideoCard';
 import VideoSkeleton from '@/features/videos/components/VideoSkeleton';
 import { Footer } from '@/shared/components/Footer';
 import { WhatsAppWidget } from '@/shared/components/WhatsAppWidget';
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 const VideoArchivePage = () => {
     const [page, setPage] = useState(1);
@@ -69,6 +70,8 @@ const VideoArchivePage = () => {
 
                 {/* Content Grid */}
                 <section className="py-16 sm:py-24 w-full max-w-7xl mx-auto px-4 sm:px-6">
+                    {/* Top banner ad — sits between hero and the video grid */}
+                    <AdDisplay identifier="TP_BAN" className="mb-12" />
                     {error && (
                         <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-center px-4 py-4 rounded-xl mb-12">
                             Error loading videos: {error}
@@ -118,6 +121,8 @@ const VideoArchivePage = () => {
                             ))}
                         </div>
                     )}
+                    {/* Native/inline ad — between pagination and footer */}
+                    <AdDisplay identifier="MID_ART" className="mt-16" />
                 </section>
             </main>
 

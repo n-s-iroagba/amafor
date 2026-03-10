@@ -10,14 +10,14 @@ const controller = new DisputeController();
 router.get(
     '/admin/all',
     authenticate,
-    authorize(['admin', 'sports-admin']),
+    authorize(['admin', 'sports_admin']),
     asyncHandler(controller.getAllDisputes)
 );
 
 router.put(
     '/admin/:id/resolve',
     authenticate,
-    authorize(['admin', 'sports-admin']),
+    authorize(['admin', 'sports_admin']),
     asyncHandler(controller.resolveDispute)
 );
 

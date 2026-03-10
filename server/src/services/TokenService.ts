@@ -40,7 +40,7 @@ export class TokenService {
     private readonly resetPasswordSecret?: string,
     private readonly emailVerificationSecret?: string
   ) {
-    this.secret = 'ababana'
+    this.secret = process.env.JWT_SECRET || 'ababana'
 
     logger.info('TokenService initialized successfully', {
       hasRefreshSecret: !!refreshSecret,
@@ -62,7 +62,7 @@ export class TokenService {
 
 
         email: payload.email,
-        role: payload.role,
+        roles: payload.roles,
         permissions: payload.permissions,
         tokenType: 'access',
       }
@@ -87,7 +87,7 @@ export class TokenService {
       logger.info('Access token generated successfully', {
         userId: payload.id,
         email: payload.email,
-        role: payload.role,
+        roles: payload.roles,
         expiresIn: options.expiresIn,
         hasPermissions: !!(payload.permissions && payload.permissions.length > 0),
         tokenLength: token.length,
@@ -98,7 +98,7 @@ export class TokenService {
       logger.error('Access token generation failed', {
         error,
         email: payload.email,
-        role: payload.role,
+        roles: payload.roles,
       })
       throw new Error('Access token generation failed')
     }
@@ -223,7 +223,7 @@ export class TokenService {
 
 
       email: payload.email,
-      role: payload.role,
+      roles: payload.roles,
       tokenType: 'refresh',
     }
 
@@ -494,7 +494,7 @@ export class TokenService {
   extractUserInfo(token: string): {
     userId?: number
     email?: string
-    role?: string
+    roles?: string[]
     tokenType?: string
     permissions?: string[]
     purpose?: string
@@ -506,7 +506,7 @@ export class TokenService {
 
 
       email: decoded.email,
-      role: decoded.role,
+      roles: decoded.roles,
       tokenType: decoded.tokenType,
       permissions: decoded.permissions,
       purpose: decoded.purpose,

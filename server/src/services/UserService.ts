@@ -1,10 +1,25 @@
+import { Op } from 'sequelize';
 import { UserRepository } from '../repositories';
 import { AuditService } from './AuditService';
-
 import { structuredLogger, tracer } from '../utils';
-import User, { UserAttributes, UserStatus } from '@models/User';
+import User, { UserAttributes, UserRole, UserStatus } from '@models/User';
 import Advertiser from '@models/Advertiser';
 import { AuditAction, EntityType } from '@models/AuditLog';
+import { BadRequestError } from '../utils/errors';
+
+/** Roles that end-users (fans/advertisers) create themselves; cannot be assigned via admin invite. */
+const END_USER_ROLES: UserRole[] = ['fan', 'advertiser'];
+
+/** All roles available for assignment by an admin. */
+export const ASSIGNABLE_ROLES: UserRole[] = [
+  'admin',
+  'scout',
+  'academy_staff',
+  'commercial_manager',
+  'sports_admin',
+  'finance_officer',
+  'it_security',
+];
 
 export class UserService {
   private userRepository: UserRepository;
@@ -30,9 +45,6 @@ export class UserService {
         });
         if (!user) throw new Error('User not found');
 
-        // Map if it's an advertiser to provide a flat structure for the review page if needed,
-        // or just let the frontend handle nested data if it's updated.
-        // Actually, the AdvertiserReviewDetail page expects a flat Advertiser object.
         if (user.roles.includes('advertiser')) {
           return {
             id: user.id,
@@ -42,7 +54,7 @@ export class UserService {
             status: user.status,
             industry: user.advertiserProfile?.industry || 'General',
             website: user.advertiserProfile?.website || '',
-            registered: (user as any).advertiserProfile?.id?.split('-')[0].toUpperCase() || 'REG-PENDING', // Mocking reg number if not present
+            registered: (user as any).advertiserProfile?.id?.split('-')[0].toUpperCase() || 'REG-PENDING',
           } as any;
         }
 
@@ -57,31 +69,33 @@ export class UserService {
   }
 
   /**
-   * Update user profile
+   * Update the current user's own profile.
+   * Roles and passwordHash are always stripped — users cannot self-elevate.
    */
   public async updateUserProfile(userId: string, data: Partial<UserAttributes>): Promise<User> {
     return tracer.startActiveSpan('service.UserService.updateUserProfile', async (span) => {
       try {
-        // Remove sensitive fields
-        delete (data as any).passwordHash;
-        delete (data as any).roles;
+        // ── RBAC: strip sensitive fields — self-service cannot change roles or password hash ──
+        const safe = { ...data };
+        delete (safe as any).passwordHash;
+        delete (safe as any).roles;
+        delete (safe as any).status;
+        delete (safe as any).emailVerified;
 
-        const [affectedCount, updatedUsers] = await this.userRepository.update(userId, data);
-
+        const [affectedCount, updatedUsers] = await this.userRepository.update(userId, safe);
         if (affectedCount === 0) throw new Error('User not found or no changes made');
 
         const updatedUser = updatedUsers[0];
 
-        // Audit the update via AuditService
         await this.auditService.logAction({
           userId,
           userEmail: updatedUser.email,
-          userType: updatedUser.roles[0] || 'advertiser',
+          userType: updatedUser.roles[0] || 'fan',
           action: AuditAction.UPDATE,
           entityType: EntityType.USER,
           entityId: userId,
           entityName: `${updatedUser.firstName} ${updatedUser.lastName}`,
-          changes: Object.keys(data).map(key => ({ field: key, newValue: (data as any)[key] })),
+          changes: Object.keys(safe).map(key => ({ field: key, newValue: (safe as any)[key] })),
           metadata: {},
           ipAddress: '0.0.0.0',
           timestamp: new Date()
@@ -99,18 +113,67 @@ export class UserService {
   }
 
   /**
-   * Verify user account (Admin only)
+   * Admin-only: update any user's fields, including roles and status.
+   * Validates that all supplied roles are within the allowed set.
+   */
+  public async adminUpdateUser(targetUserId: string, data: Partial<UserAttributes>, adminId: string): Promise<User> {
+    return tracer.startActiveSpan('service.UserService.adminUpdateUser', async (span) => {
+      try {
+        // Validate requested roles if provided
+        if (data.roles) {
+          const invalidRoles = data.roles.filter(r => !([...ASSIGNABLE_ROLES, ...END_USER_ROLES] as string[]).includes(r));
+          if (invalidRoles.length > 0) {
+            throw new BadRequestError(`Invalid roles: [${invalidRoles.join(', ')}]`);
+          }
+        }
+
+        // Strip passwordHash — admins use force-reset flow, not direct hash injection
+        const safe = { ...data };
+        delete (safe as any).passwordHash;
+
+        const [affectedCount, updatedUsers] = await this.userRepository.update(targetUserId, safe);
+        if (affectedCount === 0) throw new Error('User not found or no changes made');
+
+        const updatedUser = updatedUsers[0];
+
+        await this.auditService.logAction({
+          userId: adminId,
+          userEmail: 'admin',
+          userType: 'admin',
+          action: AuditAction.UPDATE,
+          entityType: EntityType.USER,
+          entityId: targetUserId,
+          entityName: `${updatedUser.firstName} ${updatedUser.lastName}`,
+          changes: Object.keys(safe).map(key => ({ field: key, newValue: (safe as any)[key] })),
+          metadata: { adminId },
+          ipAddress: '0.0.0.0',
+          timestamp: new Date()
+        });
+
+        structuredLogger.business('USER_ADMIN_UPDATE', 0, adminId, { targetUserId, changes: Object.keys(safe) });
+
+        return updatedUser;
+      } catch (error: any) {
+        span.setStatus({ code: 2, message: error.message });
+        structuredLogger.error('Admin update user failed', { targetUserId, adminId, error: error.message });
+        throw error;
+      } finally {
+        span.end();
+      }
+    });
+  }
+
+  /**
+   * Admin-only: verify a user's account status.
    */
   public async verifyUser(adminId: string, targetUserId: string, status: string): Promise<User> {
     return tracer.startActiveSpan('service.UserService.verifyUser', async (span) => {
       try {
         const [_, updatedUsers] = await this.userRepository.update(targetUserId, { status: status as UserStatus });
-
         if (!updatedUsers || updatedUsers.length === 0) throw new Error('User not found');
 
         const user = updatedUsers[0];
 
-        // Also update Advertiser status if it exists
         if (user.roles.includes('advertiser')) {
           await Advertiser.update(
             { status: status === UserStatus.ACTIVE ? 'active' : 'suspended' },
@@ -133,7 +196,6 @@ export class UserService {
         });
 
         structuredLogger.business('USER_VERIFICATION', 0, adminId, { targetUserId, status });
-
         return updatedUsers[0];
       } catch (error: any) {
         span.setStatus({ code: 2, message: error.message });
@@ -146,15 +208,18 @@ export class UserService {
   }
 
   /**
-   * Get pending advertisers for verification queue
+   * Admin-only: list all pending advertisers.
+   * Uses JSON-column contains check instead of the non-existent scalar `role` column.
    */
   public async getPendingAdvertisers(): Promise<any[]> {
     return tracer.startActiveSpan('service.UserService.getPendingAdvertisers', async (span) => {
       try {
+        // Sequelize does not natively support JSON-array-contains in a portable way.
+        // Op.like on the serialised JSON column is a safe cross-DB fallback for MySQL/SQLite.
         const users = await this.userRepository.findAll({
           where: {
-            role: 'advertiser',
-            status: UserStatus.PENDING_VERIFICATION
+            status: UserStatus.PENDING_VERIFICATION,
+            roles: { [Op.like]: '%"advertiser"%' } as any,
           },
           include: [{
             model: Advertiser,
@@ -162,7 +227,6 @@ export class UserService {
           }]
         });
 
-        // Map to flat structure expected by frontend Advertiser interface
         return users.map((user: any) => ({
           id: user.id,
           company: user.advertiserProfile?.companyName || 'Unknown Company',

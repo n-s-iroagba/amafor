@@ -1,0 +1,316 @@
+================================================================================
+        AMAFOR GLADIATORS - DATA SEEDING REQUIREMENTS
+        Prepared for: Project Sponsor
+        Date: March 2026
+        Version: 1.0
+================================================================================
+This document lists the real-world data required to populate the Amafor
+Gladiators platform before going live. Each section corresponds directly
+to a database table in the system. Fields marked [REQUIRED] must be provided;
+fields marked [OPTIONAL] are recommended but can be left blank.
+
+Please return this document with all fields filled in for each record.
+================================================================================
+
+
+SECTION 1: PLATFORM USERS (System Accounts)
+================================================================================
+Note: The operations team requires active accounts for the following roles
+before launch. A minimum of 1 record per role category is needed.
+
+Roles available: admin | academy_staff | sports_admin | content_editor
+
+For EACH user account, provide:
+
+  - firstName          [REQUIRED]  e.g. "Emeka"
+  - lastName           [REQUIRED]  e.g. "Okafor"
+  - email              [REQUIRED]  Must be a valid, unique email address
+  - password           [REQUIRED]  Initial password (will be hashed by system)
+  - roles              [REQUIRED]  One or more roles from the list above
+                                   e.g. ["admin"] or ["sports_admin", "academy_staff"]
+  - phone              [OPTIONAL]  e.g. "+2348012345678"
+  - profile photo      [OPTIONAL] a profile photo
+
+Recommended accounts:
+  - 1 x admin
+  - 1 x sports_admin (manages fixtures and player data)
+  - 1 x academy_staff (manages academy sessions and trialists)
+  - 1 x content_editor (publishes articles and manages videos)
+
+--------------------------------------------------------------------------------
+
+
+SECTION 2: LEAGUES / COMPETITIONS
+================================================================================
+Note: Leagues are the top-level container for Fixtures and the League Table.
+At least 1 active league is required for the home page to show a league table.
+
+For EACH league, provide:
+
+  - name               [REQUIRED]  Full competition name e.g. "Enugu State Youth League"
+  - season             [REQUIRED]  Season year/period e.g. "2025/2026"
+  - isFriendly         [REQUIRED]  true or false (Is this a friendly competition?)
+
+Minimum needed: 1 competitive league (isFriendly: false)
+
+--------------------------------------------------------------------------------
+
+
+SECTION 3: PLAYERS (Squad Roster)
+================================================================================
+Note: Player profiles are displayed on the public-facing "Players" section.
+Rich data (image, bio, nationality) makes profiles much more engaging.
+A minimum of 15 players is needed to give an impression of a full squad.
+
+For EACH player, provide:
+
+  - name               [REQUIRED]  Full name e.g. "Chukwuemeka Eze"
+  - dateOfBirth        [REQUIRED]  Format: YYYY-MM-DD e.g. "2007-06-15"
+  - position           [REQUIRED]  One of: GK | DF | MF | FW
+  - jerseyNumber       [REQUIRED]  Number between 1–99 e.g. 10
+  - status             [REQUIRED]  One of: active | injured | suspended | transferred
+  - nationality        [OPTIONAL]  e.g. "Nigerian"
+  - height             [OPTIONAL]  Height in meters e.g. 1.78
+  - biography          [OPTIONAL]  Short biography (plain text, max ~500 words)
+  - imageUrl           [OPTIONAL]  URL to a high-quality player photo
+  - joinedDate         [OPTIONAL]  Format: YYYY-MM-DD
+  - previousClubs      [OPTIONAL]  List of former clubs e.g. ["FC Enugu Boys", "Delta United"]
+  - appearances        [OPTIONAL]  Total career appearances (integer)
+  - goals              [OPTIONAL]  Total career goals (integer)
+  - assists            [OPTIONAL]  Total career assists (integer)
+  - cleanSheets        [OPTIONAL]  For goalkeepers; total clean sheets (integer)
+  - yellowCards        [OPTIONAL]  Total yellow cards (integer)
+  - redCards           [OPTIONAL]  Total red cards (integer)
+  - minutesPlayed      [OPTIONAL]  Total minutes played (integer)
+
+Minimum needed: 15 active players (a mix of GK, DF, MF, FW)
+
+--------------------------------------------------------------------------------
+
+
+SECTION 4: FIXTURES & MATCH RESULTS
+================================================================================
+Note: Fixtures populate the Match Center and the home page schedule widget.
+Upcoming fixtures show fans what's coming; completed results show recent form.
+
+For EACH fixture, provide:
+
+  ── Core Match Info ──
+  - leagueName         [REQUIRED]  Name of the league this match belongs to
+                                   (must match a league name from Section 2)
+  - matchDate          [REQUIRED]  Full date and time e.g. "2026-03-15 15:00:00"
+  - homeTeam           [REQUIRED]  Home team name e.g. "Amafor Gladiators"
+  - awayTeam           [REQUIRED]  Away team name e.g. "Enugu Rangers Youths"
+  - venue              [OPTIONAL]  Venue/Stadium name e.g. "Nnamdi Azikiwe Stadium"
+  - status             [REQUIRED]  One of: scheduled | completed | postponed | cancelled
+  - referee            [OPTIONAL]  Referee's full name
+
+  ── For COMPLETED matches only ──
+  - homeScore          [REQUIRED if completed]  e.g. 2
+  - awayScore          [REQUIRED if completed]  e.g. 1
+  - attendance         [OPTIONAL]  Crowd size as an integer e.g. 4500
+  - weather            [OPTIONAL]  e.g. "Sunny, 32°C"
+
+  ── Media ──
+  - highlightsUrl      [OPTIONAL]  URL to match highlights video (YouTube or Vimeo)
+  - videoUrl           [OPTIONAL]  URL to full match replay
+  - videoProvider      [OPTIONAL]  One of: youtube | vimeo
+
+Minimum needed:
+  - 5 upcoming fixtures (status: scheduled)
+  - 5 completed results (status: completed) with scores
+
+-------------------------------------------------------------------------------
+
+SECTION 4a: GOALS (for completed fixtures)
+================================================================================
+Note: Goal records are attached to a completed fixture and appear in the
+match detail view. Please provide goal data for each completed match.
+
+For EACH goal scored, provide:
+
+  - fixtureName        [REQUIRED]  Identify the match (e.g. "Amafor vs Rangers, 2026-03-08")
+  - scorer             [REQUIRED]  Full name of the goal scorer e.g. "Chukwuemeka Eze"
+  - minute             [REQUIRED]  Minute of the goal (0–120) e.g. 45
+  - isPenalty          [REQUIRED]  true or false
+
+--------------------------------------------------------------------------------
+
+SECTION 4b: LEAGUE TABLE (Standing Statistics)
+================================================================================
+Note: The league table is displayed on the home page. One row is required
+per participating team in each league.
+
+For EACH team in EACH league, provide:
+
+  - leagueName         [REQUIRED]  Must match a league from Section 2
+  - team               [REQUIRED]  Team name e.g. "Amafor Gladiators"
+  - matchesPlayed      [REQUIRED]  Total games played e.g. 8
+  - wins               [REQUIRED]  Number of wins
+  - draws              [REQUIRED]  Number of draws
+  - losses             [REQUIRED]  Number of losses
+  - goalsFor           [REQUIRED]  Total goals scored
+  - goalsAgainst       [REQUIRED]  Total goals conceded
+  - cleanSheets        [OPTIONAL]  Number of clean sheets
+  - form               [OPTIONAL]  Last 5 results string e.g. "WWDLW"
+                                   (W = Win, D = Draw, L = Loss)
+
+Note: Points and Goal Difference are calculated automatically by the system.
+
+Minimum needed: All teams in each active league submitted (Section 2)
+
+--------------------------------------------------------------------------------
+
+
+SECTION 5: NEWS ARTICLES
+================================================================================
+Note: Articles populate the "News" section and match reports. The home page
+hero section pulls from the 3 most recently published articles.
+
+For EACH article, provide:
+
+  - title              [REQUIRED]  Headline e.g. "Gladiators Clinch Derby Win"
+  - content            [REQUIRED]  Full article body (HTML or plain text is accepted)
+  - excerpt            [REQUIRED]  1–2 sentence summary shown in article cards
+  - featuredImage      [REQUIRED]  URL to a high-quality header image (min 800x400px)
+  - tags               [REQUIRED]  One or more tags from:
+                                     football_news | match_report | academy_update |
+                                     academy | player_spotlight | club_announcement
+  - authorName         [REQUIRED]  Must match an account created in Section 1
+  - readTime           [OPTIONAL]  Estimated reading time in minutes (integer)
+  - publishedAt        [REQUIRED]  Publication date e.g. "2026-03-10 09:00:00"
+  - videoEmbedUrl      [OPTIONAL]  URL to an embedded video within the article
+  - videoProvider      [OPTIONAL]  One of: youtube | vimeo
+
+Minimum needed: 10 published articles (mix of match reports, academy updates,
+and club announcements)
+
+--------------------------------------------------------------------------------
+
+
+SECTION 6: VIDEOS (Video Gallery)
+================================================================================
+Note: Videos appear in the public Video Gallery page. They are separate from
+article video embeds. A minimum of 3 is needed to make the gallery functional.
+
+For EACH video, provide:
+
+  - title              [REQUIRED]  e.g. "Academy Pre-season Highlights 2025"
+  - excerpt            [REQUIRED]  Short description of the video content
+  - thumbnail          [REQUIRED]  URL to a thumbnail image
+  - videoUrl           [REQUIRED]  URL to the hosted video (YouTube, Vimeo, etc.)
+  - duration           [OPTIONAL]  Duration in seconds e.g. 183 (for 3min 3sec)
+
+Minimum needed: 3 videos
+
+--------------------------------------------------------------------------------
+
+
+SECTION 7: COACHES
+================================================================================
+Note: Coach profiles appear on the Academy coaching staff page. Even if some
+bios are placeholder, a profile photo makes a significant visual impact.
+
+For EACH coach, provide:
+
+  - name               [REQUIRED]  Full name e.g. "Michael Adeyemi"
+  - role               [REQUIRED]  Job title e.g. "Head Coach" or "Fitness Coach"
+  - bio                [REQUIRED]  Short biography (plain text)
+  - imageUrl           [OPTIONAL]  URL to a professional headshot photo
+
+Minimum needed: 3 coaches (Head Coach + 2 assistants or specialists)
+
+--------------------------------------------------------------------------------
+
+
+SECTION 8: ACADEMY STAFF
+================================================================================
+Note: Academy staff profiles (non-coaching) appear on the staff directory.
+These include medical, administrative, and technical personnel.
+
+For EACH staff member, provide:
+
+  - name               [REQUIRED]  Full name
+  - role               [REQUIRED]  Job title e.g. "Team Physiotherapist"
+  - bio                [REQUIRED]  Short biography (min 10 characters)
+  - category           [REQUIRED]  One of: coaching | medical | administrative |
+                                             technical | scouting
+  - qualifications     [OPTIONAL]  List of qualifications e.g. ["BSc Sports Science", "UEFA B License"]
+  - yearsOfExperience  [OPTIONAL]  Number of years in the field e.g. 8
+  - imageUrl           [OPTIONAL]  URL to a professional headshot photo
+
+Minimum needed: 3 staff members
+
+--------------------------------------------------------------------------------
+
+
+SECTION 9: PATRON SUBSCRIPTION PACKAGES
+================================================================================
+Note: Subscription packages define the tiers available to fans who want to
+become Patrons. These are CRITICAL for the Patrons commercial module to be
+functional. All three tiers and frequencies must be defined.
+
+For EACH package (Tier × Frequency combination), provide:
+
+  - tier               [REQUIRED]  One of: sponsor_grand_patron | patron | supporter
+  - frequency          [REQUIRED]  One of: monthly | yearly | lifetime
+  - minimumAmount      [REQUIRED]  Minimum contribution in Naira (NGN) e.g. 5000.00
+  - benefits           [REQUIRED]  List of benefits for this package e.g.:
+                                     ["Early access to match highlights",
+                                      "Exclusive digital badge",
+                                      "Name in match programme"]
+
+Recommended packages (9 total):
+
+  Tier: supporter      × monthly   → NGN amount + benefits list
+  Tier: supporter      × yearly    → NGN amount + benefits list
+  Tier: supporter      × lifetime  → NGN amount + benefits list
+  Tier: patron         × monthly   → NGN amount + benefits list
+  Tier: patron         × yearly    → NGN amount + benefits list
+  Tier: patron         × lifetime  → NGN amount + benefits list
+  Tier: sponsor_grand_patron × monthly   → NGN amount + benefits list
+  Tier: sponsor_grand_patron × yearly    → NGN amount + benefits list
+  Tier: sponsor_grand_patron × lifetime  → NGN amount + benefits list
+
+--------------------------------------------------------------------------------
+
+
+SECTION 10: TRIALISTS (Optional, Recommended)
+================================================================================
+Note: Trialist profiles demonstrate the recruitment pipeline to scouts.
+Providing a few sample records makes the academy workflow feel real.
+
+For EACH trialist, provide:
+
+  - firstName          [REQUIRED]
+  - lastName           [REQUIRED]
+  - email              [REQUIRED]  Valid email
+  - phone              [REQUIRED]
+  - dob                [REQUIRED]  Date of birth, Format: YYYY-MM-DD
+  - position           [REQUIRED]  e.g. "Central Midfielder"
+  - preferredFoot      [REQUIRED]  One of: LEFT | RIGHT | BOTH
+  - height             [OPTIONAL]  In centimeters e.g. 175
+  - weight             [OPTIONAL]  In kilograms e.g. 68
+  - previousClub       [OPTIONAL]  Name of last club
+  - videoUrl           [OPTIONAL]  URL to a highlight reel
+  - guardianName       [OPTIONAL]  Required if trialist is a minor
+  - guardianPhone      [OPTIONAL]
+  - guardianEmail      [OPTIONAL]
+  - guardianConsent    [REQUIRED]  true or false
+
+Minimum needed: 5 trialists in PENDING status
+
+================================================================================
+SUBMISSION & FORMAT NOTES
+================================================================================
+- Return completed data either as filled-in Excel sheets or a structured
+  Word/Google Doc following the headings in this document.
+- All image (Google Drive links must be
+  set to "Anyone with the link can view").
+- If official photos are not ready, provide temporary placeholder text
+  and the operations team will follow up separately.
+- Dates must follow ISO 8601 format: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS
+- All monetary values should be in Nigerian Naira (NGN)
+
+For questions, contact the technical lead before returning this document.
+================================================================================

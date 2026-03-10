@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { User, UserStatus } from '../models/User';
+import { User, UserRole, UserStatus } from '../models/User';
 
+/**
+ * Verifies the Bearer JWT and attaches the full User record to req.user.
+ * Rejects suspended accounts.
+ */
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const authHeader = req.headers.authorization;
@@ -36,26 +40,42 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export const authorize = (roles: string[]) => {
+/**
+ * Role-based authorization middleware (multi-role aware).
+ *
+ * Passes if the authenticated user holds AT LEAST ONE of the allowed roles.
+ * If `roles` is empty, any authenticated user is granted access.
+ *
+ * @param roles - Array of UserRole values that are permitted to access the route.
+ */
+export const authorize = (roles: UserRole[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        const user = (req as any).user;
+        const user = (req as any).user as User | undefined;
         if (!user) {
             return res.status(401).json({ success: false, message: 'User not authenticated' });
         }
 
-        // Assuming user.roles is an array of strings
-        const userRoles: string[] = user.roles || [];
+        if (roles.length === 0) {
+            return next();
+        }
 
-        // If roles parameter is empty, any authenticated user can access
-        if (roles.length > 0) {
-            // Check if there is an intersection between allowed roles and user roles
-            const isAuthorized = roles.some(role => userRoles.includes(role));
+        // user.roles is a UserRole[] — check for any intersection
+        const userRoles: UserRole[] = Array.isArray(user.roles) ? user.roles : [];
+        const isAuthorized = roles.some(role => userRoles.includes(role));
 
-            if (!isAuthorized) {
-                return res.status(403).json({ success: false, message: `User roles [${userRoles.join(', ')}] are not authorized to access this route` });
-            }
+        if (!isAuthorized) {
+            return res.status(403).json({
+                success: false,
+                message: `Access denied. Required roles: [${roles.join(', ')}]. Your roles: [${userRoles.join(', ')}]`,
+            });
         }
 
         next();
     };
 };
+
+/**
+ * Convenience middleware — restricts access to admin users only.
+ * Equivalent to `authorize(['admin'])`.
+ */
+export const requireAdmin = authorize(['admin']);

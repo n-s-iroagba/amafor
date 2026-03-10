@@ -12,7 +12,7 @@ app.use(helmet());
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://amafor.vercel.app',
+  origin: process.env.NODE_ENV === 'development' ? process.env.DEV_CLIENT_URL : process.env.PROD_CLIENT_URL,
   credentials: true,
 }));
 

@@ -48,9 +48,27 @@ export class AuthService {
    * Account is created but requires email verification on first login.
    * A temporary password is set; the invited user should reset it after verification.
    */
-  public async inviteUser(data: { email: string; role: UserRole; firstName?: string; lastName?: string }): Promise<SignUpResponseDto> {
+  /**
+   * Invites a new non-fan system user (admin, scout, academy_staff, etc.).
+   * Account is created but requires email verification on first login.
+   * A temporary password is set; the invited user should reset it after verification.
+   *
+   * @param roles - Must not include 'fan'; fans self-register via /auth/signup.
+   */
+  public async inviteUser(data: { email: string; roles: UserRole[]; firstName?: string; lastName?: string }): Promise<SignUpResponseDto> {
     try {
-      logger.info('User invite started', { email: data.email, role: data.role });
+      logger.info('User invite started', { email: data.email, roles: data.roles });
+
+      // ── RBAC: fans/end-users self-register — never invited by an admin ──
+      const forbiddenRoles: UserRole[] = ['fan'];
+      const hasForbiddenRole = data.roles.some(r => forbiddenRoles.includes(r));
+      if (hasForbiddenRole) {
+        throw new BadRequestError('Cannot invite users with the "fan" role. Fans register themselves via /auth/signup.');
+      }
+
+      if (!data.roles || data.roles.length === 0) {
+        throw new BadRequestError('At least one role must be assigned for an invited user.');
+      }
 
       const existing = await this.userRepository.findOne({ where: { email: data.email } });
       if (existing) throw new BadRequestError('An account with this email already exists');
@@ -64,13 +82,12 @@ export class AuthService {
         passwordHash,
         firstName: data.firstName ?? data.email.split('@')[0],
         lastName: data.lastName ?? '',
-        roles: [data.role],
+        roles: data.roles,
         status: UserStatus.PENDING_VERIFICATION,
         emailVerified: false,
         metadata: { invited: true, tempPassword: true },
       } as unknown as UserCreationAttributes);
 
-      // Trigger the same verification email flow as signupAdvertiser
       const { verificationToken, id } = await this.verificationService.initiateEmailVerificationProcess(user);
 
       await this.auditService.logAction({
@@ -83,12 +100,11 @@ export class AuthService {
         entityName: user.email,
         changes: [],
         ipAddress: '0.0.0.0',
-        metadata: { event: 'user_invite', role: data.role },
+        metadata: { event: 'user_invite', roles: data.roles },
         timestamp: new Date(),
       });
 
-      logger.info('User invite sent', { userId: user.id, email: user.email, role: data.role });
-
+      logger.info('User invite sent', { userId: user.id, email: user.email, roles: data.roles });
       return { verificationToken, id };
     } catch (error: any) {
       logger.error('User invite failed', { error: error.message, email: data.email });
@@ -251,7 +267,7 @@ export class AuthService {
       const newAccessToken = this.tokenService.generateAccessToken({
         id: user.id,
         email: user.email,
-        role: user.roles[0] as any,
+        roles: user.roles,
         permissions: [],
       });
 
@@ -424,10 +440,13 @@ export class AuthService {
   // ─────────────────── helpers ───────────────────
 
   private generateTokenPair(user: User): { accessToken: string; refreshToken: string } {
+    // ── RBAC fix: embed the full roles array, not just roles[0] ──
+    // Previously only the first role was encoded in the JWT, silently dropping
+    // any additional roles a user might hold.
     const payload = {
       id: user.id,
       email: user.email,
-      role: user.roles[0] as unknown as string,
+      roles: user.roles,          // full array
       permissions: [] as string[],
     };
     const accessToken = this.tokenService.generateAccessToken(payload);

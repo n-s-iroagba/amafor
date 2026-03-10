@@ -15,7 +15,7 @@ router.get('/:id', staffController.getStaff.bind(staffController));
 router.post(
   '/',
   authenticate,
-  authorize(['admin', 'manager']),
+  authorize(['admin', 'academy_staff']),
   validate(academyStaffSchema.createStaff),
   staffController.createStaff.bind(staffController)
 );
@@ -23,7 +23,7 @@ router.post(
 router.put(
   '/:id',
   authenticate,
-  authorize(['admin', 'manager']),
+  authorize(['admin', 'academy_staff']),
   validate(academyStaffSchema.updateStaff),
   staffController.updateStaff.bind(staffController)
 );

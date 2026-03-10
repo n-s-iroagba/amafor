@@ -48,6 +48,7 @@ const ArticleList: React.FC = () => {
   if (loading) {
     return (
       <section className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+        <AdDisplay identifier="TP_BAN" className="mb-6" />
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -89,6 +90,10 @@ const ArticleList: React.FC = () => {
           </h1>
         </motion.div>
 
+        {/* Top banner — BANNER zone */}
+        <AdDisplay identifier="TP_BAN" className="mb-6" />
+
+        {/* Sidebar ad — SIDEBAR zone */}
         <AdDisplay identifier="SIDEBAR" className="mb-8" />
 
         {error && (

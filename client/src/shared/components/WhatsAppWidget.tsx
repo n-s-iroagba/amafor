@@ -2,12 +2,26 @@
 
 import { MessageCircle } from 'lucide-react'
 
+/**
+ * Floating WhatsApp contact widget.
+ *
+ * Phone number and default message are driven by environment variables so that
+ * they never need to be hardcoded in source code:
+ *   NEXT_PUBLIC_WHATSAPP_NUMBER – digits only, e.g. 2348012345678
+ *   NEXT_PUBLIC_WHATSAPP_MESSAGE – optional default pre-filled message
+ */
 export function WhatsAppWidget() {
-  const phoneNumber = '+234XXXXXXXXXX' // Replace with actual WhatsApp number
-  const message = 'Hello! I have a question about Amafor Gladiators FC.'
+  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? ''
+  const message =
+    process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE ??
+    'Hello! I have a question about Amafor Gladiators FC.'
 
   const handleClick = () => {
-    const url = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`
+    if (!phoneNumber) {
+      console.warn('[WhatsAppWidget] NEXT_PUBLIC_WHATSAPP_NUMBER is not set.')
+      return
+    }
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
     window.open(url, '_blank')
   }
 

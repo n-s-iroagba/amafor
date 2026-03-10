@@ -21,6 +21,7 @@ import {
   Calendar,
 } from "lucide-react";
 import Link from "next/link";
+import AdDisplay from "@/features/advertisement/component/AdDisplay";
 
 /**
  * Team Squad
@@ -233,6 +234,8 @@ export default function TeamSquad() {
         </div>
 
         <div className="container mx-auto px-4 pb-24">
+          {/* Sidebar ad — between tab nav and member grid */}
+          <AdDisplay identifier="SIDEBAR" className="mb-10" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {selectedTab === "players"
               ? playersData.map((player) => (

@@ -20,8 +20,7 @@ export const developmentRssFeedSources: RssFeedSourceAttributes[] = [
   },
   {
     id: '2f6f6f6f-6f6f-6f6f-6f6f-6f6f6f6f6f63',
-    name: 'Superwest Sports
-',
+    name: 'Superwest Sports',
     feedUrl: 'https://superwestsports.com/feed/',
     category: RssFeedSourceCategory.SPORTS,
     createdAt: new Date(),

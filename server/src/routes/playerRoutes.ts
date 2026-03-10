@@ -12,7 +12,7 @@ router.get('/:id', controller.getPlayerProfile);
 // Admin/Scout Protected
 router.use(authMiddleware);
 router.post('/', rbacMiddleware(['admin', 'scout']), controller.createPlayer);
-router.patch('/:id/stats', rbacMiddleware(['admin', 'coach']), controller.updateStats);
+router.patch('/:id/stats', rbacMiddleware(['admin', 'academy_staff']), controller.updateStats);
 router.get('/:id/report', rbacMiddleware(['admin', 'scout']), controller.generateScoutReport);
 
 export default router;

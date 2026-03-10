@@ -19,6 +19,7 @@ import { useGet, usePut } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 
 interface Dispute {
+  updatedAt: string;
   id: string;
   advertiser: {
     name: string;

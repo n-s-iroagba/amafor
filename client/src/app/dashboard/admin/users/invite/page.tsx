@@ -2,13 +2,14 @@
 
 /**
  * Invite New User
- * 
- * Interface for sending system invitations to new administrators, scouts, or technical staff with predefined roles.
- * 
+ *
+ * Sends an admin invitation to a new system user with one or more pre-assigned roles.
+ * The invited user will receive a verification email and must complete verification before logging in.
+ *
  * @screen SC-083
  * @implements REQ-ADM-05
  * @usecase UC-ADM-05 (Manage Users)
- * @requires SRS-I-039 (Users API - POST /admin/users/invite)
+ * @requires SRS-I-039 (Users API - POST /auth/invite)
  * @performance NFR-PERF-01
  * @observability SRS-OBS-037 Track invitation success rates and role distribution of new invites
  */
@@ -21,42 +22,53 @@ import {
   Send,
   Loader2,
   CheckCircle,
+  CheckSquare,
+  Square,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { API_ROUTES } from "@/config/routes";
 import { usePost } from "@/shared/hooks/useApiQuery";
 import type { UserRole } from "@/shared/types/auth";
 
-const ROLES: { value: UserRole; label: string; description: string }[] = [
+/**
+ * All roles that can be assigned by an admin during invitation.
+ * 'fan' is intentionally excluded — fans self-register via /auth/signup.
+ */
+const ASSIGNABLE_ROLES: { value: UserRole; label: string; description: string }[] = [
   { value: "admin", label: "Admin", description: "Full system access" },
   { value: "scout", label: "Scout", description: "Player scouting & reports" },
-  {
-    value: "advertiser",
-    label: "Advertiser",
-    description: "Commercial campaigns",
-  },
+  { value: "academy_staff", label: "Academy Staff", description: "Youth academy management" },
+  { value: "commercial_manager", label: "Commercial Manager", description: "Revenue & partnerships" },
+  { value: "sports_admin", label: "Sports Admin", description: "Competitions & fixtures" },
+  { value: "finance_officer", label: "Finance Officer", description: "Payments & accounting" },
+  { value: "it_security", label: "IT / Security", description: "System & infrastructure" },
+  { value: "advertiser", label: "Advertiser", description: "Commercial campaigns" },
 ];
 
 export default function InviteUserPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [role, setRole] = useState<UserRole>("admin");
+  const [selectedRoles, setSelectedRoles] = useState<UserRole[]>([]);
   const [sent, setSent] = useState(false);
 
   const { post, isPending, error } = usePost<
-    { email: string; role: UserRole; firstName?: string; lastName?: string },
+    { email: string; roles: UserRole[]; firstName?: string; lastName?: string },
     { verificationToken: string; id: string }
   >(API_ROUTES.AUTH.INVITE);
 
+  const toggleRole = (role: UserRole) => {
+    setSelectedRoles(prev =>
+      prev.includes(role) ? prev.filter(r => r !== role) : [...prev, role]
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || selectedRoles.length === 0) return;
 
     try {
-      await post({ email, role, firstName, lastName });
+      await post({ email, roles: selectedRoles, firstName, lastName });
       setSent(true);
     } catch (err) {
       console.error(err);
@@ -103,11 +115,11 @@ export default function InviteUserPage() {
             <UserPlus className="w-8 h-8 text-[#87CEEB]" />
           </div>
           <h1 className="text-4xl text-[#2F4F4F] font-black uppercase tracking-tight">
-            Invite User
+            Invite System User
           </h1>
           <p className="text-gray-500 text-sm mt-2">
-            The invited user will receive a verification email and must verify
-            before logging in.
+            The invited user will receive a verification email and must verify before logging in.
+            Fans and end-users self-register; only non-fan system roles can be invited.
           </p>
         </header>
 
@@ -118,7 +130,7 @@ export default function InviteUserPage() {
           {/* Email */}
           <div className="space-y-4">
             <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">
-              Official Email Address
+              Official Email Address *
             </label>
             <div className="relative">
               <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 w-5 h-5" />
@@ -164,32 +176,40 @@ export default function InviteUserPage() {
             </div>
           </div>
 
-          {/* Role */}
+          {/* Roles — multi-select checkboxes */}
           <div className="space-y-4">
             <label className="block text-[10px] font-black text-[#2F4F4F] uppercase tracking-widest">
-              Assign Role
+              Assign Roles * <span className="text-gray-400 normal-case font-normal">(select one or more)</span>
             </label>
-            <div className="grid grid-cols-3 gap-4">
-              {ROLES.map((r) => (
-                <button
-                  key={r.value}
-                  type="button"
-                  onClick={() => setRole(r.value)}
-                  className={`p-4 border-2 rounded-2xl text-left transition-all ${role === r.value
-                      ? "border-[#87CEEB] text-[#2F4F4F] bg-sky-50"
-                      : "border-gray-100 text-gray-400 hover:border-[#87CEEB] hover:text-[#2F4F4F]"
-                    }`}
-                  data-testid={`radio-role-${r.value}`}
-                >
-                  <div className="text-xs font-black uppercase tracking-widest">
-                    {r.label}
-                  </div>
-                  <div className="text-[10px] mt-1 text-gray-400">
-                    {r.description}
-                  </div>
-                </button>
-              ))}
+            <div className="grid grid-cols-2 gap-3">
+              {ASSIGNABLE_ROLES.map((r) => {
+                const isChecked = selectedRoles.includes(r.value);
+                return (
+                  <button
+                    key={r.value}
+                    type="button"
+                    onClick={() => toggleRole(r.value)}
+                    className={`flex items-center justify-between p-4 border-2 rounded-2xl text-left transition-all w-full ${isChecked
+                        ? "border-[#87CEEB] text-[#2F4F4F] bg-sky-50"
+                        : "border-gray-100 text-gray-400 hover:border-[#87CEEB] hover:text-[#2F4F4F]"
+                      }`}
+                    data-testid={`checkbox-role-${r.value}`}
+                  >
+                    <div>
+                      <div className="text-xs font-black uppercase tracking-widest">{r.label}</div>
+                      <div className="text-[10px] mt-1 text-gray-400">{r.description}</div>
+                    </div>
+                    {isChecked
+                      ? <CheckSquare className="w-5 h-5 text-[#87CEEB] flex-none" />
+                      : <Square className="w-5 h-5 text-gray-300 flex-none" />
+                    }
+                  </button>
+                );
+              })}
             </div>
+            {selectedRoles.length === 0 && (
+              <p className="text-[10px] text-amber-600 font-bold">Please select at least one role.</p>
+            )}
           </div>
 
           {/* Info banner */}
@@ -197,9 +217,8 @@ export default function InviteUserPage() {
             <div className="flex items-start space-x-4">
               <Shield className="w-6 h-6 text-blue-500 flex-none" />
               <p className="text-[10px] text-blue-600 font-bold uppercase leading-relaxed">
-                A verification email will be sent. The user must verify their
-                email before they can log in. They will be prompted to set a new
-                password on first login.
+                A verification email will be sent. The user must verify their email before they can log in.
+                They will be prompted to set a new password on first login. Fans must self-register via the public signup page.
               </p>
             </div>
           </div>
@@ -209,7 +228,7 @@ export default function InviteUserPage() {
 
           <button
             type="submit"
-            disabled={isPending || !email}
+            disabled={isPending || !email || selectedRoles.length === 0}
             className="w-full py-5 bg-[#2F4F4F] text-white rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center gap-3 font-black text-xs hover:bg-[#3d6363] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             data-testid="btn-send-invite"
           >

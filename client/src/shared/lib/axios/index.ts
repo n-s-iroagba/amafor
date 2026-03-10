@@ -1,11 +1,13 @@
 // src/lib/apiutils.ts
 import { API_ROUTES } from "@/config/routes";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-const route =
-  process.env.NEXT_PUBLIC_API_URL ||
-  (process.env.NODE_ENV === "production"
-    ? "https://agfc-server-app.fly.dev/api"
-    : "http://localhost:5000/api");
+
+if (!process.env.NEXT_PUBLIC_API_URL) {
+  console.warn("[axios] NEXT_PUBLIC_API_URL is not set. API calls may fail.");
+}
+
+const route = process.env.NEXT_PUBLIC_API_URL ?? "";
+
 // Single axios instance
 const api = axios.create({
   baseURL: route,

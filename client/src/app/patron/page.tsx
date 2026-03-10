@@ -8,6 +8,7 @@ import { Heart, Check, Star, Shield, Users, ArrowRight, Zap } from 'lucide-react
 import { useGet } from '@/shared/hooks/useApiQuery'
 import { API_ROUTES } from '@/config/routes'
 import { PatronSubscriptionPackage, PatronTier } from '@/features/patron/types'
+import AdDisplay from '@/features/advertisement/component/AdDisplay'
 
 /**
  * Patron/Support Page
@@ -101,6 +102,9 @@ export default function SupportDonate() {
               </div>
             </div>
           </div>
+
+          {/* Native inline ad — between hero cards and patron tiers */}
+          <AdDisplay identifier="NATIVE" className="mb-12" />
 
           {/* Patron Tiers */}
           <section className="mb-24">

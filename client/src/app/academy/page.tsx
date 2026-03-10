@@ -8,6 +8,7 @@ import { AcademyStaff } from "@/features/academy/types";
 import { useGet } from "@/shared/hooks/useApiQuery";
 import { API_ROUTES } from "@/config/routes";
 import { PaginatedData } from "@/shared/types/common";
+import AdDisplay from "@/features/advertisement/component/AdDisplay";
 
 /**
  * Academy Hub
@@ -96,6 +97,9 @@ function AcademyContent() {
               );
             })}
           </div>
+
+          {/* Native inline ad — sits between sub-nav and main content card */}
+          <AdDisplay identifier="NATIVE" className="mb-8" showLabel={true} />
 
           {/* Content */}
           <div className="bg-white rounded-lg shadow-card p-8">
@@ -256,10 +260,11 @@ function AcademyContent() {
                 </Link>
                 <button
                   onClick={() => {
-                    const phoneNumber = "234XXXXXXXXXX";
+                    const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '';
                     const message = encodeURIComponent(
                       "Hello, I'm interested in joining the Amafor Gladiators FC Academy...",
                     );
+                    if (!phoneNumber) return;
                     window.open(
                       `https://wa.me/${phoneNumber}?text=${message}`,
                       "_blank",

@@ -161,7 +161,6 @@ User.init(
     paranoid: true,
     indexes: [
       { fields: ['email'] },
-      { fields: ['roles'] },
       { fields: ['createdAt'] },
     ],
   }

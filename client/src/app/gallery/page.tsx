@@ -21,6 +21,7 @@ import {
 import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { FixtureStatus, FixtureWithLeague, FixtureImage } from '@/features/fixture/types';
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 
 
@@ -291,6 +292,9 @@ export default function GalleryPage() {
             </div>
           )}
         </div>
+
+        {/* Sidebar ad — between filter panel and gallery grid */}
+        <AdDisplay identifier="SIDEBAR" className="mb-8" />
 
         {/* Gallery Content */}
         {filteredFixtures && filteredFixtures.length > 0 ? (

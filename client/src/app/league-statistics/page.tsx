@@ -26,6 +26,7 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { League } from '@/features/league/types';
 import { LeagueTableProps } from '@/features/league-statistics/types';
+import AdDisplay from '@/features/advertisement/component/AdDisplay';
 
 interface LeagueWithTable extends League {
   logo?: string;
@@ -306,6 +307,9 @@ export default function LeagueStatsPage() {
             </div>
           </div>
         </div>
+
+        {/* Ad between filters and league content */}
+        <AdDisplay identifier="SIDEBAR" className="mb-8" />
 
         {/* Leagues Grid */}
         <div className="space-y-6">
