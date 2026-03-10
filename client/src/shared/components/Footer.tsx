@@ -17,7 +17,7 @@ const QUICK_LINKS = [
   { name: "News & Updates", href: "/news" },
   { name: "Fixtures & Results", href: "/fixtures" },
   { name: "Academy Program", href: "/academy" },
-  { name: "Supporter Wall", href: "/patroner-wall" },
+  { name: "Supporter Wall", href: "/patron-wall" },
 ] as const;
 
 const SUPPORT_LINKS = [
