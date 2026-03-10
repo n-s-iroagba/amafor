@@ -1,9 +1,9 @@
 // data/development/patron-subscription.ts
-import { 
-  PatronSubscriptionAttributes, 
-  PatronTier, 
-  SubscriptionFrequency, 
-  SubscriptionStatus 
+import {
+  PatronSubscriptionAttributes,
+  PatronTier,
+  SubscriptionFrequency,
+  SubscriptionStatus
 } from "../../../models/PatronSubscription";
 
 const TODAY = new Date();
