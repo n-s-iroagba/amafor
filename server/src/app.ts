@@ -11,8 +11,24 @@ const app = express();
 app.use(helmet());
 
 // CORS configuration
+// Accept both the bare domain and the www subdomain in production
+const allowedOrigins: (string | RegExp)[] = process.env.NODE_ENV === 'development'
+  ? [process.env.DEV_CLIENT_URL || 'http://localhost:3000']
+  : [
+    process.env.PROD_CLIENT_URL || '',           // e.g. https://amaforgaladiatorsfc.com
+    process.env.PROD_CLIENT_WWW_URL || '',        // e.g. https://www.amaforgaladiatorsfc.com
+  ].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'development' ? process.env.DEV_CLIENT_URL : process.env.PROD_CLIENT_URL,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (server-to-server, curl, mobile apps)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy: origin '${origin}' is not allowed`));
+    }
+  },
   credentials: true,
 }));
 

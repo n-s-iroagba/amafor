@@ -125,8 +125,8 @@ const NextFixtureSection: React.FC = () => {
             <Trophy className="w-4 h-4" />
             <span>NEXT MATCHDAY</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-black text-black tracking-tight mb-4">
-            <span className="text-black bg-clip-text bg-gradient-to-r from-white to-sky-400">
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight mb-4">
+            <span className="text-white bg-clip-text bg-gradient-to-r from-white to-sky-400">
               The Big Showdown
             </span>
           </h2>
@@ -181,7 +181,8 @@ const NextFixtureSection: React.FC = () => {
                     className="object-contain drop-shadow-2xl relative z-10 py-2"
                   />
                 </div>
-                <h3 className="text-2xl md:text-4xl font-black text-black mb-2 tracking-tight">
+                <h3 className="text-2xl md:text-4xl font-black text-white
+ mb-2 tracking-tight">
                   {fixture.homeTeam}
                 </h3>
                 <p className="text-sky-400 font-bold tracking-widest text-sm">
@@ -226,7 +227,8 @@ const NextFixtureSection: React.FC = () => {
                     className="object-contain drop-shadow-2xl relative z-10 py-2"
                   />
                 </div>
-                <h3 className="text-2xl md:text-4xl font-black text-black mb-2 tracking-tight">
+                <h3 className="text-2xl md:text-4xl font-black text-white
+ mb-2 tracking-tight">
                   {fixture.awayTeam}
                 </h3>
                 <p className="text-sky-900 font-bold tracking-widest text-sm">
@@ -263,7 +265,8 @@ const NextFixtureSection: React.FC = () => {
 
 const TimeUnit = ({ value, label }: { value: number; label: string }) => (
   <div className="flex flex-col items-center min-w-[60px] md:min-w-[80px]">
-    <span className="text-3xl md:text-5xl font-black text-black bg-clip-text bg-gradient-to-b from-white to-sky-400 tabular-nums leading-none mb-2">
+    <span className="text-3xl md:text-5xl font-black text-white
+ bg-clip-text bg-gradient-to-b from-white to-sky-400 tabular-nums leading-none mb-2">
       {String(value).padStart(2, "0")}
     </span>
     <span className="text-[10px] md:text-xs font-bold text-sky-500 tracking-[0.2em]">
