@@ -44,7 +44,7 @@ export default function HeroSection() {
               className="flex flex-wrap gap-4 pt-6"
             >
               <Link
-                href="/support"
+                href="/patron"
                 className="bg-white text-sky-600 hover:bg-gray-100 px-10 py-4 font-bold transition-all hover:scale-105 active:scale-95 shadow-lg"
               >
                 SUPPORT THE CLUB
