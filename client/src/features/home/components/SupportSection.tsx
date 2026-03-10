@@ -15,20 +15,8 @@ export default function SupportSection() {
     }
   )
 
-  // Loading state
-  if (loading) return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16 lg:mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 mb-4 sm:mb-6">
-            SUPPORT OUR MISSION
-          </h2>
-          <div className="h-1.5 sm:h-2 w-16 sm:w-20 lg:w-24 bg-sky-500 mx-auto mb-6 sm:mb-8"></div>
-          <div className="h-3 sm:h-4 bg-gray-200 rounded w-2/3 mx-auto"></div>
-        </div>
-      </div>
-    </section>
-  )
+  // Don't render if loading or no data
+  if (loading) return null
 
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gray-50">

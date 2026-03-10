@@ -24,31 +24,7 @@ export default function LatestNewsSection() {
     router.push(`/news/${id}`);
   };
 
-  // Loading state
-  if (loading) return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 sm:mb-12 lg:mb-16 gap-4">
-          <div className="w-full sm:w-auto">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900">LATEST NEWS</h2>
-            <div className="h-1.5 sm:h-2 w-16 sm:w-20 lg:w-24 bg-sky-500 mt-3 sm:mt-4"></div>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse">
-              <div className="h-48 sm:h-56 md:h-64 bg-gray-200 rounded-lg mb-4 sm:mb-5"></div>
-              <div className="h-3 sm:h-4 bg-gray-200 rounded mb-2 sm:mb-3 w-1/4"></div>
-              <div className="h-5 sm:h-6 bg-gray-200 rounded mb-2 sm:mb-3"></div>
-              <div className="h-3 sm:h-4 bg-gray-200 rounded"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-
-  if (!articles || articles.length === 0) return null
+  if (loading || !articles || articles.length === 0) return null
 
   return (
     <section className="py-3  bg-white">

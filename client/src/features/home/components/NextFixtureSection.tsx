@@ -64,36 +64,7 @@ const NextFixtureSection: React.FC = () => {
     return () => clearInterval(interval);
   }, [fixture]);
 
-  if (fixtureLoading) {
-    return (
-      <section className="py-20 bg-sky-950 border-y border-sky-900/50 overflow-hidden relative">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-sky-600/10 rounded-full blur-[120px]"></div>
-        <div className="container mx-auto px-4 max-w-6xl animate-pulse">
-          <div className="flex flex-col items-center mb-12">
-            <div className="h-6 w-32 bg-sky-800/40 rounded-full mb-6"></div>
-            <div className="h-10 w-64 bg-sky-800/40 rounded-lg mb-4"></div>
-            <div className="h-4 w-48 bg-sky-800/40 rounded"></div>
-          </div>
-          <div className="h-[400px] bg-sky-900/40 rounded-[2.5rem] border border-white/5 flex items-center justify-around p-12">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-32 h-32 bg-sky-800/40 rounded-full"></div>
-              <div className="h-8 w-32 bg-sky-800/40 rounded"></div>
-            </div>
-            <div className="flex flex-col items-center gap-6">
-              <div className="w-16 h-16 bg-sky-800/40 rounded-full"></div>
-              <div className="h-12 w-48 bg-sky-800/40 rounded-xl"></div>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-32 h-32 bg-sky-800/40 rounded-full"></div>
-              <div className="h-8 w-32 bg-sky-800/40 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!fixture) {
+  if (fixtureLoading || !fixture) {
     return null;
   }
 

@@ -28,22 +28,8 @@ export default function TrialistsSection() {
     }
   )
 
-  // Don't render if no trialists
-  if (loading) return (
-    <section className="py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-black text-gray-900 mb-6">ACADEMY TRIALISTS</h2>
-          <div className="h-2 w-24 bg-sky-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Loading trialists...
-          </p>
-        </div>
-      </div>
-    </section>
-  )
-
-  if (!trialists || trialists.length === 0) return null
+  // Don't render if loading or no trialists
+  if (loading || !trialists || trialists.length === 0) return null
 
   return (
     <section className="py-24 bg-white">

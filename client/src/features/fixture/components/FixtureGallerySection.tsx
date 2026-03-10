@@ -26,31 +26,7 @@ export default function FixtureGallerySection() {
   )
 
   // Don't render if loading or no galleries
-  if (galleriesLoading) return (
-    <section className="py-24 bg-gray-900">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-16">
-          <div>
-            <h2 className="text-5xl font-black text-white">MATCH GALLERY</h2>
-            <div className="h-2 w-24 bg-sky-500 mt-4"></div>
-          </div>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-gray-800 rounded-lg overflow-hidden animate-pulse">
-              <div className="h-64 bg-gray-700"></div>
-              <div className="p-6">
-                <div className="h-4 bg-gray-700 rounded mb-3"></div>
-                <div className="h-6 bg-gray-700 rounded"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-
-  if (!matchGalleries || matchGalleries.length === 0) return null
+  if (galleriesLoading || !matchGalleries || matchGalleries.length === 0) return null
 
   return (
     <section className="py-24 bg-gray-900">
