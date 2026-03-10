@@ -78,7 +78,7 @@ const AdDisplay: React.FC<AdDisplayProps> = ({
   className = '',
   showLabel = true,
 }) => {
-  const { adData, loading, isError } = useAdServe(identifier, tags);
+  const { adData, isError } = useAdServe(identifier, tags);
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClose = (e: React.MouseEvent) => {
@@ -87,15 +87,11 @@ const AdDisplay: React.FC<AdDisplayProps> = ({
     setIsVisible(false);
   };
 
-  // ── Guard rail: render nothing when …
-  //    • there was a network/API error
-  //    • the user dismissed the ad
-  //    • loading finished but the server returned no ad for this zone
-  if (isError || !isVisible) return null;
-  if (!loading && !adData) return null;
+  // ── Guard rail: render nothing when there is no ad to show ──
+  if (isError || !isVisible || !adData) return null;
 
-  const zoneType = adData?.zone?.type as AdZoneType | undefined;
-  const [width, height] = parseDimensions(adData?.zone?.dimensions, zoneType);
+  const zoneType = adData.zone?.type as AdZoneType | undefined;
+  const [width, height] = parseDimensions(adData.zone?.dimensions, zoneType);
   const layoutClasses = getZoneLayoutClasses(zoneType);
 
   return (
@@ -123,56 +119,44 @@ const AdDisplay: React.FC<AdDisplayProps> = ({
             </div>
           )}
 
-          {loading ? (
-            // Skeleton — matches the zone's expected dimensions
-            <div
-              className="bg-gray-100 animate-pulse rounded-lg border border-gray-200"
-              style={{
-                width: typeof width === 'number' ? width : '100%',
-                height,
-              }}
-            />
-          ) : adData ? (
-            // Ad creative
-            <a
-              href={adData.creative.destinationUrl}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="relative group block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-gray-50 border border-gray-100"
-              style={{
-                width: typeof width === 'number' ? width : '100%',
-                height,
-              }}
-            >
-              {adData.creative.type === 'video' ? (
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-full object-cover"
-                >
-                  <source
-                    src={adData.creative.url}
-                    type={`video/${adData.creative.format}`}
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <img
+          <a
+            href={adData.creative.destinationUrl}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="relative group block overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 bg-gray-50 border border-gray-100"
+            style={{
+              width: typeof width === 'number' ? width : '100%',
+              height,
+            }}
+          >
+            {adData.creative.type === 'video' ? (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+              >
+                <source
                   src={adData.creative.url}
-                  alt={adData.creative.name || 'Advertisement'}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
+                  type={`video/${adData.creative.format}`}
                 />
-              )}
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <img
+                src={adData.creative.url}
+                alt={adData.creative.name || 'Advertisement'}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            )}
 
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center pointer-events-none">
-                <ExternalLink className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 drop-shadow-md transition-opacity duration-300" />
-              </div>
-            </a>
-          ) : null}
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center pointer-events-none">
+              <ExternalLink className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 drop-shadow-md transition-opacity duration-300" />
+            </div>
+          </a>
         </motion.div>
       )}
     </AnimatePresence>
