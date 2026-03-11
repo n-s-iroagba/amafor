@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { useHeaderLogic } from '../hooks/useHeaderLogic';
 import { HeaderErrorUI } from './HeaderErrorUI';
@@ -64,6 +64,7 @@ export function Header() {
     handleLoginClick,
 
   } = useHeaderLogic(pathname);
+  const router = useRouter();
 
   // If error state, render error UI
   if (error) {
@@ -126,7 +127,7 @@ export function Header() {
             <div className="hidden lg:flex items-center gap-4">
               <LoginButton
                 source="desktop"
-                onClick={() => handleLoginClick('desktop')}
+                onClick={() => router.push('/auth/login')}
               />
             </div>
 
@@ -308,7 +309,7 @@ interface MobileMenuPanelProps {
 
 function MobileMenuPanel({ isOpen, pathname, isLoading, onNavigate, onLogin }: MobileMenuPanelProps) {
   if (!isOpen) return null;
-
+  const router = useRouter();
   return (
     <div
       id="mobile-menu-panel"
@@ -333,7 +334,7 @@ function MobileMenuPanel({ isOpen, pathname, isLoading, onNavigate, onLogin }: M
         ))}
 
         <div className="mt-4 px-4">
-          <LoginButton source="mobile" onClick={onLogin} />
+          <LoginButton source="mobile" onClick={() => router.push('/auth/login')} />
         </div>
       </nav>
     </div>

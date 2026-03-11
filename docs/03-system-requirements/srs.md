@@ -282,6 +282,7 @@ This SRS defines all functional and non-functional requirements for the Amafor G
 | NFR-SEC-02 | Security | RBAC enforced on all protected routes; role verified server-side | BR-ADV-01 |
 | NFR-SEC-03 | Security | Rate limiting on authentication and public form endpoints | — |
 | NFR-SEC-04 | Security | Paystack and Stripe integrations follow PCI-DSS secure protocols | S-03 |
+| NFR-SEC-05 | Security | Standard industry Role-Based Access Control (RBAC) enforced with multi-role support. All newly invited system users must receive a verification email prior to first login. | BR-ADV-01 |
 | NFR-COM-01 | Compliance | NDPR data subject requests fulfilled within 30 days | BR-DSR-01 |
 | NFR-COM-02 | Compliance | Minor (< 18 years) data protection: parental consent stored with timestamp and IP | BR-DSR-02 |
 | NFR-COM-03 | Compliance | All advertiser disputes governed by Nigerian law | BR-AD-16 |

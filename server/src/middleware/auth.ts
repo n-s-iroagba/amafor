@@ -75,7 +75,13 @@ export const authorize = (roles: UserRole[]) => {
 };
 
 /**
- * Convenience middleware — restricts access to admin users only.
- * Equivalent to `authorize(['admin'])`.
+ * Convenience middleware — restricts access to administrative system users only.
+ * Incorporates all infrastructure, ops, and commercial administrative roles.
  */
-export const requireAdmin = authorize(['admin']);
+export const requireAdmin = authorize([
+    'admin',
+    'sports_admin',
+    'finance_officer',
+    'it_security',
+    'commercial_manager'
+]);
