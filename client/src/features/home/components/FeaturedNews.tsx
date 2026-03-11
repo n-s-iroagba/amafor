@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, TrendingUp, Bookmark, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ErrorAlert } from '@/shared/components/Alerts';
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
 
@@ -42,13 +41,12 @@ type RSSResponse = {
 
 const FeaturedNews: React.FC = () => {
   const [page, setPage] = useState(1);
-  const limit = 6; // Reduced initial limit for a home page section feel
 
   // Ideally, ensure useGet fetches based on the current page
   const {
     data,
     loading,
-    error,
+
   } = useGet<RSSResponse>(
     API_ROUTES.FEATURED_NEWS.LIST
   );
@@ -144,7 +142,7 @@ const FeaturedNews: React.FC = () => {
           </div>
         </motion.div>
 
-        {error && <ErrorAlert message={error} />}
+
 
         {!items.length && !loading && (
           <div className="text-center py-12">

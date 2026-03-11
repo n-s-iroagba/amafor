@@ -62,7 +62,7 @@ const gracefulShutdown = async (signal: string) => {
 const startServer = async () => {
   try {
 
-    await syncDatabase(false)
+    await syncDatabase(true)
 
 
     console.log('Database synchronized');

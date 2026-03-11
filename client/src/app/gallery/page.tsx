@@ -22,6 +22,7 @@ import { useGet } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';
 import { FixtureStatus, FixtureWithLeague, FixtureImage } from '@/features/fixture/types';
 import AdDisplay from '@/features/advertisement/component/AdDisplay';
+import { Header } from '@/shared/components/Header';
 
 
 
@@ -142,298 +143,307 @@ export default function GalleryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 p-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
-            <p className="text-sky-600">Loading gallery...</p>
+      <>
+        <Header />
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 p-4">
+          <div className="container mx-auto max-w-7xl">
+            <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-sky-700 animate-spin mb-4" />
+              <p className="text-sky-600">Loading gallery...</p>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 p-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="bg-red-50 border border-red-200 rounded-xl p-6 mt-8">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-6 h-6 text-red-500 mt-0.5" />
-              <div>
-                <h3 className="font-medium text-red-800 mb-2">Error Loading Gallery</h3>
-                <p className="text-red-600 text-sm">{error}</p>
-                <button
-                  onClick={() => refetch()}
-                  className="mt-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors text-sm font-medium"
-                >
-                  Try Again
-                </button>
+      <>
+        <Header />
+        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100 p-4">
+          <div className="container mx-auto max-w-7xl">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6 mt-8">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-6 h-6 text-red-500 mt-0.5" />
+                <div>
+                  <h3 className="font-medium text-red-800 mb-2">Error Loading Gallery</h3>
+                  <p className="text-red-600 text-sm">{error}</p>
+                  <button
+                    onClick={() => refetch()}
+                    className="mt-4 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors text-sm font-medium"
+                  >
+                    Try Again
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
-        <div className="container mx-auto max-w-7xl px-4 py-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Fixture Gallery</h1>
-          <p className="text-sky-300 text-lg max-w-3xl">
-            Relive the action through photos from our matches. Browse through fixtures,
-            view match highlights, and explore game moments.
-          </p>
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-sky-50 to-sky-100">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-sky-800 to-sky-900 text-white">
+          <div className="container mx-auto max-w-7xl px-4 py-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Fixture Gallery</h1>
+            <p className="text-sky-300 text-lg max-w-3xl">
+              Relive the action through photos from our matches. Browse through fixtures,
+              view match highlights, and explore game moments.
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Filters */}
-      <div className="container mx-auto max-w-7xl px-4 py-6">
-        <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Search */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-sky-400" />
+        {/* Filters */}
+        <div className="container mx-auto max-w-7xl px-4 py-6">
+          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Search */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-sky-400" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search fixtures, teams, venues..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
+                  data-testid="gallery-search"
+                />
               </div>
-              <input
-                type="text"
-                placeholder="Search fixtures, teams, venues..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
-                data-testid="gallery-search"
-              />
+
+              {/* Status Filter */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Filter className="h-5 w-5 text-sky-600" />
+                  <label className="text-sm font-medium text-sky-700">Status</label>
+                </div>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value as FixtureStatus | 'all')}
+                  className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
+                  data-testid="status-filter"
+                >
+                  <option value="all">All Status</option>
+                  <option value={FixtureStatus.WON}>Won</option>
+                  <option value={FixtureStatus.LOST}>Lost</option>
+                  <option value={FixtureStatus.DRAW}>Draw</option>
+                  <option value={FixtureStatus.PLAYING}>Playing</option>
+                  <option value={FixtureStatus.SCHEDULED}>Scheduled</option>
+                  <option value={FixtureStatus.CANCELLED}>Cancelled</option>
+                </select>
+              </div>
+
+              {/* League Filter */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Trophy className="h-5 w-5 text-sky-600" />
+                  <label className="text-sm font-medium text-sky-700">League</label>
+                </div>
+                <select
+                  value={leagueFilter}
+                  onChange={(e) => setLeagueFilter(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
+                >
+                  <option value="all">All Leagues</option>
+                  {leaguesData?.map(league => (
+                    <option key={league.id} value={league.id}>
+                      {league.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Year Filter */}
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="h-5 w-5 text-sky-600" />
+                  <label className="text-sm font-medium text-sky-700">Year</label>
+                </div>
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
+                >
+                  <option value="all">All Years</option>
+                  {years.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            {/* Status Filter */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Filter className="h-5 w-5 text-sky-600" />
-                <label className="text-sm font-medium text-sky-700">Status</label>
+            {/* Active filters info */}
+            {(searchTerm || statusFilter !== 'all' || leagueFilter !== 'all' || selectedYear !== 'all') && (
+              <div className="mt-4 pt-4 border-t border-sky-200">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-sky-600">
+                    Showing {filteredFixtures?.length || 0} of {fixturesData?.length || 0} fixtures
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setStatusFilter('all');
+                      setLeagueFilter('all');
+                      setSelectedYear('all');
+                    }}
+                    className="text-sm text-sky-700 hover:text-sky-900 font-medium"
+                  >
+                    Clear all filters
+                  </button>
+                </div>
               </div>
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as FixtureStatus | 'all')}
-                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
-                data-testid="status-filter"
-              >
-                <option value="all">All Status</option>
-                <option value={FixtureStatus.WON}>Won</option>
-                <option value={FixtureStatus.LOST}>Lost</option>
-                <option value={FixtureStatus.DRAW}>Draw</option>
-                <option value={FixtureStatus.PLAYING}>Playing</option>
-                <option value={FixtureStatus.SCHEDULED}>Scheduled</option>
-                <option value={FixtureStatus.CANCELLED}>Cancelled</option>
-              </select>
-            </div>
-
-            {/* League Filter */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Trophy className="h-5 w-5 text-sky-600" />
-                <label className="text-sm font-medium text-sky-700">League</label>
-              </div>
-              <select
-                value={leagueFilter}
-                onChange={(e) => setLeagueFilter(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
-              >
-                <option value="all">All Leagues</option>
-                {leaguesData?.map(league => (
-                  <option key={league.id} value={league.id}>
-                    {league.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Year Filter */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Calendar className="h-5 w-5 text-sky-600" />
-                <label className="text-sm font-medium text-sky-700">Year</label>
-              </div>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 focus:outline-none transition-all"
-              >
-                <option value="all">All Years</option>
-                {years.map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
+            )}
           </div>
 
-          {/* Active filters info */}
-          {(searchTerm || statusFilter !== 'all' || leagueFilter !== 'all' || selectedYear !== 'all') && (
-            <div className="mt-4 pt-4 border-t border-sky-200">
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-sky-600">
-                  Showing {filteredFixtures?.length || 0} of {fixturesData?.length || 0} fixtures
+          {/* Sidebar ad — between filter panel and gallery grid */}
+          <AdDisplay identifier="SIDEBAR" className="mb-8" />
+
+          {/* Gallery Content */}
+          {filteredFixtures && filteredFixtures.length > 0 ? (
+            Object.entries(groupedFixtures || {}).map(([date, fixtures]) => (
+              <div key={date} className="mb-12">
+                <h2 className="text-2xl font-bold text-sky-800 mb-6 pb-2 border-b border-sky-200">
+                  {date}
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {fixtures.map((fixture) => {
+                    const fixtureImages = getFixtureImages(fixture);
+                    const firstImage = fixtureImages[0];
+
+                    return (
+                      <Link
+                        key={fixture.id}
+                        href={`/gallery/${fixture.id}`}
+                        className="group bg-white rounded-xl shadow-sm border border-sky-200 hover:shadow-lg hover:border-sky-300 transition-all overflow-hidden"
+                        data-testid="gallery-item"
+                      >
+                        {/* Fixture Header */}
+                        <div className="p-6 border-b border-sky-100">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              {fixture.league?.logo && (
+                                <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
+                                  <Image
+                                    src={fixture.league.logo}
+                                    alt={fixture.league.name}
+                                    width={32}
+                                    height={32}
+                                    className="object-contain"
+                                  />
+                                </div>
+                              )}
+                              <div>
+                                <h3 className="font-bold text-sky-800">{fixture.league?.name}</h3>
+                                <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(fixture.status)}`}>
+                                  {getStatusIcon(fixture.status)} {fixture.status.charAt(0).toUpperCase() + fixture.status.slice(1)}
+                                </span>
+                              </div>
+                            </div>
+                            <ChevronRight className="h-5 w-5 text-sky-400 group-hover:text-sky-600 transition-colors" />
+                          </div>
+
+                          {/* Teams */}
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center">
+                                <Home className="h-6 w-6 text-sky-600" />
+                              </div>
+                              <div>
+                                <div className="font-bold text-sky-800">{fixture.homeTeam}</div>
+                                <div className="text-sm text-sky-600">Home</div>
+                              </div>
+                            </div>
+
+                            <div className="text-center">
+                              {fixture.status === FixtureStatus.SCHEDULED ? (
+                                <div className="text-sm text-sky-500">VS</div>
+                              ) : (
+                                <div className="text-2xl font-bold text-sky-800">
+                                  {fixture.homeScore} - {fixture.awayScore}
+                                </div>
+                              )}
+                              <div className="text-xs text-sky-500 mt-1">
+                                {formatDate(String(fixture.matchDate))}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <div>
+                                <div className="font-bold text-sky-800 text-right">{fixture.awayTeam}</div>
+                                <div className="text-sm text-sky-600 text-right">Away</div>
+                              </div>
+                              <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center">
+                                <GlobeIcon className="h-6 w-6 text-sky-600" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Venue */}
+                          <div className="flex items-center gap-2 text-sm text-sky-600">
+                            <MapPin className="h-4 w-4" />
+                            <span>{fixture.venue}</span>
+                          </div>
+                        </div>
+
+                        {/* Image Preview */}
+                        <div className="relative">
+                          {firstImage ? (
+                            <>
+                              <div className="aspect-video bg-sky-100 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
+                                {/* In real app, use next/image */}
+                                <div
+                                  className="w-full h-full bg-cover bg-center"
+                                  style={{ backgroundImage: `url(${firstImage.url})` }}
+                                />
+                              </div>
+                              <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm flex items-center gap-2 z-20">
+                                <Images className="h-4 w-4" />
+                                <span>{fixtureImages.length} photos</span>
+                                {/* BRD Requirement: DEV-13 No Image Downloads Allowed */}
+                              </div>
+                            </>
+                          ) : (
+                            <div className="aspect-video bg-sky-100 flex flex-col items-center justify-center text-sky-400">
+                              <Images className="h-12 w-12 mb-2" />
+                              <span className="text-sm">No photos available</span>
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
                 </div>
-                <button
-                  onClick={() => {
-                    setSearchTerm('');
-                    setStatusFilter('all');
-                    setLeagueFilter('all');
-                    setSelectedYear('all');
-                  }}
-                  className="text-sm text-sky-700 hover:text-sky-900 font-medium"
-                >
-                  Clear all filters
-                </button>
               </div>
+            ))
+          ) : (
+            <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-12 text-center">
+              <Images className="h-16 w-16 text-sky-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-sky-700 mb-2">No fixtures found</h3>
+              <p className="text-sky-500 mb-6">
+                {fixturesData?.length === 0
+                  ? "No fixtures have been added to the gallery yet."
+                  : "Try adjusting your filters to see more results."}
+              </p>
+              {fixturesData?.length === 0 && (
+                <button
+                  onClick={() => refetch()}
+                  className="px-6 py-3 bg-sky-700 text-white rounded-lg hover:bg-sky-800 transition-colors font-medium"
+                >
+                  Refresh Gallery
+                </button>
+              )}
             </div>
           )}
         </div>
-
-        {/* Sidebar ad — between filter panel and gallery grid */}
-        <AdDisplay identifier="SIDEBAR" className="mb-8" />
-
-        {/* Gallery Content */}
-        {filteredFixtures && filteredFixtures.length > 0 ? (
-          Object.entries(groupedFixtures || {}).map(([date, fixtures]) => (
-            <div key={date} className="mb-12">
-              <h2 className="text-2xl font-bold text-sky-800 mb-6 pb-2 border-b border-sky-200">
-                {date}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {fixtures.map((fixture) => {
-                  const fixtureImages = getFixtureImages(fixture);
-                  const firstImage = fixtureImages[0];
-
-                  return (
-                    <Link
-                      key={fixture.id}
-                      href={`/gallery/${fixture.id}`}
-                      className="group bg-white rounded-xl shadow-sm border border-sky-200 hover:shadow-lg hover:border-sky-300 transition-all overflow-hidden"
-                      data-testid="gallery-item"
-                    >
-                      {/* Fixture Header */}
-                      <div className="p-6 border-b border-sky-100">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            {fixture.league?.logo && (
-                              <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center">
-                                <Image
-                                  src={fixture.league.logo}
-                                  alt={fixture.league.name}
-                                  width={32}
-                                  height={32}
-                                  className="object-contain"
-                                />
-                              </div>
-                            )}
-                            <div>
-                              <h3 className="font-bold text-sky-800">{fixture.league?.name}</h3>
-                              <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(fixture.status)}`}>
-                                {getStatusIcon(fixture.status)} {fixture.status.charAt(0).toUpperCase() + fixture.status.slice(1)}
-                              </span>
-                            </div>
-                          </div>
-                          <ChevronRight className="h-5 w-5 text-sky-400 group-hover:text-sky-600 transition-colors" />
-                        </div>
-
-                        {/* Teams */}
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center">
-                              <Home className="h-6 w-6 text-sky-600" />
-                            </div>
-                            <div>
-                              <div className="font-bold text-sky-800">{fixture.homeTeam}</div>
-                              <div className="text-sm text-sky-600">Home</div>
-                            </div>
-                          </div>
-
-                          <div className="text-center">
-                            {fixture.status === FixtureStatus.SCHEDULED ? (
-                              <div className="text-sm text-sky-500">VS</div>
-                            ) : (
-                              <div className="text-2xl font-bold text-sky-800">
-                                {fixture.homeScore} - {fixture.awayScore}
-                              </div>
-                            )}
-                            <div className="text-xs text-sky-500 mt-1">
-                              {formatDate(String(fixture.matchDate))}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-3">
-                            <div>
-                              <div className="font-bold text-sky-800 text-right">{fixture.awayTeam}</div>
-                              <div className="text-sm text-sky-600 text-right">Away</div>
-                            </div>
-                            <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center">
-                              <GlobeIcon className="h-6 w-6 text-sky-600" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Venue */}
-                        <div className="flex items-center gap-2 text-sm text-sky-600">
-                          <MapPin className="h-4 w-4" />
-                          <span>{fixture.venue}</span>
-                        </div>
-                      </div>
-
-                      {/* Image Preview */}
-                      <div className="relative">
-                        {firstImage ? (
-                          <>
-                            <div className="aspect-video bg-sky-100 relative overflow-hidden">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
-                              {/* In real app, use next/image */}
-                              <div
-                                className="w-full h-full bg-cover bg-center"
-                                style={{ backgroundImage: `url(${firstImage.url})` }}
-                              />
-                            </div>
-                            <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-full text-sm flex items-center gap-2 z-20">
-                              <Images className="h-4 w-4" />
-                              <span>{fixtureImages.length} photos</span>
-                              {/* BRD Requirement: DEV-13 No Image Downloads Allowed */}
-                            </div>
-                          </>
-                        ) : (
-                          <div className="aspect-video bg-sky-100 flex flex-col items-center justify-center text-sky-400">
-                            <Images className="h-12 w-12 mb-2" />
-                            <span className="text-sm">No photos available</span>
-                          </div>
-                        )}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="bg-white rounded-xl shadow-sm border border-sky-200 p-12 text-center">
-            <Images className="h-16 w-16 text-sky-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-sky-700 mb-2">No fixtures found</h3>
-            <p className="text-sky-500 mb-6">
-              {fixturesData?.length === 0
-                ? "No fixtures have been added to the gallery yet."
-                : "Try adjusting your filters to see more results."}
-            </p>
-            {fixturesData?.length === 0 && (
-              <button
-                onClick={() => refetch()}
-                className="px-6 py-3 bg-sky-700 text-white rounded-lg hover:bg-sky-800 transition-colors font-medium"
-              >
-                Refresh Gallery
-              </button>
-            )}
-          </div>
-        )}
       </div>
-    </div>
+    </>
   );
 }

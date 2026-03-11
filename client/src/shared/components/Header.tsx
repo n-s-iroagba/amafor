@@ -14,13 +14,20 @@ import AdDisplay from '@/features/advertisement/component/AdDisplay';
 // Navigation configuration
 const NAVIGATION_ITEMS = [
   { name: 'News', href: '/news' },
+  { name: 'Featured News', href: '/featured-news' },
   { name: 'Fixtures', href: '/fixtures' },
   { name: 'Results', href: '/league-statistics' },
   { name: 'Team', href: '/team' },
   { name: 'Academy', href: '/academy' },
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'Videos', href: '/videos' },
   { name: 'Support', href: '/patron' },
   { name: 'Advertise', href: '/advertise' },
   { name: 'Pro View', href: '/pro-view' },
+  { name: 'Help', href: '/help' },
+  { name: 'Compliance', href: '/compliance' },
+  { name: 'Privacy Policy', href: '/privacy' },
+  { name: 'Terms of Service', href: '/terms' },
 ] as const;
 
 /**

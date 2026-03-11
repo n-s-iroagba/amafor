@@ -7,6 +7,7 @@ import { ErrorAlert } from '@/shared/components/Alerts';
 import { API_ROUTES } from '@/config/routes';
 import { useGet } from '@/shared/hooks/useApiQuery';
 import AdDisplay from '@/features/advertisement/component/AdDisplay';
+import { Header } from '@/shared/components/Header';
 // Ensure you have these imports or adjust paths accordingly
 // import { API_ROUTES, useGet, AdDisplay } from '@/...';
 
@@ -92,32 +93,36 @@ const FeaturedNews = () => {
   // Loading State
   if (loading) {
     return (
-      <section className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 sm:mb-12 text-center sm:text-left"
-        >
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-900 tracking-tight flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-3">
-            <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-amber-600 flex-shrink-0" />
-            <span className="text-center sm:text-left">Featured News</span>
-          </h1>
-          <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto sm:mx-0 px-2 sm:px-0">
-            Stay updated with the latest curated stories from around the world
-          </p>
-        </motion.div>
+      <>
+        <Header />
+        <section className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 md:py-16">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 sm:mb-12 text-center sm:text-left"
+          >
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-900 tracking-tight flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 sm:gap-3">
+              <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-amber-600 flex-shrink-0" />
+              <span className="text-center sm:text-left">Featured News</span>
+            </h1>
+            <p className="text-gray-600 text-sm sm:text-base md:text-lg max-w-2xl mx-auto sm:mx-0 px-2 sm:px-0">
+              Stay updated with the latest curated stories from around the world
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-gray-100 rounded-xl h-96 animate-pulse" />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-gray-100 rounded-xl h-96 animate-pulse" />
+            ))}
+          </div>
+        </section>
+      </>
     );
   }
 
   return (
     <>
+      <Header />
       <AdDisplay identifier="TP_BAN" />
       <section className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-12 md:py-16 overflow-x-hidden">
         <motion.div
