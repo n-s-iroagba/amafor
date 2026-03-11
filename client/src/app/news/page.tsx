@@ -102,7 +102,7 @@ const ArticleList: React.FC = () => {
           </div>
         )}
 
-        {articles?.length < 1 && !loading && (
+        {articles?.length < 1   && !loading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

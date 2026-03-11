@@ -9,7 +9,7 @@ import {
   AlertCircle,
   Loader2,
   ArrowRight,
-  Shield,
+  Shield
 } from 'lucide-react';
 import { usePost } from '@/shared/hooks/useApiQuery';
 import { API_ROUTES } from '@/config/routes';

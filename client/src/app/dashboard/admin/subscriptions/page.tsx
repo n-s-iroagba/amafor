@@ -20,7 +20,6 @@ import {
     Trash2,
     Loader2,
     Search,
-    Users,
     CreditCard,
     Check,
 } from 'lucide-react';
